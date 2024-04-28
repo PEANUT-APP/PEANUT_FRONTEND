@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
+import {Title} from '../components/text/Text';
 
 export default function Test() {
   return (
     <View>
-      <Text>test</Text>
+      <Title>테스트입니다</Title>
     </View>
   );
 }
