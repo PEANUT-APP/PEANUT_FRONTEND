@@ -1,0 +1,15 @@
+export const colors = {
+  default: '#000',
+  primary: '#fff',
+  secondary: '#00D293',
+  tertiary: '#00D293',
+  outline: '#111111',
+  primaryDisabled: '#B8B8B8',
+  secondaryDisabled: '#d7d7d7',
+  tertiaryDisabled: '#d7d7d7',
+  outlineDisabled: '#d7d7d7',
+  primaryLoading: '#fff',
+  secondaryLoading: '#00D293',
+  tertiaryLoading: '#00D293',
+  outlineLoading: '#B8B8B8',
+};
