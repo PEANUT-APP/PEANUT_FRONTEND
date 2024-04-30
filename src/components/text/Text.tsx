@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import {TextType} from './types';
 
 const Typography = styled.Text<TextType>`
-  font-family: 'Pretendard-Medium';
+  font-family: 'Pretendard';
   line-height: 48px;
   letter-spacing: -0.5px;
   color: ${props => props.color || 'black'};

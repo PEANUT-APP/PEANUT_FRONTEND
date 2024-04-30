@@ -1,10 +1,8 @@
-import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {ButtonType} from './types';
-import {Body1} from '../text/Text';
-import Loading from '../icon/LoadingIcon';
+import {ButtonStyleType} from './types';
+import {Body1, Body2, Caption1} from '../text/Text';
 
-const Button = styled.TouchableOpacity<ButtonType>`
+export const DefaultButton = styled.TouchableOpacity<ButtonStyleType>`
   width: ${props =>
     props.size === 'l' ? '350px' : props.size === 'm' ? '170px' : '110px'};
   height: ${props =>
@@ -14,48 +12,29 @@ const Button = styled.TouchableOpacity<ButtonType>`
   border-radius: 8px;
 `;
 
-const Label = styled.View`
+export const Label = styled.View`
   flex-direction: row;
   gap: 4px;
   align-items: center;
 `;
 
-const Text = styled(Body1)`
-  line-height: 21.344px;
-  letter-spacing: -0.4px;
-`;
-
-const DefaultButton = styled(Button)`
-  background-color: ${props =>
-    props.disabled ? '#F2F2F2' : props.isPressed ? '#00D293' : '#03f4ac'};
-`;
-
-export function PrimaryButton({disabled}: ButtonType) {
-  const [isPressed, setIsPressed] = useState(false);
-
-  const onPressIn = () => {
-    setIsPressed(true);
-  };
-
-  const onPressOut = () => {
-    setIsPressed(false);
-  };
-
-  return (
-    <DefaultButton
-      accessibilityRole="button"
-      size="l"
-      isPressed={isPressed}
-      activeOpacity={1}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
-      disabled={disabled}>
-      <Label>
-        <Loading size="l" type="primaryLoading" />
-        <Text color={disabled ? '#B8B8B8' : 'white'} weight="bold">
-          Label
-        </Text>
-      </Label>
-    </DefaultButton>
-  );
-}
+export const getText = (size: 'l' | 'm' | 's') => {
+  switch (size) {
+    case 'l':
+      return styled(Body1)`
+        line-height: 21.344px;
+        letter-spacing: -0.4px;
+      `;
+    case 'm':
+      return styled(Body2)`
+        line-height: 18.676px;
+        letter-spacing: -0.35px;
+      `;
+    case 's':
+    default:
+      return styled(Caption1)`
+        line-height: 16.008px;
+        letter-spacing: -0.3px;
+      `;
+  }
+};

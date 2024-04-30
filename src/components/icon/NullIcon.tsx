@@ -5,22 +5,37 @@ import {colors} from '../../styles/colors';
 const getSize = (size: 'xl' | 'l' | 'm' | 's'): string => {
   switch (size) {
     case 'xl':
-      return '36px';
+      return '28px';
     case 'l':
-      return '24px';
+      return '16px';
     case 'm':
-      return '20px';
+      return '14px';
     case 's':
     default:
-      return '16px';
+      return '12px';
+  }
+};
+
+const getPadding = (size: 'xl' | 'l' | 'm' | 's'): string => {
+  switch (size) {
+    case 'xl':
+      return '4px';
+    case 'l':
+      return '4px';
+    case 'm':
+      return '3px';
+    case 's':
+    default:
+      return '2px';
   }
 };
 
 export const NullIcon = styled.View<NullType>`
   width: ${props => getSize(props.size)};
   height: ${props => getSize(props.size)};
+  padding: ${props => getPadding(props.size)};
   border: 1.35px dotted ${props => colors[props.type]};
-  border-radius: 5px;
+  border-radius: 2px;
 `;
 
 export default NullIcon;

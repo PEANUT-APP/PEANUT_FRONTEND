@@ -10,6 +10,18 @@ export default function Test({navigation}: NavigationProps) {
         title="IconTest"
         onPress={() => navigation.navigate('IconTest')}
       />
+      <Button
+        title="PrimaryButtonTest"
+        onPress={() => navigation.navigate('PrimaryButtonTest')}
+      />
+      <Button
+        title="SecondaryButtonTest"
+        onPress={() => navigation.navigate('SecondaryButtonTest')}
+      />
+      <Button
+        title="TertiaryButtonTest"
+        onPress={() => navigation.navigate('TertiaryButtonTest')}
+      />
     </GlobalView>
   );
 }

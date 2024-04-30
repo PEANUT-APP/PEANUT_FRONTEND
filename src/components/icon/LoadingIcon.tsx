@@ -39,7 +39,7 @@ export default function Loading({size, type}: LoadingType) {
         toValue: 360,
         duration: 1000,
         easing: Easing.linear,
-        useNativeDriver: true, // 성능 향상을 위해 변경
+        useNativeDriver: true,
       }),
     );
     animation.start();
