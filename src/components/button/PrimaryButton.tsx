@@ -16,7 +16,7 @@ const Button = styled(DefaultButton)`
       : '#03f4ac'};
 `;
 
-export function PrimaryButton({
+export default function PrimaryButton({
   size,
   disabled,
   style,

@@ -2,9 +2,14 @@ import React from 'react';
 import {ScrollView, Text} from 'react-native';
 import styled from 'styled-components/native';
 import GlobalView from '../../styles/GlobalStyle';
-import {PrimaryButton} from '../../components/button/PrimaryButton';
-import {SecondaryButton} from '../../components/button/SecondaryButton';
-import {TertiaryButton} from '../../components/button/TertiaryButton';
+import PrimaryButton from '../../components/button/PrimaryButton';
+import SecondaryButton from '../../components/button/SecondaryButton';
+import TertiaryButton from '../../components/button/TertiaryButton';
+import OutlineButton from '../../components/button/OutlineButton';
+import {
+  AssistiveTextButton,
+  PrimaryTextButton,
+} from '../../components/button/TextButton';
 
 const ViewBox = styled.View`
   align-items: center;
@@ -230,7 +235,7 @@ export function TertiaryButtonTest() {
   return (
     <ScrollView>
       <GlobalView>
-        <Text>Secondary Button</Text>
+        <Text>Tertiary Button</Text>
         <ViewBox>
           <ViewBox>
             <TertiaryButton size="l">Label</TertiaryButton>
@@ -326,6 +331,227 @@ export function TertiaryButtonTest() {
             <TertiaryButton size="s" isLoading>
               Label
             </TertiaryButton>
+          </ViewBox>
+        </ViewBox>
+      </GlobalView>
+    </ScrollView>
+  );
+}
+
+export function OutlineButtonTest() {
+  return (
+    <ScrollView>
+      <GlobalView>
+        <Text>Outline Button</Text>
+        <ViewBox>
+          <ViewBox>
+            <OutlineButton size="m">Label</OutlineButton>
+            <OutlineButton size="s">Label</OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" style="left">
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" style="left">
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" style="right">
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" style="right">
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" style="both">
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" style="both">
+              Label
+            </OutlineButton>
+          </ViewBox>
+        </ViewBox>
+        <ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" disabled>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" disabled>
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" style="left" disabled>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" style="left" disabled>
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" style="right" disabled>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" style="right" disabled>
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" style="both" disabled>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" style="both" disabled>
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" isLoading>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" isLoading>
+              Label
+            </OutlineButton>
+          </ViewBox>
+        </ViewBox>
+      </GlobalView>
+    </ScrollView>
+  );
+}
+
+export function TextButtonTest() {
+  return (
+    <ScrollView>
+      <GlobalView>
+        <Text>Primary Text Button</Text>
+        <ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m">Label</PrimaryTextButton>
+            <PrimaryTextButton size="s">Label</PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" style="left">
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" style="left">
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" style="right">
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" style="right">
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" style="both">
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" style="both">
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+        </ViewBox>
+        <ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" disabled>
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" disabled>
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" style="left" disabled>
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" style="left" disabled>
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" style="right" disabled>
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" style="right" disabled>
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" style="both" disabled>
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" style="both" disabled>
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+        </ViewBox>
+        <Text>Assistive Text Button</Text>
+        <ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m">Label</AssistiveTextButton>
+            <AssistiveTextButton size="s">Label</AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" style="left">
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" style="left">
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" style="right">
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" style="right">
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" style="both">
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" style="both">
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+        </ViewBox>
+        <ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" disabled>
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" disabled>
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" style="left" disabled>
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" style="left" disabled>
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" style="right" disabled>
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" style="right" disabled>
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" style="both" disabled>
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" style="both" disabled>
+              Label
+            </AssistiveTextButton>
           </ViewBox>
         </ViewBox>
       </GlobalView>

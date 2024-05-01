@@ -22,6 +22,14 @@ export default function Test({navigation}: NavigationProps) {
         title="TertiaryButtonTest"
         onPress={() => navigation.navigate('TertiaryButtonTest')}
       />
+      <Button
+        title="OutlineButtonTest"
+        onPress={() => navigation.navigate('OutlineButtonTest')}
+      />
+      <Button
+        title="TextButtonTest"
+        onPress={() => navigation.navigate('TextButtonTest')}
+      />
     </GlobalView>
   );
 }

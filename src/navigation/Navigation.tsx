@@ -4,9 +4,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Test from '../pages/test/Test';
 import IconTest from '../pages/test/IconTest';
 import {
+  OutlineButtonTest,
   PrimaryButtonTest,
   SecondaryButtonTest,
   TertiaryButtonTest,
+  TextButtonTest,
 } from '../pages/test/ButtonTest';
 
 const Stack = createNativeStackNavigator();
@@ -26,6 +28,8 @@ export default function Navigation() {
           name="TertiaryButtonTest"
           component={TertiaryButtonTest}
         />
+        <Stack.Screen name="OutlineButtonTest" component={OutlineButtonTest} />
+        <Stack.Screen name="TextButtonTest" component={TextButtonTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );

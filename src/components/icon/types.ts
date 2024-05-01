@@ -4,14 +4,18 @@ export interface IconType {
     | 'secondary'
     | 'tertiary'
     | 'outline'
+    | 'primaryText'
+    | 'assistiveText'
     | 'primaryDisabled'
     | 'secondaryDisabled'
     | 'tertiaryDisabled'
+    | 'textDisabled'
     | 'outlineDisabled'
     | 'primaryLoading'
     | 'secondaryLoading'
     | 'tertiaryLoading'
-    | 'outlineLoading';
+    | 'outlineLoading'
+    | `${string}Text`;
 }
 
 export interface NullType extends IconType {

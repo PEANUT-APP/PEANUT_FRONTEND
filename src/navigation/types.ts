@@ -3,4 +3,6 @@ export type ParamList = {
   PrimaryButtonTest: undefined;
   SecondaryButtonTest: undefined;
   TertiaryButtonTest: undefined;
+  OutlineButtonTest: undefined;
+  TextButtonTest: undefined;
 };

@@ -18,7 +18,7 @@ const Button = styled(DefaultButton)`
     ${props => (props.disabled && !props.isLoading ? '#D7D7D7' : '#00D293')};
 `;
 
-export function SecondaryButton({
+export default function SecondaryButton({
   size,
   disabled,
   style,

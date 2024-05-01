@@ -10,7 +10,7 @@ const Button = styled(DefaultButton)`
   border: 1px solid #d7d7d7;
 `;
 
-export function TertiaryButton({
+export default function TertiaryButton({
   size,
   disabled,
   style,

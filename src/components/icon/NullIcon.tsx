@@ -16,7 +16,7 @@ const getSize = (size: 'xl' | 'l' | 'm' | 's'): string => {
   }
 };
 
-const getPadding = (size: 'xl' | 'l' | 'm' | 's'): string => {
+const getMargin = (size: 'xl' | 'l' | 'm' | 's'): string => {
   switch (size) {
     case 'xl':
       return '4px';
@@ -33,7 +33,7 @@ const getPadding = (size: 'xl' | 'l' | 'm' | 's'): string => {
 export const NullIcon = styled.View<NullType>`
   width: ${props => getSize(props.size)};
   height: ${props => getSize(props.size)};
-  padding: ${props => getPadding(props.size)};
+  margin: ${props => getMargin(props.size)};
   border: 1.35px dotted ${props => colors[props.type]};
   border-radius: 2px;
 `;
