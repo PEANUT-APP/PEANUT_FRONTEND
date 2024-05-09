@@ -5,6 +5,9 @@ const Typography = styled.Text<TextType>`
   font-family: 'Pretendard';
   line-height: 48px;
   letter-spacing: -0.5px;
+  color: ${props => props.color || 'black'};
+  font-weight: ${props =>
+    props.weight === 'bold' ? 700 : props.weight === 'light' ? 300 : 500};
 `;
 
 export const Title = styled(Typography)`
