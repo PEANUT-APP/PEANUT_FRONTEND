@@ -4,18 +4,22 @@ import {ButtonType} from './types';
 import {DefaultButton, Label, getText} from './Button';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
+import {colors} from '../../styles/colors';
 
 const Button = styled(DefaultButton)`
   background-color: ${props =>
     props.isLoading
-      ? '#fff'
+      ? colors.white
       : props.disabled
       ? 'transparent'
       : props.isPressed
-      ? '#EAFFF9'
-      : '#fff'};
+      ? colors.SolidSecondaryActive
+      : colors.white};
   border: 1px solid
-    ${props => (props.disabled && !props.isLoading ? '#D7D7D7' : '#00D293')};
+    ${props =>
+      props.disabled && !props.isLoading
+        ? colors.LineDisabled
+        : colors.primaryStrong};
 `;
 
 export default function SecondaryButton({
@@ -50,12 +54,11 @@ export default function SecondaryButton({
           />
         )}
         {isLoading && (
-          <LoadingIcon
-            size={size === 's' ? 'm' : 'l'}
-            type="secondaryLoading"
-          />
+          <LoadingIcon size={size === 's' ? 'm' : 'l'} type="secondary" />
         )}
-        <Text color={disabled ? '#D7D7D7' : '#00D293'} weight="bold">
+        <Text
+          color={disabled ? colors.LineDisabled : colors.primaryStrong}
+          weight="bold">
           {children}
         </Text>
         {(style === 'right' || style === 'both') && (

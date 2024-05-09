@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import {ButtonStyleType, ButtonType} from './types';
 import {Label, getText} from './Button';
 import NullIcon from '../icon/NullIcon';
+import {colors} from '../../styles/colors';
 
 const getPadding = ({isPressed, size, style}: ButtonStyleType) => {
   if (isPressed) {
@@ -23,7 +24,11 @@ const TextButton = styled.TouchableOpacity<ButtonStyleType>`
   border-radius: ${({isPressed, size}) =>
     isPressed ? (size === 's' ? '3px' : '4px') : '4px'};
   background-color: ${({isPressed, type}) =>
-    isPressed ? (type === 'primary' ? '#F9F9F9' : '#EAFFF9') : '#fff'};
+    isPressed
+      ? type === 'primary'
+        ? colors.SolidTertiaryActive
+        : colors.SolidSecondaryActive
+      : colors.white};
 `;
 
 const InlineLabel = styled(Label)`
@@ -63,7 +68,11 @@ function DefaultTextButton({
         )}
         <Text
           color={
-            disabled ? '#B8B8B8' : type === 'primary' ? '#585858' : '#0DB89A'
+            disabled
+              ? colors.TextDisabled
+              : type === 'primary'
+              ? colors.TextNeutral
+              : colors.primaryStrong
           }
           weight="bold">
           {children}

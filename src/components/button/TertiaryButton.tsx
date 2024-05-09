@@ -4,10 +4,11 @@ import {ButtonType} from './types';
 import {DefaultButton, Label, getText} from './Button';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
+import {colors} from '../../styles/colors';
 
 const Button = styled(DefaultButton)`
   background-color: ${props => (props.isPressed ? '#F9F9F9' : '#fff')};
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${colors.LineDisabled};
 `;
 
 export default function TertiaryButton({
@@ -40,8 +41,10 @@ export default function TertiaryButton({
             size={size}
           />
         )}
-        {isLoading && <LoadingIcon size="l" type="tertiaryLoading" />}
-        <Text color={disabled ? '#D7D7D7' : '#00D293'} weight="bold">
+        {isLoading && <LoadingIcon size="l" type="tertiary" />}
+        <Text
+          color={disabled ? colors.LineDisabled : colors.primaryStrong}
+          weight="bold">
           {children}
         </Text>
         {(style === 'right' || style === 'both') && (

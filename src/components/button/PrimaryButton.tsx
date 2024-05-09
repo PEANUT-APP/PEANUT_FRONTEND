@@ -4,16 +4,17 @@ import {ButtonType} from './types';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {DefaultButton, Label, getText} from './Button';
+import {colors} from '../../styles/colors';
 
 const Button = styled(DefaultButton)`
   background-color: ${props =>
     props.isLoading
-      ? '#03f4ac'
+      ? colors.primaryNormal
       : props.disabled
-      ? '#F2F2F2'
+      ? colors.SolidDisabled
       : props.isPressed
-      ? '#00D293'
-      : '#03f4ac'};
+      ? colors.primaryStrong
+      : colors.primaryNormal};
 `;
 
 export default function PrimaryButton({
@@ -50,7 +51,9 @@ export default function PrimaryButton({
           />
         )}
         {isLoading && <LoadingIcon size="l" type="primaryLoading" />}
-        <Text color={disabled ? '#B8B8B8' : 'white'} weight="bold">
+        <Text
+          color={disabled ? colors.TextDisabled : colors.white}
+          weight="bold">
           {children}
         </Text>
         {(style === 'right' || style === 'both') && (

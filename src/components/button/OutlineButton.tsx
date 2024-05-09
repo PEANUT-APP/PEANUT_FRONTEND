@@ -5,15 +5,17 @@ import {Label} from './Button';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {Caption1} from '../text/Text';
+import {colors} from '../../styles/colors';
 
 const Button = styled.TouchableOpacity<ButtonStyleType>`
   display: inline-flex;
   height: ${props => (props.size === 'm' ? '40px' : '30px')};
   justify-content: center;
   padding: 0 ${props => (props.size === 'm' ? '16px' : '12px')};
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${colors.LineDisabled};
   border-radius: ${props => (props.size === 'm' ? '4px' : '3px')};
-  background-color: ${props => (props.isPressed ? '#F9F9F9' : '#FFF')};
+  background-color: ${props =>
+    props.isPressed ? colors.SolidTertiaryActive : colors.white};
 `;
 
 const InlineLabel = styled(Label)<{isLoading: boolean}>`
@@ -54,11 +56,17 @@ export default function OutlineButton({
           />
         )}
         {isLoading && (
-          <LoadingIcon size={size === 'm' ? 'l' : 's'} type="outlineLoading" />
+          <LoadingIcon size={size === 'm' ? 'l' : 's'} type="outline" />
         )}
         {!isLoading || size !== 's' ? (
           <Text
-            color={isLoading ? '#B8B8B8' : disabled ? '#D7D7D7' : '#111'}
+            color={
+              isLoading
+                ? colors.TextDisabled
+                : disabled
+                ? colors.LineDisabled
+                : colors.TextNormal
+            }
             weight="bold">
             {children}
           </Text>
