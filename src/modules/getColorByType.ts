@@ -11,7 +11,7 @@ export const getLoadingColorByType = (type: IconType['type']): string => {
     case 'outline':
       return colors.TextDisabled;
     default:
-      return colors.white;
+      return '#000000';
   }
 };
 
@@ -35,6 +35,6 @@ export const getNullColorByType = (type: IconType['type']): string => {
     case 'outlineDisabled':
       return colors.LineDisabled;
     default:
-      return colors.white;
+      return '#000000';
   }
 };

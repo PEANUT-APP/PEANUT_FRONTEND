@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import {Text, ScrollView} from 'react-native';
 import NullIcon from '../../components/icon/NullIcon';
 import LoadingIcon from '../../components/icon/LoadingIcon';
+import DesignIcon from '../../components/icon/DesignIcon';
 
 const ViewContainer = styled.View`
   flex-direction: row;
@@ -90,6 +91,22 @@ export default function IconTest() {
           <LoadingIcon type="tertiaryLoading" size="l" />
           <LoadingIcon type="tertiaryLoading" size="m" />
           <LoadingIcon type="tertiaryLoading" size="s" />
+        </ViewBox>
+      </ViewContainer>
+      <Text>Kakao</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="kakao" size="l" color="green" />
+          <DesignIcon type="kakao" size="m" />
+          <DesignIcon type="kakao" size="s" />
+        </ViewBox>
+      </ViewContainer>
+      <Text>Check</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="check" size="l" color="green" />
+          <DesignIcon type="check" size="m" />
+          <DesignIcon type="check" size="s" />
         </ViewBox>
       </ViewContainer>
     </ScrollView>
