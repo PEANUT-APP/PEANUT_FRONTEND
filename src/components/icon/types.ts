@@ -25,3 +25,9 @@ export interface NullType extends IconType {
 export interface LoadingType extends IconType {
   size: 'l' | 'm' | 's';
 }
+
+export interface DesignIconType {
+  size: 'l' | 'm' | 's';
+  type?: 'kakao' | 'check';
+  color?: string;
+}

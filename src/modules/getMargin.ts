@@ -1,4 +1,4 @@
-export const getMargin = (size: 'xl' | 'l' | 'm' | 's'): string => {
+export const getNullIconMargin = (size: 'xl' | 'l' | 'm' | 's'): string => {
   switch (size) {
     case 'xl':
       return '4px';
