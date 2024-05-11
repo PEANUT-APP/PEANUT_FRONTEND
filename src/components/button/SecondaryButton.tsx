@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {ButtonType} from './types';
-import {DefaultButton, Label, getText} from './Button';
+import {DefaultButton, Label} from './styles';
+import {getButtonText} from '../../modules/getText';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {colors} from '../../styles/colors';
+import {useButtonState} from '../../modules/useButtonState';
 
 const Button = styled(DefaultButton)`
   background-color: ${props =>
@@ -25,16 +27,37 @@ const Button = styled(DefaultButton)`
 export default function SecondaryButton({
   size,
   disabled,
-  style,
+  left,
+  right,
   children,
   isLoading,
 }: ButtonType) {
-  const [isPressed, setIsPressed] = useState(false);
+  const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
-  const handlePressIn = () => setIsPressed(true);
-  const handlePressOut = () => setIsPressed(false);
+  const Text = getButtonText(size);
 
-  const Text = getText(size);
+  const renderIcon = (position: string) => {
+    if (isLoading && position === 'left') {
+      return <LoadingIcon size={size === 's' ? 'm' : 'l'} type="secondary" />;
+    }
+    if (left && position === 'left') {
+      return (
+        <NullIcon
+          type={disabled ? 'secondaryDisabled' : 'secondary'}
+          size={size}
+        />
+      );
+    }
+    if (right && position === 'right') {
+      return (
+        <NullIcon
+          type={disabled ? 'secondaryDisabled' : 'secondary'}
+          size={size}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
     <Button
@@ -47,26 +70,13 @@ export default function SecondaryButton({
       disabled={disabled || isLoading}
       isLoading={isLoading}>
       <Label>
-        {(style === 'left' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'secondaryDisabled' : 'secondary'}
-            size={size}
-          />
-        )}
-        {isLoading && (
-          <LoadingIcon size={size === 's' ? 'm' : 'l'} type="secondary" />
-        )}
+        {renderIcon('left')}
         <Text
           color={disabled ? colors.LineDisabled : colors.primaryStrong}
           weight="bold">
           {children}
         </Text>
-        {(style === 'right' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'secondaryDisabled' : 'secondary'}
-            size={size}
-          />
-        )}
+        {renderIcon('right')}
       </Label>
     </Button>
   );

@@ -1,16 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {ButtonStyleType, ButtonType} from './types';
-import {Label, getText} from './Button';
+import {Label} from './styles';
+import {getButtonText} from '../../modules/getText';
 import NullIcon from '../icon/NullIcon';
 import {colors} from '../../styles/colors';
+import {useButtonState} from '../../modules/useButtonState';
 
-const getPadding = ({isPressed, size, style}: ButtonStyleType) => {
+const getPadding = ({isPressed, size, left, right}: ButtonStyleType) => {
   if (isPressed) {
     if (size === 'm') {
       return '0 16px';
     }
-    return style === undefined ? '8px 12px' : '4px 12px';
+    return left === false && right === false ? '8px 12px' : '4px 12px';
   }
   return '4px 0';
 };
@@ -39,15 +41,33 @@ function DefaultTextButton({
   type,
   size,
   disabled,
-  style,
+  left,
+  right,
   children,
 }: ButtonType) {
-  const [isPressed, setIsPressed] = useState(false);
+  const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
-  const handlePressIn = () => setIsPressed(true);
-  const handlePressOut = () => setIsPressed(false);
+  const Text = getButtonText(isPressed && size === 'm' ? 's' : size);
 
-  const Text = getText(isPressed && size === 'm' ? 's' : size);
+  const renderIcon = (position: string) => {
+    if (left && position === 'left') {
+      return (
+        <NullIcon
+          type={disabled ? 'textDisabled' : `${type}Text`}
+          size={isPressed ? 'l' : size}
+        />
+      );
+    }
+    if (right && position === 'right') {
+      return (
+        <NullIcon
+          type={disabled ? 'textDisabled' : `${type}Text`}
+          size={isPressed ? 'l' : size}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
     <TextButton
@@ -60,12 +80,7 @@ function DefaultTextButton({
       disabled={disabled}
       type={type}>
       <InlineLabel>
-        {(style === 'left' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'textDisabled' : `${type}Text`}
-            size={isPressed ? 'l' : size}
-          />
-        )}
+        {renderIcon('left')}
         <Text
           color={
             disabled
@@ -77,12 +92,7 @@ function DefaultTextButton({
           weight="bold">
           {children}
         </Text>
-        {(style === 'right' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'textDisabled' : `${type}Text`}
-            size={isPressed ? 'l' : size}
-          />
-        )}
+        {renderIcon('right')}
       </InlineLabel>
     </TextButton>
   );

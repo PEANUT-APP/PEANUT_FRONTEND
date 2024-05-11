@@ -3,7 +3,8 @@ import {ReactNode} from 'react';
 export interface ButtonType {
   size: 'l' | 'm' | 's';
   disabled?: boolean;
-  style?: 'left' | 'right' | 'both';
+  left?: boolean;
+  right?: boolean;
   children: ReactNode;
   isLoading?: boolean;
   type?: string;

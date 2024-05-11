@@ -29,35 +29,35 @@ export function PrimaryButtonTest() {
             <PrimaryButton size="s">Label</PrimaryButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryButton size="l" style="left">
+            <PrimaryButton size="l" left>
               Label
             </PrimaryButton>
-            <PrimaryButton size="m" style="left">
+            <PrimaryButton size="m" left>
               Label
             </PrimaryButton>
-            <PrimaryButton size="s" style="left">
-              Label
-            </PrimaryButton>
-          </ViewBox>
-          <ViewBox>
-            <PrimaryButton size="l" style="right">
-              Label
-            </PrimaryButton>
-            <PrimaryButton size="m" style="right">
-              Label
-            </PrimaryButton>
-            <PrimaryButton size="s" style="right">
+            <PrimaryButton size="s" left>
               Label
             </PrimaryButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryButton size="l" style="both">
+            <PrimaryButton size="l" right>
               Label
             </PrimaryButton>
-            <PrimaryButton size="m" style="both">
+            <PrimaryButton size="m" right>
               Label
             </PrimaryButton>
-            <PrimaryButton size="s" style="both">
+            <PrimaryButton size="s" right>
+              Label
+            </PrimaryButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryButton size="l" left right>
+              Label
+            </PrimaryButton>
+            <PrimaryButton size="m" left right>
+              Label
+            </PrimaryButton>
+            <PrimaryButton size="s" left right>
               Label
             </PrimaryButton>
           </ViewBox>
@@ -75,35 +75,35 @@ export function PrimaryButtonTest() {
             </PrimaryButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryButton size="l" style="left" disabled>
+            <PrimaryButton size="l" left disabled>
               Label
             </PrimaryButton>
-            <PrimaryButton size="m" style="left" disabled>
+            <PrimaryButton size="m" left disabled>
               Label
             </PrimaryButton>
-            <PrimaryButton size="s" style="left" disabled>
-              Label
-            </PrimaryButton>
-          </ViewBox>
-          <ViewBox>
-            <PrimaryButton size="l" style="right" disabled>
-              Label
-            </PrimaryButton>
-            <PrimaryButton size="m" style="right" disabled>
-              Label
-            </PrimaryButton>
-            <PrimaryButton size="s" style="right" disabled>
+            <PrimaryButton size="s" left disabled>
               Label
             </PrimaryButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryButton size="l" style="both" disabled>
+            <PrimaryButton size="l" right disabled>
               Label
             </PrimaryButton>
-            <PrimaryButton size="m" style="both" disabled>
+            <PrimaryButton size="m" right disabled>
               Label
             </PrimaryButton>
-            <PrimaryButton size="s" style="both" disabled>
+            <PrimaryButton size="s" right disabled>
+              Label
+            </PrimaryButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryButton size="l" left right disabled>
+              Label
+            </PrimaryButton>
+            <PrimaryButton size="m" left right disabled>
+              Label
+            </PrimaryButton>
+            <PrimaryButton size="s" left right disabled>
               Label
             </PrimaryButton>
           </ViewBox>
@@ -136,35 +136,35 @@ export function SecondaryButtonTest() {
             <SecondaryButton size="s">Label</SecondaryButton>
           </ViewBox>
           <ViewBox>
-            <SecondaryButton size="l" style="left">
+            <SecondaryButton size="l" left>
               Label
             </SecondaryButton>
-            <SecondaryButton size="m" style="left">
+            <SecondaryButton size="m" left>
               Label
             </SecondaryButton>
-            <SecondaryButton size="s" style="left">
-              Label
-            </SecondaryButton>
-          </ViewBox>
-          <ViewBox>
-            <SecondaryButton size="l" style="right">
-              Label
-            </SecondaryButton>
-            <SecondaryButton size="m" style="right">
-              Label
-            </SecondaryButton>
-            <SecondaryButton size="s" style="right">
+            <SecondaryButton size="s" left>
               Label
             </SecondaryButton>
           </ViewBox>
           <ViewBox>
-            <SecondaryButton size="l" style="both">
+            <SecondaryButton size="l" right>
               Label
             </SecondaryButton>
-            <SecondaryButton size="m" style="both">
+            <SecondaryButton size="m" right>
               Label
             </SecondaryButton>
-            <SecondaryButton size="s" style="both">
+            <SecondaryButton size="s" right>
+              Label
+            </SecondaryButton>
+          </ViewBox>
+          <ViewBox>
+            <SecondaryButton size="l" left right>
+              Label
+            </SecondaryButton>
+            <SecondaryButton size="m" left right>
+              Label
+            </SecondaryButton>
+            <SecondaryButton size="s" left right>
               Label
             </SecondaryButton>
           </ViewBox>
@@ -182,35 +182,35 @@ export function SecondaryButtonTest() {
             </SecondaryButton>
           </ViewBox>
           <ViewBox>
-            <SecondaryButton size="l" style="left" disabled>
+            <SecondaryButton size="l" left disabled>
               Label
             </SecondaryButton>
-            <SecondaryButton size="m" style="left" disabled>
+            <SecondaryButton size="m" left disabled>
               Label
             </SecondaryButton>
-            <SecondaryButton size="s" style="left" disabled>
-              Label
-            </SecondaryButton>
-          </ViewBox>
-          <ViewBox>
-            <SecondaryButton size="l" style="right" disabled>
-              Label
-            </SecondaryButton>
-            <SecondaryButton size="m" style="right" disabled>
-              Label
-            </SecondaryButton>
-            <SecondaryButton size="s" style="right" disabled>
+            <SecondaryButton size="s" left disabled>
               Label
             </SecondaryButton>
           </ViewBox>
           <ViewBox>
-            <SecondaryButton size="l" style="both" disabled>
+            <SecondaryButton size="l" right disabled>
               Label
             </SecondaryButton>
-            <SecondaryButton size="m" style="both" disabled>
+            <SecondaryButton size="m" right disabled>
               Label
             </SecondaryButton>
-            <SecondaryButton size="s" style="both" disabled>
+            <SecondaryButton size="s" right disabled>
+              Label
+            </SecondaryButton>
+          </ViewBox>
+          <ViewBox>
+            <SecondaryButton size="l" left right disabled>
+              Label
+            </SecondaryButton>
+            <SecondaryButton size="m" left right disabled>
+              Label
+            </SecondaryButton>
+            <SecondaryButton size="s" left right disabled>
               Label
             </SecondaryButton>
           </ViewBox>
@@ -243,35 +243,35 @@ export function TertiaryButtonTest() {
             <TertiaryButton size="s">Label</TertiaryButton>
           </ViewBox>
           <ViewBox>
-            <TertiaryButton size="l" style="left">
+            <TertiaryButton size="l" left>
               Label
             </TertiaryButton>
-            <TertiaryButton size="m" style="left">
+            <TertiaryButton size="m" left>
               Label
             </TertiaryButton>
-            <TertiaryButton size="s" style="left">
-              Label
-            </TertiaryButton>
-          </ViewBox>
-          <ViewBox>
-            <TertiaryButton size="l" style="right">
-              Label
-            </TertiaryButton>
-            <TertiaryButton size="m" style="right">
-              Label
-            </TertiaryButton>
-            <TertiaryButton size="s" style="right">
+            <TertiaryButton size="s" left>
               Label
             </TertiaryButton>
           </ViewBox>
           <ViewBox>
-            <TertiaryButton size="l" style="both">
+            <TertiaryButton size="l" right>
               Label
             </TertiaryButton>
-            <TertiaryButton size="m" style="both">
+            <TertiaryButton size="m" right>
               Label
             </TertiaryButton>
-            <TertiaryButton size="s" style="both">
+            <TertiaryButton size="s" right>
+              Label
+            </TertiaryButton>
+          </ViewBox>
+          <ViewBox>
+            <TertiaryButton size="l" left right>
+              Label
+            </TertiaryButton>
+            <TertiaryButton size="m" left right>
+              Label
+            </TertiaryButton>
+            <TertiaryButton size="s" left right>
               Label
             </TertiaryButton>
           </ViewBox>
@@ -289,35 +289,35 @@ export function TertiaryButtonTest() {
             </TertiaryButton>
           </ViewBox>
           <ViewBox>
-            <TertiaryButton size="l" style="left" disabled>
+            <TertiaryButton size="l" left disabled>
               Label
             </TertiaryButton>
-            <TertiaryButton size="m" style="left" disabled>
+            <TertiaryButton size="m" left disabled>
               Label
             </TertiaryButton>
-            <TertiaryButton size="s" style="left" disabled>
-              Label
-            </TertiaryButton>
-          </ViewBox>
-          <ViewBox>
-            <TertiaryButton size="l" style="right" disabled>
-              Label
-            </TertiaryButton>
-            <TertiaryButton size="m" style="right" disabled>
-              Label
-            </TertiaryButton>
-            <TertiaryButton size="s" style="right" disabled>
+            <TertiaryButton size="s" left disabled>
               Label
             </TertiaryButton>
           </ViewBox>
           <ViewBox>
-            <TertiaryButton size="l" style="both" disabled>
+            <TertiaryButton size="l" right disabled>
               Label
             </TertiaryButton>
-            <TertiaryButton size="m" style="both" disabled>
+            <TertiaryButton size="m" right disabled>
               Label
             </TertiaryButton>
-            <TertiaryButton size="s" style="both" disabled>
+            <TertiaryButton size="s" right disabled>
+              Label
+            </TertiaryButton>
+          </ViewBox>
+          <ViewBox>
+            <TertiaryButton size="l" left right disabled>
+              Label
+            </TertiaryButton>
+            <TertiaryButton size="m" left right disabled>
+              Label
+            </TertiaryButton>
+            <TertiaryButton size="s" left right disabled>
               Label
             </TertiaryButton>
           </ViewBox>
@@ -349,26 +349,26 @@ export function OutlineButtonTest() {
             <OutlineButton size="s">Label</OutlineButton>
           </ViewBox>
           <ViewBox>
-            <OutlineButton size="m" style="left">
+            <OutlineButton size="m" left>
               Label
             </OutlineButton>
-            <OutlineButton size="s" style="left">
-              Label
-            </OutlineButton>
-          </ViewBox>
-          <ViewBox>
-            <OutlineButton size="m" style="right">
-              Label
-            </OutlineButton>
-            <OutlineButton size="s" style="right">
+            <OutlineButton size="s" left>
               Label
             </OutlineButton>
           </ViewBox>
           <ViewBox>
-            <OutlineButton size="m" style="both">
+            <OutlineButton size="m" right>
               Label
             </OutlineButton>
-            <OutlineButton size="s" style="both">
+            <OutlineButton size="s" right>
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" left right>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" left right>
               Label
             </OutlineButton>
           </ViewBox>
@@ -383,26 +383,26 @@ export function OutlineButtonTest() {
             </OutlineButton>
           </ViewBox>
           <ViewBox>
-            <OutlineButton size="m" style="left" disabled>
+            <OutlineButton size="m" left disabled>
               Label
             </OutlineButton>
-            <OutlineButton size="s" style="left" disabled>
-              Label
-            </OutlineButton>
-          </ViewBox>
-          <ViewBox>
-            <OutlineButton size="m" style="right" disabled>
-              Label
-            </OutlineButton>
-            <OutlineButton size="s" style="right" disabled>
+            <OutlineButton size="s" left disabled>
               Label
             </OutlineButton>
           </ViewBox>
           <ViewBox>
-            <OutlineButton size="m" style="both" disabled>
+            <OutlineButton size="m" right disabled>
               Label
             </OutlineButton>
-            <OutlineButton size="s" style="both" disabled>
+            <OutlineButton size="s" right disabled>
+              Label
+            </OutlineButton>
+          </ViewBox>
+          <ViewBox>
+            <OutlineButton size="m" left right disabled>
+              Label
+            </OutlineButton>
+            <OutlineButton size="s" left right disabled>
               Label
             </OutlineButton>
           </ViewBox>
@@ -431,26 +431,26 @@ export function TextButtonTest() {
             <PrimaryTextButton size="s">Label</PrimaryTextButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryTextButton size="m" style="left">
+            <PrimaryTextButton size="m" left>
               Label
             </PrimaryTextButton>
-            <PrimaryTextButton size="s" style="left">
-              Label
-            </PrimaryTextButton>
-          </ViewBox>
-          <ViewBox>
-            <PrimaryTextButton size="m" style="right">
-              Label
-            </PrimaryTextButton>
-            <PrimaryTextButton size="s" style="right">
+            <PrimaryTextButton size="s" left>
               Label
             </PrimaryTextButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryTextButton size="m" style="both">
+            <PrimaryTextButton size="m" right>
               Label
             </PrimaryTextButton>
-            <PrimaryTextButton size="s" style="both">
+            <PrimaryTextButton size="s" right>
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" left right>
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" left right>
               Label
             </PrimaryTextButton>
           </ViewBox>
@@ -465,26 +465,26 @@ export function TextButtonTest() {
             </PrimaryTextButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryTextButton size="m" style="left" disabled>
+            <PrimaryTextButton size="m" left disabled>
               Label
             </PrimaryTextButton>
-            <PrimaryTextButton size="s" style="left" disabled>
-              Label
-            </PrimaryTextButton>
-          </ViewBox>
-          <ViewBox>
-            <PrimaryTextButton size="m" style="right" disabled>
-              Label
-            </PrimaryTextButton>
-            <PrimaryTextButton size="s" style="right" disabled>
+            <PrimaryTextButton size="s" left disabled>
               Label
             </PrimaryTextButton>
           </ViewBox>
           <ViewBox>
-            <PrimaryTextButton size="m" style="both" disabled>
+            <PrimaryTextButton size="m" right disabled>
               Label
             </PrimaryTextButton>
-            <PrimaryTextButton size="s" style="both" disabled>
+            <PrimaryTextButton size="s" right disabled>
+              Label
+            </PrimaryTextButton>
+          </ViewBox>
+          <ViewBox>
+            <PrimaryTextButton size="m" left right disabled>
+              Label
+            </PrimaryTextButton>
+            <PrimaryTextButton size="s" left right disabled>
               Label
             </PrimaryTextButton>
           </ViewBox>
@@ -496,26 +496,26 @@ export function TextButtonTest() {
             <AssistiveTextButton size="s">Label</AssistiveTextButton>
           </ViewBox>
           <ViewBox>
-            <AssistiveTextButton size="m" style="left">
+            <AssistiveTextButton size="m" left>
               Label
             </AssistiveTextButton>
-            <AssistiveTextButton size="s" style="left">
-              Label
-            </AssistiveTextButton>
-          </ViewBox>
-          <ViewBox>
-            <AssistiveTextButton size="m" style="right">
-              Label
-            </AssistiveTextButton>
-            <AssistiveTextButton size="s" style="right">
+            <AssistiveTextButton size="s" left>
               Label
             </AssistiveTextButton>
           </ViewBox>
           <ViewBox>
-            <AssistiveTextButton size="m" style="both">
+            <AssistiveTextButton size="m" right>
               Label
             </AssistiveTextButton>
-            <AssistiveTextButton size="s" style="both">
+            <AssistiveTextButton size="s" right>
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" left right>
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" left right>
               Label
             </AssistiveTextButton>
           </ViewBox>
@@ -530,26 +530,26 @@ export function TextButtonTest() {
             </AssistiveTextButton>
           </ViewBox>
           <ViewBox>
-            <AssistiveTextButton size="m" style="left" disabled>
+            <AssistiveTextButton size="m" left disabled>
               Label
             </AssistiveTextButton>
-            <AssistiveTextButton size="s" style="left" disabled>
-              Label
-            </AssistiveTextButton>
-          </ViewBox>
-          <ViewBox>
-            <AssistiveTextButton size="m" style="right" disabled>
-              Label
-            </AssistiveTextButton>
-            <AssistiveTextButton size="s" style="right" disabled>
+            <AssistiveTextButton size="s" left disabled>
               Label
             </AssistiveTextButton>
           </ViewBox>
           <ViewBox>
-            <AssistiveTextButton size="m" style="both" disabled>
+            <AssistiveTextButton size="m" right disabled>
               Label
             </AssistiveTextButton>
-            <AssistiveTextButton size="s" style="both" disabled>
+            <AssistiveTextButton size="s" right disabled>
+              Label
+            </AssistiveTextButton>
+          </ViewBox>
+          <ViewBox>
+            <AssistiveTextButton size="m" left right disabled>
+              Label
+            </AssistiveTextButton>
+            <AssistiveTextButton size="s" left right disabled>
               Label
             </AssistiveTextButton>
           </ViewBox>
