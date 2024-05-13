@@ -11,11 +11,19 @@ import {
   PrimaryTextButton,
 } from '../../components/button/TextButton';
 import SelectButton from '../../components/button/SelectButton';
+import NavigationButton from '../../components/button/NavigationButton';
 
 const ViewBox = styled.View`
   align-items: center;
   gap: 10px;
   margin: 10px;
+`;
+
+const ViewBoxRow = styled.View`
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+  flex-direction: row;
 `;
 
 export function PrimaryButtonTest() {
@@ -588,6 +596,36 @@ export function SelectButtonTest() {
             저녁
           </SelectButton>
         </ViewBox>
+      </ViewBox>
+    </GlobalView>
+  );
+}
+
+export function NavigationButtonTest() {
+  return (
+    <GlobalView>
+      <Text>Navigation Button</Text>
+      <ViewBox>
+        <ViewBoxRow>
+          <NavigationButton type="food">식단기록</NavigationButton>
+          <NavigationButton type="home">홈</NavigationButton>
+          <NavigationButton type="community">커뮤니티</NavigationButton>
+          <NavigationButton type="my">마이</NavigationButton>
+        </ViewBoxRow>
+        <ViewBoxRow>
+          <NavigationButton type="food" active>
+            식단기록
+          </NavigationButton>
+          <NavigationButton type="home" active>
+            홈
+          </NavigationButton>
+          <NavigationButton type="community" active>
+            커뮤니티
+          </NavigationButton>
+          <NavigationButton type="my" active>
+            마이
+          </NavigationButton>
+        </ViewBoxRow>
       </ViewBox>
     </GlobalView>
   );

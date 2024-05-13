@@ -23,3 +23,9 @@ export interface SelectButtonType {
 export interface SelectButtonStyleType extends SelectButtonType {
   isSelected: boolean;
 }
+
+export interface NavigationButtonType {
+  children: ReactNode;
+  type: 'food' | 'home' | 'community' | 'my';
+  active?: boolean;
+}
