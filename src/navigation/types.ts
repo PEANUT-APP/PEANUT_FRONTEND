@@ -7,4 +7,5 @@ export type ParamList = {
   TextButtonTest: undefined;
   SelectButtonTest: undefined;
   NavigationButtonTest: undefined;
+  CameraButtonTest: undefined;
 };

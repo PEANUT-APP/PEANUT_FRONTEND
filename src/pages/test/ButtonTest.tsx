@@ -12,6 +12,7 @@ import {
 } from '../../components/button/TextButton';
 import SelectButton from '../../components/button/SelectButton';
 import NavigationButton from '../../components/button/NavigationButton';
+import CameraButton from '../../components/button/CameraButton';
 
 const ViewBox = styled.View`
   align-items: center;
@@ -625,6 +626,19 @@ export function NavigationButtonTest() {
           <NavigationButton type="my" active>
             마이
           </NavigationButton>
+        </ViewBoxRow>
+      </ViewBox>
+    </GlobalView>
+  );
+}
+
+export function CameraButtonTest() {
+  return (
+    <GlobalView>
+      <Text>Camera Button</Text>
+      <ViewBox>
+        <ViewBoxRow>
+          <CameraButton />
         </ViewBoxRow>
       </ViewBox>
     </GlobalView>
