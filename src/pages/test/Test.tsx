@@ -30,6 +30,10 @@ export default function Test({navigation}: NavigationProps) {
         title="TextButtonTest"
         onPress={() => navigation.navigate('TextButtonTest')}
       />
+      <Button
+        title="SelectButtonTest"
+        onPress={() => navigation.navigate('SelectButtonTest')}
+      />
     </GlobalView>
   );
 }

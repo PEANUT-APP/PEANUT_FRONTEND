@@ -5,4 +5,5 @@ export type ParamList = {
   TertiaryButtonTest: undefined;
   OutlineButtonTest: undefined;
   TextButtonTest: undefined;
+  SelectButtonTest: undefined;
 };
