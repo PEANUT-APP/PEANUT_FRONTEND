@@ -38,6 +38,10 @@ export default function Test({navigation}: NavigationProps) {
         title="NavigationButtonTest"
         onPress={() => navigation.navigate('NavigationButtonTest')}
       />
+      <Button
+        title="CameraButtonTest"
+        onPress={() => navigation.navigate('CameraButtonTest')}
+      />
     </GlobalView>
   );
 }

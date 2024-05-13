@@ -1,4 +1,5 @@
 import {ReactNode} from 'react';
+import {PhotoQuality} from 'react-native-image-picker';
 
 export interface ButtonType {
   size: 'l' | 'm' | 's';
@@ -28,4 +29,11 @@ export interface NavigationButtonType {
   children: ReactNode;
   type: 'food' | 'home' | 'community' | 'my';
   active?: boolean;
+}
+
+export interface CameraButtonType {
+  mediaType: 'photo' | 'video' | 'mixed';
+  quality: PhotoQuality | undefined;
+  cameraType: 'back' | 'front';
+  saveToPhotos: boolean;
 }

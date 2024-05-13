@@ -69,10 +69,7 @@ export default function NavigationButton({
   return (
     <NavigationButtonBox accessibilityRole="menuitem" activeOpacity={1}>
       {renderIcon()}
-      <NavigationButtonText
-        color={active ? colors.primaryNormal : colors.TextDisabled}>
-        {children}
-      </NavigationButtonText>
+      <NavigationButtonText color={color}>{children}</NavigationButtonText>
     </NavigationButtonBox>
   );
 }
