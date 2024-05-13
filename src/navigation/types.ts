@@ -6,4 +6,5 @@ export type ParamList = {
   OutlineButtonTest: undefined;
   TextButtonTest: undefined;
   SelectButtonTest: undefined;
+  NavigationButtonTest: undefined;
 };
