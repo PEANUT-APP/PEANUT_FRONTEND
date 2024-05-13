@@ -7,6 +7,7 @@ import {
   OutlineButtonTest,
   PrimaryButtonTest,
   SecondaryButtonTest,
+  SelectButtonTest,
   TertiaryButtonTest,
   TextButtonTest,
 } from '../pages/test/ButtonTest';
@@ -30,6 +31,7 @@ export default function Navigation() {
         />
         <Stack.Screen name="OutlineButtonTest" component={OutlineButtonTest} />
         <Stack.Screen name="TextButtonTest" component={TextButtonTest} />
+        <Stack.Screen name="SelectButtonTest" component={SelectButtonTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );

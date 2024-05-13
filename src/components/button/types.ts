@@ -13,3 +13,13 @@ export interface ButtonType {
 export interface ButtonStyleType extends ButtonType {
   isPressed: boolean;
 }
+
+export interface SelectButtonType {
+  children: ReactNode;
+  isSelected: boolean;
+  onPress?: () => void;
+}
+
+export interface SelectButtonStyleType extends SelectButtonType {
+  isSelected: boolean;
+}

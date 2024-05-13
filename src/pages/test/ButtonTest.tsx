@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, Text} from 'react-native';
 import styled from 'styled-components/native';
 import GlobalView from '../../styles/GlobalStyle';
@@ -10,6 +10,7 @@ import {
   AssistiveTextButton,
   PrimaryTextButton,
 } from '../../components/button/TextButton';
+import SelectButton from '../../components/button/SelectButton';
 
 const ViewBox = styled.View`
   align-items: center;
@@ -556,5 +557,38 @@ export function TextButtonTest() {
         </ViewBox>
       </GlobalView>
     </ScrollView>
+  );
+}
+
+export function SelectButtonTest() {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleSelect = (id: number) => {
+    setSelectedId(prevId => (prevId === id ? null : id));
+  };
+
+  return (
+    <GlobalView>
+      <Text>Selected Button</Text>
+      <ViewBox>
+        <ViewBox>
+          <SelectButton
+            isSelected={selectedId === 1}
+            onPress={() => handleSelect(1)}>
+            아침
+          </SelectButton>
+          <SelectButton
+            isSelected={selectedId === 2}
+            onPress={() => handleSelect(2)}>
+            점심
+          </SelectButton>
+          <SelectButton
+            isSelected={selectedId === 3}
+            onPress={() => handleSelect(3)}>
+            저녁
+          </SelectButton>
+        </ViewBox>
+      </ViewBox>
+    </GlobalView>
   );
 }
