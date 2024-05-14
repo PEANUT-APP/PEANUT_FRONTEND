@@ -1,6 +1,6 @@
 import {NavigationProp} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 
-export type NavigationProps = {
+export interface NavigationProps {
   navigation: NavigationProp<ParamList>;
-};
+}
