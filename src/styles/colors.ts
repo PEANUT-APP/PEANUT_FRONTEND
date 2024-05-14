@@ -10,4 +10,5 @@ export const colors = {
   SolidTertiaryActive: '#F9F9F9',
   TextNormal: '#111111',
   TextNeutral: '#585858',
+  TextError: '#F00',
 };
