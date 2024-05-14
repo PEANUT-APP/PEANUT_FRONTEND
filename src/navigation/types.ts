@@ -1,4 +1,4 @@
-export type ParamList = {
+export interface ParamList {
   IconTest: undefined;
   PrimaryButtonTest: undefined;
   SecondaryButtonTest: undefined;
@@ -8,4 +8,5 @@ export type ParamList = {
   SelectButtonTest: undefined;
   NavigationButtonTest: undefined;
   CameraButtonTest: undefined;
-};
+  InputTest: undefined;
+}

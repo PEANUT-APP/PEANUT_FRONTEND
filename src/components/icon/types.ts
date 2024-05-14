@@ -1,5 +1,5 @@
 export interface IconType {
-  type:
+  type?:
     | 'primary'
     | 'secondary'
     | 'tertiary'
