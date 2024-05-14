@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import {ButtonStyleType} from './types';
-import {Body1, Body2, Caption1} from '../text/Text';
 
 export const DefaultButton = styled.TouchableOpacity<ButtonStyleType>`
   width: ${props =>
@@ -17,24 +16,3 @@ export const Label = styled.View`
   gap: 4px;
   align-items: center;
 `;
-
-export const getText = (size: 'l' | 'm' | 's') => {
-  switch (size) {
-    case 'l':
-      return styled(Body1)`
-        line-height: 21.344px;
-        letter-spacing: -0.4px;
-      `;
-    case 'm':
-      return styled(Body2)`
-        line-height: 18.676px;
-        letter-spacing: -0.35px;
-      `;
-    case 's':
-    default:
-      return styled(Caption1)`
-        line-height: 16.008px;
-        letter-spacing: -0.3px;
-      `;
-  }
-};

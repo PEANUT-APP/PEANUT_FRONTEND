@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {ButtonStyleType, ButtonType} from './types';
-import {Label} from './Button';
+import {Label} from './styles';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {Caption1} from '../text/Text';
 import {colors} from '../../styles/colors';
+import {useButtonState} from '../../modules/useButtonState';
 
 const Button = styled.TouchableOpacity<ButtonStyleType>`
   display: inline-flex;
@@ -30,14 +31,35 @@ const Text = styled(Caption1)`
 export default function OutlineButton({
   size,
   disabled,
-  style,
+  left,
+  right,
   children,
   isLoading,
 }: ButtonType) {
-  const [isPressed, setIsPressed] = useState(false);
+  const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
-  const handlePressIn = () => setIsPressed(true);
-  const handlePressOut = () => setIsPressed(false);
+  const renderIcon = (position: string) => {
+    if (isLoading && position === 'left') {
+      return <LoadingIcon size={size === 'm' ? 'l' : 's'} type="outline" />;
+    }
+    if (left && position === 'left') {
+      return (
+        <NullIcon
+          type={disabled ? 'outlineDisabled' : 'outline'}
+          size={size === 'm' ? 'l' : 'm'}
+        />
+      );
+    }
+    if (right && position === 'right') {
+      return (
+        <NullIcon
+          type={disabled ? 'outlineDisabled' : 'outline'}
+          size={size === 'm' ? 'l' : 'm'}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
     <Button
@@ -49,15 +71,7 @@ export default function OutlineButton({
       onPressOut={handlePressOut}
       disabled={disabled || isLoading}>
       <InlineLabel isLoading={isLoading || true}>
-        {(style === 'left' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'outlineDisabled' : 'outline'}
-            size={size === 'm' ? 'l' : 'm'}
-          />
-        )}
-        {isLoading && (
-          <LoadingIcon size={size === 'm' ? 'l' : 's'} type="outline" />
-        )}
+        {renderIcon('left')}
         {!isLoading || size !== 's' ? (
           <Text
             color={
@@ -71,12 +85,7 @@ export default function OutlineButton({
             {children}
           </Text>
         ) : null}
-        {(style === 'right' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'outlineDisabled' : 'outline'}
-            size={size === 'm' ? 'l' : 'm'}
-          />
-        )}
+        {renderIcon('right')}
       </InlineLabel>
     </Button>
   );

@@ -1,29 +1,53 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {ButtonType} from './types';
-import {DefaultButton, Label, getText} from './Button';
+import {DefaultButton, Label} from './styles';
+import {getButtonText} from '../../modules/getText';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {colors} from '../../styles/colors';
+import {useButtonState} from '../../modules/useButtonState';
 
 const Button = styled(DefaultButton)`
-  background-color: ${props => (props.isPressed ? '#F9F9F9' : '#fff')};
+  background-color: ${props =>
+    props.isPressed ? colors.SolidTertiaryActive : colors.white};
   border: 1px solid ${colors.LineDisabled};
 `;
 
 export default function TertiaryButton({
   size,
   disabled,
-  style,
+  left,
+  right,
   children,
   isLoading,
 }: ButtonType) {
-  const [isPressed, setIsPressed] = useState(false);
+  const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
-  const handlePressIn = () => setIsPressed(true);
-  const handlePressOut = () => setIsPressed(false);
+  const Text = getButtonText(size);
 
-  const Text = getText(size);
+  const renderIcon = (position: string) => {
+    if (isLoading && position === 'left') {
+      return <LoadingIcon size="l" type="tertiary" />;
+    }
+    if (left && position === 'left') {
+      return (
+        <NullIcon
+          type={disabled ? 'tertiaryDisabled' : 'tertiary'}
+          size={size}
+        />
+      );
+    }
+    if (right && position === 'right') {
+      return (
+        <NullIcon
+          type={disabled ? 'tertiaryDisabled' : 'tertiary'}
+          size={size}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
     <Button
@@ -35,24 +59,13 @@ export default function TertiaryButton({
       onPressOut={handlePressOut}
       disabled={disabled || isLoading}>
       <Label>
-        {(style === 'left' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'tertiaryDisabled' : 'tertiary'}
-            size={size}
-          />
-        )}
-        {isLoading && <LoadingIcon size="l" type="tertiary" />}
+        {renderIcon('left')}
         <Text
           color={disabled ? colors.LineDisabled : colors.primaryStrong}
           weight="bold">
           {children}
         </Text>
-        {(style === 'right' || style === 'both') && (
-          <NullIcon
-            type={disabled ? 'tertiaryDisabled' : 'tertiary'}
-            size={size}
-          />
-        )}
+        {renderIcon('right')}
       </Label>
     </Button>
   );
