@@ -6,7 +6,7 @@ import CameraActive from '../../assets/images/CameraVariant2.svg';
 import {CameraButtonType} from './types';
 
 export default function CameraButton() {
-  const [isActive, setIsActive] = useState(false); // 버튼 활성 상태 관리
+  const [isActive, setIsActive] = useState(false);
 
   const handlePress = async () => {
     const options: CameraButtonType = {
