@@ -10,4 +10,5 @@ export interface ParamList {
   CameraButtonTest: undefined;
   InputTest: undefined;
   MainValueTest: undefined;
+  ProfileTest: undefined;
 }

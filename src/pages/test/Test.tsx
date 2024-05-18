@@ -50,6 +50,10 @@ export default function Test({navigation}: NavigationProps) {
         title="MainValueTest"
         onPress={() => navigation.navigate('MainValueTest')}
       />
+      <Button
+        title="ProfileTest"
+        onPress={() => navigation.navigate('ProfileTest')}
+      />
     </GlobalView>
   );
 }
