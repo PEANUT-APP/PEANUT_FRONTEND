@@ -14,6 +14,7 @@ import {
   TextButtonTest,
 } from '../pages/test/ButtonTest';
 import InputTest from '../pages/test/InputTest';
+import MainValueTest from '../pages/test/MainValueTest';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ export default function Navigation() {
         />
         <Stack.Screen name="CameraButtonTest" component={CameraButtonTest} />
         <Stack.Screen name="InputTest" component={InputTest} />
+        <Stack.Screen name="MainValueTest" component={MainValueTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );
