@@ -6,8 +6,8 @@ import {Path, Svg} from 'react-native-svg';
 import {colors} from '../../styles/colors';
 
 const NavigationButtonBox = styled.TouchableOpacity`
-  width: 50.3px;
-  height: 50.3px;
+  width: 50.5px;
+  height: 50.5px;
   justify-content: center;
   align-items: center;
   gap: 3px;
@@ -22,6 +22,7 @@ export default function NavigationButton({
   children,
   type,
   active,
+  onPress,
 }: NavigationButtonType) {
   const color = active ? colors.primaryNormal : colors.TextDisabled;
   const renderIcon = () => {
@@ -67,7 +68,10 @@ export default function NavigationButton({
     }
   };
   return (
-    <NavigationButtonBox accessibilityRole="menuitem" activeOpacity={1}>
+    <NavigationButtonBox
+      accessibilityRole="menuitem"
+      activeOpacity={1}
+      onPress={onPress}>
       {renderIcon()}
       <NavigationButtonText color={color}>{children}</NavigationButtonText>
     </NavigationButtonBox>
