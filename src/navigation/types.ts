@@ -1,4 +1,5 @@
 export interface ParamList {
+  Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;
   SecondaryButtonTest: undefined;
@@ -11,4 +12,12 @@ export interface ParamList {
   InputTest: undefined;
   MainValueTest: undefined;
   ProfileTest: undefined;
+  NavigationTest: undefined;
+}
+
+export interface NavigationList {
+  Home: undefined;
+  Food: undefined;
+  Community: undefined;
+  My: undefined;
 }

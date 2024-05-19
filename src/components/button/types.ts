@@ -28,7 +28,8 @@ export interface SelectButtonStyleType extends SelectButtonType {
 export interface NavigationButtonType {
   children: ReactNode;
   type: 'food' | 'home' | 'community' | 'my';
-  active?: boolean;
+  active: boolean;
+  onPress: () => void;
 }
 
 export interface CameraButtonType {
