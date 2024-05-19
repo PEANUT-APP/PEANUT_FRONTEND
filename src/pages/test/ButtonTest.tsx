@@ -608,22 +608,30 @@ export function NavigationButtonTest() {
       <Text>Navigation Button</Text>
       <ViewBox>
         <ViewBoxRow>
-          <NavigationButton type="food">식단기록</NavigationButton>
-          <NavigationButton type="home">홈</NavigationButton>
-          <NavigationButton type="community">커뮤니티</NavigationButton>
-          <NavigationButton type="my">마이</NavigationButton>
-        </ViewBoxRow>
-        <ViewBoxRow>
-          <NavigationButton type="food" active>
+          <NavigationButton type="food" active={false} onPress={() => {}}>
             식단기록
           </NavigationButton>
-          <NavigationButton type="home" active>
+          <NavigationButton type="home" active={false} onPress={() => {}}>
             홈
           </NavigationButton>
-          <NavigationButton type="community" active>
+          <NavigationButton type="community" active={false} onPress={() => {}}>
             커뮤니티
           </NavigationButton>
-          <NavigationButton type="my" active>
+          <NavigationButton type="my" active={false} onPress={() => {}}>
+            마이
+          </NavigationButton>
+        </ViewBoxRow>
+        <ViewBoxRow>
+          <NavigationButton type="food" active onPress={() => {}}>
+            식단기록
+          </NavigationButton>
+          <NavigationButton type="home" active onPress={() => {}}>
+            홈
+          </NavigationButton>
+          <NavigationButton type="community" active onPress={() => {}}>
+            커뮤니티
+          </NavigationButton>
+          <NavigationButton type="my" active onPress={() => {}}>
             마이
           </NavigationButton>
         </ViewBoxRow>
