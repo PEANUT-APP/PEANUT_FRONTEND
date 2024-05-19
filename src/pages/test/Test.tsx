@@ -2,6 +2,7 @@ import React from 'react';
 import {Button} from 'react-native';
 import GlobalView from '../../styles/GlobalStyle';
 import {NavigationProps} from './types';
+import NavigationBar from '../../components/navigation/NavigationBar';
 
 export default function Test({navigation}: NavigationProps) {
   return (
@@ -54,6 +55,11 @@ export default function Test({navigation}: NavigationProps) {
         title="ProfileTest"
         onPress={() => navigation.navigate('ProfileTest')}
       />
+      <Button
+        title="NavigationTest"
+        onPress={() => navigation.navigate('NavigationTest')}
+      />
+      <NavigationBar />
     </GlobalView>
   );
 }
