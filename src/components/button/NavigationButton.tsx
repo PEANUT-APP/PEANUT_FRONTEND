@@ -6,8 +6,8 @@ import {Path, Svg} from 'react-native-svg';
 import {colors} from '../../styles/colors';
 
 const NavigationButtonBox = styled.TouchableOpacity`
-  width: 50.5px;
-  height: 50.5px;
+  width: 50px;
+  height: 50px;
   justify-content: center;
   align-items: center;
   gap: 3px;

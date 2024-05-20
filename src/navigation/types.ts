@@ -13,6 +13,7 @@ export interface ParamList {
   MainValueTest: undefined;
   ProfileTest: undefined;
   NavigationTest: undefined;
+  CalendarTest: undefined;
 }
 
 export interface NavigationList {
