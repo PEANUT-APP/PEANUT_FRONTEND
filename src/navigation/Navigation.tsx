@@ -17,6 +17,7 @@ import InputTest from '../pages/test/InputTest';
 import MainValueTest from '../pages/test/MainValueTest';
 import ProfileTest from '../pages/test/ProfileTest';
 import NavigationTest from '../pages/test/NavigationTest';
+import CalendarTest from '../pages/test/CalendarTest';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ export default function Navigation() {
         <Stack.Screen name="MainValueTest" component={MainValueTest} />
         <Stack.Screen name="ProfileTest" component={ProfileTest} />
         <Stack.Screen name="NavigationTest" component={NavigationTest} />
+        <Stack.Screen name="CalendarTest" component={CalendarTest} />
         <Stack.Screen name="Home" component={IconTest} />
         <Stack.Screen name="Food" component={InputTest} />
         <Stack.Screen name="Community" component={MainValueTest} />

@@ -2,12 +2,15 @@ import styled from 'styled-components/native';
 import {TextType} from './types';
 
 const Typography = styled.Text<TextType>`
-  font-family: 'Pretendard';
+  font-family: ${props =>
+    props.weight === 'bold'
+      ? 'Pretendard-Bold'
+      : props.weight === 'light'
+      ? 'Pretendard-Light'
+      : 'Pretendard-Medium'};
   line-height: 48px;
   letter-spacing: -0.5px;
   color: ${props => props.color || 'black'};
-  font-weight: ${props =>
-    props.weight === 'bold' ? 700 : props.weight === 'light' ? 300 : 500};
 `;
 
 export const Title = styled(Typography)`
