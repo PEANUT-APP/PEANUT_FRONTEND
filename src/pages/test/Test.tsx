@@ -63,6 +63,10 @@ export default function Test({navigation}: NavigationProps) {
         title="CalendarTest"
         onPress={() => navigation.navigate('CalendarTest')}
       />
+      <Button
+        title="ListTest"
+        onPress={() => navigation.navigate('ListTest')}
+      />
       <NavigationBar />
     </GlobalView>
   );

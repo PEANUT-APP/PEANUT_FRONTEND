@@ -10,7 +10,7 @@ const Typography = styled.Text<TextType>`
       : 'Pretendard-Medium'};
   line-height: 48px;
   letter-spacing: -0.5px;
-  color: ${props => props.color || 'black'};
+  color: ${props => props.color || '#000'};
 `;
 
 export const Title = styled(Typography)`
