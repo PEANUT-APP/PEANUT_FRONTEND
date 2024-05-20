@@ -14,6 +14,7 @@ export interface ParamList {
   ProfileTest: undefined;
   NavigationTest: undefined;
   CalendarTest: undefined;
+  ListTest: undefined;
 }
 
 export interface NavigationList {
