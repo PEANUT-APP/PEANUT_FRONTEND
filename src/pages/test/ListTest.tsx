@@ -1,5 +1,5 @@
 import React from 'react';
-import {CommunityList} from '../../components/list/List';
+import {CommunityList, MyList} from '../../components/list/List';
 
 const communityData = [
   {
@@ -44,6 +44,7 @@ export default function ListTest() {
           comments={data.comments}
         />
       ))}
+      <MyList text="공지사항" />
     </>
   );
 }
