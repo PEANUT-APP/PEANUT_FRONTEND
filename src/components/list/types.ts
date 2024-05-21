@@ -10,3 +10,7 @@ export interface CommunityListType extends CommentWithLikeType {
   nickname: string;
   text: string;
 }
+
+export interface MyListType {
+  text: string;
+}
