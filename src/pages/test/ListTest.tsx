@@ -1,5 +1,7 @@
 import React from 'react';
-import {CommunityList, MyList} from '../../components/list/List';
+import CommunityList from '../../components/list/CommunityList';
+import MyList from '../../components/list/MyList';
+import {FoodImageList} from '../../components/list/FoodImageList';
 
 const communityData = [
   {
@@ -45,6 +47,9 @@ export default function ListTest() {
         />
       ))}
       <MyList text="공지사항" />
+      <FoodImageList type="음식명" value="양상추 샐러드" />
+      <FoodImageList type="당 지수" value="8" />
+      <FoodImageList type="칼로리" value="105 kcal" />
     </>
   );
 }

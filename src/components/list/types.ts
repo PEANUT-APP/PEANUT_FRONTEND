@@ -14,3 +14,8 @@ export interface CommunityListType extends CommentWithLikeType {
 export interface MyListType {
   text: string;
 }
+
+export interface FoodImageListType {
+  type: string;
+  value: string;
+}
