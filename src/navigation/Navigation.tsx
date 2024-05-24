@@ -19,6 +19,7 @@ import ProfileTest from '../pages/test/ProfileTest';
 import NavigationTest from '../pages/test/NavigationTest';
 import CalendarTest from '../pages/test/CalendarTest';
 import ListTest from '../pages/test/ListTest';
+import OnBoarding from '../screens/onBoarding/OnBoarding';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,15 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="OnBoarding"
+          component={OnBoarding}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Home" component={IconTest} />
+        <Stack.Screen name="Food" component={InputTest} />
+        <Stack.Screen name="Community" component={MainValueTest} />
+        <Stack.Screen name="My" component={ProfileTest} />
         <Stack.Screen name="Test" component={Test} />
         <Stack.Screen name="IconTest" component={IconTest} />
         <Stack.Screen name="PrimaryButtonTest" component={PrimaryButtonTest} />
@@ -51,10 +61,6 @@ export default function Navigation() {
         <Stack.Screen name="NavigationTest" component={NavigationTest} />
         <Stack.Screen name="CalendarTest" component={CalendarTest} />
         <Stack.Screen name="ListTest" component={ListTest} />
-        <Stack.Screen name="Home" component={IconTest} />
-        <Stack.Screen name="Food" component={InputTest} />
-        <Stack.Screen name="Community" component={MainValueTest} />
-        <Stack.Screen name="My" component={ProfileTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );
