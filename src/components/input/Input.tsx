@@ -13,15 +13,14 @@ const determineBorderColor = ({
   isError,
   isValid,
   icon,
+  message,
 }: InputStyleType) => {
   if (isFocused) {
     return colors.primaryNormal;
-  }
-  if (icon) {
+  } else if (icon) {
     if (isError) {
       return colors.TextError;
-    }
-    if (isValid) {
+    } else if (message && isValid) {
       return colors.primaryNormal;
     }
   }
@@ -81,6 +80,10 @@ export default function Input({
   button,
   message,
   touchedFields,
+  returnKeyType,
+  trigger,
+  secureTextEntry,
+  onSubmitEditing,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -101,7 +104,8 @@ export default function Input({
             editable={editable}
             icon={icon}
             isError={isError}
-            isValid={isValid}>
+            isValid={isValid}
+            message={!!message}>
             <InputText
               placeholder={isFocused ? '' : placeholder}
               placeholderTextColor={colors.TextNeutral}
@@ -110,11 +114,15 @@ export default function Input({
               onBlur={() => {
                 field.onBlur();
                 setIsFocused(false);
+                trigger(name);
               }}
               value={editable ? field.value : defaultValue}
               editable={editable}
               icon={icon}
               button={button}
+              returnKeyType={returnKeyType}
+              secureTextEntry={secureTextEntry}
+              onSubmitEditing={onSubmitEditing}
             />
             {icon && !button && (
               <NullIcon
@@ -128,7 +136,7 @@ export default function Input({
               </OutlineButton>
             )}
           </InputBox>
-          {(isError || isValid) && !isFocused && (
+          {(isError || (isValid && !!message)) && !isFocused && (
             <InputMessage isError={isError}>
               {isValid ? message : errors[name]?.message}
             </InputMessage>

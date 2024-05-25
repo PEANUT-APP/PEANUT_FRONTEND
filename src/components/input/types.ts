@@ -1,12 +1,19 @@
-import {Control, DeepMap, FieldError, FieldValues} from 'react-hook-form';
+import {
+  Control,
+  DeepMap,
+  FieldError,
+  FieldValues,
+  UseFormTrigger,
+} from 'react-hook-form';
+import {ReturnKeyTypeOptions} from 'react-native';
 
 export interface FormData {
-  Label: string;
-  Label2: string;
-  Label3: string;
-  Label4: string;
-  Label5: string;
-  Label6: string;
+  email: string;
+  verificationCode: string;
+  gender: string;
+  birth: string;
+  name: string;
+  password: string;
 }
 
 export interface InputType {
@@ -15,13 +22,17 @@ export interface InputType {
   rules?: object;
   control: Control<FormData>;
   errors: DeepMap<FieldValues, FieldError>;
-  buttonText: string;
+  buttonText?: string;
   editable?: boolean;
   defaultValue?: string;
   icon?: boolean;
   button?: boolean;
   message?: string;
   touchedFields: DeepMap<Record<string, boolean>, boolean>;
+  returnKeyType?: ReturnKeyTypeOptions;
+  trigger: UseFormTrigger<FormData>;
+  secureTextEntry?: boolean;
+  onSubmitEditing?: () => {};
 }
 
 export interface InputStyleType {
@@ -31,4 +42,5 @@ export interface InputStyleType {
   button?: boolean;
   isError?: boolean;
   isValid?: boolean;
+  message?: boolean;
 }
