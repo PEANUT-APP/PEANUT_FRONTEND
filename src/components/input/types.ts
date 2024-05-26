@@ -14,6 +14,9 @@ export interface FormData {
   birth: string;
   name: string;
   password: string;
+  weight: string;
+  height: string;
+  nickname: string;
 }
 
 export interface InputType {

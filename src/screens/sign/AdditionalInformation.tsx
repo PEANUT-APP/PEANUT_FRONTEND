@@ -1,19 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
+import Sign from './Sign';
+import PrimaryButton from '../../components/button/PrimaryButton';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {Alert} from 'react-native';
 import Input from '../../components/input/Input';
-import Sign from './Sign';
-import PrimaryButton from '../../components/button/PrimaryButton';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ParamList} from '../../navigation/types';
 import {validationRules} from '../../modules/validationRules';
 
-export default function SignUp() {
-  const [verification, setVerification] = useState(false);
-
-  const navigation = useNavigation<NavigationProp<ParamList>>();
-
+export default function AdditionalInformation() {
   const {
     control,
     handleSubmit,
@@ -21,20 +15,15 @@ export default function SignUp() {
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
-      email: '',
-      verificationCode: '',
+      weight: '',
+      height: '',
+      nickname: '',
     },
     mode: 'onBlur',
   });
 
-  const onSubmitEmail = (data: {email: string}) => {
-    Alert.alert(data.email);
-    setVerification(true);
-  };
-
-  const onSubmitVerificationCode = () => {
-    Alert.alert('인증 성공');
-    navigation.navigate('BasicInformation');
+  const onSubmit = () => {
+    Alert.alert('성공', '모든 필드가 유효합니다!');
   };
 
   const onError = (errs: FieldErrors<FormData>) => {
@@ -57,7 +46,7 @@ export default function SignUp() {
       rules={validationRules[name]}
       errors={errors}
       editable={true}
-      icon={name === 'verificationCode'}
+      icon={name === 'nickname'}
       touchedFields={touchedFields}
       returnKeyType="next"
       trigger={trigger}
@@ -67,20 +56,15 @@ export default function SignUp() {
 
   return (
     <Sign
-      title="회원가입"
+      title="추가 정보 입력"
       button={
-        <PrimaryButton
-          size="l"
-          onPress={handleSubmit(
-            verification ? onSubmitVerificationCode : onSubmitEmail,
-            onError,
-          )}>
+        <PrimaryButton size="l" onPress={handleSubmit(onSubmit, onError)}>
           다음
         </PrimaryButton>
       }>
-      {verification &&
-        renderInput('verificationCode', '인증번호', '인증되었습니다')}
-      {renderInput('email', '이메일')}
+      {renderInput('weight', '몸무게')}
+      {renderInput('height', '키')}
+      {renderInput('nickname', '닉네임', '단 하나뿐인 닉네임입니다')}
     </Sign>
   );
 }
