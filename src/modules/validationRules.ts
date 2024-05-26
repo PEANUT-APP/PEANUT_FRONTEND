@@ -37,4 +37,36 @@ export const validationRules = {
   password: {
     required: '값이 필요해요!',
   },
+  weight: {
+    required: '값이 필요해요!',
+    validate: (value: string) => {
+      const numberValue = parseFloat(value);
+      if (!value || isNaN(numberValue) || numberValue <= 0) {
+        return '몸무게는 숫자여야 합니다!';
+      }
+      return true;
+    },
+  },
+  height: {
+    required: '값이 필요해요!',
+    validate: (value: string) => {
+      const numberValue = parseFloat(value);
+      if (!value || isNaN(numberValue) || numberValue <= 0) {
+        return '키는 숫자여야 합니다!';
+      }
+      return true;
+    },
+  },
+  nickname: {
+    required: '값이 필요해요!',
+    validate: async (value: string) => {
+      // 서버와 소통하는 비동기 로직 추가
+      // const isUnique = await checkNicknameUnique(value);
+      const isUnique = value === '땅콩'; // 서버에서 유일한 값이라는 응답을 받았다고 가정
+      if (!isUnique) {
+        return '이미 사용 중인 닉네임입니다!';
+      }
+      return true;
+    },
+  },
 };
