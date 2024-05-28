@@ -1,5 +1,5 @@
 import React from 'react';
-import Sign from './Sign';
+import Sign from '../../components/sign/Sign';
 import {FormData} from '../../components/input/types';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {FieldErrors, useForm} from 'react-hook-form';

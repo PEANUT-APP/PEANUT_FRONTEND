@@ -3,7 +3,7 @@ import {FieldErrors, useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {Alert} from 'react-native';
 import Input from '../../components/input/Input';
-import Sign from './Sign';
+import Sign from '../../components/sign/Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
