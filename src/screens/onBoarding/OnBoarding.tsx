@@ -12,8 +12,16 @@ import {
   SignInBox,
   SignInText,
 } from './styles';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
 
 export default function OnBoarding() {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const onPress = () => {
+    navigation.navigate('SignUp');
+  };
+
   return (
     <GlobalView>
       <OnBoardingContainer>
@@ -26,7 +34,10 @@ export default function OnBoarding() {
               카카오로 로그인
             </KakaoLoginText>
           </KakaoLoginBox>
-          <SignInBox>
+          <SignInBox
+            activeOpacity={1}
+            accessibilityRole="link"
+            onPress={onPress}>
             <SignInText color={colors.TextNeutral} weight="bold">
               회원가입
             </SignInText>

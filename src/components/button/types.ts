@@ -9,6 +9,7 @@ export interface ButtonType {
   children: ReactNode;
   isLoading?: boolean;
   type?: string;
+  onPress?: () => void;
 }
 
 export interface ButtonStyleType extends ButtonType {

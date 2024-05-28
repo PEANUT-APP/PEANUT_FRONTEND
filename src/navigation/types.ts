@@ -1,4 +1,7 @@
 export interface ParamList {
+  SignUp: undefined;
+  BasicInformation: undefined;
+  AdditionalInformation: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;
