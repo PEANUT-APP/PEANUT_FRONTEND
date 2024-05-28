@@ -1,9 +1,5 @@
 import React from 'react';
-import {useForm} from 'react-hook-form';
-import Input from '../../components/input/Input';
-import {Alert, Button, Keyboard} from 'react-native';
-import {FormData} from '../../components/input/types';
-import {styled} from 'styled-components/native';
+import styled from 'styled-components/native';
 
 const ViewContainer = styled.View`
   background-color: #fff;
@@ -15,7 +11,7 @@ const InputContainer = styled.View`
 `;
 
 export default function InputTest() {
-  const {
+  /*const {
     control,
     handleSubmit,
     formState: {errors: LabelErrors, touchedFields},
@@ -39,12 +35,12 @@ export default function InputTest() {
       .join('\n');
 
     Alert.alert('입력된 데이터', dataString);
-  };
+  };*/
 
   return (
     <ViewContainer>
       <InputContainer>
-        <Input
+        {/*<Input
           placeholder="Label"
           name="Label"
           control={control}
@@ -170,9 +166,9 @@ export default function InputTest() {
           defaultValue="변경 불가능한 정보"
           button
           touchedFields={touchedFields}
-        />
+        />*/}
       </InputContainer>
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      {/*<Button title="Submit" onPress={handleSubmit(onSubmit)} />*/}
     </ViewContainer>
   );
 }

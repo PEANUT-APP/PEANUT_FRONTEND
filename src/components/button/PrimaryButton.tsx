@@ -26,6 +26,7 @@ export default function PrimaryButton({
   right,
   children,
   isLoading,
+  onPress,
 }: ButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
@@ -65,7 +66,8 @@ export default function PrimaryButton({
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       disabled={disabled || isLoading}
-      isLoading={isLoading}>
+      isLoading={isLoading}
+      onPress={onPress}>
       <Label>
         {renderIcon('left')}
         <Text
