@@ -12,17 +12,31 @@ const IconBox = styled.View<DesignIconType>`
   justify-content: center;
 `;
 
+const getPathProps = (
+  type: string,
+  color: string,
+  strokeWidth: number | string,
+) => {
+  if (type === 'kakao') {
+    return {
+      fill: color,
+    };
+  }
+  return {
+    stroke: color,
+    strokeWidth: strokeWidth,
+    fill: 'none',
+    strokeLinecap: 'round' as 'round',
+  };
+};
+
 export default function DesignIcon({
   type = 'check',
   size,
   color = 'black',
 }: DesignIconType) {
   const {strokeWidth, viewBox, d} = designIconSize[type][size];
-
-  const pathProps =
-    type === 'check'
-      ? {stroke: color, strokeWidth: strokeWidth, fill: 'none'}
-      : {fill: color};
+  const pathProps = getPathProps(type, color, strokeWidth);
 
   return (
     <IconBox size={size}>
