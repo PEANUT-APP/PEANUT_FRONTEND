@@ -117,6 +117,14 @@ export default function IconTest() {
           <DesignIcon type="back" size="s" />
         </ViewBox>
       </ViewContainer>
+      <Text>Drop</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="drop" size="l" color="green" />
+          <DesignIcon type="drop" size="m" />
+          <DesignIcon type="drop" size="s" />
+        </ViewBox>
+      </ViewContainer>
     </ScrollView>
   );
 }
