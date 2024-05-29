@@ -31,3 +31,7 @@ export interface DesignIconType {
   type?: 'kakao' | 'check' | 'back' | 'drop';
   color?: string;
 }
+
+export interface FitIconType {
+  size: 'xl' | 'l' | 'm' | 's';
+}

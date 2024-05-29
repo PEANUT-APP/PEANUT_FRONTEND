@@ -4,6 +4,7 @@ import {Text, ScrollView} from 'react-native';
 import NullIcon from '../../components/icon/NullIcon';
 import LoadingIcon from '../../components/icon/LoadingIcon';
 import DesignIcon from '../../components/icon/DesignIcon';
+import FitIcon from '../../components/icon/FitIcon';
 
 const ViewContainer = styled.View`
   flex-direction: row;
@@ -123,6 +124,15 @@ export default function IconTest() {
           <DesignIcon type="drop" size="l" color="green" />
           <DesignIcon type="drop" size="m" />
           <DesignIcon type="drop" size="s" />
+        </ViewBox>
+      </ViewContainer>
+      <Text>Fit</Text>
+      <ViewContainer>
+        <ViewBox>
+          <FitIcon size="xl" />
+          <FitIcon size="l" />
+          <FitIcon size="m" />
+          <FitIcon size="s" />
         </ViewBox>
       </ViewContainer>
     </ScrollView>
