@@ -109,6 +109,14 @@ export default function IconTest() {
           <DesignIcon type="check" size="s" />
         </ViewBox>
       </ViewContainer>
+      <Text>Back</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="back" size="l" color="green" />
+          <DesignIcon type="back" size="m" />
+          <DesignIcon type="back" size="s" />
+        </ViewBox>
+      </ViewContainer>
     </ScrollView>
   );
 }
