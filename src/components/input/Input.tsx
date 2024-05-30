@@ -4,9 +4,9 @@ import {InputStyleType, InputType} from './types';
 import {Controller} from 'react-hook-form';
 import {colors} from '../../styles/colors';
 import {Caption1, Caption2} from '../text/Text';
-import NullIcon from '../icon/NullIcon';
 import OutlineButton from '../button/OutlineButton';
 import {View} from 'react-native';
+import FitIcon from '../icon/FitIcon';
 
 const determineBorderColor = ({
   isFocused,
@@ -124,12 +124,7 @@ export default function Input({
               secureTextEntry={secureTextEntry}
               onSubmitEditing={onSubmitEditing}
             />
-            {icon && !button && (
-              <NullIcon
-                size="l"
-                type={!editable ? 'textDisabled' : undefined}
-              />
-            )}
+            {icon && !button && isValid && !!message && <FitIcon size="l" />}
             {button && !icon && (
               <OutlineButton size="s" disabled={!editable && true}>
                 {buttonText}

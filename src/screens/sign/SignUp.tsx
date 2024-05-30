@@ -77,7 +77,9 @@ export default function SignUp() {
           )}>
           다음
         </PrimaryButton>
-      }>
+      }
+      verification={verification}
+      setVerification={setVerification}>
       {verification &&
         renderInput('verificationCode', '인증번호', '인증되었습니다')}
       {renderInput('email', '이메일')}
