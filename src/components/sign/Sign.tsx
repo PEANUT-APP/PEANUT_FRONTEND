@@ -3,8 +3,10 @@ import styled from 'styled-components/native';
 import GlobalView from '../../styles/GlobalStyle';
 import {SignType} from './types';
 import {Title} from '../../components/text/Text';
-import NullIcon from '../../components/icon/NullIcon';
 import {colors} from '../../styles/colors';
+import DesignIcon from '../icon/DesignIcon';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const SignContainer = styled.View`
   flex: 1;
@@ -17,7 +19,7 @@ const SignBox = styled.View`
 `;
 
 const SignTitleBox = styled.View`
-  gap: 12px;
+  gap: 24px;
 `;
 
 const SignTitleText = styled(Title)`
@@ -33,13 +35,31 @@ const SignButtonBox = styled.View`
   gap: 8px;
 `;
 
-export default function Sign({title, children, button}: SignType) {
+export default function Sign({
+  title,
+  children,
+  button,
+  verification,
+  setVerification,
+}: SignType) {
+  const navigation = useNavigation();
+
+  const handleBack = () => {
+    if (verification) {
+      setVerification?.(false);
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <GlobalView>
       <SignContainer>
         <SignBox>
           <SignTitleBox>
-            <NullIcon size="xl" />
+            <TouchableOpacity activeOpacity={1} onPress={handleBack}>
+              <DesignIcon type="back" size="l" />
+            </TouchableOpacity>
             <SignTitleText color={colors.TextNormal} weight="bold">
               {title}
             </SignTitleText>
