@@ -6,4 +6,6 @@ export interface SignType {
   button: ReactNode;
   verification?: boolean;
   setVerification?: React.Dispatch<React.SetStateAction<boolean>>;
+  step?: number;
+  setStep?: React.Dispatch<React.SetStateAction<number>>;
 }

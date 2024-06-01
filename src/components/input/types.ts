@@ -1,3 +1,4 @@
+import {ReactNode} from 'react';
 import {
   Control,
   DeepMap,
@@ -28,7 +29,7 @@ export interface InputType {
   buttonText?: string;
   editable?: boolean;
   defaultValue?: string;
-  icon?: boolean;
+  icon?: ReactNode;
   button?: boolean;
   message?: string;
   touchedFields: DeepMap<Record<string, boolean>, boolean>;
