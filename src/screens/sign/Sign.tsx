@@ -4,7 +4,7 @@ import GlobalView from '../../styles/GlobalStyle';
 import {SignType} from './types';
 import {Title} from '../../components/text/Text';
 import {colors} from '../../styles/colors';
-import DesignIcon from '../icon/DesignIcon';
+import DesignIcon from '../../components/icon/DesignIcon';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -41,12 +41,16 @@ export default function Sign({
   button,
   verification,
   setVerification,
+  step,
+  setStep,
 }: SignType) {
   const navigation = useNavigation();
 
   const handleBack = () => {
     if (verification) {
       setVerification?.(false);
+    } else if (step && step > 0) {
+      setStep?.(step - 1);
     } else {
       navigation.goBack();
     }
@@ -58,7 +62,7 @@ export default function Sign({
         <SignBox>
           <SignTitleBox>
             <TouchableOpacity activeOpacity={1} onPress={handleBack}>
-              <DesignIcon type="back" size="l" />
+              <DesignIcon type="back" size="l" color={colors.TextNeutral} />
             </TouchableOpacity>
             <SignTitleText color={colors.TextNormal} weight="bold">
               {title}
