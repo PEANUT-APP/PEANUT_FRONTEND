@@ -1,14 +1,17 @@
 import React, {ReactNode, useState} from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
-import {FieldErrors, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
-import {Alert} from 'react-native';
 import Input from '../../components/input/Input';
 import {validationRules} from '../../modules/validationRules';
 import FitIcon from '../../components/icon/FitIcon';
+import {handleFormError, handleFormSubmit} from '../../modules/formHandler';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
 
 export default function AdditionalInformation() {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
   const [step, setStep] = useState(0);
 
   const {
@@ -25,18 +28,6 @@ export default function AdditionalInformation() {
     mode: 'onBlur',
   });
 
-  const handleFormSubmit = () => {
-    Alert.alert('성공', '모든 필드가 유효합니다!');
-  };
-
-  const handleFormError = (errs: FieldErrors<FormData>) => {
-    const firstError = Object.values(errs)[0];
-    Alert.alert(
-      '실패',
-      firstError?.message || '알 수 없는 오류가 발생했습니다.',
-    );
-  };
-
   const handleNextStep = async () => {
     const fields: (keyof FormData)[] = ['nickname', 'height', 'weight'];
     const result = await trigger(fields[step]);
@@ -44,7 +35,10 @@ export default function AdditionalInformation() {
     if (result) {
       step < 2
         ? setStep(step + 1)
-        : handleSubmit(handleFormSubmit, handleFormError)();
+        : handleSubmit(
+            () => handleFormSubmit(navigation, 'SignIn'),
+            handleFormError,
+          )();
     } else {
       handleFormError(errors);
     }
