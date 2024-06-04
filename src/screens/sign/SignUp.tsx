@@ -1,5 +1,5 @@
 import React, {ReactNode, useState} from 'react';
-import {FieldErrors, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {Alert} from 'react-native';
 import Input from '../../components/input/Input';
@@ -9,6 +9,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {validationRules} from '../../modules/validationRules';
 import FitIcon from '../../components/icon/FitIcon';
+import {handleFormError} from '../../modules/formHandler';
 
 export default function SignUp() {
   const [verification, setVerification] = useState(false);
@@ -36,14 +37,6 @@ export default function SignUp() {
       Alert.alert('인증 성공');
       navigation.navigate('BasicInformation');
     }
-  };
-
-  const handleFormError = (errs: FieldErrors<FormData>) => {
-    const firstError = Object.values(errs)[0];
-    Alert.alert(
-      '실패',
-      firstError?.message || '알 수 없는 오류가 발생했습니다.',
-    );
   };
 
   const renderInput = (
