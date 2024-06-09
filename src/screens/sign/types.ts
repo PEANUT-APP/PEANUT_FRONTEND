@@ -8,4 +8,5 @@ export interface SignType {
   setVerification?: React.Dispatch<React.SetStateAction<boolean>>;
   step?: number;
   setStep?: React.Dispatch<React.SetStateAction<number>>;
+  type: 'SignIn' | 'SignUp';
 }
