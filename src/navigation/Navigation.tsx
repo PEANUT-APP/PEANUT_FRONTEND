@@ -56,7 +56,7 @@ export default function Navigation() {
           component={AdditionalInformation}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Home" component={IconTest} />
+        <Stack.Screen name="Home" component={Test} />
         <Stack.Screen name="Food" component={InputTest} />
         <Stack.Screen name="Community" component={MainValueTest} />
         <Stack.Screen name="My" component={ProfileTest} />

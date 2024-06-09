@@ -10,6 +10,29 @@ import {validationRules} from '../../modules/validationRules';
 import {handleFormError, handleFormSubmit} from '../../modules/formHandler';
 import {PrimaryTextButton} from '../../components/button/TextButton';
 
+const renderInput = (
+  name: keyof FormData,
+  placeholder: string,
+  control: any,
+  errors: any,
+  touchedFields: any,
+  trigger: any,
+  secureTextEntry = false,
+) => (
+  <Input
+    placeholder={placeholder}
+    name={name}
+    control={control}
+    rules={validationRules[name]}
+    errors={errors}
+    editable={true}
+    touchedFields={touchedFields}
+    returnKeyType="next"
+    trigger={trigger}
+    secureTextEntry={secureTextEntry}
+  />
+);
+
 export default function SignIn() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const [step, setStep] = useState(0);
@@ -57,20 +80,6 @@ export default function SignIn() {
 
   const handleFindPassword = () => {};
 
-  const renderInput = (name: keyof FormData, placeholder: string) => (
-    <Input
-      placeholder={placeholder}
-      name={name}
-      control={control}
-      rules={validationRules[name]}
-      errors={errors}
-      editable={true}
-      touchedFields={touchedFields}
-      returnKeyType="next"
-      trigger={trigger}
-    />
-  );
-
   return (
     <Sign
       title="로그인"
@@ -80,7 +89,7 @@ export default function SignIn() {
             size="l"
             onPress={handleNextStep}
             disabled={isButtonDisabled}>
-            다음
+            {step >= 1 ? '로그인' : '다음'}
           </PrimaryButton>
           <PrimaryTextButton size="m" onPress={handleFindPassword}>
             비밀번호 찾기
@@ -90,7 +99,18 @@ export default function SignIn() {
       step={step}
       setStep={setStep}
       type="SignIn">
-      {renderInput('email', '이메일')}
+      {step >= 1 &&
+        renderInput(
+          'password',
+          '비밀번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+          true,
+        )}
+      {step >= 0 &&
+        renderInput('email', '이메일', control, errors, touchedFields, trigger)}
     </Sign>
   );
 }

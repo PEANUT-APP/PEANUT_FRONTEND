@@ -11,6 +11,31 @@ import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import {handleFormError, handleFormSubmit} from '../../modules/formHandler';
 
+const renderInput = (
+  name: keyof FormData,
+  placeholder: string,
+  control: any,
+  errors: any,
+  touchedFields: any,
+  trigger: any,
+  secureTextEntry = false,
+  icon?: ReactNode,
+) => (
+  <Input
+    placeholder={placeholder}
+    name={name}
+    control={control}
+    rules={validationRules[name]}
+    errors={errors}
+    editable={true}
+    touchedFields={touchedFields}
+    returnKeyType="next"
+    trigger={trigger}
+    secureTextEntry={secureTextEntry}
+    icon={icon}
+  />
+);
+
 export default function BasicInformation() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const [step, setStep] = useState(0);
@@ -46,27 +71,6 @@ export default function BasicInformation() {
     }
   };
 
-  const renderInput = (
-    name: keyof FormData,
-    placeholder: string,
-    secureTextEntry = false,
-    icon?: ReactNode,
-  ) => (
-    <Input
-      placeholder={placeholder}
-      name={name}
-      control={control}
-      rules={validationRules[name]}
-      errors={errors}
-      editable={true}
-      icon={icon}
-      touchedFields={touchedFields}
-      returnKeyType="next"
-      trigger={trigger}
-      secureTextEntry={secureTextEntry}
-    />
-  );
-
   return (
     <Sign
       title="기본 정보 입력"
@@ -82,12 +86,34 @@ export default function BasicInformation() {
         renderInput(
           'gender',
           '성별',
+          control,
+          errors,
+          touchedFields,
+          trigger,
           false,
           <DesignIcon type="drop" size="l" color={colors.TextDisabled} />,
         )}
-      {step >= 2 && renderInput('birth', '생년월일')}
-      {step >= 1 && renderInput('name', '이름')}
-      {step >= 0 && renderInput('password', '비밀번호', true)}
+      {step >= 2 &&
+        renderInput(
+          'birth',
+          '생년월일',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+        )}
+      {step >= 1 &&
+        renderInput('name', '이름', control, errors, touchedFields, trigger)}
+      {step >= 0 &&
+        renderInput(
+          'password',
+          '비밀번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+          true,
+        )}
     </Sign>
   );
 }
