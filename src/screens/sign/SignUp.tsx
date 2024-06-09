@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
-import {FieldErrors, useForm} from 'react-hook-form';
+import React, {ReactNode, useState} from 'react';
+import {useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {Alert} from 'react-native';
 import Input from '../../components/input/Input';
-import Sign from '../../components/sign/Sign';
+import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {validationRules} from '../../modules/validationRules';
+import FitIcon from '../../components/icon/FitIcon';
+import {handleFormError} from '../../modules/formHandler';
 
 export default function SignUp() {
   const [verification, setVerification] = useState(false);
@@ -27,28 +29,21 @@ export default function SignUp() {
     mode: 'onBlur',
   });
 
-  const onSubmitEmail = (data: {email: string}) => {
-    Alert.alert(data.email);
-    setVerification(true);
-  };
-
-  const onSubmitVerificationCode = () => {
-    Alert.alert('인증 성공');
-    navigation.navigate('BasicInformation');
-  };
-
-  const onError = (errs: FieldErrors<FormData>) => {
-    const firstError = Object.values(errs)[0];
-    Alert.alert(
-      '실패',
-      firstError?.message || '알 수 없는 오류가 발생했습니다.',
-    );
+  const handleFormSubmit = (data: {email: string}) => {
+    if (!verification) {
+      Alert.alert(data.email);
+      setVerification(true);
+    } else {
+      Alert.alert('인증 성공');
+      navigation.navigate('BasicInformation');
+    }
   };
 
   const renderInput = (
     name: keyof FormData,
     placeholder: string,
     message?: string,
+    icon?: ReactNode,
   ) => (
     <Input
       placeholder={placeholder}
@@ -57,7 +52,7 @@ export default function SignUp() {
       rules={validationRules[name]}
       errors={errors}
       editable={true}
-      icon={name === 'verificationCode'}
+      icon={icon}
       touchedFields={touchedFields}
       returnKeyType="next"
       trigger={trigger}
@@ -71,15 +66,19 @@ export default function SignUp() {
       button={
         <PrimaryButton
           size="l"
-          onPress={handleSubmit(
-            verification ? onSubmitVerificationCode : onSubmitEmail,
-            onError,
-          )}>
+          onPress={handleSubmit(handleFormSubmit, handleFormError)}>
           다음
         </PrimaryButton>
-      }>
+      }
+      verification={verification}
+      setVerification={setVerification}>
       {verification &&
-        renderInput('verificationCode', '인증번호', '인증되었습니다')}
+        renderInput(
+          'verificationCode',
+          '인증번호',
+          '인증되었습니다',
+          <FitIcon size="l" />,
+        )}
       {renderInput('email', '이메일')}
     </Sign>
   );
