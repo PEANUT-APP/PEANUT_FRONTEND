@@ -23,6 +23,7 @@ import OnBoarding from '../screens/onBoarding/OnBoarding';
 import SignUp from '../screens/sign/SignUp';
 import BasicInformation from '../screens/sign/BasicInformation';
 import AdditionalInformation from '../screens/sign/AdditionalInformation';
+import SignIn from '../screens/sign/SignIn';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,11 @@ export default function Navigation() {
         <Stack.Screen
           name="OnBoarding"
           component={OnBoarding}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
           options={{headerShown: false}}
         />
         <Stack.Screen

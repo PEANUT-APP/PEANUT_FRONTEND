@@ -74,7 +74,8 @@ export default function AdditionalInformation() {
         </PrimaryButton>
       }
       step={step}
-      setStep={setStep}>
+      setStep={setStep}
+      type="SignUp">
       {step >= 2 && renderInput('weight', '몸무게')}
       {step >= 1 && renderInput('height', '키')}
       {step >= 0 &&

@@ -76,7 +76,8 @@ export default function BasicInformation() {
         </PrimaryButton>
       }
       step={step}
-      setStep={setStep}>
+      setStep={setStep}
+      type="SignUp">
       {step >= 3 &&
         renderInput(
           'gender',
