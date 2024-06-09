@@ -10,6 +10,31 @@ import {handleFormError, handleFormSubmit} from '../../modules/formHandler';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 
+const renderInput = (
+  name: keyof FormData,
+  placeholder: string,
+  control: any,
+  errors: any,
+  touchedFields: any,
+  trigger: any,
+  message?: string,
+  icon?: ReactNode,
+) => (
+  <Input
+    placeholder={placeholder}
+    name={name}
+    control={control}
+    rules={validationRules[name]}
+    errors={errors}
+    editable={true}
+    touchedFields={touchedFields}
+    returnKeyType="next"
+    trigger={trigger}
+    message={message}
+    icon={icon}
+  />
+);
+
 export default function AdditionalInformation() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const [step, setStep] = useState(0);
@@ -44,27 +69,6 @@ export default function AdditionalInformation() {
     }
   };
 
-  const renderInput = (
-    name: keyof FormData,
-    placeholder: string,
-    message?: string,
-    icon?: ReactNode,
-  ) => (
-    <Input
-      placeholder={placeholder}
-      name={name}
-      control={control}
-      rules={validationRules[name]}
-      errors={errors}
-      editable={true}
-      icon={icon}
-      touchedFields={touchedFields}
-      returnKeyType="next"
-      trigger={trigger}
-      message={message}
-    />
-  );
-
   return (
     <Sign
       title="추가 정보 입력"
@@ -76,12 +80,25 @@ export default function AdditionalInformation() {
       step={step}
       setStep={setStep}
       type="SignUp">
-      {step >= 2 && renderInput('weight', '몸무게')}
-      {step >= 1 && renderInput('height', '키')}
+      {step >= 2 &&
+        renderInput(
+          'weight',
+          '몸무게',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+        )}
+      {step >= 1 &&
+        renderInput('height', '키', control, errors, touchedFields, trigger)}
       {step >= 0 &&
         renderInput(
           'nickname',
           '닉네임',
+          control,
+          errors,
+          touchedFields,
+          trigger,
           '단 하나뿐인 닉네임입니다',
           <FitIcon size="l" />,
         )}

@@ -11,6 +11,31 @@ import {validationRules} from '../../modules/validationRules';
 import FitIcon from '../../components/icon/FitIcon';
 import {handleFormError} from '../../modules/formHandler';
 
+const renderInput = (
+  name: keyof FormData,
+  placeholder: string,
+  control: any,
+  errors: any,
+  touchedFields: any,
+  trigger: any,
+  message?: string,
+  icon?: ReactNode,
+) => (
+  <Input
+    placeholder={placeholder}
+    name={name}
+    control={control}
+    rules={validationRules[name]}
+    errors={errors}
+    editable={true}
+    touchedFields={touchedFields}
+    returnKeyType="next"
+    trigger={trigger}
+    message={message}
+    icon={icon}
+  />
+);
+
 export default function SignUp() {
   const [verification, setVerification] = useState(false);
 
@@ -39,27 +64,6 @@ export default function SignUp() {
     }
   };
 
-  const renderInput = (
-    name: keyof FormData,
-    placeholder: string,
-    message?: string,
-    icon?: ReactNode,
-  ) => (
-    <Input
-      placeholder={placeholder}
-      name={name}
-      control={control}
-      rules={validationRules[name]}
-      errors={errors}
-      editable={true}
-      icon={icon}
-      touchedFields={touchedFields}
-      returnKeyType="next"
-      trigger={trigger}
-      message={message}
-    />
-  );
-
   return (
     <Sign
       title="회원가입"
@@ -77,10 +81,14 @@ export default function SignUp() {
         renderInput(
           'verificationCode',
           '인증번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
           '인증되었습니다',
           <FitIcon size="l" />,
         )}
-      {renderInput('email', '이메일')}
+      {renderInput('email', '이메일', control, errors, touchedFields, trigger)}
     </Sign>
   );
 }
