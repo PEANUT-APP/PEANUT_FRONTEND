@@ -4,7 +4,6 @@ import {InputStyleType, InputType} from './types';
 import {Controller} from 'react-hook-form';
 import {colors} from '../../styles/colors';
 import {Caption1, Caption2} from '../text/Text';
-import NullIcon from '../icon/NullIcon';
 import OutlineButton from '../button/OutlineButton';
 import {View} from 'react-native';
 
@@ -87,8 +86,8 @@ export default function Input({
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const isError = icon && editable && errors[name] && touchedFields[name];
-  const isValid = icon && editable && !errors[name] && touchedFields[name];
+  const isError = !!icon && editable && errors[name] && touchedFields[name];
+  const isValid = !!icon && editable && !errors[name] && touchedFields[name];
 
   return (
     <Controller
@@ -102,7 +101,7 @@ export default function Input({
           <InputBox
             isFocused={isFocused}
             editable={editable}
-            icon={icon}
+            icon={!!icon}
             isError={isError}
             isValid={isValid}
             message={!!message}>
@@ -118,18 +117,13 @@ export default function Input({
               }}
               value={editable ? field.value : defaultValue}
               editable={editable}
-              icon={icon}
+              icon={!!icon}
               button={button}
               returnKeyType={returnKeyType}
               secureTextEntry={secureTextEntry}
               onSubmitEditing={onSubmitEditing}
             />
-            {icon && !button && (
-              <NullIcon
-                size="l"
-                type={!editable ? 'textDisabled' : undefined}
-              />
-            )}
+            {!button && icon && (isValid || !message) && icon}
             {button && !icon && (
               <OutlineButton size="s" disabled={!editable && true}>
                 {buttonText}
