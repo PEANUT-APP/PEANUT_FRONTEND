@@ -6,43 +6,42 @@ import {colors} from '../../styles/colors';
 import {
   KakaoLoginBox,
   KakaoLoginText,
+  OnBoardingBox,
   OnBoardingContainer,
   OnBoardingLoginBox,
   OnBoardingLogo,
-  SignInBox,
-  SignInText,
 } from './styles';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
+import {PrimaryTextButton} from '../../components/button/TextButton';
 
 export default function OnBoarding() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const onPress = () => {
-    navigation.navigate('SignUp');
+  const onPress = (screen: keyof ParamList) => {
+    navigation.navigate(screen);
   };
 
   return (
     <GlobalView>
       <OnBoardingContainer>
         <OnBoardingLogo />
-        <OnBoardingLoginBox>
-          <PrimaryButton size="l">이메일로 로그인</PrimaryButton>
-          <KakaoLoginBox>
-            <DesignIcon type="kakao" size="l" />
-            <KakaoLoginText weight="bold" color={colors.TextNormal}>
-              카카오로 로그인
-            </KakaoLoginText>
-          </KakaoLoginBox>
-          <SignInBox
-            activeOpacity={1}
-            accessibilityRole="link"
-            onPress={onPress}>
-            <SignInText color={colors.TextNeutral} weight="bold">
-              회원가입
-            </SignInText>
-          </SignInBox>
-        </OnBoardingLoginBox>
+        <OnBoardingBox>
+          <OnBoardingLoginBox>
+            <PrimaryButton size="l" onPress={() => onPress('SignIn')}>
+              이메일로 로그인
+            </PrimaryButton>
+            <KakaoLoginBox>
+              <DesignIcon type="kakao" size="l" />
+              <KakaoLoginText weight="bold" color={colors.TextNormal}>
+                카카오로 로그인
+              </KakaoLoginText>
+            </KakaoLoginBox>
+          </OnBoardingLoginBox>
+          <PrimaryTextButton size="m" onPress={() => onPress('SignUp')}>
+            회원가입
+          </PrimaryTextButton>
+        </OnBoardingBox>
       </OnBoardingContainer>
     </GlobalView>
   );

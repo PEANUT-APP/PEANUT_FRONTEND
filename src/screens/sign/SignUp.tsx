@@ -1,15 +1,14 @@
-import React, {ReactNode, useState} from 'react';
+import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {Alert} from 'react-native';
-import Input from '../../components/input/Input';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {validationRules} from '../../modules/validationRules';
 import FitIcon from '../../components/icon/FitIcon';
 import {handleFormError} from '../../modules/formHandler';
+import renderInput from '../../modules/renderInput';
 
 export default function SignUp() {
   const [verification, setVerification] = useState(false);
@@ -39,27 +38,6 @@ export default function SignUp() {
     }
   };
 
-  const renderInput = (
-    name: keyof FormData,
-    placeholder: string,
-    message?: string,
-    icon?: ReactNode,
-  ) => (
-    <Input
-      placeholder={placeholder}
-      name={name}
-      control={control}
-      rules={validationRules[name]}
-      errors={errors}
-      editable={true}
-      icon={icon}
-      touchedFields={touchedFields}
-      returnKeyType="next"
-      trigger={trigger}
-      message={message}
-    />
-  );
-
   return (
     <Sign
       title="회원가입"
@@ -71,15 +49,27 @@ export default function SignUp() {
         </PrimaryButton>
       }
       verification={verification}
-      setVerification={setVerification}>
+      setVerification={setVerification}
+      type="SignUp">
       {verification &&
-        renderInput(
-          'verificationCode',
-          '인증번호',
-          '인증되었습니다',
-          <FitIcon size="l" />,
-        )}
-      {renderInput('email', '이메일')}
+        renderInput({
+          name: 'verificationCode',
+          placeholder: '인증번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+          message: '인증되었습니다',
+          icon: <FitIcon size="l" />,
+        })}
+      {renderInput({
+        name: 'email',
+        placeholder: '이메일',
+        control,
+        errors,
+        touchedFields,
+        trigger,
+      })}
     </Sign>
   );
 }

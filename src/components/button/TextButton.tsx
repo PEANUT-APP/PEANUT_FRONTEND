@@ -44,6 +44,7 @@ function DefaultTextButton({
   left,
   right,
   children,
+  onPress,
 }: ButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
@@ -78,7 +79,8 @@ function DefaultTextButton({
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       disabled={disabled}
-      type={type}>
+      type={type}
+      onPress={onPress}>
       <InlineLabel>
         {renderIcon('left')}
         <Text

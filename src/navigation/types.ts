@@ -1,4 +1,5 @@
 export interface ParamList {
+  SignIn: undefined;
   SignUp: undefined;
   BasicInformation: undefined;
   AdditionalInformation: undefined;
