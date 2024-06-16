@@ -1,11 +1,15 @@
 import styled from 'styled-components/native';
-import {Body1, Body2} from '../../components/text/Text';
+import {Body1} from '../../components/text/Text';
 
 export const OnBoardingContainer = styled.View`
   flex: 1;
   align-items: center;
   justify-content: space-between;
   padding: 80px 0;
+`;
+
+export const OnBoardingBox = styled.View`
+  gap: 4px;
 `;
 
 export const OnBoardingLogo = styled.View`
@@ -34,13 +38,4 @@ export const KakaoLoginBox = styled.TouchableOpacity`
 export const KakaoLoginText = styled(Body1)`
   line-height: 21.344px;
   letter-spacing: -0.4px;
-`;
-
-export const SignInBox = styled.TouchableOpacity`
-  margin-bottom: 4px;
-`;
-
-export const SignInText = styled(Body2)`
-  line-height: 18.676px;
-  letter-spacing: -0.35px;
 `;

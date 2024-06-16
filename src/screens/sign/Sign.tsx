@@ -8,9 +8,9 @@ import DesignIcon from '../../components/icon/DesignIcon';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-const SignContainer = styled.View`
+const SignContainer = styled.View<{type: string}>`
   flex: 1;
-  padding: 61px 20px 111px;
+  padding: 61px 20px ${({type}) => (type === 'SignIn' ? '80px' : '111px')};
   justify-content: space-between;
 `;
 
@@ -32,7 +32,7 @@ const SignFormBox = styled.View`
 `;
 
 const SignButtonBox = styled.View`
-  gap: 8px;
+  gap: 4px;
 `;
 
 export default function Sign({
@@ -43,6 +43,7 @@ export default function Sign({
   setVerification,
   step,
   setStep,
+  type,
 }: SignType) {
   const navigation = useNavigation();
 
@@ -58,7 +59,7 @@ export default function Sign({
 
   return (
     <GlobalView>
-      <SignContainer>
+      <SignContainer type={type}>
         <SignBox>
           <SignTitleBox>
             <TouchableOpacity activeOpacity={1} onPress={handleBack}>
