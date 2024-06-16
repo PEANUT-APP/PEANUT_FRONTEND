@@ -5,33 +5,9 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
-import Input from '../../components/input/Input';
-import {validationRules} from '../../modules/validationRules';
-import {handleFormError, handleFormSubmit} from '../../modules/formHandler';
+import {handleNextStep} from '../../modules/formHandler';
 import {PrimaryTextButton} from '../../components/button/TextButton';
-
-const renderInput = (
-  name: keyof FormData,
-  placeholder: string,
-  control: any,
-  errors: any,
-  touchedFields: any,
-  trigger: any,
-  secureTextEntry = false,
-) => (
-  <Input
-    placeholder={placeholder}
-    name={name}
-    control={control}
-    rules={validationRules[name]}
-    errors={errors}
-    editable={true}
-    touchedFields={touchedFields}
-    returnKeyType="next"
-    trigger={trigger}
-    secureTextEntry={secureTextEntry}
-  />
-);
+import renderInput from '../../modules/renderInput';
 
 export default function SignIn() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -62,22 +38,6 @@ export default function SignIn() {
     validateEmail();
   }, [trigger, emailWatch, step]);
 
-  const handleNextStep = async () => {
-    const fields: (keyof FormData)[] = ['email', 'password'];
-    const result = await trigger(fields[step]);
-
-    if (result) {
-      step < 1
-        ? setStep(step + 1)
-        : handleSubmit(
-            () => handleFormSubmit(navigation, 'Home'),
-            handleFormError,
-          )();
-    } else {
-      handleFormError(errors);
-    }
-  };
-
   const handleFindPassword = () => {};
 
   return (
@@ -87,7 +47,18 @@ export default function SignIn() {
         <>
           <PrimaryButton
             size="l"
-            onPress={handleNextStep}
+            onPress={() =>
+              handleNextStep({
+                step,
+                setStep,
+                fields: ['email', 'password'],
+                trigger,
+                handleSubmit,
+                navigation,
+                targetScreen: 'Home',
+                errors,
+              })
+            }
             disabled={isButtonDisabled}>
             {step >= 1 ? '로그인' : '다음'}
           </PrimaryButton>
@@ -100,17 +71,24 @@ export default function SignIn() {
       setStep={setStep}
       type="SignIn">
       {step >= 1 &&
-        renderInput(
-          'password',
-          '비밀번호',
+        renderInput({
+          name: 'password',
+          placeholder: '비밀번호',
           control,
           errors,
           touchedFields,
           trigger,
-          true,
-        )}
+          secureTextEntry: true,
+        })}
       {step >= 0 &&
-        renderInput('email', '이메일', control, errors, touchedFields, trigger)}
+        renderInput({
+          name: 'email',
+          placeholder: '이메일',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+        })}
     </Sign>
   );
 }
