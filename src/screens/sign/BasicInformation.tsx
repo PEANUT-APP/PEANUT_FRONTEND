@@ -1,40 +1,14 @@
-import React, {ReactNode, useState} from 'react';
+import React, {useState} from 'react';
 import Sign from './Sign';
 import {FormData} from '../../components/input/types';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {useForm} from 'react-hook-form';
-import Input from '../../components/input/Input';
-import {validationRules} from '../../modules/validationRules';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import {handleFormError, handleFormSubmit} from '../../modules/formHandler';
-
-const renderInput = (
-  name: keyof FormData,
-  placeholder: string,
-  control: any,
-  errors: any,
-  touchedFields: any,
-  trigger: any,
-  secureTextEntry = false,
-  icon?: ReactNode,
-) => (
-  <Input
-    placeholder={placeholder}
-    name={name}
-    control={control}
-    rules={validationRules[name]}
-    errors={errors}
-    editable={true}
-    touchedFields={touchedFields}
-    returnKeyType="next"
-    trigger={trigger}
-    secureTextEntry={secureTextEntry}
-    icon={icon}
-  />
-);
+import {handleNextStep} from '../../modules/formHandler';
+import renderInput from '../../modules/renderInput';
 
 export default function BasicInformation() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -55,27 +29,24 @@ export default function BasicInformation() {
     mode: 'onBlur',
   });
 
-  const handleNextStep = async () => {
-    const fields: (keyof FormData)[] = ['password', 'name', 'birth', 'gender'];
-    const result = await trigger(fields[step]);
-
-    if (result) {
-      step < 3
-        ? setStep(step + 1)
-        : handleSubmit(
-            () => handleFormSubmit(navigation, 'AdditionalInformation'),
-            handleFormError,
-          )();
-    } else {
-      handleFormError(errors);
-    }
-  };
-
   return (
     <Sign
       title="기본 정보 입력"
       button={
-        <PrimaryButton size="l" onPress={handleNextStep}>
+        <PrimaryButton
+          size="l"
+          onPress={() =>
+            handleNextStep({
+              step,
+              setStep,
+              fields: ['password', 'name', 'birth', 'gender'],
+              trigger,
+              handleSubmit,
+              navigation,
+              targetScreen: 'AdditionalInformation',
+              errors,
+            })
+          }>
           다음
         </PrimaryButton>
       }
@@ -83,37 +54,44 @@ export default function BasicInformation() {
       setStep={setStep}
       type="SignUp">
       {step >= 3 &&
-        renderInput(
-          'gender',
-          '성별',
+        renderInput({
+          name: 'gender',
+          placeholder: '성별',
           control,
           errors,
           touchedFields,
           trigger,
-          false,
-          <DesignIcon type="drop" size="l" color={colors.TextDisabled} />,
-        )}
+          secureTextEntry: false,
+          icon: <DesignIcon type="drop" size="l" color={colors.TextDisabled} />,
+        })}
       {step >= 2 &&
-        renderInput(
-          'birth',
-          '생년월일',
+        renderInput({
+          name: 'birth',
+          placeholder: '생년월일',
           control,
           errors,
           touchedFields,
           trigger,
-        )}
+        })}
       {step >= 1 &&
-        renderInput('name', '이름', control, errors, touchedFields, trigger)}
-      {step >= 0 &&
-        renderInput(
-          'password',
-          '비밀번호',
+        renderInput({
+          name: 'name',
+          placeholder: '이름',
           control,
           errors,
           touchedFields,
           trigger,
-          true,
-        )}
+        })}
+      {step >= 0 &&
+        renderInput({
+          name: 'password',
+          placeholder: '비밀번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+          secureTextEntry: true,
+        })}
     </Sign>
   );
 }

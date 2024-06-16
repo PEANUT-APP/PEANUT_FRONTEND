@@ -1,40 +1,14 @@
-import React, {ReactNode, useState} from 'react';
+import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {Alert} from 'react-native';
-import Input from '../../components/input/Input';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {validationRules} from '../../modules/validationRules';
 import FitIcon from '../../components/icon/FitIcon';
 import {handleFormError} from '../../modules/formHandler';
-
-const renderInput = (
-  name: keyof FormData,
-  placeholder: string,
-  control: any,
-  errors: any,
-  touchedFields: any,
-  trigger: any,
-  message?: string,
-  icon?: ReactNode,
-) => (
-  <Input
-    placeholder={placeholder}
-    name={name}
-    control={control}
-    rules={validationRules[name]}
-    errors={errors}
-    editable={true}
-    touchedFields={touchedFields}
-    returnKeyType="next"
-    trigger={trigger}
-    message={message}
-    icon={icon}
-  />
-);
+import renderInput from '../../modules/renderInput';
 
 export default function SignUp() {
   const [verification, setVerification] = useState(false);
@@ -78,17 +52,24 @@ export default function SignUp() {
       setVerification={setVerification}
       type="SignUp">
       {verification &&
-        renderInput(
-          'verificationCode',
-          '인증번호',
+        renderInput({
+          name: 'verificationCode',
+          placeholder: '인증번호',
           control,
           errors,
           touchedFields,
           trigger,
-          '인증되었습니다',
-          <FitIcon size="l" />,
-        )}
-      {renderInput('email', '이메일', control, errors, touchedFields, trigger)}
+          message: '인증되었습니다',
+          icon: <FitIcon size="l" />,
+        })}
+      {renderInput({
+        name: 'email',
+        placeholder: '이메일',
+        control,
+        errors,
+        touchedFields,
+        trigger,
+      })}
     </Sign>
   );
 }
