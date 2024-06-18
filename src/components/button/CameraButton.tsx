@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {Alert, TouchableWithoutFeedback} from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
 import CameraDefault from '../../assets/images/CameraDefault.svg';
-import CameraActive from '../../assets/images/CameraVariant2.svg';
+import CameraActive from '../../assets/images/CameraActive.svg';
 import {CameraButtonType} from './types';
 
 const CameraContainer = styled.View`
