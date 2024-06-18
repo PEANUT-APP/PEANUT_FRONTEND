@@ -16,7 +16,7 @@ export const OnBoardingLogo = styled.View`
   width: 131px;
   height: 131px;
   background-color: #d9d9d9;
-  margin-top: 106px;
+  margin-top: 136px;
 `;
 
 export const OnBoardingLoginBox = styled.View`

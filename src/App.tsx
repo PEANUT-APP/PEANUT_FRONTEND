@@ -14,7 +14,11 @@ import {theme} from './styles/theme';
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
       <Navigation />
     </ThemeProvider>
   );
