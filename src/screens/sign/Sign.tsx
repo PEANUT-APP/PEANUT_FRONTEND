@@ -10,8 +10,9 @@ import {useNavigation} from '@react-navigation/native';
 
 const SignContainer = styled.View<{type: string}>`
   flex: 1;
-  padding: 61px 20px ${({type}) => (type === 'SignIn' ? '80px' : '111px')};
+  padding: 93px 20px ${({type}) => (type === 'SignIn' ? '80px' : '111px')};
   justify-content: space-between;
+  align-items: center;
 `;
 
 const SignBox = styled.View`
