@@ -7,6 +7,19 @@ export const HomeContainer = styled.View`
   background-color: ${colors.background};
 `;
 
+export const HomeScroll = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    paddingBottom: 107,
+  },
+})`
+  flex: 1;
+`;
+
+export const HomeBox = styled.View`
+  flex: 1;
+  gap: 23px;
+`;
+
 export const HomeTop = styled.View`
   background-color: ${colors.primaryNormal};
   align-items: center;
@@ -52,13 +65,6 @@ export const HomeWelcomeText = styled(Heading)`
   line-height: 26.68px;
   letter-spacing: -0.5px;
 `;
-
-export const HomeScrollContent = styled.ScrollView.attrs({
-  contentContainerStyle: {
-    paddingTop: 23,
-    paddingBottom: 28,
-  },
-})``;
 
 export const HomeContent = styled.View`
   flex: 1;

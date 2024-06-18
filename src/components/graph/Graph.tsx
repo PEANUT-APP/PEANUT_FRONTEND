@@ -13,7 +13,6 @@ const GraphContainer = styled.View`
   border-radius: 8px;
   background-color: ${colors.white};
   padding: 27px 24px 24px 0;
-  margin-bottom: 50px;
   overflow: hidden;
 `;
 

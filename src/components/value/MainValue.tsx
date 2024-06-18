@@ -30,13 +30,13 @@ const MainValueDisplay = ({value, text}: MainValueType) => {
   );
 };
 
-function MainValue({title, value, text}: MainValueType) {
+function MainValue({title, value, text, onPress}: MainValueType) {
   return (
     <MainValueDefaultContainer>
       <MainValueTitle color={colors.TextNeutral} weight="bold">
         {title}
       </MainValueTitle>
-      <MainValueDisplay value={value} text={text} />
+      <MainValueDisplay value={value} text={text} onPress={onPress} />
     </MainValueDefaultContainer>
   );
 }
