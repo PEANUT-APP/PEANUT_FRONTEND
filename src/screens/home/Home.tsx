@@ -21,6 +21,25 @@ import {
 } from './style';
 import Graph from '../../components/graph/Graph';
 import CameraButton from '../../components/button/CameraButton';
+import {SelectButtonGroupType} from './types';
+
+const generateHourlyData = () => {
+  const data = [];
+  for (let i = 0; i < 5; i++) {
+    data.push(Math.random() * 100);
+  }
+  return data;
+};
+const data = generateHourlyData();
+
+const userData = {
+  name: '김유성',
+  bloodSugar: 87,
+  profile: require('../../assets/images/profile.png'),
+};
+
+const mealList = ['아침', '점심', '저녁', '간식'];
+const medicineList = ['타이레놀', '항생제', '유산균'];
 
 export default function Home() {
   const [searchFood, setSearchFood] = useState('');
@@ -35,30 +54,17 @@ export default function Home() {
     }
   }, [searchFood]);
 
-  const handleMenu = useCallback((id: number) => {
-    setSelectedMenu(prevId => (prevId === id ? null : id));
-  }, []);
-
-  const handleMedicine = useCallback((id: number) => {
-    setSelectedMedicine(prevId => (prevId === id ? null : id));
-  }, []);
+  const handleSelection = useCallback(
+    (
+      id: number,
+      setter: React.Dispatch<React.SetStateAction<number | null>>,
+    ) => {
+      setter(prevId => (prevId === id ? null : id));
+    },
+    [],
+  );
 
   const handleBloodSugar = useCallback(() => {}, []);
-
-  const generateHourlyData = () => {
-    const data = [];
-    for (let i = 0; i < 5; i++) {
-      data.push(Math.random() * 100);
-    }
-    return data;
-  };
-  const data = generateHourlyData();
-
-  const userData = {
-    name: '김유성',
-    bloodSugar: 87,
-    profile: require('../../assets/images/profile.png'),
-  };
 
   return (
     <GlobalView>
@@ -68,6 +74,7 @@ export default function Home() {
             <HomeTop>
               <HomeSearchContainer>
                 <View
+                  // eslint-disable-next-line react-native/no-inline-styles
                   style={{
                     backgroundColor: '#d9d9d9',
                     width: 50,
@@ -103,45 +110,18 @@ export default function Home() {
             <HomeContent>
               <MainValue title="공복 혈당 지수" value={userData.bloodSugar} />
               <MainValue title="현재 혈당 지수" onPress={handleBloodSugar} />
-              <LargeMainValue title="식단 기록">
-                <SelectButton
-                  isSelected={selectedMenu === 1}
-                  onPress={() => handleMenu(1)}>
-                  아침
-                </SelectButton>
-                <SelectButton
-                  isSelected={selectedMenu === 2}
-                  onPress={() => handleMenu(2)}>
-                  점심
-                </SelectButton>
-                <SelectButton
-                  isSelected={selectedMenu === 3}
-                  onPress={() => handleMenu(3)}>
-                  저녁
-                </SelectButton>
-                <SelectButton
-                  isSelected={selectedMenu === 4}
-                  onPress={() => handleMenu(4)}>
-                  간식
-                </SelectButton>
-              </LargeMainValue>
-              <LargeMainValue title="복약 기록">
-                <SelectButton
-                  isSelected={selectedMedicine === 1}
-                  onPress={() => handleMedicine(1)}>
-                  타이레놀
-                </SelectButton>
-                <SelectButton
-                  isSelected={selectedMedicine === 2}
-                  onPress={() => handleMedicine(2)}>
-                  항생제
-                </SelectButton>
-                <SelectButton
-                  isSelected={selectedMedicine === 3}
-                  onPress={() => handleMedicine(3)}>
-                  유산균
-                </SelectButton>
-              </LargeMainValue>
+              <SelectButtonGroup
+                title="식단 기록"
+                itemList={mealList}
+                selectedItem={selectedMenu}
+                handleItem={id => handleSelection(id, setSelectedMenu)}
+              />
+              <SelectButtonGroup
+                title="복약 기록"
+                itemList={medicineList}
+                selectedItem={selectedMedicine}
+                handleItem={id => handleSelection(id, setSelectedMedicine)}
+              />
               <Graph graphData={data} />
             </HomeContent>
           </HomeBox>
@@ -152,3 +132,21 @@ export default function Home() {
     </GlobalView>
   );
 }
+
+const SelectButtonGroup = ({
+  title,
+  itemList,
+  selectedItem,
+  handleItem,
+}: SelectButtonGroupType) => (
+  <LargeMainValue title={title}>
+    {itemList.map((item, index) => (
+      <SelectButton
+        key={index}
+        isSelected={selectedItem === index + 1}
+        onPress={() => handleItem(index + 1)}>
+        {item}
+      </SelectButton>
+    ))}
+  </LargeMainValue>
+);
