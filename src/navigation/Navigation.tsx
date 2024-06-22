@@ -24,6 +24,7 @@ import SignUp from '../screens/sign/SignUp';
 import BasicInformation from '../screens/sign/BasicInformation';
 import AdditionalInformation from '../screens/sign/AdditionalInformation';
 import SignIn from '../screens/sign/SignIn';
+import Home from '../screens/home/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="OnBoarding"
           component={OnBoarding}
@@ -56,7 +62,7 @@ export default function Navigation() {
           component={AdditionalInformation}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Home" component={Test} />
+
         <Stack.Screen name="Food" component={InputTest} />
         <Stack.Screen name="Community" component={MainValueTest} />
         <Stack.Screen name="My" component={ProfileTest} />

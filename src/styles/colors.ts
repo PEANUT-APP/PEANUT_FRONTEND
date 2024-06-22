@@ -11,4 +11,5 @@ export const colors = {
   TextNormal: '#111111',
   TextNeutral: '#585858',
   TextError: '#F00',
+  background: '#F7F7F7',
 };
