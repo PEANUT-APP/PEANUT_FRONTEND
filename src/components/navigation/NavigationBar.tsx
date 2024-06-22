@@ -29,8 +29,11 @@ export default function NavigationBar() {
   const route = useRoute();
 
   useEffect(() => {
-    setActiveTab(route.name);
-  }, [route.name]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      setActiveTab(route.name as keyof NavigationList);
+    });
+    return unsubscribe;
+  }, [navigation, route.name]);
 
   const handlePress = (screenName: keyof NavigationList) => {
     setActiveTab(screenName);
@@ -47,9 +50,9 @@ export default function NavigationBar() {
           홈
         </NavigationButton>
         <NavigationButton
-          type="food"
-          active={activeTab === 'Food'}
-          onPress={() => handlePress('Food')}>
+          type="dietLog"
+          active={activeTab === 'DietLog'}
+          onPress={() => handlePress('DietLog')}>
           식단기록
         </NavigationButton>
         <NavigationButton
