@@ -7,6 +7,7 @@ interface DefaultMainValueType {
 
 export interface MainValueType extends DefaultMainValueType {
   value?: number;
+  onPress?: () => void;
 }
 
 export interface LargeMainValueType extends DefaultMainValueType {
