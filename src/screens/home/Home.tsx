@@ -18,7 +18,7 @@ import {
   HomeTop,
   HomeWelcomeContainer,
   HomeWelcomeText,
-} from './style';
+} from './styles';
 import Graph from '../../components/graph/Graph';
 import CameraButton from '../../components/button/CameraButton';
 import {SelectButtonGroupType} from './types';
