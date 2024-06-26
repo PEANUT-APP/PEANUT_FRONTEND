@@ -1,19 +1,5 @@
 import styled from 'styled-components/native';
-import {colors} from '../../styles/colors';
 import {Title} from '../../components/text/Text';
-
-export const DietLogContainer = styled.View`
-  flex: 1;
-  background-color: ${colors.background};
-`;
-
-export const DietLogScroll = styled.ScrollView.attrs({
-  contentContainerStyle: {
-    paddingBottom: 99,
-  },
-})`
-  flex: 1;
-`;
 
 export const DietLogBox = styled.View`
   flex: 1;
