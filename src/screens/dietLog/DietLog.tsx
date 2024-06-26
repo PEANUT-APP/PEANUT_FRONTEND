@@ -1,16 +1,8 @@
 import React, {useCallback} from 'react';
-import GlobalView from '../../styles/GlobalStyle';
-import NavigationBar from '../../components/navigation/NavigationBar';
-import CameraButton from '../../components/button/CameraButton';
 import Calendar from '../../components/calendar/Calendar';
 import PrimaryButton from '../../components/button/PrimaryButton';
-import {
-  DietLogBox,
-  DietLogContainer,
-  DietLogContent,
-  DietLogScroll,
-  DietLogTitle,
-} from './styles';
+import {DietLogBox, DietLogContent, DietLogTitle} from './styles';
+import Layout from '../layout/Layout';
 
 const mealRecords = {
   '2024-05-01': ['아침', '점심', '저녁', '간식'],
@@ -23,22 +15,16 @@ export default function DietLog() {
   const handleLog = useCallback(() => {}, []);
 
   return (
-    <GlobalView>
-      <DietLogContainer>
-        <DietLogScroll>
-          <DietLogBox>
-            <DietLogTitle weight="bold">식단기록</DietLogTitle>
-            <DietLogContent>
-              <Calendar mealRecords={mealRecords} />
-              <PrimaryButton size="l" onPress={handleLog}>
-                기록하기
-              </PrimaryButton>
-            </DietLogContent>
-          </DietLogBox>
-        </DietLogScroll>
-        <CameraButton />
-      </DietLogContainer>
-      <NavigationBar />
-    </GlobalView>
+    <Layout paddingBottom={99}>
+      <DietLogBox>
+        <DietLogTitle weight="bold">식단기록</DietLogTitle>
+        <DietLogContent>
+          <Calendar mealRecords={mealRecords} />
+          <PrimaryButton size="l" onPress={handleLog}>
+            기록하기
+          </PrimaryButton>
+        </DietLogContent>
+      </DietLogBox>
+    </Layout>
   );
 }
