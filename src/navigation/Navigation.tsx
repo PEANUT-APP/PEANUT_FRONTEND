@@ -26,6 +26,7 @@ import AdditionalInformation from '../screens/sign/AdditionalInformation';
 import SignIn from '../screens/sign/SignIn';
 import Home from '../screens/home/Home';
 import DietLog from '../screens/dietLog/DietLog';
+import DropdownTest from '../pages/test/DropdownTest';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="DropdownTest" component={DropdownTest} />
         <Stack.Screen
           name="Home"
           component={Home}
