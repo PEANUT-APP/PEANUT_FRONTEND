@@ -1,27 +1,22 @@
 import React, {useCallback, useState} from 'react';
-import GlobalView from '../../styles/GlobalStyle';
 import {colors} from '../../styles/colors';
-import NavigationBar from '../../components/navigation/NavigationBar';
 import {Alert, View} from 'react-native';
 import SearchIcon from '../../assets/images/Search.svg';
 import ProfileImage from '../../components/profile/ProfileImage';
-import {LargeMainValue, MainValue} from '../../components/value/MainValue';
-import SelectButton from '../../components/button/SelectButton';
+import {MainValue} from '../../components/value/MainValue';
 import {
   HomeBox,
-  HomeContainer,
   HomeContent,
-  HomeScroll,
   HomeSearchBox,
   HomeSearchContainer,
   HomeSearchInput,
   HomeTop,
   HomeWelcomeContainer,
   HomeWelcomeText,
-} from './style';
+} from './styles';
 import Graph from '../../components/graph/Graph';
-import CameraButton from '../../components/button/CameraButton';
-import {SelectButtonGroupType} from './types';
+import Layout from '../layout/Layout';
+import SelectButtonGroup from '../../modules/renderSelectButton';
 
 const generateHourlyData = () => {
   const data = [];
@@ -54,99 +49,65 @@ export default function Home() {
     }
   }, [searchFood]);
 
-  const handleSelection = useCallback(
-    (
-      id: number,
-      setter: React.Dispatch<React.SetStateAction<number | null>>,
-    ) => {
-      setter(prevId => (prevId === id ? null : id));
-    },
-    [],
-  );
-
   const handleBloodSugar = useCallback(() => {}, []);
 
   return (
-    <GlobalView>
-      <HomeContainer>
-        <HomeScroll>
-          <HomeBox>
-            <HomeTop>
-              <HomeSearchContainer>
-                <View
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  style={{
-                    backgroundColor: '#d9d9d9',
-                    width: 50,
-                    height: 48,
-                  }}
-                />
-                <HomeSearchBox>
-                  <HomeSearchInput
-                    placeholder="음식명을 입력해보세요"
-                    placeholderTextColor={colors.TextDisabled}
-                    returnKeyType="search"
-                    onChangeText={setSearchFood}
-                    onSubmitEditing={handleSearch}
-                  />
-                  <SearchIcon onPress={handleSearch} />
-                </HomeSearchBox>
-              </HomeSearchContainer>
-              <HomeWelcomeContainer>
-                <ProfileImage source={userData.profile} />
-                <View>
-                  <HomeWelcomeText color={colors.white}>
-                    <HomeWelcomeText color={colors.white} weight="bold">
-                      {userData.name || '사용자'}님,
-                    </HomeWelcomeText>
-                    좋은 아침이에요!
-                  </HomeWelcomeText>
-                  <HomeWelcomeText color={colors.white}>
-                    오늘도 건강한 하루 보내봐요.
-                  </HomeWelcomeText>
-                </View>
-              </HomeWelcomeContainer>
-            </HomeTop>
-            <HomeContent>
-              <MainValue title="공복 혈당 지수" value={userData.bloodSugar} />
-              <MainValue title="현재 혈당 지수" onPress={handleBloodSugar} />
-              <SelectButtonGroup
-                title="식단 기록"
-                itemList={mealList}
-                selectedItem={selectedMenu}
-                handleItem={id => handleSelection(id, setSelectedMenu)}
+    <Layout paddingBottom={107}>
+      <HomeBox>
+        <HomeTop>
+          <HomeSearchContainer>
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                backgroundColor: '#d9d9d9',
+                width: 50,
+                height: 48,
+              }}
+            />
+            <HomeSearchBox>
+              <HomeSearchInput
+                placeholder="음식명을 입력해보세요"
+                placeholderTextColor={colors.TextDisabled}
+                returnKeyType="search"
+                onChangeText={setSearchFood}
+                onSubmitEditing={handleSearch}
               />
-              <SelectButtonGroup
-                title="복약 기록"
-                itemList={medicineList}
-                selectedItem={selectedMedicine}
-                handleItem={id => handleSelection(id, setSelectedMedicine)}
-              />
-              <Graph graphData={data} />
-            </HomeContent>
-          </HomeBox>
-        </HomeScroll>
-        <CameraButton />
-      </HomeContainer>
-      <NavigationBar />
-    </GlobalView>
+              <SearchIcon onPress={handleSearch} />
+            </HomeSearchBox>
+          </HomeSearchContainer>
+          <HomeWelcomeContainer>
+            <ProfileImage source={userData.profile} />
+            <View>
+              <HomeWelcomeText color={colors.white}>
+                <HomeWelcomeText color={colors.white} weight="bold">
+                  {userData.name || '사용자'}님,
+                </HomeWelcomeText>
+                좋은 아침이에요!
+              </HomeWelcomeText>
+              <HomeWelcomeText color={colors.white}>
+                오늘도 건강한 하루 보내봐요.
+              </HomeWelcomeText>
+            </View>
+          </HomeWelcomeContainer>
+        </HomeTop>
+        <HomeContent>
+          <MainValue title="공복 혈당 지수" value={userData.bloodSugar} />
+          <MainValue title="현재 혈당 지수" onPress={handleBloodSugar} />
+          <SelectButtonGroup
+            title="식단 기록"
+            itemList={mealList}
+            selectedItem={selectedMenu}
+            setSelectedItem={setSelectedMenu}
+          />
+          <SelectButtonGroup
+            title="복약 기록"
+            itemList={medicineList}
+            selectedItem={selectedMedicine}
+            setSelectedItem={setSelectedMedicine}
+          />
+          <Graph graphData={data} />
+        </HomeContent>
+      </HomeBox>
+    </Layout>
   );
 }
-
-const SelectButtonGroup = ({
-  title,
-  itemList,
-  selectedItem,
-  handleItem,
-}: SelectButtonGroupType) => (
-  <LargeMainValue title={title}>
-    {itemList.map((item, index) => (
-      <SelectButton
-        key={index}
-        isSelected={selectedItem === index + 1}
-        onPress={() => handleItem(index + 1)}>
-        {item}
-      </SelectButton>
-    ))}
-  </LargeMainValue>
-);

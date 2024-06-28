@@ -27,7 +27,7 @@ export default function NavigationButton({
   const color = active ? colors.primaryNormal : colors.TextDisabled;
   const renderIcon = () => {
     switch (type) {
-      case 'food':
+      case 'dietLog':
         return (
           <Svg width="20" height="21" viewBox="0 0 20 21" fill="none">
             <Path

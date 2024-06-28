@@ -23,7 +23,7 @@ export interface ParamList {
 
 export interface NavigationList {
   Home: undefined;
-  Food: undefined;
+  DietLog: undefined;
   Community: undefined;
   My: undefined;
 }
