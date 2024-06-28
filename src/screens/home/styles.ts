@@ -2,19 +2,6 @@ import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Heading} from '../../components/text/Text';
 
-export const HomeContainer = styled.View`
-  flex: 1;
-  background-color: ${colors.background};
-`;
-
-export const HomeScroll = styled.ScrollView.attrs({
-  contentContainerStyle: {
-    paddingBottom: 107,
-  },
-})`
-  flex: 1;
-`;
-
 export const HomeBox = styled.View`
   flex: 1;
   gap: 23px;

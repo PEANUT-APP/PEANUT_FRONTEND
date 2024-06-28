@@ -25,6 +25,7 @@ import BasicInformation from '../screens/sign/BasicInformation';
 import AdditionalInformation from '../screens/sign/AdditionalInformation';
 import SignIn from '../screens/sign/SignIn';
 import Home from '../screens/home/Home';
+import DietLog from '../screens/dietLog/DietLog';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,11 @@ export default function Navigation() {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="DietLog"
+          component={DietLog}
           options={{headerShown: false}}
         />
         <Stack.Screen
