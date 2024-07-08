@@ -34,6 +34,12 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="BasicInformation"
+          component={BasicInformation}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen name="DropdownTest" component={DropdownTest} />
         <Stack.Screen
           name="Home"
@@ -58,11 +64,6 @@ export default function Navigation() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="BasicInformation"
-          component={BasicInformation}
           options={{headerShown: false}}
         />
         <Stack.Screen
