@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import {Dispatch, ReactNode, SetStateAction} from 'react';
 import {
   Control,
   DeepMap,
@@ -37,6 +37,11 @@ export interface InputType {
   trigger: UseFormTrigger<FormData>;
   secureTextEntry?: boolean;
   onSubmitEditing?: () => {};
+  drop?: boolean;
+  value?: string;
+  isDropdownVisible?: boolean;
+  setIsDropdownVisible?: Dispatch<SetStateAction<boolean>>;
+  pointerEvents?: 'none' | 'box-none' | 'box-only' | 'auto' | undefined;
 }
 
 export interface InputStyleType {
@@ -47,4 +52,6 @@ export interface InputStyleType {
   isError?: boolean;
   isValid?: boolean;
   message?: boolean;
+  drop?: boolean;
+  isDropdownVisible?: boolean;
 }
