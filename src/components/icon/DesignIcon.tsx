@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {DesignIconType} from './types';
 import {designIconSize} from '../../modules/designIconSize';
-import {Path, Svg} from 'react-native-svg';
+import {Circle, Path, Svg} from 'react-native-svg';
 import {getDesignIconSize} from '../../modules/getSize';
 
 const IconBox = styled.View<DesignIconType>`
@@ -17,7 +17,7 @@ const getPathProps = (
   color: string,
   strokeWidth: number | string,
 ) => {
-  if (type === 'kakao') {
+  if (type === 'kakao' || type === 'comment') {
     return {
       fill: color,
     };
@@ -36,12 +36,21 @@ export default function DesignIcon({
   color = 'black',
 }: DesignIconType) {
   const {strokeWidth, viewBox, d} = designIconSize[type][size];
+  const {r, cx, cy} = designIconSize.kebab[size];
   const pathProps = getPathProps(type, color, strokeWidth);
 
   return (
     <IconBox size={size}>
       <Svg viewBox={viewBox} fill="none">
-        <Path {...pathProps} d={d} />
+        {type === 'kebab' ? (
+          <>
+            <Circle cx={cx} cy={cy[0]} r={r} fill={color} />
+            <Circle cx={cx} cy={cy[1]} r={r} fill={color} />
+            <Circle cx={cx} cy={cy[2]} r={r} fill={color} />
+          </>
+        ) : (
+          <Path {...pathProps} d={d} />
+        )}
       </Svg>
     </IconBox>
   );
