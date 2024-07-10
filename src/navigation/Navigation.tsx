@@ -34,13 +34,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="BasicInformation"
-          component={BasicInformation}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen name="DropdownTest" component={DropdownTest} />
+        <Stack.Screen name="IconTest" component={IconTest} />
         <Stack.Screen
           name="Home"
           component={Home}
@@ -67,6 +61,11 @@ export default function Navigation() {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="BasicInformation"
+          component={BasicInformation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="AdditionalInformation"
           component={AdditionalInformation}
           options={{headerShown: false}}
@@ -76,7 +75,6 @@ export default function Navigation() {
         <Stack.Screen name="Community" component={MainValueTest} />
         <Stack.Screen name="My" component={ProfileTest} />
         <Stack.Screen name="Test" component={Test} />
-        <Stack.Screen name="IconTest" component={IconTest} />
         <Stack.Screen name="PrimaryButtonTest" component={PrimaryButtonTest} />
         <Stack.Screen
           name="SecondaryButtonTest"
@@ -100,6 +98,7 @@ export default function Navigation() {
         <Stack.Screen name="NavigationTest" component={NavigationTest} />
         <Stack.Screen name="CalendarTest" component={CalendarTest} />
         <Stack.Screen name="ListTest" component={ListTest} />
+        <Stack.Screen name="DropdownTest" component={DropdownTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );

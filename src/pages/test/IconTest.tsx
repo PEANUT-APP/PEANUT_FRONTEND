@@ -135,6 +135,32 @@ export default function IconTest() {
           <FitIcon size="s" />
         </ViewBox>
       </ViewContainer>
+      <Text>Kebab</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="kebab" size="l" color="#111111" />
+          <DesignIcon type="kebab" size="m" color="#111111" />
+          <DesignIcon type="kebab" size="s" color="#111111" />
+        </ViewBox>
+      </ViewContainer>
+      <Text>Like</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="like" size="xl" color="#B8B8B8" />
+          <DesignIcon type="like" size="l" color="#B8B8B8" />
+          <DesignIcon type="like" size="m" color="#B8B8B8" />
+          <DesignIcon type="like" size="s" color="#B8B8B8" />
+        </ViewBox>
+      </ViewContainer>
+      <Text>Comment</Text>
+      <ViewContainer>
+        <ViewBox>
+          <DesignIcon type="comment" size="xl" color="#B8B8B8" />
+          <DesignIcon type="comment" size="l" color="#B8B8B8" />
+          <DesignIcon type="comment" size="m" color="#B8B8B8" />
+          <DesignIcon type="comment" size="s" color="#B8B8B8" />
+        </ViewBox>
+      </ViewContainer>
     </ScrollView>
   );
 }

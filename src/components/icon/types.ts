@@ -27,8 +27,8 @@ export interface LoadingType extends IconType {
 }
 
 export interface DesignIconType {
-  size: 'l' | 'm' | 's';
-  type?: 'kakao' | 'check' | 'back' | 'drop';
+  size: 'xl' | 'l' | 'm' | 's';
+  type?: 'kakao' | 'check' | 'back' | 'drop' | 'kebab' | 'like' | 'comment';
   color?: string;
 }
 
