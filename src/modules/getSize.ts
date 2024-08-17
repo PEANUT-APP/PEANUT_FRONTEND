@@ -12,8 +12,10 @@ export const getSize = (size: 'xl' | 'l' | 'm' | 's'): string => {
   }
 };
 
-export const getDesignIconSize = (size: 'l' | 'm' | 's'): string => {
+export const getDesignIconSize = (size: 'xl' | 'l' | 'm' | 's'): string => {
   switch (size) {
+    case 'xl':
+      return '36px';
     case 'l':
       return '24px';
     case 'm':
