@@ -7,6 +7,7 @@ import Input from '../input/Input';
 import {validationRules} from '../../modules/validationRules';
 import {TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
+import {useFormContext} from 'react-hook-form';
 
 const DropdownContainer = styled.View`
   position: relative;
@@ -39,6 +40,8 @@ export default function Dropdown({
     rotation: 0,
   });
 
+  const {setValue} = useFormContext();
+
   const toggleDropdown = useCallback(() => {
     setIsDropdownVisible(prev => !prev);
     setIconState({
@@ -47,11 +50,14 @@ export default function Dropdown({
     });
   }, [isDropdownVisible]);
 
-  const handleSelect = (value: string) => {
+  const handleSelect = async (value: string) => {
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setIconState({color: colors.TextDisabled, rotation: 0});
-    trigger('gender');
+
+    setValue('gender', value);
+    const result = await trigger('gender');
+    console.log(result);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {ButtonStyleType, ButtonType} from './types';
+import {ButtonStyleType, PrimaryButtonType} from './types';
 import {Label} from './styles';
 import {getButtonText} from '../../modules/getText';
 import NullIcon from '../icon/NullIcon';
@@ -45,7 +45,7 @@ function DefaultTextButton({
   right,
   children,
   onPress,
-}: ButtonType) {
+}: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
   const Text = getButtonText(isPressed && size === 'm' ? 's' : size);
@@ -100,10 +100,10 @@ function DefaultTextButton({
   );
 }
 
-const PrimaryTextButton = (props: ButtonType) => (
+const PrimaryTextButton = (props: PrimaryButtonType) => (
   <DefaultTextButton type="primary" {...props} />
 );
-const AssistiveTextButton = (props: ButtonType) => (
+const AssistiveTextButton = (props: PrimaryButtonType) => (
   <DefaultTextButton type="assistive" {...props} />
 );
 

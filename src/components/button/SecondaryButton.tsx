@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {ButtonType} from './types';
+import {PrimaryButtonType} from './types';
 import {DefaultButton, Label} from './styles';
 import {getButtonText} from '../../modules/getText';
 import NullIcon from '../icon/NullIcon';
@@ -31,7 +31,7 @@ export default function SecondaryButton({
   right,
   children,
   isLoading,
-}: ButtonType) {
+}: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
   const Text = getButtonText(size);

@@ -1,31 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
-import {useForm} from 'react-hook-form';
-import {FormData} from '../../components/input/types';
 import FitIcon from '../../components/icon/FitIcon';
-import {handleNextStep} from '../../modules/formHandler';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ParamList} from '../../navigation/types';
-import renderInput from '../../modules/renderInput';
+import {handleNextStep, useAdditionalInformation} from './hooks';
+import renderInput from './renderInput';
 
 export default function AdditionalInformation() {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
-  const [step, setStep] = useState(0);
-
   const {
+    navigation,
+    step,
+    setStep,
     control,
     handleSubmit,
     trigger,
-    formState: {errors, touchedFields},
-  } = useForm<FormData>({
-    defaultValues: {
-      weight: '',
-      height: '',
-      nickname: '',
-    },
-    mode: 'onBlur',
-  });
+    errors,
+    touchedFields,
+  } = useAdditionalInformation();
 
   return (
     <Sign

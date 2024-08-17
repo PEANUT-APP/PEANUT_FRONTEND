@@ -34,15 +34,9 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="IconTest" component={IconTest} />
         <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="DietLog"
-          component={DietLog}
+          name="BasicInformation"
+          component={BasicInformation}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -60,21 +54,27 @@ export default function Navigation() {
           component={SignUp}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="BasicInformation"
-          component={BasicInformation}
-          options={{headerShown: false}}
-        />
+
         <Stack.Screen
           name="AdditionalInformation"
           component={AdditionalInformation}
           options={{headerShown: false}}
         />
-
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="DietLog"
+          component={DietLog}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="Food" component={InputTest} />
         <Stack.Screen name="Community" component={MainValueTest} />
         <Stack.Screen name="My" component={ProfileTest} />
         <Stack.Screen name="Test" component={Test} />
+        <Stack.Screen name="IconTest" component={IconTest} />
         <Stack.Screen name="PrimaryButtonTest" component={PrimaryButtonTest} />
         <Stack.Screen
           name="SecondaryButtonTest"
@@ -86,13 +86,13 @@ export default function Navigation() {
         />
         <Stack.Screen name="OutlineButtonTest" component={OutlineButtonTest} />
         <Stack.Screen name="TextButtonTest" component={TextButtonTest} />
+        <Stack.Screen name="InputTest" component={InputTest} />
         <Stack.Screen name="SelectButtonTest" component={SelectButtonTest} />
         <Stack.Screen
           name="NavigationButtonTest"
           component={NavigationButtonTest}
         />
         <Stack.Screen name="CameraButtonTest" component={CameraButtonTest} />
-        <Stack.Screen name="InputTest" component={InputTest} />
         <Stack.Screen name="MainValueTest" component={MainValueTest} />
         <Stack.Screen name="ProfileTest" component={ProfileTest} />
         <Stack.Screen name="NavigationTest" component={NavigationTest} />
