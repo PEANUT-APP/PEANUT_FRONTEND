@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {ButtonStyleType, ButtonType} from './types';
+import {OutlineButtonStyleType, OutlineButtonType} from './types';
 import {Label} from './styles';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
@@ -8,7 +8,7 @@ import {Caption1} from '../text/Text';
 import {colors} from '../../styles/colors';
 import {useButtonState} from '../../modules/useButtonState';
 
-const Button = styled.TouchableOpacity<ButtonStyleType>`
+const Button = styled.TouchableOpacity<OutlineButtonStyleType>`
   display: inline-flex;
   height: ${props => (props.size === 'm' ? '40px' : '30px')};
   justify-content: center;
@@ -35,7 +35,8 @@ export default function OutlineButton({
   right,
   children,
   isLoading,
-}: ButtonType) {
+  onPress,
+}: OutlineButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
   const renderIcon = (position: string) => {
@@ -69,6 +70,7 @@ export default function OutlineButton({
       activeOpacity={1}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      onPress={onPress}
       disabled={disabled || isLoading}>
       <InlineLabel isLoading={isLoading || true}>
         {renderIcon('left')}

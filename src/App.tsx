@@ -10,16 +10,21 @@ import {StatusBar} from 'react-native';
 import Navigation from './navigation/Navigation';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from './styles/theme';
+import {FormProvider, useForm} from 'react-hook-form';
 
 export default function App() {
+  const methods = useForm();
+
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
-      <Navigation />
+      <FormProvider {...methods}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
+        <Navigation />
+      </FormProvider>
     </ThemeProvider>
   );
 }

@@ -11,16 +11,11 @@ import {
   OnBoardingLoginBox,
   OnBoardingLogo,
 } from './styles';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ParamList} from '../../navigation/types';
 import {PrimaryTextButton} from '../../components/button/TextButton';
+import {useOnBoarding} from './hooks';
 
 export default function OnBoarding() {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
-
-  const onPress = (screen: keyof ParamList) => {
-    navigation.navigate(screen);
-  };
+  const {onPress} = useOnBoarding();
 
   return (
     <GlobalView>
