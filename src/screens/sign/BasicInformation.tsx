@@ -5,10 +5,9 @@ import PrimaryButton from '../../components/button/PrimaryButton';
 import {useForm} from 'react-hook-form';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import DesignIcon from '../../components/icon/DesignIcon';
-import {colors} from '../../styles/colors';
 import {handleNextStep} from '../../modules/formHandler';
 import renderInput from '../../modules/renderInput';
+import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function BasicInformation() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -53,17 +52,14 @@ export default function BasicInformation() {
       step={step}
       setStep={setStep}
       type="SignUp">
-      {step >= 3 &&
-        renderInput({
-          name: 'gender',
-          placeholder: '성별',
-          control,
-          errors,
-          touchedFields,
-          trigger,
-          secureTextEntry: false,
-          icon: <DesignIcon type="drop" size="l" color={colors.TextDisabled} />,
-        })}
+      {step >= 3 && (
+        <Dropdown
+          control={control}
+          errors={errors}
+          touchedFields={touchedFields}
+          trigger={trigger}
+        />
+      )}
       {step >= 2 &&
         renderInput({
           name: 'birth',

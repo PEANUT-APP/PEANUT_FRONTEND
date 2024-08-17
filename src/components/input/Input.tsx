@@ -13,8 +13,9 @@ const determineBorderColor = ({
   isValid,
   icon,
   message,
+  isDropdownVisible,
 }: InputStyleType) => {
-  if (isFocused) {
+  if (isDropdownVisible || isFocused) {
     return colors.primaryNormal;
   } else if (icon) {
     if (isError) {
@@ -35,8 +36,8 @@ const InputBox = styled.View<InputStyleType>`
   justify-content: space-between;
   border-bottom-width: 1px;
   border-bottom-color: ${determineBorderColor};
-  background-color: ${({editable}) =>
-    editable ? 'transparent' : colors.SolidDisabled};
+  background-color: ${({editable, drop}) =>
+    editable || drop ? 'transparent' : colors.SolidDisabled};
 `;
 
 const InputText = styled.TextInput<InputStyleType>`
@@ -48,8 +49,8 @@ const InputText = styled.TextInput<InputStyleType>`
   font-weight: 500;
   line-height: 21.344px;
   letter-spacing: -0.4px;
-  color: ${({editable}) =>
-    editable ? colors.TextNormal : colors.TextDisabled};
+  color: ${({editable, drop}) =>
+    editable || drop ? colors.TextNormal : colors.TextDisabled};
 `;
 
 const InputLabel = styled(Caption1)`
@@ -83,6 +84,11 @@ export default function Input({
   trigger,
   secureTextEntry,
   onSubmitEditing,
+  drop = false,
+  value,
+  isDropdownVisible,
+  setIsDropdownVisible,
+  pointerEvents,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -95,7 +101,11 @@ export default function Input({
       rules={rules}
       render={({field}) => (
         <View>
-          {(isFocused || field.value || !editable) && (
+          {(isDropdownVisible ||
+            value ||
+            isFocused ||
+            field.value ||
+            (!editable && !drop)) && (
             <InputLabel color={colors.TextNeutral}>{placeholder}</InputLabel>
           )}
           <InputBox
@@ -104,24 +114,32 @@ export default function Input({
             icon={!!icon}
             isError={isError}
             isValid={isValid}
-            message={!!message}>
+            message={!!message}
+            drop={drop}
+            isDropdownVisible={isDropdownVisible}>
             <InputText
-              placeholder={isFocused ? '' : placeholder}
+              placeholder={isFocused || isDropdownVisible ? '' : placeholder}
               placeholderTextColor={colors.TextNeutral}
               onChangeText={field.onChange}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                setIsDropdownVisible?.(true);
+              }}
               onBlur={() => {
                 field.onBlur();
                 setIsFocused(false);
+                setIsDropdownVisible?.(false);
                 trigger(name);
               }}
-              value={editable ? field.value : defaultValue}
+              value={value || (editable ? field.value : defaultValue)}
               editable={editable}
               icon={!!icon}
               button={button}
               returnKeyType={returnKeyType}
               secureTextEntry={secureTextEntry}
               onSubmitEditing={onSubmitEditing}
+              drop={drop}
+              pointerEvents={pointerEvents}
             />
             {!button && icon && (isValid || !message) && icon}
             {button && !icon && (
