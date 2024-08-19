@@ -39,6 +39,7 @@ export interface RenderInputProps {
   isTimerActive?: boolean;
   handleSendEmail?: (data: {email: string}) => void;
   isVerificationCodeValid?: boolean;
+  isNicknameValid?: boolean;
 }
 
 export type HandleNextStepProps = {

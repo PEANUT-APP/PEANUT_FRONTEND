@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 import {NullType} from './types';
 import {getSize} from '../../modules/getSize';
-import {getNullIconMargin} from '../../modules/getMargin';
-import {getNullColorByType} from '../../modules/getColorByType';
+import {getNullIconMargin} from './getMargin';
+import {getNullColorByType} from './getColorByType';
 
 export const NullIcon = styled.View<NullType>`
   width: ${({size}) => getSize(size)};

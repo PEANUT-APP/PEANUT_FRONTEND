@@ -46,6 +46,7 @@ export interface InputType {
   isTimerActive?: boolean;
   handleSendEmail?: (data: {email: string}) => void;
   isVerificationCodeValid?: boolean;
+  isNicknameValid?: boolean;
 }
 
 export interface InputStyleType {

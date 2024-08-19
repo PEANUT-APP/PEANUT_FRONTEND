@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {DesignIconType} from './types';
-import {designIconSize} from '../../modules/designIconSize';
+import {designIconSize} from './designIconSize';
 import {Circle, Path, Svg} from 'react-native-svg';
 import {getDesignIconSize} from '../../modules/getSize';
+import {colors} from '../../styles/colors';
 
 const IconBox = styled.View<DesignIconType>`
   width: ${({size}) => getDesignIconSize(size)};
@@ -22,8 +23,17 @@ const getPathProps = (
       fill: color,
     };
   }
+
+  let dropColor;
+  if (type === 'dropClose') {
+    dropColor = colors.LineDisabled;
+  } else if (type === 'dropOpen') {
+    dropColor = colors.primaryNormal;
+  } else {
+    dropColor = color;
+  }
   return {
-    stroke: color,
+    stroke: dropColor,
     strokeWidth: strokeWidth,
     fill: 'none',
     strokeLinecap: 'round' as 'round',

@@ -19,6 +19,7 @@ const renderInput = ({
   isTimerActive,
   handleSendEmail,
   isVerificationCodeValid,
+  isNicknameValid,
 }: RenderInputProps) => (
   <Input
     placeholder={placeholder}
@@ -39,6 +40,7 @@ const renderInput = ({
     isTimerActive={isTimerActive}
     handleSendEmail={handleSendEmail}
     isVerificationCodeValid={isVerificationCodeValid}
+    isNicknameValid={isNicknameValid}
   />
 );
 

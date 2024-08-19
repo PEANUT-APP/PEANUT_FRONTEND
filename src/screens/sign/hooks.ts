@@ -223,6 +223,8 @@ export const useBasicInformation = () => {
     handleSubmit,
     trigger,
     watch,
+    setValue,
+    setFocus,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
@@ -277,6 +279,8 @@ export const useBasicInformation = () => {
     touchedFields,
     isButtonDisabled,
     setIsButtonDisabled,
+    setValue,
+    setFocus,
   };
 };
 
@@ -284,11 +288,13 @@ export const useAdditionalInformation = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const [step, setStep] = useState(0);
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
 
   const {
     control,
     handleSubmit,
     trigger,
+    watch,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
@@ -299,6 +305,21 @@ export const useAdditionalInformation = () => {
     mode: 'onBlur',
   });
 
+  const nicknameWatch = watch('nickname');
+
+  useEffect(() => {
+    const validateNickname = async () => {
+      if (nicknameWatch) {
+        const isValid = await trigger('nickname');
+        setIsNicknameValid(isValid);
+      } else {
+        setIsNicknameValid(false);
+      }
+    };
+
+    validateNickname();
+  }, [nicknameWatch, trigger]);
+
   return {
     navigation,
     step,
@@ -308,5 +329,6 @@ export const useAdditionalInformation = () => {
     trigger,
     errors,
     touchedFields,
+    isNicknameValid,
   };
 };

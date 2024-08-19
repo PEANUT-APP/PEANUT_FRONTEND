@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {ButtonStyleType, PrimaryButtonType} from './types';
 import {Label} from './styles';
-import {getButtonText} from '../../modules/getText';
+import {getButtonText} from './getText';
 import NullIcon from '../icon/NullIcon';
 import {colors} from '../../styles/colors';
-import {useButtonState} from '../../modules/useButtonState';
+import {useButtonState} from './useButtonState';
 
 const getPadding = ({isPressed, size, left, right}: ButtonStyleType) => {
   if (isPressed) {

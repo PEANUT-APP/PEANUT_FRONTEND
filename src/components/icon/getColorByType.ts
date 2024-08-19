@@ -1,5 +1,5 @@
-import {IconType} from '../components/icon/types';
-import {colors} from '../styles/colors';
+import {IconType} from './types';
+import {colors} from '../../styles/colors';
 
 export const getLoadingColorByType = (type: IconType['type']): string => {
   switch (type) {

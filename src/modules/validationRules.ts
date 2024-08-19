@@ -19,10 +19,6 @@ export const validationRules = {
   },
   gender: {
     required: '값이 필요해요!',
-    validate: (value: string) =>
-      value === '남성' ||
-      value === '여성' ||
-      '남성/여성 형식으로 작성해주세요!',
   },
   birth: {
     required: '값이 필요해요!',

@@ -16,6 +16,8 @@ export default function BasicInformation() {
     errors,
     touchedFields,
     isButtonDisabled,
+    setValue,
+    setFocus,
   } = useBasicInformation();
 
   return (
@@ -49,6 +51,8 @@ export default function BasicInformation() {
           errors={errors}
           touchedFields={touchedFields}
           trigger={trigger}
+          setValue={setValue}
+          setFocus={setFocus}
         />
       )}
       {step >= 2 &&

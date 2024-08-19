@@ -15,6 +15,7 @@ export default function AdditionalInformation() {
     trigger,
     errors,
     touchedFields,
+    isNicknameValid,
   } = useAdditionalInformation();
 
   return (
@@ -67,8 +68,9 @@ export default function AdditionalInformation() {
           errors,
           touchedFields,
           trigger,
-          message: '단 하나뿐인 닉네임입니다',
+          message: '중복되지 않는 닉네임입니다',
           icon: <FitIcon size="l" />,
+          isNicknameValid,
         })}
     </Sign>
   );
