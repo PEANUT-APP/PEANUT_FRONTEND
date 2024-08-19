@@ -15,6 +15,7 @@ export default function AdditionalInformation() {
     trigger,
     errors,
     touchedFields,
+    isButtonDisabled,
     isNicknameValid,
   } = useAdditionalInformation();
 
@@ -35,7 +36,8 @@ export default function AdditionalInformation() {
               targetScreen: 'SignIn',
               errors,
             })
-          }>
+          }
+          disabled={isButtonDisabled}>
           다음
         </PrimaryButton>
       }
