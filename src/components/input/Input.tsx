@@ -39,13 +39,15 @@ export default function Input({
   isTimerActive,
   handleSendEmail,
   isVerificationCodeValid,
+  isNicknameValid,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
   const isError = !!icon && editable && errors[name] && touchedFields[name];
   const isValid =
     (!!icon && editable && !errors[name] && touchedFields[name]) ||
-    isVerificationCodeValid;
+    isVerificationCodeValid ||
+    isNicknameValid;
 
   return (
     <Controller

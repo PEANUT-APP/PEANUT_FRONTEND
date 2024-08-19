@@ -2,8 +2,8 @@ import React, {useEffect, useRef} from 'react';
 import {LoadingType} from './types';
 import {Animated, Easing} from 'react-native';
 import {Svg, Path} from 'react-native-svg';
-import {loadingIconSize} from '../../modules/loadingIconSize';
-import {getLoadingColorByType} from '../../modules/getColorByType';
+import {loadingIconSize} from './loadingIconSize';
+import {getLoadingColorByType} from './getColorByType';
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
