@@ -288,6 +288,7 @@ export const useAdditionalInformation = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const [step, setStep] = useState(0);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [isNicknameValid, setIsNicknameValid] = useState(false);
 
   const {
@@ -306,6 +307,32 @@ export const useAdditionalInformation = () => {
   });
 
   const nicknameWatch = watch('nickname');
+  const heightWatch = watch('height');
+  const weightWatch = watch('weight');
+
+  useEffect(() => {
+    const validateStep = async () => {
+      let isValid = false;
+
+      switch (step) {
+        case 0:
+          isValid = await trigger('nickname');
+          break;
+        case 1:
+          isValid = await trigger('height');
+          break;
+        case 2:
+          isValid = await trigger('weight');
+          break;
+        default:
+          isValid = false;
+      }
+
+      setIsButtonDisabled(!isValid);
+    };
+
+    validateStep();
+  }, [step, nicknameWatch, heightWatch, weightWatch, trigger]);
 
   useEffect(() => {
     const validateNickname = async () => {
@@ -329,6 +356,7 @@ export const useAdditionalInformation = () => {
     trigger,
     errors,
     touchedFields,
+    isButtonDisabled,
     isNicknameValid,
   };
 };
