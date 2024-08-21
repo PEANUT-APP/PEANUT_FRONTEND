@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {Body1, Body2, Caption1} from '../components/text/Text';
+import {Body1, Body2, Caption1} from '../text/Text';
 
 export const getButtonText = (size: 'l' | 'm' | 's') => {
   switch (size) {

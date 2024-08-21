@@ -9,10 +9,21 @@ export interface ButtonType {
   children: ReactNode;
   isLoading?: boolean;
   type?: string;
+}
+
+export interface PrimaryButtonType extends ButtonType {
   onPress?: () => void;
 }
 
+export interface OutlineButtonType extends ButtonType {
+  onPress?: (data: {email: string}) => void;
+}
+
 export interface ButtonStyleType extends ButtonType {
+  isPressed: boolean;
+}
+
+export interface OutlineButtonStyleType extends OutlineButtonType {
   isPressed: boolean;
 }
 

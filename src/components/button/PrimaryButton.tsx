@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {ButtonType} from './types';
+import {PrimaryButtonType} from './types';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {DefaultButton, Label} from './styles';
-import {getButtonText} from '../../modules/getText';
+import {getButtonText} from './getText';
 import {colors} from '../../styles/colors';
-import {useButtonState} from '../../modules/useButtonState';
+import {useButtonState} from './useButtonState';
 
 const Button = styled(DefaultButton)`
   background-color: ${props =>
@@ -27,7 +27,7 @@ export default function PrimaryButton({
   children,
   isLoading,
   onPress,
-}: ButtonType) {
+}: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
   const Text = getButtonText(size);

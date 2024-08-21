@@ -1,32 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Sign from './Sign';
-import {FormData} from '../../components/input/types';
 import PrimaryButton from '../../components/button/PrimaryButton';
-import {useForm} from 'react-hook-form';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ParamList} from '../../navigation/types';
-import {handleNextStep} from '../../modules/formHandler';
-import renderInput from '../../modules/renderInput';
+import {handleNextStep, useBasicInformation} from './hooks';
+import renderInput from './renderInput';
 import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function BasicInformation() {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
-  const [step, setStep] = useState(0);
-
   const {
+    navigation,
+    step,
+    setStep,
     control,
     handleSubmit,
     trigger,
-    formState: {errors, touchedFields},
-  } = useForm<FormData>({
-    defaultValues: {
-      gender: '',
-      birth: '',
-      name: '',
-      password: '',
-    },
-    mode: 'onBlur',
-  });
+    errors,
+    touchedFields,
+    isButtonDisabled,
+    setValue,
+    setFocus,
+  } = useBasicInformation();
 
   return (
     <Sign
@@ -45,7 +37,8 @@ export default function BasicInformation() {
               targetScreen: 'AdditionalInformation',
               errors,
             })
-          }>
+          }
+          disabled={isButtonDisabled}>
           다음
         </PrimaryButton>
       }
@@ -58,6 +51,8 @@ export default function BasicInformation() {
           errors={errors}
           touchedFields={touchedFields}
           trigger={trigger}
+          setValue={setValue}
+          setFocus={setFocus}
         />
       )}
       {step >= 2 &&
