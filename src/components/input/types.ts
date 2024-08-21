@@ -42,6 +42,11 @@ export interface InputType {
   isDropdownVisible?: boolean;
   setIsDropdownVisible?: Dispatch<SetStateAction<boolean>>;
   pointerEvents?: 'none' | 'box-none' | 'box-only' | 'auto' | undefined;
+  timer?: number;
+  isTimerActive?: boolean;
+  handleSendEmail?: (data: {email: string}) => void;
+  isVerificationCodeValid?: boolean;
+  isNicknameValid?: boolean;
 }
 
 export interface InputStyleType {

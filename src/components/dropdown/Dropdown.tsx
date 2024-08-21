@@ -31,27 +31,31 @@ export default function Dropdown({
   errors,
   touchedFields,
   trigger,
+  setValue,
+  setFocus,
 }: DropdownType) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
-  const [iconState, setIconState] = useState({
-    color: colors.TextDisabled,
-    rotation: 0,
-  });
+  const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
+    'dropClose',
+  );
 
   const toggleDropdown = useCallback(() => {
-    setIsDropdownVisible(prev => !prev);
-    setIconState({
-      color: !isDropdownVisible ? colors.primaryNormal : colors.TextDisabled,
-      rotation: !isDropdownVisible ? 0 : 180,
+    setIsDropdownVisible(prevState => {
+      const newState = !prevState;
+      setDropType(newState ? 'dropOpen' : 'dropClose');
+      setFocus('gender');
+      return newState;
     });
-  }, [isDropdownVisible]);
+  }, [setFocus]);
 
-  const handleSelect = (value: string) => {
+  const handleSelect = async (value: string) => {
     setSelectedValue(value);
     setIsDropdownVisible(false);
-    setIconState({color: colors.TextDisabled, rotation: 0});
-    trigger('gender');
+    setDropType('dropClose');
+
+    setValue('gender', value);
+    await trigger('gender');
   };
 
   return (
@@ -69,11 +73,8 @@ export default function Dropdown({
         secureTextEntry={false}
         value={selectedValue}
         icon={
-          <TouchableOpacity
-            style={{transform: [{rotate: `${iconState.rotation}deg`}]}}
-            onPress={toggleDropdown}
-            activeOpacity={1}>
-            <DesignIcon type="drop" size="l" color={iconState.color} />
+          <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
+            <DesignIcon type={dropType} size="l" />
           </TouchableOpacity>
         }
         drop={true}

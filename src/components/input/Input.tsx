@@ -1,71 +1,17 @@
 import React, {useState} from 'react';
-import styled from 'styled-components/native';
-import {InputStyleType, InputType} from './types';
+import {InputType} from './types';
 import {Controller} from 'react-hook-form';
 import {colors} from '../../styles/colors';
-import {Caption1, Caption2} from '../text/Text';
 import OutlineButton from '../button/OutlineButton';
 import {View} from 'react-native';
-
-const determineBorderColor = ({
-  isFocused,
-  isError,
-  isValid,
-  icon,
-  message,
-  isDropdownVisible,
-}: InputStyleType) => {
-  if (isDropdownVisible || isFocused) {
-    return colors.primaryNormal;
-  } else if (icon) {
-    if (isError) {
-      return colors.TextError;
-    } else if (message && isValid) {
-      return colors.primaryNormal;
-    }
-  }
-  return colors.TextDisabled;
-};
-
-const InputBox = styled.View<InputStyleType>`
-  width: 350px;
-  height: 52px;
-  padding: 0 16px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom-width: 1px;
-  border-bottom-color: ${determineBorderColor};
-  background-color: ${({editable, drop}) =>
-    editable || drop ? 'transparent' : colors.SolidDisabled};
-`;
-
-const InputText = styled.TextInput<InputStyleType>`
-  flex: 1;
-  padding-right: ${({icon, button}) => (icon || button) && '16px'};
-  font-family: 'Pretendard';
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 21.344px;
-  letter-spacing: -0.4px;
-  color: ${({editable, drop}) =>
-    editable || drop ? colors.TextNormal : colors.TextDisabled};
-`;
-
-const InputLabel = styled(Caption1)`
-  padding: 0 4px;
-  line-height: 16.008px;
-  letter-spacing: -0.3px;
-`;
-
-const InputMessage = styled(Caption2)<InputStyleType>`
-  line-height: 13.34px;
-  letter-spacing: -0.25px;
-  margin-top: 5.5px;
-  margin-left: 16px;
-  color: ${({isError}) => (isError ? colors.TextError : colors.primaryNormal)};
-`;
+import {
+  InputBox,
+  InputLabel,
+  InputMessage,
+  InputText,
+  InputTimer,
+  InputTimerMessage,
+} from './styles';
 
 export default function Input({
   placeholder,
@@ -89,11 +35,19 @@ export default function Input({
   isDropdownVisible,
   setIsDropdownVisible,
   pointerEvents,
+  timer,
+  isTimerActive,
+  handleSendEmail,
+  isVerificationCodeValid,
+  isNicknameValid,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
   const isError = !!icon && editable && errors[name] && touchedFields[name];
-  const isValid = !!icon && editable && !errors[name] && touchedFields[name];
+  const isValid =
+    (!!icon && editable && !errors[name] && touchedFields[name]) ||
+    isVerificationCodeValid ||
+    isNicknameValid;
 
   return (
     <Controller
@@ -141,17 +95,34 @@ export default function Input({
               drop={drop}
               pointerEvents={pointerEvents}
             />
-            {!button && icon && (isValid || !message) && icon}
-            {button && !icon && (
-              <OutlineButton size="s" disabled={!editable && true}>
+            {icon && (isValid || !message) && icon}
+            {button && !isValid && (
+              <OutlineButton
+                size="s"
+                disabled={(!editable && true) || isTimerActive}
+                onPress={handleSendEmail}>
                 {buttonText}
               </OutlineButton>
             )}
           </InputBox>
-          {(isError || (isValid && !!message)) && !isFocused && (
-            <InputMessage isError={isError}>
-              {isValid ? message : errors[name]?.message}
-            </InputMessage>
+          {((isError && !isTimerActive) || (isValid && !!message)) &&
+            !isFocused && (
+              <InputMessage isError={isError}>
+                {isValid ? message : errors[name]?.message}
+              </InputMessage>
+            )}
+          {((button && !isValid) || !isError) && isTimerActive && (
+            <InputTimer>
+              <InputTimerMessage color={colors.TextDisabled}>
+                이메일로 인증번호가 전송되었습니다
+              </InputTimerMessage>
+              <InputTimerMessage color={colors.primaryNormal}>
+                {`${String(Math.floor((timer || 0) / 60)).padStart(
+                  2,
+                  '0',
+                )}:${String((timer || 0) % 60).padStart(2, '0')}`}
+              </InputTimerMessage>
+            </InputTimer>
           )}
         </View>
       )}
