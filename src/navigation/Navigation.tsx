@@ -35,8 +35,8 @@ export default function Navigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="BasicInformation"
-          component={BasicInformation}
+          name="Home"
+          component={Home}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -54,17 +54,17 @@ export default function Navigation() {
           component={SignUp}
           options={{headerShown: false}}
         />
-
+        <Stack.Screen
+          name="BasicInformation"
+          component={BasicInformation}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="AdditionalInformation"
           component={AdditionalInformation}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
-        />
+
         <Stack.Screen
           name="DietLog"
           component={DietLog}

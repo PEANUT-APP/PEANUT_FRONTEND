@@ -39,7 +39,7 @@ export interface SelectButtonStyleType extends SelectButtonType {
 
 export interface NavigationButtonType {
   children: ReactNode;
-  type: 'dietLog' | 'home' | 'community' | 'my';
+  type: 'medical' | 'home' | 'community' | 'my';
   active: boolean;
   onPress: () => void;
 }

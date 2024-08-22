@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components/native';
-import {colors} from '../../styles/colors';
 import NavigationButton from '../button/NavigationButton';
 import {
   NavigationProp,
@@ -8,20 +6,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import {NavigationList} from '../../navigation/types';
-
-const NavigationBarContainer = styled.View`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 13px 35px 37px;
-  background-color: ${colors.white};
-  align-items: center;
-`;
-
-const NavigationBarBox = styled.View`
-  flex-direction: row;
-  gap: 40px;
-`;
+import {NavigationBarBox, NavigationBarContainer} from './styles';
 
 export default function NavigationBar() {
   const [activeTab, setActiveTab] = useState<String>('Home');
@@ -50,9 +35,9 @@ export default function NavigationBar() {
           홈
         </NavigationButton>
         <NavigationButton
-          type="dietLog"
-          active={activeTab === 'DietLog'}
-          onPress={() => handlePress('DietLog')}>
+          type="medical"
+          active={activeTab === 'Medical'}
+          onPress={() => handlePress('Medical')}>
           식단기록
         </NavigationButton>
         <NavigationButton
