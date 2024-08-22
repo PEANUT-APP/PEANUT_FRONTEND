@@ -54,16 +54,11 @@ export default function Home() {
   return (
     <Layout paddingBottom={107}>
       <HomeBox>
-        <HomeTop>
+        <HomeTop
+          colors={['#ff7b74', '#ffbead']}
+          start={{x: 0, y: 0}}
+          end={{x: 0, y: 1}}>
           <HomeSearchContainer>
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                backgroundColor: '#d9d9d9',
-                width: 50,
-                height: 48,
-              }}
-            />
             <HomeSearchBox>
               <HomeSearchInput
                 placeholder="음식명을 입력해보세요"

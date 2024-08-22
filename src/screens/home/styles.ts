@@ -1,14 +1,14 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Heading} from '../../components/text/Text';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const HomeBox = styled.View`
   flex: 1;
-  gap: 23px;
+  gap: 12px;
 `;
 
-export const HomeTop = styled.View`
-  background-color: ${colors.primaryNormal};
+export const HomeTop = styled(LinearGradient)`
   align-items: center;
   gap: 24px;
   padding: 74px 0 20px;
