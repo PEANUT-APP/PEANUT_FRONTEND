@@ -35,11 +35,6 @@ export default function Navigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="BasicInformation"
-          component={BasicInformation}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
           name="OnBoarding"
           component={OnBoarding}
           options={{headerShown: false}}
@@ -54,7 +49,11 @@ export default function Navigation() {
           component={SignUp}
           options={{headerShown: false}}
         />
-
+        <Stack.Screen
+          name="BasicInformation"
+          component={BasicInformation}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="AdditionalInformation"
           component={AdditionalInformation}

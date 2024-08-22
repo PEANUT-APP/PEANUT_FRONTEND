@@ -3,7 +3,7 @@ import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useSignIn} from './hooks';
 import {PrimaryTextButton} from '../../components/button/TextButton';
-import renderInput from './renderInput';
+import RenderInput from './renderInput';
 
 export default function SignIn() {
   const {
@@ -50,7 +50,7 @@ export default function SignIn() {
       setStep={setStep}
       type="SignIn">
       {step >= 1 &&
-        renderInput({
+        RenderInput({
           name: 'password',
           placeholder: '비밀번호',
           control,
@@ -60,7 +60,7 @@ export default function SignIn() {
           secureTextEntry: true,
         })}
       {step >= 0 &&
-        renderInput({
+        RenderInput({
           name: 'email',
           placeholder: '이메일',
           control,

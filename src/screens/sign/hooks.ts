@@ -4,7 +4,9 @@ import {FormData} from '../../components/input/types';
 import {HandleNextStepProps} from './types';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useSendSimpleMessageMutation} from '../../services/sign/signApi';
+import {SendEmailFormType} from '../../services/sign/types';
 
 export const handleFormSubmit = (navigation: any, navigateTo: string) => {
   Alert.alert('성공', '모든 필드가 유효합니다!');
@@ -115,14 +117,18 @@ export const useSignUp = () => {
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [email, setEmail] = useState('');
   const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
 
   const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const [sendSimpleMessage] = useSendSimpleMessageMutation();
 
   const {
     control,
     handleSubmit,
     trigger,
     watch,
+    setValue,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
@@ -170,29 +176,30 @@ export const useSignUp = () => {
   }, [isTimerActive, timer]);
 
   // 이메일 전송 처리 및 타이머 초기화
-  const handleSendEmail = useCallback(
-    (data: {email: string}) => {
-      Alert.alert(data.email || email);
+  const handleSendEmail = async (data: SendEmailFormType) => {
+    try {
+      const response = await sendSimpleMessage(data.email || email).unwrap();
+      setVerification(true);
+      setVerificationCode(response['Confirmation : ']);
+      setValue('verificationCode', '');
       setTimer(180); // 타이머를 180초로 초기화
       setIsTimerActive(true); // 타이머 다시 활성화
-    },
-    [email],
-  );
+      setEmail(data.email);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('인증번호 발송이 실패했습니다.');
+    }
+  };
 
-  const handleSignUpFormSubmit = useCallback(
-    (data: {email: string}) => {
-      if (!verification) {
-        setVerification(true);
-        handleSendEmail(data);
-        setEmail(data.email);
-      } else {
-        Alert.alert('인증 성공');
-        setVerification(false);
-        navigation.navigate('BasicInformation');
-      }
-    },
-    [verification, handleSendEmail, navigation],
-  );
+  const handleSignUpFormSubmit = (data: SendEmailFormType) => {
+    if (!verification) {
+      handleSendEmail(data);
+    } else {
+      Alert.alert('인증 성공');
+      navigation.navigate('BasicInformation');
+      setVerification(false);
+    }
+  };
 
   return {
     verification,
@@ -209,6 +216,7 @@ export const useSignUp = () => {
     isButtonDisabled,
     handleSendEmail,
     isVerificationCodeValid,
+    verificationCode,
   };
 };
 
