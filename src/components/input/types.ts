@@ -47,6 +47,7 @@ export interface InputType {
   handleSendEmail?: (data: {email: string}) => void;
   isVerificationCodeValid?: boolean;
   isNicknameValid?: boolean;
+  autoFocus?: boolean;
 }
 
 export interface InputStyleType {

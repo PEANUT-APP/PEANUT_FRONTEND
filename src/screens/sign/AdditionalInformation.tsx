@@ -3,7 +3,7 @@ import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import FitIcon from '../../components/icon/FitIcon';
 import {handleNextStep, useAdditionalInformation} from './hooks';
-import renderInput from './renderInput';
+import RenderInput from './renderInput';
 
 export default function AdditionalInformation() {
   const {
@@ -45,7 +45,7 @@ export default function AdditionalInformation() {
       setStep={setStep}
       type="SignUp">
       {step >= 2 &&
-        renderInput({
+        RenderInput({
           name: 'weight',
           placeholder: '몸무게',
           control,
@@ -54,7 +54,7 @@ export default function AdditionalInformation() {
           trigger,
         })}
       {step >= 1 &&
-        renderInput({
+        RenderInput({
           name: 'height',
           placeholder: '키',
           control,
@@ -63,7 +63,7 @@ export default function AdditionalInformation() {
           trigger,
         })}
       {step >= 0 &&
-        renderInput({
+        RenderInput({
           name: 'nickname',
           placeholder: '닉네임',
           control,

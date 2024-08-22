@@ -2,7 +2,7 @@ import React from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useBasicInformation} from './hooks';
-import renderInput from './renderInput';
+import RenderInput from './renderInput';
 import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function BasicInformation() {
@@ -56,7 +56,7 @@ export default function BasicInformation() {
         />
       )}
       {step >= 2 &&
-        renderInput({
+        RenderInput({
           name: 'birth',
           placeholder: '생년월일',
           control,
@@ -65,7 +65,7 @@ export default function BasicInformation() {
           trigger,
         })}
       {step >= 1 &&
-        renderInput({
+        RenderInput({
           name: 'name',
           placeholder: '이름',
           control,
@@ -74,7 +74,7 @@ export default function BasicInformation() {
           trigger,
         })}
       {step >= 0 &&
-        renderInput({
+        RenderInput({
           name: 'password',
           placeholder: '비밀번호',
           control,

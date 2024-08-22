@@ -1,9 +1,9 @@
 import React from 'react';
 import Input from '../../components/input/Input';
-import {validationRules} from '../../modules/validationRules';
+import {useValidationRules} from '../../modules/validationRules';
 import {RenderInputProps} from './types';
 
-const renderInput = ({
+export default function RenderInput({
   name,
   placeholder,
   control,
@@ -20,28 +20,33 @@ const renderInput = ({
   handleSendEmail,
   isVerificationCodeValid,
   isNicknameValid,
-}: RenderInputProps) => (
-  <Input
-    placeholder={placeholder}
-    name={name}
-    control={control}
-    rules={validationRules[name]}
-    errors={errors}
-    editable={true}
-    touchedFields={touchedFields}
-    returnKeyType="next"
-    trigger={trigger}
-    secureTextEntry={secureTextEntry}
-    message={message}
-    icon={icon}
-    button={button}
-    buttonText={buttonText}
-    timer={timer}
-    isTimerActive={isTimerActive}
-    handleSendEmail={handleSendEmail}
-    isVerificationCodeValid={isVerificationCodeValid}
-    isNicknameValid={isNicknameValid}
-  />
-);
+  verificationCode,
+  autoFocus,
+}: RenderInputProps) {
+  const validationRules = useValidationRules(verificationCode);
 
-export default renderInput;
+  return (
+    <Input
+      placeholder={placeholder}
+      name={name}
+      control={control}
+      rules={validationRules[name]}
+      errors={errors}
+      editable={true}
+      touchedFields={touchedFields}
+      returnKeyType="next"
+      trigger={trigger}
+      secureTextEntry={secureTextEntry}
+      message={message}
+      icon={icon}
+      button={button}
+      buttonText={buttonText}
+      timer={timer}
+      isTimerActive={isTimerActive}
+      handleSendEmail={handleSendEmail}
+      isVerificationCodeValid={isVerificationCodeValid}
+      isNicknameValid={isNicknameValid}
+      autoFocus={autoFocus}
+    />
+  );
+}

@@ -40,6 +40,8 @@ export interface RenderInputProps {
   handleSendEmail?: (data: {email: string}) => void;
   isVerificationCodeValid?: boolean;
   isNicknameValid?: boolean;
+  verificationCode?: string;
+  autoFocus?: boolean;
 }
 
 export type HandleNextStepProps = {
