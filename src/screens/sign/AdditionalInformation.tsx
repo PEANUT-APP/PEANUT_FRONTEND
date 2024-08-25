@@ -17,6 +17,7 @@ export default function AdditionalInformation() {
     touchedFields,
     isButtonDisabled,
     isNicknameValid,
+    handleAdditionalFormSubmit,
   } = useAdditionalInformation();
 
   return (
@@ -35,6 +36,7 @@ export default function AdditionalInformation() {
               navigation,
               targetScreen: 'SignIn',
               errors,
+              handleAdditionalFormSubmit,
             })
           }
           disabled={isButtonDisabled}>
@@ -42,8 +44,7 @@ export default function AdditionalInformation() {
         </PrimaryButton>
       }
       step={step}
-      setStep={setStep}
-      type="SignUp">
+      setStep={setStep}>
       {step >= 2 &&
         RenderInput({
           name: 'weight',

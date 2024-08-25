@@ -22,13 +22,12 @@ export default function Sign({
   setVerification,
   step,
   setStep,
-  type,
 }: SignType) {
   const {handleBack} = useSign(verification, setVerification, step, setStep);
 
   return (
     <GlobalView>
-      <SignContainer type={type}>
+      <SignContainer>
         <SignBox>
           <SignTitleBox>
             <TouchableOpacity activeOpacity={1} onPress={handleBack}>

@@ -5,8 +5,20 @@ import {HandleNextStepProps} from './types';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {useEffect, useState} from 'react';
-import {useSendSimpleMessageMutation} from '../../services/sign/signApi';
-import {SendEmailFormType} from '../../services/sign/types';
+import {
+  useSendSimpleMessageMutation,
+  useSignInMutation,
+  useSignUpMutation,
+} from '../../services/sign/signApi';
+import {
+  AdditionalFormType,
+  BasicFormType,
+  SendEmailFormType,
+  SignInFormType,
+} from '../../services/sign/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateForm} from '../../slices/formSlice';
+import {RootState} from '../../store/store';
 
 export const handleFormSubmit = (navigation: any, navigateTo: string) => {
   Alert.alert('성공', '모든 필드가 유효합니다!');
@@ -24,20 +36,19 @@ export const handleNextStep = async ({
   fields,
   trigger,
   handleSubmit,
-  navigation,
-  targetScreen,
   errors,
+  handleBasicFormSubmit,
+  handleAdditionalFormSubmit,
 }: HandleNextStepProps) => {
   const result = await trigger(fields[step]);
 
   if (result) {
     if (step < fields.length - 1) {
       setStep(step + 1);
-    } else {
-      handleSubmit(
-        () => handleFormSubmit(navigation, targetScreen),
-        handleFormError,
-      )();
+    } else if (handleBasicFormSubmit) {
+      handleSubmit(handleBasicFormSubmit, handleFormError)();
+    } else if (handleAdditionalFormSubmit) {
+      handleSubmit(handleAdditionalFormSubmit, handleFormError)();
     }
   } else {
     handleFormError(errors);
@@ -67,6 +78,9 @@ export const useSign = (
 
 export const useSignIn = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const [signIn] = useSignInMutation();
+
   const [step, setStep] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
@@ -94,6 +108,16 @@ export const useSignIn = () => {
     validateEmail();
   }, [trigger, emailWatch, step]);
 
+  const handleSignInFormSubmit = async (data: SignInFormType) => {
+    try {
+      const response = await signIn(data).unwrap();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('로그인에 실패했습니다!');
+    }
+  };
+
   const handleFindPassword = () => {};
 
   return {
@@ -106,6 +130,7 @@ export const useSignIn = () => {
     errors,
     trigger,
     touchedFields,
+    handleSignInFormSubmit,
     handleFindPassword,
   };
 };
@@ -210,7 +235,6 @@ export const useSignUp = () => {
     errors,
     trigger,
     touchedFields,
-    handleFormSubmit,
     timer,
     isTimerActive,
     isButtonDisabled,
@@ -222,6 +246,7 @@ export const useSignUp = () => {
 
 export const useBasicInformation = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
 
   const [step, setStep] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -248,6 +273,7 @@ export const useBasicInformation = () => {
   const nameWatch = watch('name');
   const birthWatch = watch('birth');
   const genderWatch = watch('gender');
+  const phoneNumberWatch = watch('phoneNumber');
 
   useEffect(() => {
     const validateStep = async () => {
@@ -266,6 +292,9 @@ export const useBasicInformation = () => {
         case 3:
           isValid = await trigger('gender');
           break;
+        case 4:
+          isValid = await trigger('phoneNumber');
+          break;
         default:
           isValid = false;
       }
@@ -274,7 +303,20 @@ export const useBasicInformation = () => {
     };
 
     validateStep();
-  }, [step, passwordWatch, nameWatch, birthWatch, genderWatch, trigger]);
+  }, [
+    step,
+    passwordWatch,
+    nameWatch,
+    birthWatch,
+    genderWatch,
+    phoneNumberWatch,
+    trigger,
+  ]);
+
+  const handleBasicFormSubmit = (data: BasicFormType) => {
+    dispatch(updateForm(data));
+    navigation.navigate('AdditionalInformation');
+  };
 
   return {
     navigation,
@@ -289,11 +331,16 @@ export const useBasicInformation = () => {
     setIsButtonDisabled,
     setValue,
     setFocus,
+    handleBasicFormSubmit,
   };
 };
 
 export const useAdditionalInformation = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
+  const formData = useSelector((state: RootState) => state.form); // Redux 상태 가져오기
+
+  const [signUp] = useSignUpMutation();
 
   const [step, setStep] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -355,6 +402,20 @@ export const useAdditionalInformation = () => {
     validateNickname();
   }, [nicknameWatch, trigger]);
 
+  const handleAdditionalFormSubmit = async (data: AdditionalFormType) => {
+    dispatch(updateForm(data));
+
+    try {
+      console.log(formData);
+      const response = await signUp(formData).unwrap();
+      console.log(response);
+      navigation.navigate('SignIn');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('회원가입에 실패했습니다.');
+    }
+  };
+
   return {
     navigation,
     step,
@@ -366,5 +427,6 @@ export const useAdditionalInformation = () => {
     touchedFields,
     isButtonDisabled,
     isNicknameValid,
+    handleAdditionalFormSubmit,
   };
 };

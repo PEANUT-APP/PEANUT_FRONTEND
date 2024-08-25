@@ -24,6 +24,12 @@ export default function RenderInput({
   autoFocus,
 }: RenderInputProps) {
   const validationRules = useValidationRules(verificationCode);
+  const keyboardType =
+    name === 'phoneNumber'
+      ? 'phone-pad'
+      : name === 'height' || name === 'weight'
+      ? 'numeric'
+      : 'default';
 
   return (
     <Input
@@ -47,6 +53,7 @@ export default function RenderInput({
       isVerificationCodeValid={isVerificationCodeValid}
       isNicknameValid={isNicknameValid}
       autoFocus={autoFocus}
+      keyboardType={keyboardType}
     />
   );
 }

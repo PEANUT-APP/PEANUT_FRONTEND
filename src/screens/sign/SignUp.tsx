@@ -35,8 +35,7 @@ export default function SignUp() {
         </PrimaryButton>
       }
       verification={verification}
-      setVerification={setVerification}
-      type="SignUp">
+      setVerification={setVerification}>
       {verification &&
         RenderInput({
           name: 'verificationCode',
