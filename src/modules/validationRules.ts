@@ -1,7 +1,7 @@
 import {BIRTH_VALIDATION_PATTERN, EMAIL_VALIDATION_PATTERN} from './constants';
 
 export const useValidationRules = (
-  verificationCodeFromServer: string | undefined,
+  verificationCodeFromServer?: string | undefined,
 ) => {
   return {
     email: {
@@ -18,6 +18,16 @@ export const useValidationRules = (
           return true;
         }
         return '잘못된 인증번호입니다';
+      },
+    },
+    phoneNumber: {
+      required: '값이 필요해요!',
+      validate: (value: string) => {
+        const numberValue = parseFloat(value);
+        if (!value || isNaN(numberValue) || numberValue <= 0) {
+          return '숫자로만 작성해주세요!';
+        }
+        return true;
       },
     },
     gender: {

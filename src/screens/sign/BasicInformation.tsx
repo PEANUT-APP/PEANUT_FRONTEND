@@ -18,6 +18,7 @@ export default function BasicInformation() {
     isButtonDisabled,
     setValue,
     setFocus,
+    handleBasicFormSubmit,
   } = useBasicInformation();
 
   return (
@@ -30,12 +31,13 @@ export default function BasicInformation() {
             handleNextStep({
               step,
               setStep,
-              fields: ['password', 'name', 'birth', 'gender'],
+              fields: ['password', 'name', 'birth', 'gender', 'phoneNumber'],
               trigger,
               handleSubmit,
               navigation,
               targetScreen: 'AdditionalInformation',
               errors,
+              handleBasicFormSubmit,
             })
           }
           disabled={isButtonDisabled}>
@@ -43,8 +45,16 @@ export default function BasicInformation() {
         </PrimaryButton>
       }
       step={step}
-      setStep={setStep}
-      type="SignUp">
+      setStep={setStep}>
+      {step >= 4 &&
+        RenderInput({
+          name: 'phoneNumber',
+          placeholder: '전화번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+        })}
       {step >= 3 && (
         <Dropdown
           control={control}

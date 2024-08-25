@@ -41,6 +41,7 @@ export default function Input({
   isVerificationCodeValid,
   isNicknameValid,
   autoFocus,
+  keyboardType,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -96,6 +97,7 @@ export default function Input({
               onSubmitEditing={onSubmitEditing}
               drop={drop}
               pointerEvents={pointerEvents}
+              keyboardType={keyboardType}
             />
             {icon && (isValid || !message) && icon}
             {button && !isValid && (

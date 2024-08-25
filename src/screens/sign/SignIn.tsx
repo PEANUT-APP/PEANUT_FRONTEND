@@ -47,8 +47,7 @@ export default function SignIn() {
         </>
       }
       step={step}
-      setStep={setStep}
-      type="SignIn">
+      setStep={setStep}>
       {step >= 1 &&
         RenderInput({
           name: 'password',
