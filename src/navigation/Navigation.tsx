@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Test from '../pages/test/Test';
@@ -27,13 +27,34 @@ import SignIn from '../screens/sign/SignIn';
 import Home from '../screens/home/Home';
 import DietLog from '../screens/dietLog/DietLog';
 import DropdownTest from '../pages/test/DropdownTest';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../store/store';
+import {logout} from '../slices/tokenSlice';
+import {Alert} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
+  const dispatch = useDispatch();
+  const accessToken = useSelector(
+    (state: RootState) => state.token.accessToken,
+  );
+
+  const [previousToken, setPreviousToken] = useState<string | null>(
+    accessToken,
+  );
+
+  useEffect(() => {
+    if (previousToken && !accessToken) {
+      Alert.alert('다시 로그인해주세요');
+      dispatch(logout());
+    }
+    setPreviousToken(accessToken);
+  }, [accessToken, dispatch, previousToken]);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={accessToken ? 'Home' : 'OnBoarding'}>
         <Stack.Screen
           name="OnBoarding"
           component={OnBoarding}

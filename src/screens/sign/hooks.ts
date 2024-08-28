@@ -9,16 +9,20 @@ import {
   useSendSimpleMessageMutation,
   useSignInMutation,
   useSignUpMutation,
+  useVerifyEmailMutation,
 } from '../../services/sign/signApi';
 import {
   AdditionalFormType,
   BasicFormType,
   SendEmailFormType,
   SignInFormType,
+  VerifyEmailFormType,
+  VerifyFormType,
 } from '../../services/sign/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateForm} from '../../slices/formSlice';
 import {RootState} from '../../store/store';
+import {login} from '../../slices/tokenSlice';
 
 export const handleFormSubmit = (navigation: any, navigateTo: string) => {
   Alert.alert('성공', '모든 필드가 유효합니다!');
@@ -39,6 +43,7 @@ export const handleNextStep = async ({
   errors,
   handleBasicFormSubmit,
   handleAdditionalFormSubmit,
+  handleSignInFormSubmit,
 }: HandleNextStepProps) => {
   const result = await trigger(fields[step]);
 
@@ -49,6 +54,8 @@ export const handleNextStep = async ({
       handleSubmit(handleBasicFormSubmit, handleFormError)();
     } else if (handleAdditionalFormSubmit) {
       handleSubmit(handleAdditionalFormSubmit, handleFormError)();
+    } else if (handleSignInFormSubmit) {
+      handleSubmit(handleSignInFormSubmit, handleFormError)();
     }
   } else {
     handleFormError(errors);
@@ -78,6 +85,7 @@ export const useSign = (
 
 export const useSignIn = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
 
   const [signIn] = useSignInMutation();
 
@@ -111,7 +119,8 @@ export const useSignIn = () => {
   const handleSignInFormSubmit = async (data: SignInFormType) => {
     try {
       const response = await signIn(data).unwrap();
-      console.log(response);
+      dispatch(login(response.token));
+      navigation.navigate('Home');
     } catch (error) {
       console.log(error);
       Alert.alert('로그인에 실패했습니다!');
@@ -147,6 +156,7 @@ export const useSignUp = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const [sendSimpleMessage] = useSendSimpleMessageMutation();
+  const [verifyEmail] = useVerifyEmailMutation();
 
   const {
     control,
@@ -158,13 +168,13 @@ export const useSignUp = () => {
   } = useForm<FormData>({
     defaultValues: {
       email: '',
-      verificationCode: '',
+      confirmationCode: '',
     },
     mode: 'onBlur',
   });
 
   const emailWatch = watch('email');
-  const verificationWatch = watch('verificationCode');
+  const verificationWatch = watch('confirmationCode');
 
   useEffect(() => {
     const validateEmail = async () => {
@@ -178,7 +188,7 @@ export const useSignUp = () => {
     // 인증 코드 유효성 검사
     const validateVerificationCode = async () => {
       if (verification) {
-        const isValid = await trigger('verificationCode');
+        const isValid = await trigger('confirmationCode');
         setIsVerificationCodeValid(isValid);
         if (isValid) {
           setIsTimerActive(false); // 인증 코드가 유효하면 타이머 비활성화
@@ -206,7 +216,7 @@ export const useSignUp = () => {
       const response = await sendSimpleMessage(data.email || email).unwrap();
       setVerification(true);
       setVerificationCode(response['Confirmation : ']);
-      setValue('verificationCode', '');
+      setValue('confirmationCode', '');
       setTimer(180); // 타이머를 180초로 초기화
       setIsTimerActive(true); // 타이머 다시 활성화
       setEmail(data.email);
@@ -216,13 +226,23 @@ export const useSignUp = () => {
     }
   };
 
-  const handleSignUpFormSubmit = (data: SendEmailFormType) => {
+  // 인증 처리
+  const handleVerify = async (data: VerifyEmailFormType) => {
+    try {
+      await verifyEmail(data.confirmationCode).unwrap();
+      navigation.navigate('BasicInformation');
+      setVerification(false);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('인증에 실패했습니다.');
+    }
+  };
+
+  const handleSignUpFormSubmit = (data: VerifyFormType) => {
     if (!verification) {
       handleSendEmail(data);
     } else {
-      Alert.alert('인증 성공');
-      navigation.navigate('BasicInformation');
-      setVerification(false);
+      handleVerify(data);
     }
   };
 

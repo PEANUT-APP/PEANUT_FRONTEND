@@ -1,9 +1,18 @@
+export interface VerifyFormType {
+  email: string;
+  confirmationCode: string;
+}
+
 export interface SendEmailFormType {
   email: string;
 }
 
 export interface SendEmailReturnType {
   'Confirmation : ': string;
+}
+
+export interface VerifyEmailFormType {
+  confirmationCode: string;
 }
 
 export interface BasicFormType {

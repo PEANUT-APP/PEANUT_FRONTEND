@@ -10,7 +10,7 @@ import {KeyboardTypeOptions, ReturnKeyTypeOptions} from 'react-native';
 
 export interface FormData {
   email: string;
-  verificationCode: string;
+  confirmationCode: string;
   gender: string;
   birth: string;
   name: string;

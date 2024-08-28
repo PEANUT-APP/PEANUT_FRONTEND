@@ -38,7 +38,7 @@ export default function SignUp() {
       setVerification={setVerification}>
       {verification &&
         RenderInput({
-          name: 'verificationCode',
+          name: 'confirmationCode',
           placeholder: '인증번호',
           control,
           errors,
