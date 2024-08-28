@@ -6,6 +6,7 @@ import {
   FieldError,
   FieldErrors,
   FieldValues,
+  SubmitHandler,
   UseFormHandleSubmit,
   UseFormTrigger,
 } from 'react-hook-form';
@@ -20,7 +21,6 @@ export interface SignType {
   setVerification?: React.Dispatch<React.SetStateAction<boolean>>;
   step?: number;
   setStep?: React.Dispatch<React.SetStateAction<number>>;
-  type: 'SignIn' | 'SignUp';
 }
 
 export interface RenderInputProps {
@@ -40,6 +40,8 @@ export interface RenderInputProps {
   handleSendEmail?: (data: {email: string}) => void;
   isVerificationCodeValid?: boolean;
   isNicknameValid?: boolean;
+  verificationCode?: string;
+  autoFocus?: boolean;
 }
 
 export type HandleNextStepProps = {
@@ -51,4 +53,7 @@ export type HandleNextStepProps = {
   navigation: NavigationProp<ParamList>;
   targetScreen: string;
   errors: FieldErrors<FormData>;
+  handleBasicFormSubmit?: SubmitHandler<FormData>;
+  handleAdditionalFormSubmit?: SubmitHandler<FormData>;
+  handleSignInFormSubmit?: SubmitHandler<FormData>;
 };

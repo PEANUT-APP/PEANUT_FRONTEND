@@ -4,7 +4,25 @@ import {FormData} from '../../components/input/types';
 import {HandleNextStepProps} from './types';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
+import {
+  useSendSimpleMessageMutation,
+  useSignInMutation,
+  useSignUpMutation,
+  useVerifyEmailMutation,
+} from '../../services/sign/signApi';
+import {
+  AdditionalFormType,
+  BasicFormType,
+  SendEmailFormType,
+  SignInFormType,
+  VerifyEmailFormType,
+  VerifyFormType,
+} from '../../services/sign/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateForm} from '../../slices/formSlice';
+import {RootState} from '../../store/store';
+import {login} from '../../slices/tokenSlice';
 
 export const handleFormSubmit = (navigation: any, navigateTo: string) => {
   Alert.alert('성공', '모든 필드가 유효합니다!');
@@ -22,20 +40,22 @@ export const handleNextStep = async ({
   fields,
   trigger,
   handleSubmit,
-  navigation,
-  targetScreen,
   errors,
+  handleBasicFormSubmit,
+  handleAdditionalFormSubmit,
+  handleSignInFormSubmit,
 }: HandleNextStepProps) => {
   const result = await trigger(fields[step]);
 
   if (result) {
     if (step < fields.length - 1) {
       setStep(step + 1);
-    } else {
-      handleSubmit(
-        () => handleFormSubmit(navigation, targetScreen),
-        handleFormError,
-      )();
+    } else if (handleBasicFormSubmit) {
+      handleSubmit(handleBasicFormSubmit, handleFormError)();
+    } else if (handleAdditionalFormSubmit) {
+      handleSubmit(handleAdditionalFormSubmit, handleFormError)();
+    } else if (handleSignInFormSubmit) {
+      handleSubmit(handleSignInFormSubmit, handleFormError)();
     }
   } else {
     handleFormError(errors);
@@ -65,6 +85,10 @@ export const useSign = (
 
 export const useSignIn = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
+
+  const [signIn] = useSignInMutation();
+
   const [step, setStep] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
@@ -92,6 +116,17 @@ export const useSignIn = () => {
     validateEmail();
   }, [trigger, emailWatch, step]);
 
+  const handleSignInFormSubmit = async (data: SignInFormType) => {
+    try {
+      const response = await signIn(data).unwrap();
+      dispatch(login(response.token));
+      navigation.navigate('Home');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('로그인에 실패했습니다!');
+    }
+  };
+
   const handleFindPassword = () => {};
 
   return {
@@ -104,6 +139,7 @@ export const useSignIn = () => {
     errors,
     trigger,
     touchedFields,
+    handleSignInFormSubmit,
     handleFindPassword,
   };
 };
@@ -115,25 +151,30 @@ export const useSignUp = () => {
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [email, setEmail] = useState('');
   const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
 
   const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const [sendSimpleMessage] = useSendSimpleMessageMutation();
+  const [verifyEmail] = useVerifyEmailMutation();
 
   const {
     control,
     handleSubmit,
     trigger,
     watch,
+    setValue,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
       email: '',
-      verificationCode: '',
+      confirmationCode: '',
     },
     mode: 'onBlur',
   });
 
   const emailWatch = watch('email');
-  const verificationWatch = watch('verificationCode');
+  const verificationWatch = watch('confirmationCode');
 
   useEffect(() => {
     const validateEmail = async () => {
@@ -147,7 +188,7 @@ export const useSignUp = () => {
     // 인증 코드 유효성 검사
     const validateVerificationCode = async () => {
       if (verification) {
-        const isValid = await trigger('verificationCode');
+        const isValid = await trigger('confirmationCode');
         setIsVerificationCodeValid(isValid);
         if (isValid) {
           setIsTimerActive(false); // 인증 코드가 유효하면 타이머 비활성화
@@ -170,29 +211,40 @@ export const useSignUp = () => {
   }, [isTimerActive, timer]);
 
   // 이메일 전송 처리 및 타이머 초기화
-  const handleSendEmail = useCallback(
-    (data: {email: string}) => {
-      Alert.alert(data.email || email);
+  const handleSendEmail = async (data: SendEmailFormType) => {
+    try {
+      const response = await sendSimpleMessage(data.email || email).unwrap();
+      setVerification(true);
+      setVerificationCode(response['Confirmation : ']);
+      setValue('confirmationCode', '');
       setTimer(180); // 타이머를 180초로 초기화
       setIsTimerActive(true); // 타이머 다시 활성화
-    },
-    [email],
-  );
+      setEmail(data.email);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('인증번호 발송이 실패했습니다.');
+    }
+  };
 
-  const handleSignUpFormSubmit = useCallback(
-    (data: {email: string}) => {
-      if (!verification) {
-        setVerification(true);
-        handleSendEmail(data);
-        setEmail(data.email);
-      } else {
-        Alert.alert('인증 성공');
-        setVerification(false);
-        navigation.navigate('BasicInformation');
-      }
-    },
-    [verification, handleSendEmail, navigation],
-  );
+  // 인증 처리
+  const handleVerify = async (data: VerifyEmailFormType) => {
+    try {
+      await verifyEmail(data.confirmationCode).unwrap();
+      navigation.navigate('BasicInformation');
+      setVerification(false);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('인증에 실패했습니다.');
+    }
+  };
+
+  const handleSignUpFormSubmit = (data: VerifyFormType) => {
+    if (!verification) {
+      handleSendEmail(data);
+    } else {
+      handleVerify(data);
+    }
+  };
 
   return {
     verification,
@@ -203,17 +255,18 @@ export const useSignUp = () => {
     errors,
     trigger,
     touchedFields,
-    handleFormSubmit,
     timer,
     isTimerActive,
     isButtonDisabled,
     handleSendEmail,
     isVerificationCodeValid,
+    verificationCode,
   };
 };
 
 export const useBasicInformation = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
 
   const [step, setStep] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -240,6 +293,7 @@ export const useBasicInformation = () => {
   const nameWatch = watch('name');
   const birthWatch = watch('birth');
   const genderWatch = watch('gender');
+  const phoneNumberWatch = watch('phoneNumber');
 
   useEffect(() => {
     const validateStep = async () => {
@@ -258,6 +312,9 @@ export const useBasicInformation = () => {
         case 3:
           isValid = await trigger('gender');
           break;
+        case 4:
+          isValid = await trigger('phoneNumber');
+          break;
         default:
           isValid = false;
       }
@@ -266,7 +323,20 @@ export const useBasicInformation = () => {
     };
 
     validateStep();
-  }, [step, passwordWatch, nameWatch, birthWatch, genderWatch, trigger]);
+  }, [
+    step,
+    passwordWatch,
+    nameWatch,
+    birthWatch,
+    genderWatch,
+    phoneNumberWatch,
+    trigger,
+  ]);
+
+  const handleBasicFormSubmit = (data: BasicFormType) => {
+    dispatch(updateForm(data));
+    navigation.navigate('AdditionalInformation');
+  };
 
   return {
     navigation,
@@ -281,11 +351,16 @@ export const useBasicInformation = () => {
     setIsButtonDisabled,
     setValue,
     setFocus,
+    handleBasicFormSubmit,
   };
 };
 
 export const useAdditionalInformation = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
+  const formData = useSelector((state: RootState) => state.form); // Redux 상태 가져오기
+
+  const [signUp] = useSignUpMutation();
 
   const [step, setStep] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -347,6 +422,20 @@ export const useAdditionalInformation = () => {
     validateNickname();
   }, [nicknameWatch, trigger]);
 
+  const handleAdditionalFormSubmit = async (data: AdditionalFormType) => {
+    dispatch(updateForm(data));
+
+    try {
+      console.log(formData);
+      const response = await signUp(formData).unwrap();
+      console.log(response);
+      navigation.navigate('SignIn');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('회원가입에 실패했습니다.');
+    }
+  };
+
   return {
     navigation,
     step,
@@ -358,5 +447,6 @@ export const useAdditionalInformation = () => {
     touchedFields,
     isButtonDisabled,
     isNicknameValid,
+    handleAdditionalFormSubmit,
   };
 };

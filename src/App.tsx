@@ -11,20 +11,24 @@ import Navigation from './navigation/Navigation';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from './styles/theme';
 import {FormProvider, useForm} from 'react-hook-form';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
 
 export default function App() {
   const methods = useForm();
 
   return (
-    <ThemeProvider theme={theme}>
-      <FormProvider {...methods}>
-        <StatusBar
-          translucent
-          backgroundColor="transparent"
-          barStyle="dark-content"
-        />
-        <Navigation />
-      </FormProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <FormProvider {...methods}>
+          <StatusBar
+            translucent
+            backgroundColor="transparent"
+            barStyle="dark-content"
+          />
+          <Navigation />
+        </FormProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }
