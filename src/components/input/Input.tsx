@@ -40,6 +40,8 @@ export default function Input({
   handleSendEmail,
   isVerificationCodeValid,
   isNicknameValid,
+  autoFocus,
+  keyboardType,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -72,6 +74,7 @@ export default function Input({
             drop={drop}
             isDropdownVisible={isDropdownVisible}>
             <InputText
+              autoFocus={autoFocus}
               placeholder={isFocused || isDropdownVisible ? '' : placeholder}
               placeholderTextColor={colors.TextNeutral}
               onChangeText={field.onChange}
@@ -94,12 +97,13 @@ export default function Input({
               onSubmitEditing={onSubmitEditing}
               drop={drop}
               pointerEvents={pointerEvents}
+              keyboardType={keyboardType}
             />
             {icon && (isValid || !message) && icon}
             {button && !isValid && (
               <OutlineButton
                 size="s"
-                disabled={(!editable && true) || isTimerActive}
+                disabled={(!editable || isTimerActive) && true}
                 onPress={handleSendEmail}>
                 {buttonText}
               </OutlineButton>

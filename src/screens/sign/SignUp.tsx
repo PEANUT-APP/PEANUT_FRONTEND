@@ -3,7 +3,7 @@ import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import FitIcon from '../../components/icon/FitIcon';
 import {handleFormError, useSignUp} from './hooks';
-import renderInput from './renderInput';
+import RenderInput from './renderInput';
 
 export default function SignUp() {
   const {
@@ -20,7 +20,9 @@ export default function SignUp() {
     isButtonDisabled,
     handleSendEmail,
     isVerificationCodeValid,
+    verificationCode,
   } = useSignUp();
+
   return (
     <Sign
       title="회원가입"
@@ -33,11 +35,10 @@ export default function SignUp() {
         </PrimaryButton>
       }
       verification={verification}
-      setVerification={setVerification}
-      type="SignUp">
+      setVerification={setVerification}>
       {verification &&
-        renderInput({
-          name: 'verificationCode',
+        RenderInput({
+          name: 'confirmationCode',
           placeholder: '인증번호',
           control,
           errors,
@@ -51,8 +52,10 @@ export default function SignUp() {
           isTimerActive,
           handleSendEmail,
           isVerificationCodeValid,
+          verificationCode,
+          autoFocus: true,
         })}
-      {renderInput({
+      {RenderInput({
         name: 'email',
         placeholder: '이메일',
         control,

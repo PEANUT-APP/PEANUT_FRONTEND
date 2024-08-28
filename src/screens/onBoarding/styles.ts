@@ -9,7 +9,7 @@ export const OnBoardingContainer = styled.View`
 `;
 
 export const OnBoardingBox = styled.View`
-  gap: 4px;
+  gap: 8px;
 `;
 
 export const OnBoardingLogo = styled.View`
