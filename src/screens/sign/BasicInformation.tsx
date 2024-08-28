@@ -2,7 +2,7 @@ import React from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useBasicInformation} from './hooks';
-import renderInput from './renderInput';
+import RenderInput from './renderInput';
 import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function BasicInformation() {
@@ -18,6 +18,7 @@ export default function BasicInformation() {
     isButtonDisabled,
     setValue,
     setFocus,
+    handleBasicFormSubmit,
   } = useBasicInformation();
 
   return (
@@ -30,12 +31,13 @@ export default function BasicInformation() {
             handleNextStep({
               step,
               setStep,
-              fields: ['password', 'name', 'birth', 'gender'],
+              fields: ['password', 'name', 'birth', 'gender', 'phoneNumber'],
               trigger,
               handleSubmit,
               navigation,
               targetScreen: 'AdditionalInformation',
               errors,
+              handleBasicFormSubmit,
             })
           }
           disabled={isButtonDisabled}>
@@ -43,8 +45,16 @@ export default function BasicInformation() {
         </PrimaryButton>
       }
       step={step}
-      setStep={setStep}
-      type="SignUp">
+      setStep={setStep}>
+      {step >= 4 &&
+        RenderInput({
+          name: 'phoneNumber',
+          placeholder: '전화번호',
+          control,
+          errors,
+          touchedFields,
+          trigger,
+        })}
       {step >= 3 && (
         <Dropdown
           control={control}
@@ -56,7 +66,7 @@ export default function BasicInformation() {
         />
       )}
       {step >= 2 &&
-        renderInput({
+        RenderInput({
           name: 'birth',
           placeholder: '생년월일',
           control,
@@ -65,7 +75,7 @@ export default function BasicInformation() {
           trigger,
         })}
       {step >= 1 &&
-        renderInput({
+        RenderInput({
           name: 'name',
           placeholder: '이름',
           control,
@@ -74,7 +84,7 @@ export default function BasicInformation() {
           trigger,
         })}
       {step >= 0 &&
-        renderInput({
+        RenderInput({
           name: 'password',
           placeholder: '비밀번호',
           control,
