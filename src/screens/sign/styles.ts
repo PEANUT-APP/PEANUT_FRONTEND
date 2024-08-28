@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 import {Title} from '../../components/text/Text';
 
-export const SignContainer = styled.View<{type: string}>`
+export const SignContainer = styled.View`
   flex: 1;
-  padding: 93px 20px ${({type}) => (type === 'SignIn' ? '80px' : '111px')};
+  padding: 93px 20px 28px;
   justify-content: space-between;
   align-items: center;
 `;
@@ -26,5 +26,5 @@ export const SignFormBox = styled.View`
 `;
 
 export const SignButtonBox = styled.View`
-  gap: 4px;
+  gap: 8px;
 `;

@@ -6,11 +6,11 @@ import {
   FieldValues,
   UseFormTrigger,
 } from 'react-hook-form';
-import {ReturnKeyTypeOptions} from 'react-native';
+import {KeyboardTypeOptions, ReturnKeyTypeOptions} from 'react-native';
 
 export interface FormData {
   email: string;
-  verificationCode: string;
+  confirmationCode: string;
   gender: string;
   birth: string;
   name: string;
@@ -18,6 +18,7 @@ export interface FormData {
   weight: string;
   height: string;
   nickname: string;
+  phoneNumber: string;
 }
 
 export interface InputType {
@@ -47,6 +48,8 @@ export interface InputType {
   handleSendEmail?: (data: {email: string}) => void;
   isVerificationCodeValid?: boolean;
   isNicknameValid?: boolean;
+  autoFocus?: boolean;
+  keyboardType: KeyboardTypeOptions;
 }
 
 export interface InputStyleType {

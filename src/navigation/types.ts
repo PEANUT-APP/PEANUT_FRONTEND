@@ -1,8 +1,10 @@
 export interface ParamList {
+  onBoarding: undefined;
   SignIn: undefined;
   SignUp: undefined;
   BasicInformation: undefined;
   AdditionalInformation: undefined;
+  Home: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

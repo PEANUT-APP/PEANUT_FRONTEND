@@ -4,18 +4,18 @@ import {DropdownType} from './types';
 import DesignIcon from '../icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import Input from '../input/Input';
-import {validationRules} from '../../modules/validationRules';
+import {useValidationRules} from '../../modules/validationRules';
 import {TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
 
 const DropdownContainer = styled.View`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const DropdownList = styled.View`
-  position: absolute;
-  top: 76px;
-  z-index: 20;
   width: 350px;
   display: flex;
   justify-content: center;
@@ -34,6 +34,8 @@ export default function Dropdown({
   setValue,
   setFocus,
 }: DropdownType) {
+  const validationRules = useValidationRules();
+
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
