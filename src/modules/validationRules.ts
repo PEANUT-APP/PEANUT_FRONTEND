@@ -11,7 +11,7 @@ export const useValidationRules = (
         message: '유효한 이메일 형식이 아니에요!',
       },
     },
-    verificationCode: {
+    confirmationCode: {
       required: '값이 필요해요!',
       validate: (value: string) => {
         if (value === verificationCodeFromServer) {

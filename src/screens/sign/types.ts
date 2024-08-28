@@ -55,4 +55,5 @@ export type HandleNextStepProps = {
   errors: FieldErrors<FormData>;
   handleBasicFormSubmit?: SubmitHandler<FormData>;
   handleAdditionalFormSubmit?: SubmitHandler<FormData>;
+  handleSignInFormSubmit?: SubmitHandler<FormData>;
 };

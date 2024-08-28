@@ -17,6 +17,7 @@ export default function SignIn() {
     trigger,
     touchedFields,
     handleFindPassword,
+    handleSignInFormSubmit,
   } = useSignIn();
 
   return (
@@ -36,6 +37,7 @@ export default function SignIn() {
                 navigation,
                 targetScreen: 'Home',
                 errors,
+                handleSignInFormSubmit,
               })
             }
             disabled={isButtonDisabled}>

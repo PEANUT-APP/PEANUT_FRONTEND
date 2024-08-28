@@ -12,6 +12,15 @@ export const signApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    verifyEmail: builder.mutation({
+      query: (code: string) => ({
+        url: '/sign/verified',
+        method: 'POST',
+        params: {
+          confirmationCode: code,
+        },
+      }),
+    }),
     signUp: builder.mutation({
       query: (data: SignUpFormType) => ({
         url: '/sign/sign-up',
@@ -43,6 +52,7 @@ export const signApi = apiSlice.injectEndpoints({
 
 export const {
   useSendSimpleMessageMutation,
+  useVerifyEmailMutation,
   useSignUpMutation,
   useSignInMutation,
 } = signApi;
