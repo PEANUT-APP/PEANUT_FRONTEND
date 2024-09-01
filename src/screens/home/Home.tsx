@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {colors} from '../../styles/colors';
 import {Alert, View} from 'react-native';
-import SearchIcon from '../../assets/images/Search.svg';
 import ProfileImage from '../../components/profile/ProfileImage';
 import {MainValue} from '../../components/value/MainValue';
 import {
@@ -67,7 +66,6 @@ export default function Home() {
                 onChangeText={setSearchFood}
                 onSubmitEditing={handleSearch}
               />
-              <SearchIcon onPress={handleSearch} />
             </HomeSearchBox>
           </HomeSearchContainer>
           <HomeWelcomeContainer>
