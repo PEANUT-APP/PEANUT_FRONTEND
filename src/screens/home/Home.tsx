@@ -1,19 +1,12 @@
 import React, {useCallback, useState} from 'react';
-import {colors} from '../../styles/colors';
-import {Alert, View} from 'react-native';
-import ProfileImage from '../../components/profile/ProfileImage';
+import {Alert} from 'react-native';
 import {MainValue} from '../../components/value/MainValue';
-import {
-  HomeBox,
-  HomeContent,
-  HomeTop,
-  HomeWelcomeContainer,
-  HomeWelcomeText,
-} from './styles';
+import {HomeBox, HomeContent, HomeTop} from './styles';
 import Graph from '../../components/graph/Graph';
 import Layout from '../layout/Layout';
 import SelectButtonGroup from '../../modules/renderSelectButton';
 import Search from './search/Search';
+import TopBox from './topBox/TopBox';
 
 const generateHourlyData = () => {
   const data = [];
@@ -27,8 +20,13 @@ const data = generateHourlyData();
 const userData = {
   name: '김유성',
   bloodSugar: 87,
-  profile: require('../../assets/images/profile.png'),
+  profile: require('../../assets/images/mainProfile.png'),
 };
+
+const profileImage = require('../../assets/images/mainProfile.png');
+const userName = '박지혜';
+const FirsBloodSugar = 87;
+const nowBloodSugar = 100;
 
 const mealList = ['아침', '점심', '저녁', '간식'];
 const medicineList = ['타이레놀', '항생제', '유산균'];
@@ -51,24 +49,13 @@ export default function Home() {
   return (
     <Layout paddingBottom={107}>
       <HomeBox>
-        <HomeTop
-          colors={['#ff7b74', '#ffbead']}
-          start={{x: 0, y: 0}}
-          end={{x: 0, y: 1}}>
-          <HomeWelcomeContainer>
-            <ProfileImage source={userData.profile} />
-            <View>
-              <HomeWelcomeText color={colors.white}>
-                <HomeWelcomeText color={colors.white} weight="bold">
-                  {userData.name || '사용자'}님,
-                </HomeWelcomeText>
-                좋은 아침이에요!
-              </HomeWelcomeText>
-              <HomeWelcomeText color={colors.white}>
-                오늘도 건강한 하루 보내봐요.
-              </HomeWelcomeText>
-            </View>
-          </HomeWelcomeContainer>
+        <HomeTop source={require('../../assets/images/gradientBackground.png')}>
+          <TopBox
+            profileImage={profileImage}
+            userName={userName}
+            firstBloodSugar={FirsBloodSugar}
+            nowBloodSugar={nowBloodSugar}
+          />
         </HomeTop>
         <HomeContent>
           <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
