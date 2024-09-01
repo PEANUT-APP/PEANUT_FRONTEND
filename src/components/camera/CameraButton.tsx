@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {Alert, TouchableWithoutFeedback} from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
 import {CameraButtonType} from './types';
-import CameraDefault from './CameraDefault';
-import CameraActive from './CameraActive';
+import CameraDefault from '../../assets/images/CameraDefault.svg';
+import CameraActive from '../../assets/images/CameraActive.svg';
 import {CameraContainer} from './styles';
 
 export default function CameraButton() {
