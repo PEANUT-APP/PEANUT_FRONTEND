@@ -6,9 +6,6 @@ import {MainValue} from '../../components/value/MainValue';
 import {
   HomeBox,
   HomeContent,
-  HomeSearchBox,
-  HomeSearchContainer,
-  HomeSearchInput,
   HomeTop,
   HomeWelcomeContainer,
   HomeWelcomeText,
@@ -16,6 +13,7 @@ import {
 import Graph from '../../components/graph/Graph';
 import Layout from '../layout/Layout';
 import SelectButtonGroup from '../../modules/renderSelectButton';
+import Search from './search/Search';
 
 const generateHourlyData = () => {
   const data = [];
@@ -57,17 +55,6 @@ export default function Home() {
           colors={['#ff7b74', '#ffbead']}
           start={{x: 0, y: 0}}
           end={{x: 0, y: 1}}>
-          <HomeSearchContainer>
-            <HomeSearchBox>
-              <HomeSearchInput
-                placeholder="음식명을 입력해보세요"
-                placeholderTextColor={colors.TextDisabled}
-                returnKeyType="search"
-                onChangeText={setSearchFood}
-                onSubmitEditing={handleSearch}
-              />
-            </HomeSearchBox>
-          </HomeSearchContainer>
           <HomeWelcomeContainer>
             <ProfileImage source={userData.profile} />
             <View>
@@ -84,6 +71,7 @@ export default function Home() {
           </HomeWelcomeContainer>
         </HomeTop>
         <HomeContent>
+          <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
           <MainValue title="공복 혈당 지수" value={userData.bloodSugar} />
           <MainValue title="현재 혈당 지수" onPress={handleBloodSugar} />
           <SelectButtonGroup
