@@ -1,17 +1,10 @@
 import React, {useState} from 'react';
-import styled from 'styled-components/native';
 import {Alert, TouchableWithoutFeedback} from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
-import CameraDefault from '../../assets/images/CameraDefault.svg';
-import CameraActive from '../../assets/images/CameraActive.svg';
 import {CameraButtonType} from './types';
-
-const CameraContainer = styled.View`
-  position: absolute;
-  right: 20px;
-  bottom: 120px;
-  z-index: 10;
-`;
+import CameraDefault from './CameraDefault';
+import CameraActive from './CameraActive';
+import {CameraContainer} from './styles';
 
 export default function CameraButton() {
   const [isActive, setIsActive] = useState(false);
@@ -44,10 +37,10 @@ export default function CameraButton() {
   };
 
   return (
-    <CameraContainer>
-      <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback onPress={handlePress}>
+      <CameraContainer>
         {isActive ? <CameraActive /> : <CameraDefault />}
-      </TouchableWithoutFeedback>
-    </CameraContainer>
+      </CameraContainer>
+    </TouchableWithoutFeedback>
   );
 }

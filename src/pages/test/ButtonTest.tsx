@@ -12,7 +12,7 @@ import {
 } from '../../components/button/TextButton';
 import SelectButton from '../../components/button/SelectButton';
 import NavigationButton from '../../components/button/NavigationButton';
-import CameraButton from '../../components/button/CameraButton';
+import CameraButton from '../../components/camera/CameraButton';
 
 const ViewBox = styled.View`
   align-items: center;
@@ -608,7 +608,7 @@ export function NavigationButtonTest() {
       <Text>Navigation Button</Text>
       <ViewBox>
         <ViewBoxRow>
-          <NavigationButton type="food" active={false} onPress={() => {}}>
+          <NavigationButton type="medical" active={false} onPress={() => {}}>
             식단기록
           </NavigationButton>
           <NavigationButton type="home" active={false} onPress={() => {}}>
@@ -622,7 +622,7 @@ export function NavigationButtonTest() {
           </NavigationButton>
         </ViewBoxRow>
         <ViewBoxRow>
-          <NavigationButton type="food" active onPress={() => {}}>
+          <NavigationButton type="medical" active onPress={() => {}}>
             식단기록
           </NavigationButton>
           <NavigationButton type="home" active onPress={() => {}}>
