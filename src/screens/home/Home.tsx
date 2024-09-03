@@ -1,12 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {Alert} from 'react-native';
 import {MainValue} from '../../components/value/MainValue';
-import {HomeBox, HomeContent, HomeTop} from './styles';
+import {HomeBox, HomeContent, HomeIcons, HomeTop} from './styles';
 import Graph from '../../components/graph/Graph';
 import Layout from '../layout/Layout';
 import SelectButtonGroup from '../../modules/renderSelectButton';
 import Search from './search/Search';
 import TopBox from './topBox/TopBox';
+import MyPageIcon from '../../assets/images/main_mypage.svg';
+import NoticeIcon from '../../assets/images/main_notice.svg';
+import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 
 const generateHourlyData = () => {
   const data = [];
@@ -50,6 +53,10 @@ export default function Home() {
     <Layout paddingBottom={107}>
       <HomeBox>
         <HomeTop source={require('../../assets/images/gradientBackground.png')}>
+          <HomeIcons>
+            <MyPageIcon />
+            <NoticeIcon />
+          </HomeIcons>
           <TopBox
             profileImage={profileImage}
             userName={userName}
@@ -59,6 +66,7 @@ export default function Home() {
         </HomeTop>
         <HomeContent>
           <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
+          <WeeklyCalendar />
           <MainValue title="공복 혈당 지수" value={userData.bloodSugar} />
           <MainValue title="현재 혈당 지수" onPress={handleBloodSugar} />
           <SelectButtonGroup
