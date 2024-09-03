@@ -7,9 +7,15 @@ export const HomeBox = styled.View`
 
 export const HomeTop = styled.ImageBackground`
   height: 207px;
+  justify-content: space-between;
+  padding: 45px 36px 24px;
+`;
+
+export const HomeIcons = styled.View`
+  flex-direction: row;
+  gap: 21px;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: center;
-  gap: 24px;
 `;
 
 export const HomeContent = styled.View`

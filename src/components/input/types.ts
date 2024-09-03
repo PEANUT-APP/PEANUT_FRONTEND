@@ -49,7 +49,7 @@ export interface InputType {
   isVerificationCodeValid?: boolean;
   isNicknameValid?: boolean;
   autoFocus?: boolean;
-  keyboardType: KeyboardTypeOptions;
+  keyboardType?: KeyboardTypeOptions;
 }
 
 export interface InputStyleType {
