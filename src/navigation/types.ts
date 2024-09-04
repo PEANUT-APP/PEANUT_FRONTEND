@@ -5,6 +5,8 @@ export interface ParamList {
   BasicInformation: undefined;
   AdditionalInformation: undefined;
   Home: undefined;
+  Medicine: undefined;
+  Insulin: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

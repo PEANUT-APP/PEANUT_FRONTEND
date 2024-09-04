@@ -31,6 +31,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {logout} from '../slices/tokenSlice';
 import {Alert} from 'react-native';
+import MedicineRecord from '../screens/record/MedicineRecord';
+import InsulinRecord from '../screens/record/InsulinRecord';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +85,16 @@ export default function Navigation() {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Medicine"
+          component={MedicineRecord}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Insulin"
+          component={InsulinRecord}
           options={{headerShown: false}}
         />
         <Stack.Screen

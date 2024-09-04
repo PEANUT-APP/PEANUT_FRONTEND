@@ -24,3 +24,8 @@ export const HomeContent = styled.View`
   gap: 12px;
   padding-bottom: 28px;
 `;
+
+export const ReportCardBox = styled.View`
+  flex-direction: row;
+  gap: 10px;
+`;

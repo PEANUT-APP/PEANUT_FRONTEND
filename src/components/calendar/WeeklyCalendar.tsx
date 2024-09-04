@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {SetStateAction, useState} from 'react';
 import {
   CalendarContainer,
   CalendarMonth,
@@ -8,7 +8,7 @@ import {
   CalendarWeekItem,
 } from './styles';
 import DesignIcon from '../icon/DesignIcon';
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 import {TouchableWithoutFeedback, View} from 'react-native';
 
 export default function WeeklyCalendar() {
@@ -23,6 +23,11 @@ export default function WeeklyCalendar() {
   for (let i = 0; i < 7; i++) {
     weekDays.push(monday.add(i, 'day'));
   }
+
+  // 날짜 클릭 시 today 상태 업데이트
+  const handleDateClick = (date: SetStateAction<Dayjs>) => {
+    setToday(date);
+  };
 
   // 이전 주로 이동
   const goToPreviousWeek = () => {
@@ -46,9 +51,13 @@ export default function WeeklyCalendar() {
         </TouchableWithoutFeedback>
         <CalendarWeek>
           {weekDays.map((day, index) => (
-            <CalendarWeekItem key={index} isToday={day.isSame(dayjs(), 'day')}>
-              {day.format('D')}
-            </CalendarWeekItem>
+            <TouchableWithoutFeedback
+              key={index}
+              onPress={() => handleDateClick(day)}>
+              <CalendarWeekItem isToday={day.isSame(today, 'day')}>
+                {day.format('D')}
+              </CalendarWeekItem>
+            </TouchableWithoutFeedback>
           ))}
         </CalendarWeek>
         <TouchableWithoutFeedback onPress={goToNextWeek}>
