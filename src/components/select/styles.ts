@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import {AddStyleType, MultiSelectStyleType} from './types';
-import {Body2} from '../text/Text';
+import {Body2, Caption1} from '../text/Text';
 import {colors} from '../../styles/colors';
 
 const getBorderColor = (isSelected: boolean) =>
@@ -35,6 +35,18 @@ export const MultiChipsText = styled(ChipsText)<MultiSelectStyleType>`
 `;
 
 export const MultiListContainer = styled.View`
+  max-width: 350px;
+  gap: 8px;
+`;
+
+export const MultiListLabel = styled(Caption1)`
+  line-height: 16.008px;
+  letter-spacing: -0.3px;
+  margin-left: 4px;
+  color: ${colors.TextNeutral};
+`;
+
+export const MultiListBox = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 4px;
