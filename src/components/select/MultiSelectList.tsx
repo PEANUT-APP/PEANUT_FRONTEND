@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {MultiListContainer} from './styles';
+import {MultiListBox, MultiListContainer, MultiListLabel} from './styles';
 import MultiSelectChip from './MultiSelectChip';
 import AddChips from './AddChip';
 import {MultiListType} from './types';
@@ -20,27 +20,30 @@ export default function MultiSelectList({
 }: MultiListType) {
   const toggleSelection = useCallback(
     (item: string) => {
-      setSelectedItems(prevSelectedItems =>
-        prevSelectedItems.includes(item)
-          ? prevSelectedItems.filter(selected => selected !== item)
-          : [...prevSelectedItems, item],
-      );
-      console.log(selectedItems);
+      setSelectedItems(prevSelectedItems => {
+        if (prevSelectedItems.includes(item)) {
+          return prevSelectedItems.filter(selected => selected !== item);
+        }
+        return [...prevSelectedItems, item];
+      });
     },
-    [selectedItems, setSelectedItems],
+    [setSelectedItems],
   );
 
   return (
     <MultiListContainer>
-      {items.map(item => (
-        <MultiSelectChip
-          key={item}
-          isSelected={selectedItems.includes(item)}
-          onPress={() => toggleSelection(item)}>
-          {item}
-        </MultiSelectChip>
-      ))}
-      <AddChips onPress={onAddPress} />
+      <MultiListLabel>복약 시간</MultiListLabel>
+      <MultiListBox>
+        {items.map(item => (
+          <MultiSelectChip
+            key={item}
+            isSelected={selectedItems.includes(item)}
+            onPress={() => toggleSelection(item)}>
+            {item}
+          </MultiSelectChip>
+        ))}
+        <AddChips onPress={onAddPress} />
+      </MultiListBox>
     </MultiListContainer>
   );
 }

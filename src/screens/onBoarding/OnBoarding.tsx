@@ -27,7 +27,7 @@ export default function OnBoarding() {
               이메일로 로그인
             </PrimaryButton>
             <KakaoLoginBox>
-              <DesignIcon type="kakao" size="l" />
+              <DesignIcon type="kakao" size="m" />
               <KakaoLoginText weight="bold" color={colors.TextNormal}>
                 카카오로 로그인
               </KakaoLoginText>

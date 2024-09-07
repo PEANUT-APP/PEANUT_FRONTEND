@@ -40,4 +40,5 @@ export const RecordToggle = styled.View`
 export const RecordToggleText = styled(Body1)`
   line-height: 21.344px;
   letter-spacing: -0.4px;
+  color: ${colors.TextNeutral};
 `;

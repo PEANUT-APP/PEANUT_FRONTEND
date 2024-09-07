@@ -2,7 +2,7 @@ import React from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useBasicInformation} from './hooks';
-import RenderInput from './renderInput';
+import RenderInput from '../../modules/renderInput';
 import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function BasicInformation() {
