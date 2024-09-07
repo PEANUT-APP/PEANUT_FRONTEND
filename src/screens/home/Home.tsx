@@ -1,45 +1,37 @@
 import React, {useCallback, useState} from 'react';
-import {colors} from '../../styles/colors';
-import {Alert, View} from 'react-native';
-import SearchIcon from '../../assets/images/Search.svg';
-import ProfileImage from '../../components/profile/ProfileImage';
-import {MainValue} from '../../components/value/MainValue';
+import {Alert} from 'react-native';
 import {
   HomeBox,
   HomeContent,
-  HomeSearchBox,
-  HomeSearchContainer,
-  HomeSearchInput,
+  HomeIcons,
   HomeTop,
-  HomeWelcomeContainer,
-  HomeWelcomeText,
+  ReportCardBox,
 } from './styles';
 import Graph from '../../components/graph/Graph';
 import Layout from '../layout/Layout';
-import SelectButtonGroup from '../../modules/renderSelectButton';
+import Search from './search/Search';
+import TopBox from './topBox/TopBox';
+import MyPageIcon from '../../assets/images/main_mypage.svg';
+import NoticeIcon from '../../assets/images/main_notice.svg';
+import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
+import ReportCard from './reportCard/ReportCard';
 
 const generateHourlyData = () => {
   const data = [];
   for (let i = 0; i < 5; i++) {
-    data.push(Math.random() * 100);
+    data.push(Math.random() * 200);
   }
   return data;
 };
 const data = generateHourlyData();
 
-const userData = {
-  name: '김유성',
-  bloodSugar: 87,
-  profile: require('../../assets/images/profile.png'),
-};
-
-const mealList = ['아침', '점심', '저녁', '간식'];
-const medicineList = ['타이레놀', '항생제', '유산균'];
+const profileImage = require('../../assets/images/mainProfile.png');
+const userName = '박지혜';
+const FirsBloodSugar = 87;
+const nowBloodSugar = 100;
 
 export default function Home() {
   const [searchFood, setSearchFood] = useState('');
-  const [selectedMenu, setSelectedMenu] = useState<number | null>(null);
-  const [selectedMedicine, setSelectedMedicine] = useState<number | null>(null);
 
   const handleSearch = useCallback(() => {
     if (searchFood.trim()) {
@@ -49,63 +41,29 @@ export default function Home() {
     }
   }, [searchFood]);
 
-  const handleBloodSugar = useCallback(() => {}, []);
-
   return (
     <Layout paddingBottom={107}>
       <HomeBox>
-        <HomeTop>
-          <HomeSearchContainer>
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                backgroundColor: '#d9d9d9',
-                width: 50,
-                height: 48,
-              }}
-            />
-            <HomeSearchBox>
-              <HomeSearchInput
-                placeholder="음식명을 입력해보세요"
-                placeholderTextColor={colors.TextDisabled}
-                returnKeyType="search"
-                onChangeText={setSearchFood}
-                onSubmitEditing={handleSearch}
-              />
-              <SearchIcon onPress={handleSearch} />
-            </HomeSearchBox>
-          </HomeSearchContainer>
-          <HomeWelcomeContainer>
-            <ProfileImage source={userData.profile} />
-            <View>
-              <HomeWelcomeText color={colors.white}>
-                <HomeWelcomeText color={colors.white} weight="bold">
-                  {userData.name || '사용자'}님,
-                </HomeWelcomeText>
-                좋은 아침이에요!
-              </HomeWelcomeText>
-              <HomeWelcomeText color={colors.white}>
-                오늘도 건강한 하루 보내봐요.
-              </HomeWelcomeText>
-            </View>
-          </HomeWelcomeContainer>
+        <HomeTop source={require('../../assets/images/gradientBackground.png')}>
+          <HomeIcons>
+            <MyPageIcon />
+            <NoticeIcon />
+          </HomeIcons>
+          <TopBox
+            profileImage={profileImage}
+            userName={userName}
+            firstBloodSugar={FirsBloodSugar}
+            nowBloodSugar={nowBloodSugar}
+          />
         </HomeTop>
         <HomeContent>
-          <MainValue title="공복 혈당 지수" value={userData.bloodSugar} />
-          <MainValue title="현재 혈당 지수" onPress={handleBloodSugar} />
-          <SelectButtonGroup
-            title="식단 기록"
-            itemList={mealList}
-            selectedItem={selectedMenu}
-            setSelectedItem={setSelectedMenu}
-          />
-          <SelectButtonGroup
-            title="복약 기록"
-            itemList={medicineList}
-            selectedItem={selectedMedicine}
-            setSelectedItem={setSelectedMedicine}
-          />
+          <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
+          <WeeklyCalendar />
           <Graph graphData={data} />
+          <ReportCardBox>
+            <ReportCard navigate="Medicine" />
+            <ReportCard navigate="Insulin" />
+          </ReportCardBox>
         </HomeContent>
       </HomeBox>
     </Layout>

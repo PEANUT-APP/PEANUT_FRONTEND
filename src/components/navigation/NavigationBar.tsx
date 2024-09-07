@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components/native';
-import {colors} from '../../styles/colors';
 import NavigationButton from '../button/NavigationButton';
 import {
   NavigationProp,
@@ -8,22 +6,15 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import {NavigationList} from '../../navigation/types';
+import {
+  NavigationBarBox,
+  NavigationBarContainer,
+  NavigationPair,
+} from './styles';
+import {NavigationType} from './types';
+import CameraButton from '../camera/CameraButton';
 
-const NavigationBarContainer = styled.View`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 13px 35px 37px;
-  background-color: ${colors.white};
-  align-items: center;
-`;
-
-const NavigationBarBox = styled.View`
-  flex-direction: row;
-  gap: 40px;
-`;
-
-export default function NavigationBar() {
+export default function NavigationBar({role = 'Patient'}: NavigationType) {
   const [activeTab, setActiveTab] = useState<String>('Home');
   const navigation = useNavigation<NavigationProp<NavigationList>>();
   const route = useRoute();
@@ -42,31 +33,36 @@ export default function NavigationBar() {
 
   return (
     <NavigationBarContainer>
-      <NavigationBarBox>
-        <NavigationButton
-          type="home"
-          active={activeTab === 'Home'}
-          onPress={() => handlePress('Home')}>
-          홈
-        </NavigationButton>
-        <NavigationButton
-          type="dietLog"
-          active={activeTab === 'DietLog'}
-          onPress={() => handlePress('DietLog')}>
-          식단기록
-        </NavigationButton>
-        <NavigationButton
-          type="community"
-          active={activeTab === 'Community'}
-          onPress={() => handlePress('Community')}>
-          커뮤니티
-        </NavigationButton>
-        <NavigationButton
-          type="my"
-          active={activeTab === 'My'}
-          onPress={() => handlePress('My')}>
-          마이
-        </NavigationButton>
+      {role === 'Patient' && <CameraButton />}
+      <NavigationBarBox role={role}>
+        <NavigationPair role={role}>
+          <NavigationButton
+            type="home"
+            active={activeTab === 'Home'}
+            onPress={() => handlePress('Home')}>
+            홈
+          </NavigationButton>
+          <NavigationButton
+            type="medical"
+            active={activeTab === 'Medical'}
+            onPress={() => handlePress('Medical')}>
+            식단기록
+          </NavigationButton>
+        </NavigationPair>
+        <NavigationPair role={role}>
+          <NavigationButton
+            type="community"
+            active={activeTab === 'Community'}
+            onPress={() => handlePress('Community')}>
+            커뮤니티
+          </NavigationButton>
+          <NavigationButton
+            type="my"
+            active={activeTab === 'My'}
+            onPress={() => handlePress('My')}>
+            마이
+          </NavigationButton>
+        </NavigationPair>
       </NavigationBarBox>
     </NavigationBarContainer>
   );
