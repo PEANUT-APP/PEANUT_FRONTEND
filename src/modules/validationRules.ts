@@ -78,5 +78,21 @@ export const useValidationRules = (
         return true;
       },
     },
+    medicineName: {
+      required: '값이 필요해요!',
+    },
+    productName: {
+      required: '값이 필요해요!',
+    },
+    dosage: {
+      required: '값이 필요해요!',
+      validate: (value: string) => {
+        const numberValue = parseFloat(value);
+        if (!value || isNaN(numberValue) || numberValue <= 0) {
+          return '숫자로 입력해주세요!';
+        }
+        return true;
+      },
+    },
   };
 };

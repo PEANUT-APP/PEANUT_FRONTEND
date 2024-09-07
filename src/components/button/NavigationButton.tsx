@@ -27,11 +27,11 @@ export default function NavigationButton({
   const color = active ? colors.primaryNormal : colors.TextDisabled;
   const renderIcon = () => {
     switch (type) {
-      case 'dietLog':
+      case 'medical':
         return (
           <Svg width="20" height="21" viewBox="0 0 20 21" fill="none">
             <Path
-              d="M8.88889 7.35H6.66667V0H4.44444V7.35H2.22222V0H0V7.35C0 9.576 1.84444 11.382 4.16667 11.5185V21H6.94444V11.5185C9.26667 11.382 11.1111 9.576 11.1111 7.35V0H8.88889V7.35ZM14.4444 4.2V12.6H17.2222V21H20V0C16.9333 0 14.4444 2.352 14.4444 4.2Z"
+              d="M6 14C6.55228 14 7 14.4477 7 15L7 20C7 20.5523 7.44772 21 8 21H13C13.5523 21 14 20.5523 14 20V15C14 14.4477 14.4477 14 15 14H20C20.5523 14 21 13.5523 21 13V8C21 7.44772 20.5523 7 20 7H15C14.4477 7 14 6.55229 14 6V1C14 0.447715 13.5523 0 13 0H8C7.44771 0 7 0.447715 7 1L7 6C7 6.55229 6.55228 7 6 7H1C0.447715 7 0 7.44772 0 8V13C0 13.5523 0.447715 14 1 14H6Z"
               fill={color}
             />
           </Svg>

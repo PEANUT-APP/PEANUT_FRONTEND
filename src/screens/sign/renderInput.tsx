@@ -27,7 +27,7 @@ export default function RenderInput({
   const keyboardType =
     name === 'phoneNumber'
       ? 'phone-pad'
-      : name === 'height' || name === 'weight'
+      : name === 'height' || name === 'weight' || name === 'dosage'
       ? 'numeric'
       : 'default';
 

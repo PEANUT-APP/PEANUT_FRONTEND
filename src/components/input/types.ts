@@ -19,6 +19,9 @@ export interface FormData {
   height: string;
   nickname: string;
   phoneNumber: string;
+  medicineName: string;
+  productName: string;
+  dosage: string;
 }
 
 export interface InputType {
@@ -49,7 +52,7 @@ export interface InputType {
   isVerificationCodeValid?: boolean;
   isNicknameValid?: boolean;
   autoFocus?: boolean;
-  keyboardType: KeyboardTypeOptions;
+  keyboardType?: KeyboardTypeOptions;
 }
 
 export interface InputStyleType {
@@ -62,4 +65,11 @@ export interface InputStyleType {
   message?: boolean;
   drop?: boolean;
   isDropdownVisible?: boolean;
+}
+
+export interface TimeInputType {
+  placeholder: string;
+  value: string;
+  editable?: boolean;
+  onChangeText: (text: any) => void;
 }
