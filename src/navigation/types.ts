@@ -7,6 +7,7 @@ export interface ParamList {
   Home: undefined;
   Medicine: undefined;
   Insulin: undefined;
+  BloodSugar: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

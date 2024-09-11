@@ -33,6 +33,9 @@ export default function Dropdown({
   trigger,
   setValue,
   setFocus,
+  name,
+  placeholder,
+  options,
 }: DropdownType) {
   const validationRules = useValidationRules();
 
@@ -46,27 +49,27 @@ export default function Dropdown({
     setIsDropdownVisible(prevState => {
       const newState = !prevState;
       setDropType(newState ? 'dropOpen' : 'dropClose');
-      setFocus('gender');
+      setFocus(name);
       return newState;
     });
-  }, [setFocus]);
+  }, [name, setFocus]);
 
   const handleSelect = async (value: string) => {
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
 
-    setValue('gender', value);
-    await trigger('gender');
+    setValue(name, value);
+    await trigger(name);
   };
 
   return (
     <DropdownContainer>
       <Input
-        placeholder="성별"
-        name="gender"
+        placeholder={placeholder}
+        name={name}
         control={control}
-        rules={validationRules.gender}
+        rules={validationRules[name]}
         errors={errors}
         editable={false}
         touchedFields={touchedFields}
@@ -86,16 +89,14 @@ export default function Dropdown({
       />
       {isDropdownVisible && (
         <DropdownList>
-          <DropdownField
-            onPress={() => handleSelect('남성')}
-            isSelected={selectedValue === '남성'}>
-            남성
-          </DropdownField>
-          <DropdownField
-            onPress={() => handleSelect('여성')}
-            isSelected={selectedValue === '여성'}>
-            여성
-          </DropdownField>
+          {options.map((option: string) => (
+            <DropdownField
+              key={option}
+              onPress={() => handleSelect(option)}
+              isSelected={selectedValue === option}>
+              {option}
+            </DropdownField>
+          ))}
         </DropdownList>
       )}
     </DropdownContainer>

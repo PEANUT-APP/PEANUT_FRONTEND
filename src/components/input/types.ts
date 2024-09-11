@@ -22,6 +22,9 @@ export interface FormData {
   medicineName: string;
   productName: string;
   dosage: string;
+  bloodSugar: string;
+  measurementTime: string;
+  memo: string;
 }
 
 export interface InputType {
