@@ -5,7 +5,9 @@ import {useCallback, useEffect, useState} from 'react';
 import {useSaveMedicineInfoMutation} from '../../services/medicine/medicineApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
-import {useSaveInsulinIfoMutation} from '../../services/insulin/InsulinApi';
+import {useSaveInsulinIfoMutation} from '../../services/insulin/insulinApi';
+import {handleFormError} from '../../modules/formHandler';
+import {useSaveBloodSugarMutation} from '../../services/bloodSugar/bloodSugarApi';
 
 export default function useRecord() {
   const navigation = useNavigation();
@@ -21,7 +23,7 @@ function useCommonForm(
   validateFields: (keyof FormData)[],
   trigger: UseFormTrigger<FormData>,
 ) {
-  const [intakeDays, setIntakeDays] = useState<string[]>([]);
+  const [intakeTime, setIntakeTime] = useState<string[]>([]);
   const [isToggleOn, setIsToggleOn] = useState(false);
   const [inputs, setInputs] = useState<{id: number; time: string | null}[]>([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -29,13 +31,13 @@ function useCommonForm(
   const validate = useCallback(async () => {
     const isValid =
       validateFields.every(async field => await trigger(field)) &&
-      intakeDays.length !== 0;
+      intakeTime.length !== 0;
     setIsButtonDisabled(!isValid);
-  }, [trigger, intakeDays.length, validateFields]);
+  }, [trigger, intakeTime.length, validateFields]);
 
   useEffect(() => {
     validate();
-  }, [intakeDays.length, validate, trigger]);
+  }, [intakeTime.length, validate, trigger]);
 
   const addInputField = useCallback(() => {
     setInputs(prevInputs => [
@@ -53,8 +55,8 @@ function useCommonForm(
   }, []);
 
   return {
-    intakeDays,
-    setIntakeDays,
+    intakeTime,
+    setIntakeTime,
     isToggleOn,
     setIsToggleOn,
     inputs,
@@ -71,14 +73,15 @@ export function useMedicine() {
     control,
     trigger,
     getValues,
+    handleSubmit: handleFormSubmit,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     mode: 'onBlur',
   });
 
   const {
-    intakeDays,
-    setIntakeDays,
+    intakeTime,
+    setIntakeTime,
     isToggleOn,
     setIsToggleOn,
     inputs,
@@ -89,12 +92,13 @@ export function useMedicine() {
 
   const [saveMedicineInfo] = useSaveMedicineInfoMutation();
 
-  const handleSubmit = async () => {
+  const handleMedicineSubmit = async () => {
     const data = {
       alarm: isToggleOn,
-      intakeDays,
-      intakeNumber: intakeDays.length.toString(),
-      intakeTime: inputs.map(input => input.time || ''),
+      intakeDays: intakeTime,
+      intakeNumber: intakeTime.length.toString(),
+      intakeTime: intakeTime,
+      // inputs.map(input => input.time || '')
       medicineName: getValues('medicineName') || '',
     };
 
@@ -107,13 +111,15 @@ export function useMedicine() {
     }
   };
 
+  const handleSubmit = handleFormSubmit(handleMedicineSubmit, handleFormError);
+
   return {
     control,
     errors,
     touchedFields,
     trigger,
-    intakeDays,
-    setIntakeDays,
+    intakeTime,
+    setIntakeTime,
     isToggleOn,
     setIsToggleOn,
     inputs,
@@ -131,14 +137,15 @@ export function useInsulin() {
     control,
     trigger,
     getValues,
+    handleSubmit: handleFormSubmit,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     mode: 'onBlur',
   });
 
   const {
-    intakeDays,
-    setIntakeDays,
+    intakeTime,
+    setIntakeTime,
     isToggleOn,
     setIsToggleOn,
     inputs,
@@ -149,10 +156,10 @@ export function useInsulin() {
 
   const [saveInsulinIfo] = useSaveInsulinIfoMutation();
 
-  const handleSubmit = async () => {
+  const handleInsulinSubmit = async () => {
     const data = {
       alarm: isToggleOn,
-      administrationTime: intakeDays,
+      administrationTime: intakeTime,
       dosage: getValues('dosage') || '',
       productName: getValues('productName') || '',
     };
@@ -166,13 +173,15 @@ export function useInsulin() {
     }
   };
 
+  const handleSubmit = handleFormSubmit(handleInsulinSubmit, handleFormError);
+
   return {
     control,
     errors,
     touchedFields,
     trigger,
-    intakeDays,
-    setIntakeDays,
+    intakeTime,
+    setIntakeTime,
     isToggleOn,
     setIsToggleOn,
     inputs,
@@ -180,5 +189,72 @@ export function useInsulin() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
+  };
+}
+
+export function useBloodSugar() {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const {
+    control,
+    trigger,
+    setValue,
+    getValues,
+    setFocus,
+    watch,
+    handleSubmit: handleFormSubmit,
+    formState: {errors, touchedFields},
+  } = useForm<FormData>({
+    mode: 'onBlur',
+  });
+
+  const [saveBloodSugar] = useSaveBloodSugarMutation();
+
+  const bloodSugar = watch('bloodSugar');
+  const measurementTime = watch('measurementTime');
+
+  const [input, setInput] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    setIsButtonDisabled(!(bloodSugar && measurementTime));
+  }, [bloodSugar, measurementTime]);
+
+  const handleInputChange = useCallback((text: string) => {
+    setInput(text);
+  }, []);
+
+  const handleBloodSugarSubmit = async () => {
+    const data = {
+      blood_sugar: getValues('bloodSugar'),
+      measurementTime: getValues('measurementTime'),
+      memo: getValues('memo'),
+    };
+
+    try {
+      await saveBloodSugar(data).unwrap();
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('혈당 기록에 실패했습니다.');
+    }
+  };
+
+  const handleSubmit = handleFormSubmit(
+    handleBloodSugarSubmit,
+    handleFormError,
+  );
+
+  return {
+    control,
+    errors,
+    touchedFields,
+    trigger,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isButtonDisabled,
+    setValue,
+    setFocus,
   };
 }

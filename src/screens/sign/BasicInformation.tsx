@@ -63,6 +63,9 @@ export default function BasicInformation() {
           trigger={trigger}
           setValue={setValue}
           setFocus={setFocus}
+          name="gender"
+          placeholder="성별"
+          options={['남성', '여성']}
         />
       )}
       {step >= 2 &&

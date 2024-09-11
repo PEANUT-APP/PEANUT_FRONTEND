@@ -5,36 +5,30 @@ import {
   RecordFormBox,
   RecordTitle,
   RecordTitleBox,
-  RecordToggle,
-  RecordToggleText,
 } from './styles';
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import useRecord, {useMedicine} from './hooks';
+import useRecord, {useBloodSugar} from './hooks';
 import RenderInput from '../../modules/renderInput';
-import MultiSelectList from '../../components/select/MultiSelectList';
-import Toggle from '../../components/toggle/Toggle';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
+import Dropdown from '../../components/dropdown/Dropdown';
 
-export default function MedicineRecord() {
+export default function BloodSugarRecord() {
   const {handleBack} = useRecord();
   const {
     control,
     errors,
     touchedFields,
     trigger,
-    intakeTime,
-    setIntakeTime,
-    isToggleOn,
-    setIsToggleOn,
-    inputs,
-    addInputField,
+    input,
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
-  } = useMedicine();
+    setValue,
+    setFocus,
+  } = useBloodSugar();
 
   return (
     <RecordContainer>
@@ -44,36 +38,43 @@ export default function MedicineRecord() {
             <DesignIcon type="back" size="l" color={colors.TextNeutral} />
           </TouchableOpacity>
           <RecordTitle color={colors.TextNormal} weight="bold">
-            복약 추가중
+            혈당 기록중
           </RecordTitle>
         </RecordTitleBox>
         <RecordFormBox>
           {RenderInput({
-            name: 'medicineName',
-            placeholder: '약물명',
+            name: 'bloodSugar',
+            placeholder: '혈당 수치',
             control,
             errors,
             touchedFields,
             trigger,
           })}
-          <MultiSelectList
-            selectedItems={intakeTime}
-            setSelectedItems={setIntakeTime}
-            onAddPress={addInputField}
+          <TimeInput
+            placeholder="시간"
+            value={input}
+            onChangeText={(text: any) => handleInputChange(text)}
+            editable={true}
           />
-          {inputs.map((input, index) => (
-            <TimeInput
-              key={index}
-              placeholder={`추가 시간 ${input.id}`}
-              value={input.time || ''}
-              onChangeText={(text: any) => handleInputChange(text, index)}
-              editable={true}
-            />
-          ))}
-          <RecordToggle>
-            <RecordToggleText>알림 기능</RecordToggleText>
-            <Toggle isToggleOn={isToggleOn} setIsToggleOn={setIsToggleOn} />
-          </RecordToggle>
+          <Dropdown
+            control={control}
+            errors={errors}
+            touchedFields={touchedFields}
+            trigger={trigger}
+            setValue={setValue}
+            setFocus={setFocus}
+            name="measurementTime"
+            placeholder="상태"
+            options={['공복 혈당', '식전 혈당', '식후 혈당', '자기 전 혈당']}
+          />
+          {RenderInput({
+            name: 'memo',
+            placeholder: '메모',
+            control,
+            errors,
+            touchedFields,
+            trigger,
+          })}
         </RecordFormBox>
       </RecordBox>
       <PrimaryButton

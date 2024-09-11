@@ -1,4 +1,4 @@
-import {FieldErrors, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {Alert} from 'react-native';
 import {FormData} from '../../components/input/types';
 import {HandleNextStepProps} from './types';
@@ -23,16 +23,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {updateForm} from '../../slices/formSlice';
 import {RootState} from '../../store/store';
 import {login} from '../../slices/tokenSlice';
-
-export const handleFormSubmit = (navigation: any, navigateTo: string) => {
-  Alert.alert('성공', '모든 필드가 유효합니다!');
-  navigation.navigate(navigateTo);
-};
-
-export const handleFormError = (errs: FieldErrors<FormData>) => {
-  const firstError = Object.values(errs)[0];
-  Alert.alert('실패', firstError?.message || '알 수 없는 오류가 발생했습니다.');
-};
+import {handleFormError} from '../../modules/formHandler';
 
 export const handleNextStep = async ({
   step,
@@ -277,6 +268,7 @@ export const useBasicInformation = () => {
     trigger,
     watch,
     setValue,
+    getValues,
     setFocus,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
@@ -301,19 +293,19 @@ export const useBasicInformation = () => {
 
       switch (step) {
         case 0:
-          isValid = await trigger('password');
+          isValid = !!getValues('password');
           break;
         case 1:
-          isValid = await trigger('name');
+          isValid = !!getValues('name');
           break;
         case 2:
-          isValid = await trigger('birth');
+          isValid = !!getValues('birth');
           break;
         case 3:
-          isValid = await trigger('gender');
+          isValid = !!getValues('gender');
           break;
         case 4:
-          isValid = await trigger('phoneNumber');
+          isValid = !!getValues('phoneNumber');
           break;
         default:
           isValid = false;
@@ -331,6 +323,7 @@ export const useBasicInformation = () => {
     genderWatch,
     phoneNumberWatch,
     trigger,
+    getValues,
   ]);
 
   const handleBasicFormSubmit = (data: BasicFormType) => {
@@ -371,6 +364,7 @@ export const useAdditionalInformation = () => {
     handleSubmit,
     trigger,
     watch,
+    getValues,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
@@ -391,13 +385,13 @@ export const useAdditionalInformation = () => {
 
       switch (step) {
         case 0:
-          isValid = await trigger('nickname');
+          isValid = !!getValues('nickname');
           break;
         case 1:
-          isValid = await trigger('height');
+          isValid = !!getValues('height');
           break;
         case 2:
-          isValid = await trigger('weight');
+          isValid = !!getValues('weight');
           break;
         default:
           isValid = false;
@@ -407,7 +401,7 @@ export const useAdditionalInformation = () => {
     };
 
     validateStep();
-  }, [step, nicknameWatch, heightWatch, weightWatch, trigger]);
+  }, [step, nicknameWatch, heightWatch, weightWatch, trigger, getValues]);
 
   useEffect(() => {
     const validateNickname = async () => {
