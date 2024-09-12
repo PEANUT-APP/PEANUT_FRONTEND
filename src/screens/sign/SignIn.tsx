@@ -3,7 +3,7 @@ import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useSignIn} from './hooks';
 import {PrimaryTextButton} from '../../components/button/TextButton';
-import RenderInput from './renderInput';
+import RenderInput from '../../modules/renderInput';
 
 export default function SignIn() {
   const {

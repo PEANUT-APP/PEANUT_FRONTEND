@@ -42,3 +42,7 @@ export interface NavigationButtonType {
   active: boolean;
   onPress: () => void;
 }
+
+export interface PlusButtonType {
+  onPress: () => void;
+}

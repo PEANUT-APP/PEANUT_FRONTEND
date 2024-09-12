@@ -3,7 +3,7 @@ import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import FitIcon from '../../components/icon/FitIcon';
 import {handleFormError, useSignUp} from './hooks';
-import RenderInput from './renderInput';
+import RenderInput from '../../modules/renderInput';
 
 export default function SignUp() {
   const {

@@ -12,7 +12,7 @@ import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import useRecord, {useInsulin} from './hooks';
-import RenderInput from '../sign/renderInput';
+import RenderInput from '../../modules/renderInput';
 import MultiSelectList from '../../components/select/MultiSelectList';
 import Toggle from '../../components/toggle/Toggle';
 import PrimaryButton from '../../components/button/PrimaryButton';
@@ -25,8 +25,8 @@ export default function InsulinRecord() {
     errors,
     touchedFields,
     trigger,
-    intakeDays,
-    setIntakeDays,
+    intakeTime,
+    setIntakeTime,
     isToggleOn,
     setIsToggleOn,
     inputs,
@@ -65,8 +65,8 @@ export default function InsulinRecord() {
             trigger,
           })}
           <MultiSelectList
-            selectedItems={intakeDays}
-            setSelectedItems={setIntakeDays}
+            selectedItems={intakeTime}
+            setSelectedItems={setIntakeTime}
             onAddPress={addInputField}
           />
           {inputs.map((input, index) => (

@@ -33,6 +33,7 @@ import {logout} from '../slices/tokenSlice';
 import {Alert} from 'react-native';
 import MedicineRecord from '../screens/record/MedicineRecord';
 import InsulinRecord from '../screens/record/InsulinRecord';
+import BloodSugarRecord from '../screens/record/BloodSugarRecord';
 
 const Stack = createNativeStackNavigator();
 
@@ -95,6 +96,11 @@ export default function Navigation() {
         <Stack.Screen
           name="Insulin"
           component={InsulinRecord}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BloodSugar"
+          component={BloodSugarRecord}
           options={{headerShown: false}}
         />
         <Stack.Screen

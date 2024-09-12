@@ -89,10 +89,24 @@ export const useValidationRules = (
       validate: (value: string) => {
         const numberValue = parseFloat(value);
         if (!value || isNaN(numberValue) || numberValue <= 0) {
-          return '숫자로 입력해주세요!';
+          return '투여량은 숫자로 입력해주세요!';
         }
         return true;
       },
     },
+    bloodSugar: {
+      required: '값이 필요해요!',
+      validate: (value: string) => {
+        const numberValue = parseFloat(value);
+        if (!value || isNaN(numberValue) || numberValue <= 0) {
+          return '혈당은 숫자로 입력해주세요!';
+        }
+        return true;
+      },
+    },
+    measurementCondition: {
+      required: '값이 필요해요!',
+    },
+    memo: {},
   };
 };
