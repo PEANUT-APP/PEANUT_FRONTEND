@@ -15,6 +15,7 @@ import MyPageIcon from '../../assets/images/main_mypage.svg';
 import NoticeIcon from '../../assets/images/main_notice.svg';
 import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ReportCard from './reportCard/ReportCard';
+import useMain from './hooks';
 
 const generateHourlyData = () => {
   const data = [];
@@ -26,9 +27,6 @@ const generateHourlyData = () => {
 const data = generateHourlyData();
 
 const profileImage = require('../../assets/images/mainProfile.png');
-const userName = '박지혜';
-const FirsBloodSugar = 87;
-const nowBloodSugar = 100;
 
 export default function Home() {
   const [searchFood, setSearchFood] = useState('');
@@ -41,6 +39,15 @@ export default function Home() {
     }
   }, [searchFood]);
 
+  const {
+    fastingBloodSugarLevel,
+    currentBloodSugarLevel,
+    userName,
+    isUserInfoSuccess,
+    today,
+    setToday,
+  } = useMain();
+
   return (
     <Layout paddingBottom={107}>
       <HomeBox>
@@ -49,16 +56,18 @@ export default function Home() {
             <MyPageIcon />
             <NoticeIcon />
           </HomeIcons>
-          <TopBox
-            profileImage={profileImage}
-            userName={userName}
-            firstBloodSugar={FirsBloodSugar}
-            nowBloodSugar={nowBloodSugar}
-          />
+          {isUserInfoSuccess && (
+            <TopBox
+              profileImage={profileImage}
+              userName={userName}
+              fastingBloodSugar={fastingBloodSugarLevel}
+              currentBloodSugar={currentBloodSugarLevel}
+            />
+          )}
         </HomeTop>
         <HomeContent>
           <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
-          <WeeklyCalendar />
+          <WeeklyCalendar today={today} setToday={setToday} />
           <Graph graphData={data} />
           <ReportCardBox>
             <ReportCard navigate="Medicine" />

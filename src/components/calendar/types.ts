@@ -1,7 +1,14 @@
+import dayjs from 'dayjs';
+
 export interface CalendarType {
   mealRecords: MealRecords;
 }
 
 interface MealRecords {
   [date: string]: string[];
+}
+
+export interface WeeklyType {
+  today: dayjs.Dayjs | undefined;
+  setToday: React.Dispatch<React.SetStateAction<dayjs.Dayjs>> | undefined;
 }
