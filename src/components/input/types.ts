@@ -23,7 +23,7 @@ export interface FormData {
   productName: string;
   dosage: string;
   bloodSugar: string;
-  measurementTime: string;
+  measurementCondition: string;
   memo: string;
 }
 

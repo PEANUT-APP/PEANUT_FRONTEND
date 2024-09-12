@@ -8,7 +8,8 @@ export const bloodSugarApi = apiSlice.injectEndpoints({
         url: '/blood-sugar/save',
         method: 'POST',
         params: {
-          blood_sugar: data.blood_sugar,
+          bloodSugarLevel: data.bloodSugarLevel,
+          measurementCondition: data.measurementCondition,
           measurementTime: data.measurementTime,
           memo: data.memo,
         },

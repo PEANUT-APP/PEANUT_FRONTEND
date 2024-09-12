@@ -22,6 +22,7 @@ export default function useRecord() {
 function useCommonForm(
   validateFields: (keyof FormData)[],
   trigger: UseFormTrigger<FormData>,
+  intakeDays?: string[],
 ) {
   const [intakeTime, setIntakeTime] = useState<string[]>([]);
   const [isToggleOn, setIsToggleOn] = useState(false);
@@ -31,9 +32,10 @@ function useCommonForm(
   const validate = useCallback(async () => {
     const isValid =
       validateFields.every(async field => await trigger(field)) &&
-      intakeTime.length !== 0;
+      intakeTime.length !== 0 &&
+      intakeDays?.length !== 0;
     setIsButtonDisabled(!isValid);
-  }, [trigger, intakeTime.length, validateFields]);
+  }, [validateFields, intakeTime.length, intakeDays?.length, trigger]);
 
   useEffect(() => {
     validate();
@@ -92,11 +94,12 @@ export function useMedicine() {
 
   const [saveMedicineInfo] = useSaveMedicineInfoMutation();
 
+  const [intakeDays, setIntakeDays] = useState<string[]>([]);
+
   const handleMedicineSubmit = async () => {
     const data = {
       alarm: isToggleOn,
-      intakeDays: intakeTime,
-      intakeNumber: intakeTime.length.toString(),
+      intakeDays: intakeDays,
       intakeTime: intakeTime,
       // inputs.map(input => input.time || '')
       medicineName: getValues('medicineName') || '',
@@ -118,6 +121,8 @@ export function useMedicine() {
     errors,
     touchedFields,
     trigger,
+    intakeDays,
+    setIntakeDays,
     intakeTime,
     setIntakeTime,
     isToggleOn,
@@ -211,14 +216,14 @@ export function useBloodSugar() {
   const [saveBloodSugar] = useSaveBloodSugarMutation();
 
   const bloodSugar = watch('bloodSugar');
-  const measurementTime = watch('measurementTime');
+  const measurementCondition = watch('measurementCondition');
 
   const [input, setInput] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
-    setIsButtonDisabled(!(bloodSugar && measurementTime));
-  }, [bloodSugar, measurementTime]);
+    setIsButtonDisabled(!(bloodSugar && measurementCondition && input));
+  }, [bloodSugar, measurementCondition, input]);
 
   const handleInputChange = useCallback((text: string) => {
     setInput(text);
@@ -226,8 +231,9 @@ export function useBloodSugar() {
 
   const handleBloodSugarSubmit = async () => {
     const data = {
-      blood_sugar: getValues('bloodSugar'),
-      measurementTime: getValues('measurementTime'),
+      bloodSugarLevel: getValues('bloodSugar'),
+      measurementCondition: getValues('measurementCondition'),
+      measurementTime: input,
       memo: getValues('memo'),
     };
 

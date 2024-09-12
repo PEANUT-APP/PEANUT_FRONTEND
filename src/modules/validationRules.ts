@@ -104,7 +104,7 @@ export const useValidationRules = (
         return true;
       },
     },
-    measurementTime: {
+    measurementCondition: {
       required: '값이 필요해요!',
     },
     memo: {},
