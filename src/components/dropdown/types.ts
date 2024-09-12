@@ -22,4 +22,7 @@ export interface DropdownType {
   trigger: UseFormTrigger<FormData>;
   setValue: UseFormSetValue<FormData>;
   setFocus: UseFormSetFocus<FormData>;
+  name: keyof FormData;
+  placeholder: string;
+  options: string[];
 }

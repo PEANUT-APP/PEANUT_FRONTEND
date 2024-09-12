@@ -2,7 +2,7 @@ import React from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useBasicInformation} from './hooks';
-import RenderInput from './renderInput';
+import RenderInput from '../../modules/renderInput';
 import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function BasicInformation() {
@@ -63,6 +63,9 @@ export default function BasicInformation() {
           trigger={trigger}
           setValue={setValue}
           setFocus={setFocus}
+          name="gender"
+          placeholder="성별"
+          options={['남성', '여성']}
         />
       )}
       {step >= 2 &&

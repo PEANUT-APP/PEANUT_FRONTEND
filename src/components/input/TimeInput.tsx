@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {TimeInputType} from './types';
 import {colors} from '../../styles/colors';
 import {View} from 'react-native';
@@ -12,21 +12,29 @@ export default function TimeInput({
 }: TimeInputType) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const shouldShowLabel = isFocused || !!value;
+  const handleFocus = useCallback(() => {
+    if (!isFocused) {
+      setIsFocused(true);
+    }
+  }, [isFocused]);
+
+  const handleBlur = useCallback(() => {
+    if (isFocused) {
+      setIsFocused(false);
+    }
+  }, [isFocused]);
 
   return (
     <View>
-      {shouldShowLabel && (
+      {(isFocused || value) && (
         <InputLabel color={colors.TextNeutral}>{placeholder}</InputLabel>
       )}
       <InputBox isFocused={isFocused} editable={editable}>
         <InputText
           placeholder={isFocused ? '' : placeholder}
           placeholderTextColor={colors.TextNeutral}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => {
-            setIsFocused(false);
-          }}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           onChangeText={onChangeText}
           value={value}
           editable={editable}

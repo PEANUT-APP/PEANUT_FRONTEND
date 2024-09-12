@@ -131,7 +131,6 @@ export default function Input({
         </View>
       )}
       name={name}
-      shouldUnregister={true}
     />
   );
 }

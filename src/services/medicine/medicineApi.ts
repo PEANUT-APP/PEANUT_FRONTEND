@@ -10,7 +10,6 @@ export const medicineApi = apiSlice.injectEndpoints({
         params: {
           alarm: data.alarm,
           intakeDays: data.intakeDays,
-          intakeNumber: data.intakeNumber,
           intakeTime: data.intakeTime,
           medicineName: data.medicineName,
         },

@@ -1,7 +1,35 @@
-import React from 'react';
-import Input from '../../components/input/Input';
-import {useValidationRules} from '../../modules/validationRules';
-import {RenderInputProps} from './types';
+import React, {ReactNode} from 'react';
+import Input from '../components/input/Input';
+import {useValidationRules} from './validationRules';
+import {
+  Control,
+  DeepMap,
+  FieldError,
+  FieldValues,
+  UseFormTrigger,
+} from 'react-hook-form';
+import {FormData} from '../components/input/types';
+
+interface RenderInputProps {
+  name: keyof FormData;
+  placeholder: string;
+  control: Control<FormData>;
+  errors: DeepMap<FieldValues, FieldError>;
+  touchedFields: DeepMap<Record<string, boolean>, boolean>;
+  trigger: UseFormTrigger<FormData>;
+  secureTextEntry?: boolean;
+  message?: string;
+  icon?: ReactNode;
+  button?: boolean;
+  buttonText?: string;
+  timer?: number;
+  isTimerActive?: boolean;
+  handleSendEmail?: (data: {email: string}) => void;
+  isVerificationCodeValid?: boolean;
+  isNicknameValid?: boolean;
+  verificationCode?: string;
+  autoFocus?: boolean;
+}
 
 export default function RenderInput({
   name,

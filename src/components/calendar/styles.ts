@@ -15,8 +15,6 @@ export const CalendarMonth = styled(Body1)`
   color: ${colors.TextNormal};
   line-height: 21.344px;
   letter-spacing: -0.4px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${colors.TextNormal};
 `;
 
 export const CalendarWeekBox = styled.View`

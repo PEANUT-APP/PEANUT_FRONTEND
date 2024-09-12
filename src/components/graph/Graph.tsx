@@ -10,6 +10,9 @@ import {
   YAxisLabel,
   YAxisLabels,
 } from './styles';
+import PlusButton from '../button/PlusButton';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
 
 export default function Graph({graphData}: GraphType) {
   const labels = ['6시', '', '12시', '', '18시', '', '24시'];
@@ -50,12 +53,19 @@ export default function Graph({graphData}: GraphType) {
     yAxisSuffix: '',
   };
 
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const onAddBloodSugar = () => {
+    navigation.navigate('BloodSugar');
+  };
+
   return (
     <GraphContainer>
       <GraphTop>
         <GraphTitle color={colors.TextNormal} weight="bold">
           혈당 그래프
         </GraphTitle>
+        <PlusButton onPress={onAddBloodSugar} />
       </GraphTop>
       <GraphContent>
         <GraphChart

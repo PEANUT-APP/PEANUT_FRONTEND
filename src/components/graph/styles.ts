@@ -6,7 +6,7 @@ import {LineChart} from 'react-native-chart-kit';
 export const GraphContainer = styled.View`
   width: 350px;
   justify-content: space-between;
-  gap: 13px;
+  gap: 12px;
   border-radius: 8px;
   background-color: ${colors.white};
   padding: 20px 0;
@@ -17,7 +17,7 @@ export const GraphTop = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-left: 24px;
+  margin: 0 24px;
 `;
 
 export const GraphTitle = styled(Body1)`
