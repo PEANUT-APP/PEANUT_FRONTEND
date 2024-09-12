@@ -17,6 +17,7 @@ import MultiSelectList from '../../components/select/MultiSelectList';
 import Toggle from '../../components/toggle/Toggle';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
+import DayListItem from './day/DayListItem';
 
 export default function MedicineRecord() {
   const {handleBack} = useRecord();
@@ -25,6 +26,8 @@ export default function MedicineRecord() {
     errors,
     touchedFields,
     trigger,
+    intakeDays,
+    setIntakeDays,
     intakeTime,
     setIntakeTime,
     isToggleOn,
@@ -56,6 +59,7 @@ export default function MedicineRecord() {
             touchedFields,
             trigger,
           })}
+          <DayListItem intakeDays={intakeDays} setIntakeDays={setIntakeDays} />
           <MultiSelectList
             selectedItems={intakeTime}
             setSelectedItems={setIntakeTime}

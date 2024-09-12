@@ -63,7 +63,7 @@ export default function BloodSugarRecord() {
             trigger={trigger}
             setValue={setValue}
             setFocus={setFocus}
-            name="measurementTime"
+            name="measurementCondition"
             placeholder="상태"
             options={['공복 혈당', '식전 혈당', '식후 혈당', '자기 전 혈당']}
           />

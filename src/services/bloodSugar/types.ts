@@ -1,5 +1,6 @@
 export interface BloodSugarFormType {
-  blood_sugar: string;
+  bloodSugarLevel: string;
+  measurementCondition: string;
   measurementTime: string;
   memo: string;
 }
