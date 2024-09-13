@@ -1,3 +1,3 @@
 export interface GraphType {
-  graphData: number[];
+  graphData: {value: number}[] | undefined;
 }

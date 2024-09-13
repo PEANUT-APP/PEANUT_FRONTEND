@@ -3,56 +3,19 @@ import {colors} from '../../styles/colors';
 import {GraphType} from './types';
 import {
   GraphContainer,
-  GraphChart,
   GraphContent,
   GraphTitle,
   GraphTop,
-  YAxisLabel,
+  AxisLabel,
   YAxisLabels,
+  XAxisLabel,
 } from './styles';
 import PlusButton from '../button/PlusButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
+import {LineChart} from 'react-native-gifted-charts';
 
 export default function Graph({graphData}: GraphType) {
-  const labels = ['6시', '', '12시', '', '18시', '', '24시'];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        data: graphData,
-        color: () => colors.primaryNormal,
-        strokeWidth: 2,
-      },
-    ],
-  };
-
-  const chartConfig = {
-    backgroundGradientFrom: '#fff',
-    backgroundGradientTo: '#fff',
-    fillShadowGradientFrom: '#fff',
-    fillShadowGradientFromOpacity: 0,
-    fillShadowGradientTo: '#fff',
-    fillShadowGradientToOpacity: 0,
-    color: () => colors.primaryNormal,
-    propsForBackgroundLines: {
-      strokeDasharray: '',
-      stroke: colors.LineDisabled,
-    },
-    propsForDots: {
-      r: 3,
-      fill: colors.primaryNormal,
-    },
-    labelColor: () => colors.TextDisabled,
-    propsForLabels: {
-      fontSize: 12,
-      fontFamily: 'Pretendard',
-    },
-    yAxisLabel: '',
-    yAxisSuffix: '',
-  };
-
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const onAddBloodSugar = () => {
@@ -68,23 +31,40 @@ export default function Graph({graphData}: GraphType) {
         <PlusButton onPress={onAddBloodSugar} />
       </GraphTop>
       <GraphContent>
-        <GraphChart
-          data={data}
-          chartConfig={chartConfig}
-          width={330}
-          height={160}
-          withVerticalLines={false}
-          withHorizontalLabels={false}
-          segments={4}
-          withHorizontalLines={true}
-          yAxisInterval={1}
+        <LineChart
+          data={graphData} // 변환된 데이터
+          width={245} // 차트 너비
+          height={148} // 차트 높이
+          isAnimated
+          initialSpacing={20} // 차트 시작 부분의 간격
+          color={colors.primaryNormal} // 선 색상
+          thickness={2} // 선 두께
+          maxValue={200} // Y축 최대값
+          noOfSections={4} // Y축 구간 (200까지니까 4 구간)
+          hideYAxisText // Y축의 텍스트 숨기기
+          yAxisLabelTexts={['0', '50', '100', '150', '200']} // Y축 레이블
+          yAxisThickness={0} // Y축 선 두께를 0으로 설정하여 숨기기
+          xAxisThickness={1} // X축 선 두께를 0으로 설정하여 숨기기
+          xAxisColor={colors.LineDisabled}
+          dataPointsColor={colors.primaryNormal} // 데이터 포인트 색상
+          yAxisColor={colors.LineDisabled} // Y축의 가로줄 색상
+          yAxisLabelWidth={29} // Y축 레이블 넓이
+          showVerticalLines={false} // 세로줄 숨기기
+          hideRules={false} // Y축 가로선은 표시
+          rulesColor={colors.LineDisabled} // 가로선 색상
+          rulesType={'solid'} // 가로선 스타일을 solid로 설정
         />
         <YAxisLabels>
           {['200', '150', '100', '50', '0'].map((label, index) => (
-            <YAxisLabel key={index}>{label}</YAxisLabel>
+            <AxisLabel key={index}>{label}</AxisLabel>
           ))}
         </YAxisLabels>
       </GraphContent>
+      <XAxisLabel>
+        {['6시', '12시', '18시', '24시'].map((label, index) => (
+          <AxisLabel key={index}>{label}</AxisLabel>
+        ))}
+      </XAxisLabel>
     </GraphContainer>
   );
 }

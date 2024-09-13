@@ -17,15 +17,6 @@ import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ReportCard from './reportCard/ReportCard';
 import useMain from './hooks';
 
-const generateHourlyData = () => {
-  const data = [];
-  for (let i = 0; i < 5; i++) {
-    data.push(Math.random() * 200);
-  }
-  return data;
-};
-const data = generateHourlyData();
-
 const profileImage = require('../../assets/images/mainProfile.png');
 
 export default function Home() {
@@ -46,6 +37,14 @@ export default function Home() {
     isUserInfoSuccess,
     today,
     setToday,
+    medicineName,
+    insulinName,
+    bloodSugarList,
+    isAdditionalInfoSuccess,
+    isCheckedMedicine,
+    isCheckedInsulin,
+    toggleMedicine,
+    toggleInsulin,
   } = useMain();
 
   return (
@@ -65,15 +64,30 @@ export default function Home() {
             />
           )}
         </HomeTop>
-        <HomeContent>
-          <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
-          <WeeklyCalendar today={today} setToday={setToday} />
-          <Graph graphData={data} />
-          <ReportCardBox>
-            <ReportCard navigate="Medicine" />
-            <ReportCard navigate="Insulin" />
-          </ReportCardBox>
-        </HomeContent>
+        {isAdditionalInfoSuccess && (
+          <HomeContent>
+            <Search
+              onChangeText={setSearchFood}
+              onSubmitEditing={handleSearch}
+            />
+            <WeeklyCalendar today={today} setToday={setToday} />
+            <Graph graphData={bloodSugarList} />
+            <ReportCardBox>
+              <ReportCard
+                navigate="Medicine"
+                isChecked={isCheckedMedicine}
+                onPress={toggleMedicine}
+                name={medicineName}
+              />
+              <ReportCard
+                navigate="Insulin"
+                isChecked={isCheckedInsulin}
+                onPress={toggleInsulin}
+                name={insulinName}
+              />
+            </ReportCardBox>
+          </HomeContent>
+        )}
       </HomeBox>
     </Layout>
   );
