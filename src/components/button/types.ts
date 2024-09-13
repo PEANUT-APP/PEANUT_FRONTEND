@@ -46,3 +46,8 @@ export interface NavigationButtonType {
 export interface PlusButtonType {
   onPress: () => void;
 }
+
+export interface CheckButtonType {
+  isChecked: boolean;
+  onPress: () => void;
+}

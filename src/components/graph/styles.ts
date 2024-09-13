@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Body1, Caption1} from '../text/Text';
-import {LineChart} from 'react-native-chart-kit';
 
 export const GraphContainer = styled.View`
   width: 350px;
@@ -27,20 +26,27 @@ export const GraphTitle = styled(Body1)`
 
 export const GraphContent = styled.View`
   flex-direction: row;
-  margin-left: -35px;
   gap: 6px;
 `;
 
-export const GraphChart = styled(LineChart)``;
-
 export const YAxisLabels = styled.View`
-  gap: 13px;
-  align-items: center;
+  gap: 20.5px;
   margin-top: 8px;
+  position: absolute;
+  right: 26px;
+  top: -9px;
 `;
 
-export const YAxisLabel = styled(Caption1)`
+export const AxisLabel = styled(Caption1)`
   line-height: 16.008px;
   letter-spacing: -0.3px;
   color: ${colors.TextDisabled};
+`;
+
+export const XAxisLabel = styled.View`
+  flex-direction: row;
+  gap: 51px;
+  position: absolute;
+  bottom: 18px;
+  left: 40px;
 `;
