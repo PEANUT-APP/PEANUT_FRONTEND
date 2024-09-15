@@ -16,6 +16,7 @@ import NoticeIcon from '../../assets/images/main_notice.svg';
 import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ReportCard from './reportCard/ReportCard';
 import useMain from './hooks';
+import MealCard from '../../components/card/MealCard';
 
 const profileImage = require('../../assets/images/mainProfile.png');
 
@@ -64,30 +65,30 @@ export default function Home() {
             />
           )}
         </HomeTop>
-        {isAdditionalInfoSuccess && (
-          <HomeContent>
-            <Search
-              onChangeText={setSearchFood}
-              onSubmitEditing={handleSearch}
-            />
-            <WeeklyCalendar today={today} setToday={setToday} />
-            <Graph graphData={bloodSugarList} />
-            <ReportCardBox>
-              <ReportCard
-                navigate="Medicine"
-                isChecked={isCheckedMedicine}
-                onPress={toggleMedicine}
-                name={medicineName}
-              />
-              <ReportCard
-                navigate="Insulin"
-                isChecked={isCheckedInsulin}
-                onPress={toggleInsulin}
-                name={insulinName}
-              />
-            </ReportCardBox>
-          </HomeContent>
-        )}
+        <HomeContent>
+          <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
+          <WeeklyCalendar today={today} setToday={setToday} />
+          {isAdditionalInfoSuccess && (
+            <>
+              <Graph graphData={bloodSugarList} />
+              <ReportCardBox>
+                <ReportCard
+                  navigate="Medicine"
+                  isChecked={isCheckedMedicine}
+                  onPress={toggleMedicine}
+                  name={medicineName}
+                />
+                <ReportCard
+                  navigate="Insulin"
+                  isChecked={isCheckedInsulin}
+                  onPress={toggleInsulin}
+                  name={insulinName}
+                />
+              </ReportCardBox>
+            </>
+          )}
+          <MealCard size="m" today={today} />
+        </HomeContent>
       </HomeBox>
     </Layout>
   );
