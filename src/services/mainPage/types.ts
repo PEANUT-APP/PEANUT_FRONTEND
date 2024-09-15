@@ -21,3 +21,9 @@ export interface AdditionalInfoReturnType {
   medicineAlam: boolean;
   medicineName: string;
 }
+
+export interface FoodReturnType {
+  carbohydrate: number;
+  fat: number;
+  protein: number;
+}

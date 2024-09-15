@@ -34,8 +34,8 @@ export default function Graph({graphData}: GraphType) {
         <LineChart
           data={graphData} // 변환된 데이터
           width={245} // 차트 너비
+          adjustToWidth
           height={148} // 차트 높이
-          isAnimated
           initialSpacing={20} // 차트 시작 부분의 간격
           color={colors.primaryNormal} // 선 색상
           thickness={2} // 선 두께
@@ -53,6 +53,7 @@ export default function Graph({graphData}: GraphType) {
           hideRules={false} // Y축 가로선은 표시
           rulesColor={colors.LineDisabled} // 가로선 색상
           rulesType={'solid'} // 가로선 스타일을 solid로 설정
+          isAnimated={false}
         />
         <YAxisLabels>
           {['200', '150', '100', '50', '0'].map((label, index) => (

@@ -1,7 +1,11 @@
 import apiSlice from '../apiSlice';
-import {AdditionalInfoReturnType, UserInfoReturnType} from './types';
+import {
+  AdditionalInfoReturnType,
+  FoodReturnType,
+  UserInfoReturnType,
+} from './types';
 
-export const insulinApi = apiSlice.injectEndpoints({
+export const mainPageApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getUserInfoMainPage: builder.query<UserInfoReturnType, void>({
       query: () => ({
@@ -18,10 +22,29 @@ export const insulinApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
+      query: ({date}) => ({
+        url: `/main-api/get-all-food?date=${date}`,
+        method: 'GET',
+      }),
+    }),
+    getFoodDetailByEatTime: builder.query<
+      FoodReturnType,
+      {date: string; eatTime: string}
+    >({
+      query: ({date, eatTime}) => ({
+        url: `/main-api/get-time-food?date=${date}&eatTime=${eatTime}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const {useGetUserInfoMainPageQuery, useGetAdditionalInfoMainPageQuery} =
-  insulinApi;
+export const {
+  useGetUserInfoMainPageQuery,
+  useGetAdditionalInfoMainPageQuery,
+  useGetFoodAllDetailQuery,
+  useGetFoodDetailByEatTimeQuery,
+} = mainPageApi;
 
-export default insulinApi;
+export default mainPageApi;
