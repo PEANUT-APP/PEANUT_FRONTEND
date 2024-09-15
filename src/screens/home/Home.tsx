@@ -15,20 +15,10 @@ import MyPageIcon from '../../assets/images/main_mypage.svg';
 import NoticeIcon from '../../assets/images/main_notice.svg';
 import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ReportCard from './reportCard/ReportCard';
-
-const generateHourlyData = () => {
-  const data = [];
-  for (let i = 0; i < 5; i++) {
-    data.push(Math.random() * 200);
-  }
-  return data;
-};
-const data = generateHourlyData();
+import useMain from './hooks';
+import MealCard from '../../components/card/MealCard';
 
 const profileImage = require('../../assets/images/mainProfile.png');
-const userName = '박지혜';
-const FirsBloodSugar = 87;
-const nowBloodSugar = 100;
 
 export default function Home() {
   const [searchFood, setSearchFood] = useState('');
@@ -41,6 +31,23 @@ export default function Home() {
     }
   }, [searchFood]);
 
+  const {
+    fastingBloodSugarLevel,
+    currentBloodSugarLevel,
+    userName,
+    isUserInfoSuccess,
+    today,
+    setToday,
+    medicineName,
+    insulinName,
+    bloodSugarList,
+    isAdditionalInfoSuccess,
+    isCheckedMedicine,
+    isCheckedInsulin,
+    toggleMedicine,
+    toggleInsulin,
+  } = useMain();
+
   return (
     <Layout paddingBottom={107}>
       <HomeBox>
@@ -49,21 +56,38 @@ export default function Home() {
             <MyPageIcon />
             <NoticeIcon />
           </HomeIcons>
-          <TopBox
-            profileImage={profileImage}
-            userName={userName}
-            firstBloodSugar={FirsBloodSugar}
-            nowBloodSugar={nowBloodSugar}
-          />
+          {isUserInfoSuccess && (
+            <TopBox
+              profileImage={profileImage}
+              userName={userName}
+              fastingBloodSugar={fastingBloodSugarLevel}
+              currentBloodSugar={currentBloodSugarLevel}
+            />
+          )}
         </HomeTop>
         <HomeContent>
           <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
-          <WeeklyCalendar />
-          <Graph graphData={data} />
-          <ReportCardBox>
-            <ReportCard navigate="Medicine" />
-            <ReportCard navigate="Insulin" />
-          </ReportCardBox>
+          <WeeklyCalendar today={today} setToday={setToday} />
+          {isAdditionalInfoSuccess && (
+            <>
+              <Graph graphData={bloodSugarList} />
+              <ReportCardBox>
+                <ReportCard
+                  navigate="Medicine"
+                  isChecked={isCheckedMedicine}
+                  onPress={toggleMedicine}
+                  name={medicineName}
+                />
+                <ReportCard
+                  navigate="Insulin"
+                  isChecked={isCheckedInsulin}
+                  onPress={toggleInsulin}
+                  name={insulinName}
+                />
+              </ReportCardBox>
+            </>
+          )}
+          <MealCard size="m" today={today} />
         </HomeContent>
       </HomeBox>
     </Layout>
