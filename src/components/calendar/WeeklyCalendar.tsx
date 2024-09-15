@@ -1,4 +1,4 @@
-import React, {SetStateAction, useState} from 'react';
+import React, {SetStateAction} from 'react';
 import {
   CalendarContainer,
   CalendarMonth,
@@ -10,39 +10,44 @@ import {
 import DesignIcon from '../icon/DesignIcon';
 import dayjs, {Dayjs} from 'dayjs';
 import {TouchableWithoutFeedback, View} from 'react-native';
+import {WeeklyType} from './types';
 
-export default function WeeklyCalendar() {
-  // 오늘 날짜
-  const [today, setToday] = useState(dayjs());
+export default function WeeklyCalendar({today, setToday}: WeeklyType) {
+  // 'today'가 undefined일 경우 기본값 설정
+  const currentDay = today || dayjs(); // today가 없으면 현재 날짜로 대체
 
-  // 현재 주의 월요일
-  const monday = today.startOf('week').add(1, 'day');
+  // 현재 주의 일요일
+  const sunday = currentDay.startOf('week'); // 일요일로 시작하는 주
 
   // 주간 날짜 배열
   const weekDays = [];
   for (let i = 0; i < 7; i++) {
-    weekDays.push(monday.add(i, 'day'));
+    weekDays.push(sunday.add(i, 'day'));
   }
 
   // 날짜 클릭 시 today 상태 업데이트
   const handleDateClick = (date: SetStateAction<Dayjs>) => {
-    setToday(date);
+    if (setToday) {
+      setToday(date);
+    }
   };
 
   // 이전 주로 이동
   const goToPreviousWeek = () => {
-    setToday(today.subtract(1, 'week'));
-    console.log('previous');
+    if (setToday) {
+      setToday(sunday.subtract(1, 'week').add(6, 'day'));
+    }
   };
 
   const goToNextWeek = () => {
-    setToday(today.add(1, 'week'));
-    console.log('next');
+    if (setToday) {
+      setToday(sunday.add(1, 'week'));
+    }
   };
 
   return (
     <CalendarContainer>
-      <CalendarMonth weight="bold">{today.format('M')}</CalendarMonth>
+      <CalendarMonth weight="bold">{currentDay.format('M')}</CalendarMonth>
       <CalendarWeekBox>
         <TouchableWithoutFeedback onPress={goToPreviousWeek}>
           <View>

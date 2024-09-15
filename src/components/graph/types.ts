@@ -1,3 +1,9 @@
 export interface GraphType {
-  graphData: number[];
+  graphData:
+    | {
+        value: number | null;
+        hideDataPoint?: boolean;
+        customDataPoint?: () => Element;
+      }[]
+    | undefined;
 }

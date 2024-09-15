@@ -15,8 +15,8 @@ import Text from '../text/Text';
 export default function TopBox({
   profileImage,
   userName,
-  firstBloodSugar,
-  nowBloodSugar,
+  fastingBloodSugar,
+  currentBloodSugar,
 }: TopBoxType) {
   return (
     <TopBoxContainer>
@@ -31,8 +31,8 @@ export default function TopBox({
           </TopBoxText>
         </View>
         <TopBoxBloodSugar>
-          <Text value={firstBloodSugar} text="공복 혈당 지수" />
-          <Text value={nowBloodSugar} text="현재 혈당 지수" />
+          <Text value={fastingBloodSugar} text="공복 혈당 지수" />
+          <Text value={currentBloodSugar} text="현재 혈당 지수" />
         </TopBoxBloodSugar>
       </TopBoxLayout>
     </TopBoxContainer>
