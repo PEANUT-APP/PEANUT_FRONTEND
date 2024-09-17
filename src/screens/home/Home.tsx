@@ -49,7 +49,7 @@ export default function Home() {
   } = useMain();
 
   return (
-    <Layout paddingBottom={107}>
+    <Layout paddingBottom={101}>
       <HomeBox>
         <HomeTop source={require('../../assets/images/gradientBackground.png')}>
           <HomeIcons>

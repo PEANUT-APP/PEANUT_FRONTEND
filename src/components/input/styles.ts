@@ -24,7 +24,7 @@ const determineBorderColor = ({
 };
 
 export const InputBox = styled.View<InputStyleType>`
-  width: 350px;
+  width: ${({size}) => (size === 's' ? '152px' : '350px')};
   height: 52px;
   padding: 0 16px;
   flex-direction: row;

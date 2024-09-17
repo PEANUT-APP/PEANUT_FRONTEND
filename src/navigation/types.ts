@@ -8,6 +8,7 @@ export interface ParamList {
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
+  MealRecord: {photoUri: string | undefined};
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

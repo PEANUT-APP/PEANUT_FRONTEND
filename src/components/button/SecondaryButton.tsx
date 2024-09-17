@@ -31,6 +31,7 @@ export default function SecondaryButton({
   right,
   children,
   isLoading,
+  onPress,
 }: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
@@ -68,7 +69,8 @@ export default function SecondaryButton({
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       disabled={disabled || isLoading}
-      isLoading={isLoading}>
+      isLoading={isLoading}
+      onPress={onPress}>
       <Label>
         {renderIcon('left')}
         <Text

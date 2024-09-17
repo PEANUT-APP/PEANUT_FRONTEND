@@ -9,6 +9,7 @@ export const CalendarContainer = styled.View`
   justify-content: space-between;
   background-color: ${colors.white};
   padding: 12px 12px 15px;
+  border-radius: 8px;
 `;
 
 export const CalendarMonth = styled(Body1)`
