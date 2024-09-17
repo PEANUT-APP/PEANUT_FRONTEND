@@ -66,6 +66,7 @@ export default function BasicInformation() {
           name="gender"
           placeholder="성별"
           options={['남성', '여성']}
+          size="m"
         />
       )}
       {step >= 2 &&

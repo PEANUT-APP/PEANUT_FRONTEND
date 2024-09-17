@@ -13,9 +13,14 @@ export interface DropdownFieldType {
   children: string;
   onPress: () => void;
   isSelected: boolean;
+  size: 'm' | 's';
 }
 
-export interface DropdownType {
+export interface SmallDropdownType {
+  options: string[];
+}
+
+export interface DropdownType extends SmallDropdownType {
   control: Control<FormData>;
   errors: DeepMap<FieldValues, FieldError>;
   touchedFields: DeepMap<Record<string, boolean>, boolean>;
@@ -23,6 +28,6 @@ export interface DropdownType {
   setValue: UseFormSetValue<FormData>;
   setFocus: UseFormSetFocus<FormData>;
   name: keyof FormData;
-  placeholder: string;
-  options: string[];
+  placeholder?: string;
+  size: 'm' | 's';
 }

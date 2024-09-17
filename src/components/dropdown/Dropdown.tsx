@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {DropdownType} from './types';
 import DesignIcon from '../icon/DesignIcon';
@@ -15,8 +15,11 @@ const DropdownContainer = styled.View`
   gap: 8px;
 `;
 
-const DropdownList = styled.View`
-  width: 350px;
+const DropdownList = styled.View<{size: 'm' | 's'}>`
+  width: ${({size}) => (size === 's' ? '152px' : '350px')};
+  position: ${({size}) => size === 's' && 'absolute'};
+  top: ${({size}) => (size === 's' ? '60px' : '0')};
+  z-index: ${({size}) => size === 's' && '10'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +39,7 @@ export default function Dropdown({
   name,
   placeholder,
   options,
+  size,
 }: DropdownType) {
   const validationRules = useValidationRules();
 
@@ -44,6 +48,13 @@ export default function Dropdown({
   const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
     'dropClose',
   );
+
+  useEffect(() => {
+    if (size === 's') {
+      setSelectedValue(options[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleDropdown = useCallback(() => {
     setIsDropdownVisible(prevState => {
@@ -79,21 +90,23 @@ export default function Dropdown({
         value={selectedValue}
         icon={
           <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
-            <DesignIcon type={dropType} size="l" />
+            <DesignIcon type={dropType} size={size === 's' ? 'm' : 'l'} />
           </TouchableOpacity>
         }
         drop={true}
         isDropdownVisible={isDropdownVisible}
         setIsDropdownVisible={setIsDropdownVisible}
         pointerEvents="none"
+        size={size}
       />
       {isDropdownVisible && (
-        <DropdownList>
+        <DropdownList size={size}>
           {options.map((option: string) => (
             <DropdownField
               key={option}
               onPress={() => handleSelect(option)}
-              isSelected={selectedValue === option}>
+              isSelected={selectedValue === option}
+              size={size}>
               {option}
             </DropdownField>
           ))}

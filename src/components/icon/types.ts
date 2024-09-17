@@ -48,3 +48,8 @@ export interface PlusIconType {
   size: 'l' | 'm' | 's';
   color: string;
 }
+
+export interface DeleteIconType {
+  size: 'xl' | 'l' | 'm' | 's';
+  color: string;
+}
