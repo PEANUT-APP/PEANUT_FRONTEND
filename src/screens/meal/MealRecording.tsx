@@ -11,7 +11,7 @@ import {
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import {useRecording} from './hooks';
+import {useMeal, useRecording} from './hooks';
 import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ImageCard from '../../components/image/ImageCard';
 import Dropdown from '../../components/dropdown/Dropdown';
@@ -20,10 +20,8 @@ import PrimaryButton from '../../components/button/PrimaryButton';
 import SecondaryButton from '../../components/button/SecondaryButton';
 
 export default function MealRecording() {
+  const {handleBack, today, setToday} = useMeal();
   const {
-    handleBack,
-    today,
-    setToday,
     control,
     errors,
     touchedFields,

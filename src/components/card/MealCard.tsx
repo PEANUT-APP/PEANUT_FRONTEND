@@ -25,6 +25,7 @@ export default function MealCard({size, today}: MealCardType) {
     isAllFoodInfoSuccess,
     isFoodByTimeSuccess,
     handleTimeChange,
+    handleGoToRecord,
     carbohydrate,
     fat,
     protein,
@@ -32,7 +33,7 @@ export default function MealCard({size, today}: MealCardType) {
   } = useMealCard(today);
 
   return (
-    <MealCardContainer>
+    <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>
       {size === 'm' && (
         <MealCardTitle weight="bold" color={colors.TextNormal}>
           식사 기록

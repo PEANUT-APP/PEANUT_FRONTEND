@@ -9,7 +9,7 @@ import {
 } from './styles';
 import Graph from '../../components/graph/Graph';
 import Layout from '../layout/Layout';
-import Search from './search/Search';
+import Search from '../../components/search/Search';
 import TopBox from './topBox/TopBox';
 import MyPageIcon from '../../assets/images/main_mypage.svg';
 import NoticeIcon from '../../assets/images/main_notice.svg';

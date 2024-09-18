@@ -5,8 +5,12 @@ import {
   useGetFoodDetailByEatTimeQuery,
 } from '../../services/mainPage/mainPageApi';
 import dayjs from 'dayjs';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
 
 export const useMealCard = (today: dayjs.Dayjs) => {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
   const [selectedTime, setSelectedTime] = useState('전체');
   const [foodData, setFoodData] = useState<FoodReturnType | undefined>(
     undefined,
@@ -34,12 +38,16 @@ export const useMealCard = (today: dayjs.Dayjs) => {
     }
   }, [selectedTime, allFoodInfo, foodByTime]);
 
+  const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
+  const total = carbohydrate + fat + protein;
+
   const handleTimeChange = useCallback((time: string) => {
     setSelectedTime(time);
   }, []);
 
-  const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
-  const total = carbohydrate + fat + protein;
+  const handleGoToRecord = () => {
+    navigation.navigate('MealRecord');
+  };
 
   return {
     selectedTime,
@@ -47,6 +55,7 @@ export const useMealCard = (today: dayjs.Dayjs) => {
     isAllFoodInfoSuccess,
     isFoodByTimeSuccess,
     handleTimeChange,
+    handleGoToRecord,
     carbohydrate,
     fat,
     protein,

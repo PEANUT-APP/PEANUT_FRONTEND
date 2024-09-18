@@ -38,7 +38,7 @@ export default function NavigationBar({role = 'Patient'}: NavigationType) {
         <NavigationPair role={role}>
           <NavigationButton
             type="home"
-            active={activeTab === 'Home'}
+            active={activeTab === 'Home' || activeTab === 'MealRecord'}
             onPress={() => handlePress('Home')}>
             홈
           </NavigationButton>

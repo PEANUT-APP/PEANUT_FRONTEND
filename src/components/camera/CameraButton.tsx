@@ -48,7 +48,7 @@ export default function CameraButton() {
       });
       if (result && result.assets && result.assets.length > 0) {
         const uri = result.assets[0].uri;
-        navigation.navigate('MealRecord', {photoUri: uri}); // 이미지를 다음 페이지로 전달
+        navigation.navigate('MealRecording', {photoUri: uri}); // 이미지를 다음 페이지로 전달
       } else if (result?.errorCode) {
         Alert.alert(`오류 발생: ${result.errorMessage}`);
       }

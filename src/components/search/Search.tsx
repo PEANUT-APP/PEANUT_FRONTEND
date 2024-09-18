@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {HomeSearchBox, HomeSearchInput} from './styles';
-import {colors} from '../../../styles/colors';
+import {colors} from '../../styles/colors';
 import {SearchType} from './types';
-import SearchIcon from '../../../assets/images/Search.svg';
+import SearchIcon from '../../assets/images/Search.svg';
 
 export default function Search({onChangeText, onSubmitEditing}: SearchType) {
   const [isFocused, setIsFocused] = useState(false);
