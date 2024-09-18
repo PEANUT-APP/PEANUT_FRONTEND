@@ -10,6 +10,7 @@ export interface ParamList {
   BloodSugar: undefined;
   MealRecording: {photoUri: string | undefined};
   MealRecord: undefined;
+  Search: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

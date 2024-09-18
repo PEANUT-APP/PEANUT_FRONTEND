@@ -8,9 +8,6 @@ import {
   MealCardContainer,
   MealCardContent,
   MealCardGraphBox,
-  MealCardKcal,
-  MealCardKcalBox,
-  MealCardKcalDescription,
   MealCardNav,
   MealCardNavItem,
   MealCardTitle,
@@ -30,6 +27,7 @@ export default function MealCard({size, today}: MealCardType) {
     fat,
     protein,
     total,
+    prevTotal,
   } = useMealCard(today);
 
   return (
@@ -63,12 +61,14 @@ export default function MealCard({size, today}: MealCardType) {
             <MealCardGraphBox>
               <MealGraph name="탄수화물" value={carbohydrate} total={total} />
               <MealGraph name="지방" value={fat} total={total} />
-              <MealGraph name="단백질" value={protein} total={total} />
+              <MealGraph
+                name="단백질"
+                value={protein}
+                total={total}
+                isLast
+                prevTotal={prevTotal}
+              />
             </MealCardGraphBox>
-            <MealCardKcalBox>
-              <MealCardKcal weight="bold">800 kcal</MealCardKcal>
-              <MealCardKcalDescription>총 섭취 칼로리</MealCardKcalDescription>
-            </MealCardKcalBox>
           </MealCardContent>
         )}
       </MealCardBox>

@@ -7,6 +7,8 @@ import dayjs from 'dayjs';
 import {BloodSugarItem} from '../../services/mainPage/types';
 import moment from 'moment';
 import {FilteredData} from './types';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
@@ -53,6 +55,8 @@ function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
 }
 
 export default function useMain() {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
   const [today, setToday] = useState(dayjs());
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
@@ -89,6 +93,10 @@ export default function useMain() {
     setIsCheckedInsulin(!isCheckedInsulin);
   };
 
+  const handleGotoSearch = () => {
+    navigation.navigate('Search');
+  };
+
   return {
     currentBloodSugarLevel: currentBloodSugar.toString(),
     fastingBloodSugarLevel: fastingBloodSugar.toString(),
@@ -105,5 +113,6 @@ export default function useMain() {
     isCheckedInsulin,
     toggleMedicine,
     toggleInsulin,
+    handleGotoSearch,
   };
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {Body1} from '../text/Text';
 import {DropdownFieldType} from './types';
-import {useButtonState} from '../button/useButtonState';
+import {useButtonState} from '../../modules/useButtonState';
 import {colors} from '../../styles/colors';
 
 const FieldContainer = styled.TouchableOpacity<{

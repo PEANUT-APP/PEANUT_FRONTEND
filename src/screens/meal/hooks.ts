@@ -1,4 +1,9 @@
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import {useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
@@ -8,6 +13,7 @@ import {
   useGetPredictInfoMutation,
 } from '../../services/food/foodApi';
 import {Alert} from 'react-native';
+import {ParamList} from '../../navigation/types';
 
 export function useMeal() {
   const navigation = useNavigation();
@@ -22,6 +28,7 @@ export function useMeal() {
 }
 
 export function useRecording() {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
   const route = useRoute<RouteProp<{params: {photoUri: string}}, 'params'>>();
   const {photoUri} = route.params;
 
@@ -94,6 +101,10 @@ export function useRecording() {
     setMealListData([]);
   };
 
+  const handleAddMeal = () => {
+    navigation.navigate('Search');
+  };
+
   const handleDeleteItem = (index: number) => {
     setMealListData(prevList => prevList?.filter((_, i) => i !== index));
   };
@@ -113,5 +124,6 @@ export function useRecording() {
     handleFoodPredict,
     handleDirectAdd,
     handleDeleteItem,
+    handleAddMeal,
   };
 }

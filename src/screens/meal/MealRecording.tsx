@@ -34,6 +34,7 @@ export default function MealRecording() {
     handleFoodPredict,
     handleDirectAdd,
     handleDeleteItem,
+    handleAddMeal,
   } = useRecording();
 
   return (
@@ -69,7 +70,9 @@ export default function MealRecording() {
       <RecordingButtonPair>
         {isUpload ? (
           <>
-            <SecondaryButton size="l">음식 추가하기</SecondaryButton>
+            <SecondaryButton size="l" onPress={handleAddMeal}>
+              음식 추가하기
+            </SecondaryButton>
             <PrimaryButton size="l">오늘 식단으로 등록하기</PrimaryButton>
           </>
         ) : (

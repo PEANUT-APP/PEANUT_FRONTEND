@@ -21,6 +21,7 @@ export const mainPageApi = apiSlice.injectEndpoints({
         url: `/main-api/get-add-info?date=${date}`,
         method: 'GET',
       }),
+      providesTags: ['AdditionalInfo'],
     }),
     getFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
       query: ({date}) => ({
