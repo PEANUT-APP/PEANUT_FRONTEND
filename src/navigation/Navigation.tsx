@@ -35,6 +35,7 @@ import MedicineRecord from '../screens/record/MedicineRecord';
 import InsulinRecord from '../screens/record/InsulinRecord';
 import BloodSugarRecord from '../screens/record/BloodSugarRecord';
 import MealRecording from '../screens/meal/MealRecording';
+import MealRecord from '../screens/meal/MealRecord';
 
 const Stack = createNativeStackNavigator();
 
@@ -105,8 +106,13 @@ export default function Navigation() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="MealRecord"
+          name="MealRecording"
           component={MealRecording}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MealRecord"
+          component={MealRecord}
           options={{headerShown: false}}
         />
         <Stack.Screen

@@ -9,26 +9,19 @@ import {
 } from '../../services/food/foodApi';
 import {Alert} from 'react-native';
 
-export const predictions = [
-  {
-    foodName: '현미밥',
-    description: '햇반(210g)',
-    giIndex: 20,
-  },
-  {
-    foodName: '소고기 살치살',
-    description: '(1인분 150g)',
-    giIndex: 50,
-  },
-  {
-    foodName: '고구마',
-    description: '(1인분 100g)',
-    giIndex: 35,
-  },
-];
+export function useMeal() {
+  const navigation = useNavigation();
+
+  const [today, setToday] = useState(dayjs()); // 캘린더 날짜 관리
+
+  const handleBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  return {handleBack, today, setToday};
+}
 
 export function useRecording() {
-  const navigation = useNavigation();
   const route = useRoute<RouteProp<{params: {photoUri: string}}, 'params'>>();
   const {photoUri} = route.params;
 
@@ -42,7 +35,6 @@ export function useRecording() {
     mode: 'onBlur',
   });
 
-  const [today, setToday] = useState(dayjs()); // 캘린더 날짜 관리
   const [isUpload, setIsUpload] = useState(false); // 버튼 상태 관리
   const [imageSource, setImageSource] = useState(photoUri); // 이미지 상태 관리
   const [foodNames, setFoodNames] = useState<string[]>([]); // 음식 이름 배열 상태 추가
@@ -64,10 +56,6 @@ export function useRecording() {
       setMealListData(foodDetail);
     }
   }, [isFoodDetailSuccess, foodDetail]);
-
-  const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
 
   const handleFoodPredict = async () => {
     const formData = new FormData();
@@ -111,9 +99,6 @@ export function useRecording() {
   };
 
   return {
-    handleBack,
-    today,
-    setToday,
     photoUri,
     control,
     errors,

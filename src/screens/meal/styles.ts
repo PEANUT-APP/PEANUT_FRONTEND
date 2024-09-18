@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Title} from '../../components/text/Text';
 
-export const RecordingContainer = styled.View`
+const Container = styled.View`
   flex: 1;
   padding: 72px 20px 0;
   align-items: center;
@@ -10,9 +10,24 @@ export const RecordingContainer = styled.View`
   background-color: ${colors.background};
 `;
 
-export const RecordingBox = styled.View`
-  gap: 20px;
+const Box = styled.View`
   align-items: center;
+`;
+
+export const RecordingContainer = styled(Container)`
+  gap: 28px;
+`;
+
+export const RecordContainer = styled(Container)`
+  gap: 16px;
+`;
+
+export const RecordingBox = styled(Box)`
+  gap: 20px;
+`;
+
+export const RecordBox = styled(Box)`
+  gap: 18px;
 `;
 
 export const RecordingTitleBox = styled.View`
@@ -27,6 +42,10 @@ export const RecordingTitle = styled(Title)`
 
 export const RecordingContentBox = styled.View`
   gap: 4px;
+`;
+
+export const RecordContentBox = styled.View`
+  gap: 8px;
 `;
 
 export const RecordingContent = styled.View`

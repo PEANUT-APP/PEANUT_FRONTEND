@@ -7,6 +7,6 @@ export interface ImageType {
 }
 
 export interface ImageCardType {
-  source: string;
+  source?: string;
   size: 'l' | 's';
 }

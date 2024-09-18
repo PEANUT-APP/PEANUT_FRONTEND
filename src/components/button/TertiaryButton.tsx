@@ -21,6 +21,7 @@ export default function TertiaryButton({
   right,
   children,
   isLoading,
+  onPress,
 }: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
@@ -57,7 +58,8 @@ export default function TertiaryButton({
       activeOpacity={1}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      disabled={disabled || isLoading}>
+      disabled={disabled || isLoading}
+      onPress={onPress}>
       <Label>
         {renderIcon('left')}
         <Text
