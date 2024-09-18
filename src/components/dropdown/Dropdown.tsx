@@ -17,9 +17,9 @@ const DropdownContainer = styled.View`
 
 const DropdownList = styled.View<{size: 'm' | 's'}>`
   width: ${({size}) => (size === 's' ? '152px' : '350px')};
-  position: ${({size}) => size === 's' && 'absolute'};
+  position: ${({size}) => (size === 's' ? 'absolute' : 'static')};
   top: ${({size}) => (size === 's' ? '60px' : '0')};
-  z-index: ${({size}) => size === 's' && '10'};
+  z-index: ${({size}) => (size === 's' ? '10' : '0')};
   display: flex;
   justify-content: center;
   align-items: center;

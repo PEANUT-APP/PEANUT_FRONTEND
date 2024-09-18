@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
-import {Body1, Body2, Caption1, Heading} from '../text/Text';
+import {Body1, Body2, Caption1} from '../text/Text';
 import {TouchableOpacity} from 'react-native';
 
 export const MealCardContainer = styled(TouchableOpacity)`
@@ -40,22 +40,6 @@ export const MealCardContent = styled.View`
 
 export const MealCardGraphBox = styled.View`
   gap: 8px;
-`;
-
-export const MealCardKcalBox = styled.View`
-  align-items: center;
-`;
-
-export const MealCardKcal = styled(Heading)`
-  line-height: 26.68px;
-  letter-spacing: -0.5px;
-  color: ${colors.primaryNormal};
-`;
-
-export const MealCardKcalDescription = styled(Caption1)`
-  line-height: 16.008px;
-  letter-spacing: -0.3px;
-  color: ${colors.TextDisabled};
 `;
 
 export const DayMealCardContainer = styled.View`

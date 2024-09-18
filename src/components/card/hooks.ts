@@ -15,31 +15,43 @@ export const useMealCard = (today: dayjs.Dayjs) => {
   const [foodData, setFoodData] = useState<FoodReturnType | undefined>(
     undefined,
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(false);
 
   const {data: allFoodInfo, isSuccess: isAllFoodInfoSuccess} =
     useGetFoodAllDetailQuery({date: today.format('YYYY-MM-DD')});
-  const {data: foodByTime, isSuccess: isFoodByTimeSuccess} =
-    useGetFoodDetailByEatTimeQuery(
-      {date: today.format('YYYY-MM-DD'), eatTime: selectedTime},
-      {skip: selectedTime === '전체'},
-    );
+  const {
+    data: foodByTime,
+    isSuccess: isFoodByTimeSuccess,
+    refetch,
+  } = useGetFoodDetailByEatTimeQuery({
+    date: today.format('YYYY-MM-DD'),
+    eatTime: selectedTime,
+  });
 
   console.log('전체', allFoodInfo);
   console.log(selectedTime, foodByTime);
   //console.log(foodData);
 
   useEffect(() => {
-    if (selectedTime === '전체') {
-      // 전체 선택 시 allFoodInfo 사용
-      setFoodData(allFoodInfo);
-    } else {
-      // 시간대별 선택 시 foodByTime 사용
-      setFoodData(foodByTime);
-    }
-  }, [selectedTime, allFoodInfo, foodByTime]);
+    const fetchData = async () => {
+      setLoading(true);
+      if (selectedTime === '전체') {
+        setFoodData(allFoodInfo); // 전체 데이터 사용
+        setLoading(false);
+      } else {
+        await refetch();
+        setFoodData(foodByTime); // 가져온 데이터 설정
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedTime, allFoodInfo, foodByTime, refetch]);
 
   const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
   const total = carbohydrate + fat + protein;
+  const prevTotal = carbohydrate + fat;
 
   const handleTimeChange = useCallback((time: string) => {
     setSelectedTime(time);
@@ -60,5 +72,6 @@ export const useMealCard = (today: dayjs.Dayjs) => {
     fat,
     protein,
     total,
+    prevTotal,
   };
 };

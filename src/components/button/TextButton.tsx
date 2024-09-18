@@ -5,7 +5,7 @@ import {Label} from './styles';
 import {getButtonText} from './getText';
 import NullIcon from '../icon/NullIcon';
 import {colors} from '../../styles/colors';
-import {useButtonState} from './useButtonState';
+import {useButtonState} from '../../modules/useButtonState';
 
 const getPadding = ({isPressed, size, left, right}: ButtonStyleType) => {
   if (isPressed) {

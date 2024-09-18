@@ -65,6 +65,7 @@ export default function BloodSugarRecord() {
             setFocus={setFocus}
             name="measurementCondition"
             placeholder="상태"
+            size="m"
             options={['공복 혈당', '식전 혈당', '식후 혈당', '자기 전 혈당']}
           />
           {RenderInput({

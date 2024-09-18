@@ -32,12 +32,7 @@ export default function MealRecord() {
             <WeeklyCalendar today={today} setToday={setToday} />
           </RecordingTitleBox>
           <RecordContentBox>
-            <DayMealCard
-              time="아침"
-              meal="치즈 떡볶이 1인분, 쿨피스 1개"
-              feedback1="고 혈당지수 식품을 드셨어요"
-              feedback2="혈당 스파이크에 주의하세요!"
-            />
+            <DayMealCard time="아침" />
             <DayMealCard time="점심" />
             <DayMealCard time="저녁" />
           </RecordContentBox>

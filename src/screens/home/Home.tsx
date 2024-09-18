@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import {Alert} from 'react-native';
+import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {
   HomeBox,
   HomeContent,
@@ -21,16 +21,6 @@ import MealCard from '../../components/card/MealCard';
 const profileImage = require('../../assets/images/mainProfile.png');
 
 export default function Home() {
-  const [searchFood, setSearchFood] = useState('');
-
-  const handleSearch = useCallback(() => {
-    if (searchFood.trim()) {
-      Alert.alert('검색어', searchFood);
-    } else {
-      Alert.alert('검색어를 입력해주세요.');
-    }
-  }, [searchFood]);
-
   const {
     fastingBloodSugarLevel,
     currentBloodSugarLevel,
@@ -46,6 +36,7 @@ export default function Home() {
     isCheckedInsulin,
     toggleMedicine,
     toggleInsulin,
+    handleGotoSearch,
   } = useMain();
 
   return (
@@ -66,7 +57,12 @@ export default function Home() {
           )}
         </HomeTop>
         <HomeContent>
-          <Search onChangeText={setSearchFood} onSubmitEditing={handleSearch} />
+          <TouchableOpacity onPress={handleGotoSearch} activeOpacity={1}>
+            <Search
+              disabled
+              placeholder="정보가 궁금한 음식명을 입력해보세요"
+            />
+          </TouchableOpacity>
           <WeeklyCalendar today={today} setToday={setToday} />
           {isAdditionalInfoSuccess && (
             <>
