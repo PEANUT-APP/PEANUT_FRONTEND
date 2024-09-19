@@ -9,16 +9,6 @@ import {useSaveInsulinIfoMutation} from '../../services/insulin/insulinApi';
 import {handleFormError} from '../../modules/formHandler';
 import {useSaveBloodSugarMutation} from '../../services/bloodSugar/bloodSugarApi';
 
-export default function useRecord() {
-  const navigation = useNavigation();
-
-  const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
-
-  return {handleBack};
-}
-
 function useCommonForm(
   validateFields: (keyof FormData)[],
   trigger: UseFormTrigger<FormData>,

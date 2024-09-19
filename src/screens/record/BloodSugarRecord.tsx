@@ -9,14 +9,15 @@ import {
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import useRecord, {useBloodSugar} from './hooks';
+import {useBloodSugar} from './hooks';
 import RenderInput from '../../modules/renderInput';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
 import Dropdown from '../../components/dropdown/Dropdown';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function BloodSugarRecord() {
-  const {handleBack} = useRecord();
+  const {handleBack} = useBackHandler();
   const {
     control,
     errors,

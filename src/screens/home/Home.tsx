@@ -26,8 +26,6 @@ export default function Home() {
     currentBloodSugarLevel,
     userName,
     isUserInfoSuccess,
-    today,
-    setToday,
     medicineName,
     insulinName,
     bloodSugarList,
@@ -39,6 +37,47 @@ export default function Home() {
     handleGotoSearch,
   } = useMain();
 
+  // 사용자 정보를 표시하는 함수
+  const renderUserInfo = () => {
+    if (!isUserInfoSuccess) {
+      return null;
+    }
+    return (
+      <TopBox
+        profileImage={profileImage}
+        userName={userName}
+        fastingBloodSugar={fastingBloodSugarLevel}
+        currentBloodSugar={currentBloodSugarLevel}
+      />
+    );
+  };
+
+  // 추가 정보를 표시하는 함수
+  const renderAdditionalInfo = () => {
+    if (!isAdditionalInfoSuccess) {
+      return null;
+    }
+    return (
+      <>
+        <Graph graphData={bloodSugarList} />
+        <ReportCardBox>
+          <ReportCard
+            navigate="Medicine"
+            isChecked={isCheckedMedicine}
+            onPress={toggleMedicine}
+            name={medicineName}
+          />
+          <ReportCard
+            navigate="Insulin"
+            isChecked={isCheckedInsulin}
+            onPress={toggleInsulin}
+            name={insulinName}
+          />
+        </ReportCardBox>
+      </>
+    );
+  };
+
   return (
     <Layout paddingBottom={101}>
       <HomeBox>
@@ -47,14 +86,7 @@ export default function Home() {
             <MyPageIcon />
             <NoticeIcon />
           </HomeIcons>
-          {isUserInfoSuccess && (
-            <TopBox
-              profileImage={profileImage}
-              userName={userName}
-              fastingBloodSugar={fastingBloodSugarLevel}
-              currentBloodSugar={currentBloodSugarLevel}
-            />
-          )}
+          {renderUserInfo()}
         </HomeTop>
         <HomeContent>
           <TouchableOpacity onPress={handleGotoSearch} activeOpacity={1}>
@@ -63,27 +95,9 @@ export default function Home() {
               placeholder="정보가 궁금한 음식명을 입력해보세요"
             />
           </TouchableOpacity>
-          <WeeklyCalendar today={today} setToday={setToday} />
-          {isAdditionalInfoSuccess && (
-            <>
-              <Graph graphData={bloodSugarList} />
-              <ReportCardBox>
-                <ReportCard
-                  navigate="Medicine"
-                  isChecked={isCheckedMedicine}
-                  onPress={toggleMedicine}
-                  name={medicineName}
-                />
-                <ReportCard
-                  navigate="Insulin"
-                  isChecked={isCheckedInsulin}
-                  onPress={toggleInsulin}
-                  name={insulinName}
-                />
-              </ReportCardBox>
-            </>
-          )}
-          <MealCard size="m" today={today} />
+          <WeeklyCalendar />
+          {renderAdditionalInfo()}
+          <MealCard size="m" />
         </HomeContent>
       </HomeBox>
     </Layout>

@@ -8,15 +8,15 @@ import {
   RecordingTitleBox,
 } from './styles';
 import {TouchableOpacity} from 'react-native';
-import {useMeal} from './hooks';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import TertiaryButton from '../../components/button/TertiaryButton';
 import DayMealCard from '../../components/card/DayMealCard';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function MealRecord() {
-  const {handleBack, today, setToday} = useMeal();
+  const {handleBack} = useBackHandler();
 
   return (
     <Layout paddingBottom={130}>
@@ -29,7 +29,7 @@ export default function MealRecord() {
             <RecordingTitle color={colors.TextNormal} weight="bold">
               식사 기록
             </RecordingTitle>
-            <WeeklyCalendar today={today} setToday={setToday} />
+            <WeeklyCalendar />
           </RecordingTitleBox>
           <RecordContentBox>
             <DayMealCard time="아침" />

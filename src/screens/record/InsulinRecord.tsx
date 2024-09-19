@@ -11,15 +11,16 @@ import {
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import useRecord, {useInsulin} from './hooks';
+import {useInsulin} from './hooks';
 import RenderInput from '../../modules/renderInput';
 import MultiSelectList from '../../components/select/MultiSelectList';
 import Toggle from '../../components/toggle/Toggle';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function InsulinRecord() {
-  const {handleBack} = useRecord();
+  const {handleBack} = useBackHandler();
   const {
     control,
     errors,
