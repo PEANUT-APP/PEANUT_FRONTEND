@@ -9,6 +9,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
 import {
+  useCreateAIMealInfoMutation,
   useGetFoodDetailInfoQuery,
   useGetPredictInfoMutation,
 } from '../../services/food/foodApi';
@@ -16,15 +17,9 @@ import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
 
 export function useMeal() {
-  const navigation = useNavigation();
-
   const [today, setToday] = useState(dayjs()); // 캘린더 날짜 관리
 
-  const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
-
-  return {handleBack, today, setToday};
+  return {today, setToday};
 }
 
 export function useRecording() {
@@ -47,7 +42,10 @@ export function useRecording() {
   const [foodNames, setFoodNames] = useState<string[]>([]); // 음식 이름 배열 상태 추가
   const [mealListData, setMealListData] = useState<any[] | undefined>([]); // MealList로 전달될 배열 관리
 
+  // AI 인식
   const [getPredictInfo] = useGetPredictInfoMutation();
+
+  // AI 영양 성분 조회
   const {data: foodDetail, isSuccess: isFoodDetailSuccess} =
     useGetFoodDetailInfoQuery(
       {
@@ -58,12 +56,16 @@ export function useRecording() {
       },
     );
 
+  // AI 식사 등록
+  const [createAIMealInfo] = useCreateAIMealInfoMutation();
+
   useEffect(() => {
     if (isFoodDetailSuccess && foodDetail) {
       setMealListData(foodDetail);
     }
   }, [isFoodDetailSuccess, foodDetail]);
 
+  // AI 인식, 영양 성분 조회
   const handleFoodPredict = async () => {
     const formData = new FormData();
 
@@ -95,19 +97,37 @@ export function useRecording() {
     }
   };
 
-  const handleDirectAdd = () => {
+  // 직접 추가하기 버튼
+  const handleDirectAdd = useCallback(() => {
     setIsUpload(true);
     setImageSource(photoUri);
     setMealListData([]);
-  };
+  }, [photoUri]);
 
-  const handleAddMeal = () => {
+  // 음식 추가하기 버튼
+  const handleAddMeal = useCallback(() => {
     navigation.navigate('Search');
+  }, [navigation]);
+
+  // AI 식사 등록
+  const handleCreateAIMeal = async () => {
+    const data = {
+      mealTime: '아침',
+    };
+
+    try {
+      const response = await createAIMealInfo(data).unwrap();
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('식사 등록에 실패했습니다.');
+    }
   };
 
-  const handleDeleteItem = (index: number) => {
+  // 음식 아이템 삭제
+  const handleDeleteItem = useCallback((index: number) => {
     setMealListData(prevList => prevList?.filter((_, i) => i !== index));
-  };
+  }, []);
 
   return {
     photoUri,
@@ -123,6 +143,7 @@ export function useRecording() {
     mealListData,
     handleFoodPredict,
     handleDirectAdd,
+    handleCreateAIMeal,
     handleDeleteItem,
     handleAddMeal,
   };

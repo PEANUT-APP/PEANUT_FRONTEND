@@ -2,11 +2,8 @@ import {useCallback, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Alert} from 'react-native';
 import {FormData} from '../../components/input/types';
-import {useNavigation} from '@react-navigation/native';
 
 export function useSearch() {
-  const navigation = useNavigation();
-
   const {
     control,
     trigger,
@@ -19,10 +16,6 @@ export function useSearch() {
 
   const [searchFood, setSearchFood] = useState('');
 
-  const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
-
   const handleSearch = useCallback(() => {
     if (searchFood.trim()) {
       Alert.alert('검색어', searchFood);
@@ -32,7 +25,6 @@ export function useSearch() {
   }, [searchFood]);
 
   return {
-    handleBack,
     setSearchFood,
     handleSearch,
     control,

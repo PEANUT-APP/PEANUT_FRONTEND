@@ -16,7 +16,60 @@ import {useMealCard} from './hooks';
 
 const times = ['전체', '아침', '점심', '저녁', '간식'];
 
-export default function MealCard({size, today}: MealCardType) {
+function MealCardNavMenu({
+  selectedTime,
+  handleTimeChange,
+}: {
+  selectedTime: string;
+  handleTimeChange: (item: string) => void;
+}) {
+  return (
+    <MealCardNav>
+      {times.map((item, index) => (
+        <TouchableWithoutFeedback
+          key={index}
+          onPress={() => handleTimeChange(item)}>
+          <MealCardNavItem
+            color={
+              item === selectedTime ? colors.primaryStrong : colors.TextDisabled
+            }>
+            {item}
+          </MealCardNavItem>
+        </TouchableWithoutFeedback>
+      ))}
+    </MealCardNav>
+  );
+}
+
+function MealGraphs({
+  carbohydrate,
+  fat,
+  protein,
+  total,
+  prevTotal,
+}: {
+  carbohydrate: number;
+  fat: number;
+  protein: number;
+  total: number;
+  prevTotal: number;
+}) {
+  return (
+    <MealCardGraphBox>
+      <MealGraph name="탄수화물" value={carbohydrate} total={total} />
+      <MealGraph name="지방" value={fat} total={total} />
+      <MealGraph
+        name="단백질"
+        value={protein}
+        total={total}
+        isLast
+        prevTotal={prevTotal}
+      />
+    </MealCardGraphBox>
+  );
+}
+
+export default function MealCard({size}: MealCardType) {
   const {
     selectedTime,
     isAllFoodInfoSuccess,
@@ -28,7 +81,7 @@ export default function MealCard({size, today}: MealCardType) {
     protein,
     total,
     prevTotal,
-  } = useMealCard(today);
+  } = useMealCard();
 
   return (
     <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>
@@ -39,36 +92,20 @@ export default function MealCard({size, today}: MealCardType) {
       )}
       <MealCardBox>
         {size === 'm' && (
-          <MealCardNav>
-            {times.map((item, index) => (
-              <TouchableWithoutFeedback
-                key={index}
-                onPress={() => handleTimeChange(item)}>
-                <MealCardNavItem
-                  color={
-                    item === selectedTime
-                      ? colors.primaryStrong
-                      : colors.TextDisabled
-                  }>
-                  {item}
-                </MealCardNavItem>
-              </TouchableWithoutFeedback>
-            ))}
-          </MealCardNav>
+          <MealCardNavMenu
+            selectedTime={selectedTime}
+            handleTimeChange={handleTimeChange}
+          />
         )}
         {(isAllFoodInfoSuccess || isFoodByTimeSuccess) && (
           <MealCardContent>
-            <MealCardGraphBox>
-              <MealGraph name="탄수화물" value={carbohydrate} total={total} />
-              <MealGraph name="지방" value={fat} total={total} />
-              <MealGraph
-                name="단백질"
-                value={protein}
-                total={total}
-                isLast
-                prevTotal={prevTotal}
-              />
-            </MealCardGraphBox>
+            <MealGraphs
+              carbohydrate={carbohydrate}
+              fat={fat}
+              protein={protein}
+              total={total}
+              prevTotal={prevTotal}
+            />
           </MealCardContent>
         )}
       </MealCardBox>

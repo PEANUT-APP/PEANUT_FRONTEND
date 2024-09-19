@@ -11,16 +11,17 @@ import {
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import {useMeal, useRecording} from './hooks';
+import {useRecording} from './hooks';
 import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ImageCard from '../../components/image/ImageCard';
 import Dropdown from '../../components/dropdown/Dropdown';
 import MealList from '../../components/list/meal/MealList';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import SecondaryButton from '../../components/button/SecondaryButton';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function MealRecording() {
-  const {handleBack, today, setToday} = useMeal();
+  const {handleBack} = useBackHandler();
   const {
     control,
     errors,
@@ -33,6 +34,7 @@ export default function MealRecording() {
     mealListData,
     handleFoodPredict,
     handleDirectAdd,
+    handleCreateAIMeal,
     handleDeleteItem,
     handleAddMeal,
   } = useRecording();
@@ -47,7 +49,7 @@ export default function MealRecording() {
           <RecordingTitle color={colors.TextNormal} weight="bold">
             식사 기록중
           </RecordingTitle>
-          <WeeklyCalendar today={today} setToday={setToday} />
+          <WeeklyCalendar />
         </RecordingTitleBox>
         <RecordingContentBox>
           <ImageCard source={imageSource} size="l" />
@@ -73,7 +75,9 @@ export default function MealRecording() {
             <SecondaryButton size="l" onPress={handleAddMeal}>
               음식 추가하기
             </SecondaryButton>
-            <PrimaryButton size="l">오늘 식단으로 등록하기</PrimaryButton>
+            <PrimaryButton size="l" onPress={handleCreateAIMeal}>
+              오늘 식단으로 등록하기
+            </PrimaryButton>
           </>
         ) : (
           <>

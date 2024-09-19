@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {TouchableWithoutFeedback} from 'react-native';
 import {
   CardContainer,
@@ -24,13 +24,15 @@ export default function ReportCard({
 
   const recordName = navigate === 'Medicine' ? '복약' : '인슐린';
 
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     if (name?.includes('등록해주세요')) {
-      navigation.navigate(navigate);
+      if (navigate === 'Medicine' || navigate === 'Insulin') {
+        navigation.navigate(navigate);
+      }
     } else {
       return;
     }
-  };
+  }, [name, navigate, navigation]);
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <CardContainer>
@@ -41,7 +43,7 @@ export default function ReportCard({
               {isChecked ? '매우 잘하고 있어요!' : '현재 상태 설명 텍스트'}
             </CardSubTitle>
           </CardTopText>
-          {!name?.includes('등록해주세요') && (
+          {!name?.includes('등록해주세요') && onPress && (
             <CheckButton isChecked={isChecked} onPress={onPress} />
           )}
         </CardTop>

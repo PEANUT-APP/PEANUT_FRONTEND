@@ -16,10 +16,11 @@ import Search from '../../components/search/Search';
 import Dropdown from '../../components/dropdown/Dropdown';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import SearchListItem from '../../components/list/search/SearchListItem';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function MealSearch() {
+  const {handleBack} = useBackHandler();
   const {
-    handleBack,
     setSearchFood,
     handleSearch,
     control,
@@ -41,7 +42,6 @@ export default function MealSearch() {
           <Search
             onChangeText={setSearchFood}
             onSubmitEditing={handleSearch}
-            disabled
             placeholder="음식명, 브랜드명을 입력하세요"
           />
         </SearchTop>
@@ -78,7 +78,7 @@ export default function MealSearch() {
           options={['아침', '점심', '저녁', '간식']}
           size="s"
         />
-        <PrimaryButton size="m">1개 식단에 기록하기</PrimaryButton>
+        <PrimaryButton size="m">0개 식단에 기록하기</PrimaryButton>
       </SearchBottom>
     </SearchContainer>
   );

@@ -50,16 +50,12 @@ export default function MealGraph({
   isLast,
   prevTotal,
 }: GraphType) {
-  const percentage = total > 0 ? (value / total) * 100 : 0; // 비율 계산
-  const prevTotalPercentage =
-    total > 0 && prevTotal ? Math.round((prevTotal / total) * 100) : 0;
-  const width = `${percentage}%`; // 비율에 따른 너비
-  const percentageText = Math.round(percentage);
-
+  const percentage = total > 0 ? Math.round((value / total) * 100) : 0; // 비율 계산
   const remainingPercentage =
-    isLast && total > 0 && prevTotal
-      ? Math.round(Math.max(0, 100 - prevTotalPercentage))
-      : percentageText;
+    isLast && prevTotal
+      ? Math.max(0, 100 - Math.round((prevTotal / total) * 100))
+      : percentage;
+  const width = `${percentage}%`;
 
   return (
     <GraphContainer>

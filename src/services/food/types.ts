@@ -19,3 +19,7 @@ export interface FoodDetailReturnType {
   name: string;
   protein: number;
 }
+
+export interface FoodAISaveMealType {
+  mealTime: string;
+}
