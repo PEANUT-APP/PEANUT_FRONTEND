@@ -20,6 +20,18 @@ export interface FoodDetailReturnType {
   protein: number;
 }
 
+export interface FoodCheckListType {
+  eatTime: string;
+  feedBack: string;
+  foodName: string[];
+}
+
+export interface FoodByDateReturnType {
+  아침: FoodCheckListType | null;
+  점심: FoodCheckListType | null;
+  저녁: FoodCheckListType | null;
+}
+
 export interface FoodAISaveMealType {
   mealTime: string;
 }

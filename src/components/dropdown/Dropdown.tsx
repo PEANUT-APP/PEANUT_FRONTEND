@@ -7,6 +7,8 @@ import Input from '../input/Input';
 import {useValidationRules} from '../../modules/validationRules';
 import {TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
+import {useDispatch} from 'react-redux';
+import {setTime} from '../../slices/todaySlice';
 
 const DropdownContainer = styled.View`
   position: relative;
@@ -41,6 +43,8 @@ export default function Dropdown({
   options,
   size,
 }: DropdownType) {
+  const dispatch = useDispatch();
+
   const validationRules = useValidationRules();
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -69,6 +73,8 @@ export default function Dropdown({
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
+
+    dispatch(setTime(value));
 
     setValue(name, value);
     await trigger(name);

@@ -12,20 +12,26 @@ import dayjs from 'dayjs';
 
 export const useMealCard = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
-  const today = dayjs(useSelector((state: RootState) => state.today.today));
+
+  const today = useSelector((state: RootState) => state.today.today);
 
   const [selectedTime, setSelectedTime] = useState('전체');
   const [foodData, setFoodData] = useState<FoodReturnType | undefined>(
     undefined,
   );
 
-  const {isSuccess: isAllFoodInfoSuccess, refetch: allFoodRefetch} =
-    useGetFoodAllDetailQuery({date: today.format('YYYY-MM-DD')});
+  const {
+    data,
+    isSuccess: isAllFoodInfoSuccess,
+    refetch: allFoodRefetch,
+  } = useGetFoodAllDetailQuery({date: dayjs(today).format('YYYY-MM-DD')});
   const {isSuccess: isFoodByTimeSuccess, refetch: foodByTimeRefetch} =
     useGetFoodDetailByEatTimeQuery({
-      date: today.format('YYYY-MM-DD'),
+      date: dayjs(today).format('YYYY-MM-DD'),
       eatTime: selectedTime,
     });
+
+  console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +49,7 @@ export const useMealCard = () => {
     };
 
     fetchData();
-  }, [selectedTime, allFoodRefetch, foodByTimeRefetch, today]);
+  }, [allFoodRefetch, foodByTimeRefetch, selectedTime, today]);
 
   const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
   const total = carbohydrate + fat + protein;
@@ -59,6 +65,11 @@ export const useMealCard = () => {
     navigation.navigate('MealRecord');
   }, [navigation]);
 
+  // 식사 기록중 화면으로 이동하는 핸들러
+  const handleGoToRecording = useCallback(() => {
+    navigation.navigate('MealRecording', {photoUri: undefined});
+  }, [navigation]);
+
   return {
     selectedTime,
     foodData,
@@ -71,5 +82,6 @@ export const useMealCard = () => {
     protein,
     total,
     prevTotal,
+    handleGoToRecording,
   };
 };

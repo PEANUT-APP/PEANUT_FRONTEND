@@ -4,7 +4,11 @@ export interface MealCardType {
 
 export interface DayMealCardType {
   time: string;
-  meal?: string;
-  feedback1?: string;
-  feedback2?: string;
+  foodData: DayMealDataType;
+}
+
+export interface DayMealDataType {
+  meal: string;
+  feedback1: string;
+  feedback2: string;
 }

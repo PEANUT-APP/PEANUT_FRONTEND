@@ -61,7 +61,7 @@ export default function useMain() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const dispatch = useDispatch();
-  const today = dayjs(useSelector((state: RootState) => state.today.today));
+  const today = useSelector((state: RootState) => state.today.today);
 
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
@@ -69,7 +69,9 @@ export default function useMain() {
   const {data: userInfo, isSuccess: isUserInfoSuccess} =
     useGetUserInfoMainPageQuery();
   const {data: additionalInfo, isSuccess: isAdditionalInfoSuccess} =
-    useGetAdditionalInfoMainPageQuery({date: today.format('YYYY-MM-DD')});
+    useGetAdditionalInfoMainPageQuery({
+      date: dayjs(today).format('YYYY-MM-DD'),
+    });
 
   console.log(userInfo);
   console.log(additionalInfo);
