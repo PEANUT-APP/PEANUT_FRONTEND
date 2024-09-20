@@ -29,6 +29,7 @@ export default function MealSearch() {
     setFocus,
     errors,
     touchedFields,
+    isFoodByNameSuccess,
   } = useSearch();
 
   return (
@@ -46,24 +47,26 @@ export default function MealSearch() {
           />
         </SearchTop>
         <SearchContentScroll contentContainerStyle={{paddingBottom: 78}}>
-          <SearchContent>
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-            <SearchListItem />
-          </SearchContent>
+          {isFoodByNameSuccess && (
+            <SearchContent>
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+              <SearchListItem />
+            </SearchContent>
+          )}
         </SearchContentScroll>
       </SearchBox>
       <SearchBottom>

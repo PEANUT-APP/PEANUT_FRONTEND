@@ -2,6 +2,7 @@ import {useCallback, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Alert} from 'react-native';
 import {FormData} from '../../components/input/types';
+import {useGetFoodNutritionByNameQuery} from '../../services/food/foodApi';
 
 export function useSearch() {
   const {
@@ -16,13 +17,18 @@ export function useSearch() {
 
   const [searchFood, setSearchFood] = useState('');
 
+  const {data: foodByName, isSuccess: isFoodByNameSuccess} =
+    useGetFoodNutritionByNameQuery({
+      name: searchFood,
+    });
+
   const handleSearch = useCallback(() => {
     if (searchFood.trim()) {
-      Alert.alert('검색어', searchFood);
+      console.log(foodByName);
     } else {
       Alert.alert('검색어를 입력해주세요.');
     }
-  }, [searchFood]);
+  }, [foodByName, searchFood]);
 
   return {
     setSearchFood,
@@ -33,5 +39,7 @@ export function useSearch() {
     setFocus,
     errors,
     touchedFields,
+    foodByName,
+    isFoodByNameSuccess,
   };
 }

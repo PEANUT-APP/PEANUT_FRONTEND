@@ -13,13 +13,11 @@ import PrimaryButton from '../button/PrimaryButton';
 import {PrimaryTextButton} from '../button/TextButton';
 import {colors} from '../../styles/colors';
 import {DayMealCardType} from './types';
+import {useMealCard} from './hooks';
 
-export default function DayMealCard({
-  time,
-  meal,
-  feedback1,
-  feedback2,
-}: DayMealCardType) {
+export default function DayMealCard({time, foodData}: DayMealCardType) {
+  const {handleGoToRecording} = useMealCard();
+
   return (
     <DayMealCardContainer>
       <ImageCard size="s" />
@@ -27,7 +25,7 @@ export default function DayMealCard({
         <DayMealCardContent>
           <DayMealCardTitle>
             <DayMealCardText weight="bold">{time}</DayMealCardText>
-            {!meal && (
+            {!foodData.meal && (
               <PrimaryTextButton size="s" disabled>
                 단식했어요
               </PrimaryTextButton>
@@ -37,20 +35,28 @@ export default function DayMealCard({
             color={colors.TextNeutral}
             ellipsizeMode="tail"
             numberOfLines={1}>
-            {meal ? meal : '아직 식사를 하지 않으셨나요?'}
+            {foodData.meal ? foodData.meal : '아직 식사를 하지 않으셨나요?'}
           </DayMealCardText>
         </DayMealCardContent>
-        {meal || feedback1 || feedback2 ? (
+        {foodData.feedback1 || foodData.feedback2 ? (
           <DayMealCardFeedbackBox>
-            <DayMealCardFeedbackText weight="bold">
-              {feedback1}
+            <DayMealCardFeedbackText
+              weight="bold"
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {foodData.feedback1}
             </DayMealCardFeedbackText>
-            <DayMealCardFeedbackText weight="bold">
-              {feedback2}
+            <DayMealCardFeedbackText
+              weight="bold"
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {foodData.feedback2}
             </DayMealCardFeedbackText>
           </DayMealCardFeedbackBox>
         ) : (
-          <PrimaryButton size="m">기록하기</PrimaryButton>
+          <PrimaryButton size="m" onPress={handleGoToRecording}>
+            기록하기
+          </PrimaryButton>
         )}
       </DayMealCardBox>
     </DayMealCardContainer>

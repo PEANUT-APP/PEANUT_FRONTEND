@@ -16,12 +16,9 @@ import {setToday} from '../../slices/todaySlice';
 
 export default function WeeklyCalendar() {
   const dispatch = useDispatch();
-  const today: Dayjs = dayjs(
-    useSelector((state: RootState) => state.today.today),
-  );
-
+  const today = useSelector((state: RootState) => state.today.today);
   // 'today'가 undefined일 경우 기본값 설정
-  const currentDay = today || dayjs(); // today가 없으면 현재 날짜로 대체
+  const currentDay = dayjs(today) || dayjs(); // today가 없으면 현재 날짜로 대체
 
   // 현재 주의 일요일
   const sunday = currentDay.startOf('week'); // 일요일로 시작하는 주

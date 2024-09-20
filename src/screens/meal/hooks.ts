@@ -10,22 +10,22 @@ import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
 import {
   useCreateAIMealInfoMutation,
+  useGetFoodCheckByDateQuery,
   useGetFoodDetailInfoQuery,
   useGetPredictInfoMutation,
 } from '../../services/food/foodApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
-
-export function useMeal() {
-  const [today, setToday] = useState(dayjs()); // 캘린더 날짜 관리
-
-  return {today, setToday};
-}
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 
 export function useRecording() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+
   const route = useRoute<RouteProp<{params: {photoUri: string}}, 'params'>>();
   const {photoUri} = route.params;
+
+  const mealTime = useSelector((state: RootState) => state.today.time);
 
   const {
     control,
@@ -112,7 +112,7 @@ export function useRecording() {
   // AI 식사 등록
   const handleCreateAIMeal = async () => {
     const data = {
-      mealTime: '아침',
+      mealTime: mealTime,
     };
 
     try {
@@ -130,7 +130,6 @@ export function useRecording() {
   }, []);
 
   return {
-    photoUri,
     control,
     errors,
     touchedFields,
@@ -147,4 +146,34 @@ export function useRecording() {
     handleDeleteItem,
     handleAddMeal,
   };
+}
+
+export function useRecord() {
+  const today = dayjs(useSelector((state: RootState) => state.today.today));
+
+  // 날짜에 따른 식사 기록 조회
+  const {data: foodByDate, isSuccess: isFoodByDateSuccess} =
+    useGetFoodCheckByDateQuery({date: today.format('YYYY-MM-DD')});
+
+  const foodData = {
+    아침: {
+      meal: foodByDate?.아침?.foodName.join(', ') || '',
+      feedback1: foodByDate?.아침?.feedBack.split('. ')[0] || '',
+      feedback2: foodByDate?.아침?.feedBack.split('. ')[1] || '',
+    },
+    점심: {
+      meal: foodByDate?.점심?.foodName.join(', ') || '',
+      feedback1: foodByDate?.점심?.feedBack.split('. ')[0] || '',
+      feedback2: foodByDate?.점심?.feedBack.split('. ')[1] || '',
+    },
+    저녁: {
+      meal: foodByDate?.저녁?.foodName.join(', ') || '',
+      feedback1: foodByDate?.저녁?.feedBack.split('. ')[0] || '',
+      feedback2: foodByDate?.저녁?.feedBack.split('. ')[1] || '',
+    },
+  };
+
+  console.log(foodData);
+
+  return {foodData, isFoodByDateSuccess};
 }

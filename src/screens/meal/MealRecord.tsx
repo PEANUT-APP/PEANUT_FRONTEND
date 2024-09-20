@@ -14,9 +14,11 @@ import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import TertiaryButton from '../../components/button/TertiaryButton';
 import DayMealCard from '../../components/card/DayMealCard';
 import {useBackHandler} from '../../modules/commonHooks';
+import {useRecord} from './hooks';
 
 export default function MealRecord() {
   const {handleBack} = useBackHandler();
+  const {foodData, isFoodByDateSuccess} = useRecord();
 
   return (
     <Layout paddingBottom={130}>
@@ -31,11 +33,13 @@ export default function MealRecord() {
             </RecordingTitle>
             <WeeklyCalendar />
           </RecordingTitleBox>
-          <RecordContentBox>
-            <DayMealCard time="아침" />
-            <DayMealCard time="점심" />
-            <DayMealCard time="저녁" />
-          </RecordContentBox>
+          {isFoodByDateSuccess && (
+            <RecordContentBox>
+              <DayMealCard time="아침" foodData={foodData.아침} />
+              <DayMealCard time="점심" foodData={foodData.점심} />
+              <DayMealCard time="저녁" foodData={foodData.저녁} />
+            </RecordContentBox>
+          )}
         </RecordBox>
         <TertiaryButton size="l">그 외 식사 추가하기</TertiaryButton>
       </RecordContainer>
