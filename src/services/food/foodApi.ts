@@ -5,36 +5,11 @@ import {
   FoodCheckListType,
   FoodDetailReturnType,
   FoodPredictReturnType,
+  FoodSaveImageReturnType,
 } from './types';
 
 export const foodApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getPredictInfo: builder.mutation<FoodPredictReturnType, FormData>({
-      query: data => ({
-        url: '/food/ai/predict',
-        method: 'POST',
-        body: data,
-      }),
-    }),
-    getFoodDetailInfo: builder.query<FoodDetailReturnType[], {name: string[]}>({
-      query: ({name}) => ({
-        url: '/food/ai/details',
-        method: 'GET',
-        params: {
-          name: name,
-        },
-      }),
-    }),
-    createAIMealInfo: builder.mutation({
-      query: (data: FoodAISaveMealType) => ({
-        url: '/food/ai/save-meal',
-        method: 'POST',
-        params: {
-          mealTime: data.mealTime,
-        },
-      }),
-      invalidatesTags: ['Meal'],
-    }),
     getFoodCheckByDate: builder.query<FoodByDateReturnType, {date: string}>({
       query: ({date}) => ({
         url: '/food/food-record-check',
@@ -59,6 +34,32 @@ export const foodApi = apiSlice.injectEndpoints({
         return foodByTime;
       },
     }),
+    getPredictInfo: builder.mutation<FoodPredictReturnType, FormData>({
+      query: data => ({
+        url: '/food/ai/predict',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    saveNormalMealInfoImage: builder.mutation<
+      FoodSaveImageReturnType,
+      FormData
+    >({
+      query: data => ({
+        url: '/food/normal/save-image',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    getFoodDetailInfo: builder.query<FoodDetailReturnType[], {name: string[]}>({
+      query: ({name}) => ({
+        url: '/food/ai/details',
+        method: 'GET',
+        params: {
+          name: name,
+        },
+      }),
+    }),
     getFoodNutritionByName: builder.query<
       FoodDetailReturnType[],
       {name: string}
@@ -71,15 +72,27 @@ export const foodApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    createAIMealInfo: builder.mutation({
+      query: (data: FoodAISaveMealType) => ({
+        url: '/food/ai/save-meal',
+        method: 'POST',
+        params: {
+          mealTime: data.mealTime,
+        },
+      }),
+      invalidatesTags: ['Meal'],
+    }),
   }),
 });
 
 export const {
-  useGetPredictInfoMutation,
-  useGetFoodDetailInfoQuery,
-  useCreateAIMealInfoMutation,
   useGetFoodCheckByDateQuery,
+  useGetPredictInfoMutation,
+  useSaveNormalMealInfoImageMutation,
+  useGetFoodDetailInfoQuery,
   useGetFoodNutritionByNameQuery,
+  useLazyGetFoodNutritionByNameQuery,
+  useCreateAIMealInfoMutation,
 } = foodApi;
 
 export default foodApi;

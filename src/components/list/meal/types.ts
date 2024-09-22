@@ -1,7 +1,7 @@
-import {FoodDetailReturnType} from '../../../services/food/types';
+import {AddMealType} from '../../../screens/search/types';
 
 export interface MealListType {
-  mealListData: FoodDetailReturnType[] | undefined;
+  mealListData: AddMealType[] | undefined;
   onDelete: (index: number) => void;
 }
 
@@ -9,4 +9,9 @@ export interface MealListItemType {
   name: string;
   giIndex: number;
   onDelete: () => void;
+}
+
+export interface MealTextListItemType {
+  name: string;
+  value: string | number;
 }

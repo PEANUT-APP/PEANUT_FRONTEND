@@ -1,3 +1,5 @@
+import {AddMealType} from '../screens/search/types';
+
 export interface ParamList {
   onBoarding: undefined;
   SignIn: undefined;
@@ -8,7 +10,10 @@ export interface ParamList {
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
-  MealRecording: {photoUri: string | undefined};
+  MealRecording: {
+    photoUri: string | undefined;
+    mealNames?: AddMealType[] | undefined;
+  };
   MealRecord: undefined;
   Search: undefined;
   Test: undefined;

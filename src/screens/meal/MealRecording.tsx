@@ -19,6 +19,7 @@ import MealList from '../../components/list/meal/MealList';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import SecondaryButton from '../../components/button/SecondaryButton';
 import {useBackHandler} from '../../modules/commonHooks';
+import {ScrollView} from '../layout/styles';
 
 export default function MealRecording() {
   const {handleBack} = useBackHandler();
@@ -34,62 +35,68 @@ export default function MealRecording() {
     mealListData,
     handleFoodPredict,
     handleDirectAdd,
-    handleCreateAIMeal,
     handleDeleteItem,
     handleAddMeal,
+    handleCreateNormalMeal,
   } = useRecording();
 
   return (
-    <RecordingContainer>
-      <RecordingBox>
-        <RecordingTitleBox>
-          <TouchableOpacity activeOpacity={1} onPress={handleBack}>
-            <DesignIcon type="back" size="l" color={colors.TextNeutral} />
-          </TouchableOpacity>
-          <RecordingTitle color={colors.TextNormal} weight="bold">
-            식사 기록중
-          </RecordingTitle>
-          <WeeklyCalendar />
-        </RecordingTitleBox>
-        <RecordingContentBox>
-          <ImageCard source={imageSource} size="l" />
-          <RecordingContent>
-            <Dropdown
-              control={control}
-              errors={errors}
-              touchedFields={touchedFields}
-              trigger={trigger}
-              setValue={setValue}
-              setFocus={setFocus}
-              name="foodTime"
-              options={['아침', '점심', '저녁', '간식']}
-              size="s"
-            />
-            <MealList mealListData={mealListData} onDelete={handleDeleteItem} />
-          </RecordingContent>
-        </RecordingContentBox>
-      </RecordingBox>
-      <RecordingButtonPair>
-        {isUpload ? (
-          <>
-            <SecondaryButton size="l" onPress={handleAddMeal}>
-              음식 추가하기
-            </SecondaryButton>
-            <PrimaryButton size="l" onPress={handleCreateAIMeal}>
-              오늘 식단으로 등록하기
-            </PrimaryButton>
-          </>
-        ) : (
-          <>
-            <PrimaryButton size="l" onPress={handleFoodPredict}>
-              AI로 이미지 인식하기
-            </PrimaryButton>
-            <SecondaryButton size="l" onPress={handleDirectAdd}>
-              직접 추가하기
-            </SecondaryButton>
-          </>
-        )}
-      </RecordingButtonPair>
-    </RecordingContainer>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <ScrollView contentContainerStyle={{paddingBottom: 15}}>
+      <RecordingContainer isData={!!mealListData?.length}>
+        <RecordingBox>
+          <RecordingTitleBox>
+            <TouchableOpacity activeOpacity={1} onPress={handleBack}>
+              <DesignIcon type="back" size="l" color={colors.TextNeutral} />
+            </TouchableOpacity>
+            <RecordingTitle color={colors.TextNormal} weight="bold">
+              식사 기록중
+            </RecordingTitle>
+            <WeeklyCalendar />
+          </RecordingTitleBox>
+          <RecordingContentBox>
+            <ImageCard source={imageSource} size="l" />
+            <RecordingContent>
+              <Dropdown
+                control={control}
+                errors={errors}
+                touchedFields={touchedFields}
+                trigger={trigger}
+                setValue={setValue}
+                setFocus={setFocus}
+                name="foodTime"
+                options={['아침', '점심', '저녁', '간식']}
+                size="s"
+              />
+              <MealList
+                mealListData={mealListData}
+                onDelete={handleDeleteItem}
+              />
+            </RecordingContent>
+          </RecordingContentBox>
+        </RecordingBox>
+        <RecordingButtonPair>
+          {isUpload ? (
+            <>
+              <SecondaryButton size="l" onPress={handleAddMeal}>
+                음식 추가하기
+              </SecondaryButton>
+              <PrimaryButton size="l" onPress={handleCreateNormalMeal}>
+                오늘 식단으로 등록하기
+              </PrimaryButton>
+            </>
+          ) : (
+            <>
+              <PrimaryButton size="l" onPress={handleFoodPredict}>
+                AI로 이미지 인식하기
+              </PrimaryButton>
+              <SecondaryButton size="l" onPress={handleDirectAdd}>
+                직접 추가하기
+              </SecondaryButton>
+            </>
+          )}
+        </RecordingButtonPair>
+      </RecordingContainer>
+    </ScrollView>
   );
 }

@@ -8,6 +8,13 @@ export interface FoodPredictReturnType {
   predictions: PredictionList[];
 }
 
+export interface FoodSaveImageReturnType {
+  success: boolean;
+  code: number;
+  msg: string;
+  detailMessage: string;
+}
+
 export interface FoodDetailReturnType {
   carbohydrate: number;
   cholesterol: number;
@@ -27,9 +34,10 @@ export interface FoodCheckListType {
 }
 
 export interface FoodByDateReturnType {
-  아침: FoodCheckListType | null;
-  점심: FoodCheckListType | null;
-  저녁: FoodCheckListType | null;
+  아침?: FoodCheckListType | null;
+  점심?: FoodCheckListType | null;
+  저녁?: FoodCheckListType | null;
+  간식?: FoodCheckListType | null;
 }
 
 export interface FoodAISaveMealType {

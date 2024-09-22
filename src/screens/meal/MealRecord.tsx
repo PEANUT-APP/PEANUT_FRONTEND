@@ -14,11 +14,12 @@ import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import TertiaryButton from '../../components/button/TertiaryButton';
 import DayMealCard from '../../components/card/DayMealCard';
 import {useBackHandler} from '../../modules/commonHooks';
-import {useRecord} from './hooks';
+import {useMeal, useRecord} from './hooks';
 
 export default function MealRecord() {
   const {handleBack} = useBackHandler();
-  const {foodData, isFoodByDateSuccess} = useRecord();
+  const {isFoodByDateSuccess} = useMeal();
+  const {foodData} = useRecord();
 
   return (
     <Layout paddingBottom={130}>

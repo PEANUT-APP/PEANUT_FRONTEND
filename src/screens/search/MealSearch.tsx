@@ -1,4 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
+import {BlurView} from '@react-native-community/blur';
 import {
   SearchBack,
   SearchBottom,
@@ -6,8 +8,19 @@ import {
   SearchContainer,
   SearchContent,
   SearchContentScroll,
+  SearchModalAmountBox,
+  SearchModalTopText,
+  SearchModalContainer,
+  SearchModalFoodName,
+  SearchModalNameBox,
+  SearchModalTop,
+  SearchOverlay,
   SearchTitle,
   SearchTop,
+  SearchModalInput,
+  SearchModalFeedback,
+  SearchModalFeedbackText,
+  SearchModalList,
 } from './styles';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
@@ -17,6 +30,8 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import SearchListItem from '../../components/list/search/SearchListItem';
 import {useBackHandler} from '../../modules/commonHooks';
+import {Animated, View} from 'react-native';
+import MealTextListItem from './MealTextListItem';
 
 export default function MealSearch() {
   const {handleBack} = useBackHandler();
@@ -29,7 +44,18 @@ export default function MealSearch() {
     setFocus,
     errors,
     touchedFields,
+    foodByName,
     isFoodByNameSuccess,
+    selectedItem,
+    handleItemPress,
+    closeModal,
+    modalTranslateY,
+    overlayOpacity,
+    servingCount,
+    setServingCount,
+    addedMeals,
+    handleAddMeal,
+    handleRecordMeal,
   } = useSearch();
 
   return (
@@ -46,25 +72,19 @@ export default function MealSearch() {
             placeholder="음식명, 브랜드명을 입력하세요"
           />
         </SearchTop>
-        <SearchContentScroll contentContainerStyle={{paddingBottom: 78}}>
-          {isFoodByNameSuccess && (
+        <SearchContentScroll
+          contentContainerStyle={{paddingBottom: 78}}
+          showsVerticalScrollIndicator={false}>
+          {isFoodByNameSuccess && foodByName?.length !== 0 && (
             <SearchContent>
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
-              <SearchListItem />
+              {foodByName?.map((item, index) => (
+                <SearchListItem
+                  key={index}
+                  name={item.name}
+                  giIndex={item.giIndex}
+                  onPress={() => handleItemPress(item)}
+                />
+              ))}
             </SearchContent>
           )}
         </SearchContentScroll>
@@ -80,9 +100,99 @@ export default function MealSearch() {
           name="foodTime"
           options={['아침', '점심', '저녁', '간식']}
           size="s"
+          isSearch
         />
-        <PrimaryButton size="m">0개 식단에 기록하기</PrimaryButton>
+        <PrimaryButton size="m" onPress={handleRecordMeal}>
+          {addedMeals.length}개 식단에 기록하기
+        </PrimaryButton>
       </SearchBottom>
+      {selectedItem && (
+        <>
+          <BlurView
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
+            blurType="light"
+            blurAmount={1}
+          />
+          <SearchOverlay
+            activeOpacity={1}
+            onPress={closeModal}
+            style={{
+              opacity: overlayOpacity,
+            }}
+          />
+          <Animated.View
+            style={{
+              width: '100%',
+              transform: [{translateY: modalTranslateY}],
+              position: 'absolute',
+              bottom: 0,
+            }}>
+            <SearchModalContainer>
+              <View>
+                <SearchModalTop>
+                  <SearchModalNameBox>
+                    <SearchModalFoodName weight="bold">
+                      {selectedItem.name}
+                    </SearchModalFoodName>
+                  </SearchModalNameBox>
+                  <SearchModalAmountBox>
+                    <SearchModalInput
+                      value={servingCount}
+                      onChangeText={setServingCount}
+                    />
+                    <SearchModalTopText color={colors.TextNeutral}>
+                      인분
+                    </SearchModalTopText>
+                  </SearchModalAmountBox>
+                </SearchModalTop>
+                <SearchModalFeedback>
+                  <SearchModalFeedbackText weight="bold">
+                    {selectedItem.giIndex > 70
+                      ? '고'
+                      : selectedItem.giIndex < 55
+                      ? '저'
+                      : '중'}{' '}
+                    혈당지수의 음식이에요.
+                  </SearchModalFeedbackText>
+                </SearchModalFeedback>
+                <SearchModalList>
+                  <MealTextListItem
+                    name="혈당 지수(GI)"
+                    value={selectedItem.giIndex}
+                  />
+                  <MealTextListItem
+                    name="당 부하지수(GL)"
+                    value={selectedItem.glIndex}
+                  />
+                  <MealTextListItem
+                    name="탄수화물"
+                    value={`${selectedItem.carbohydrate}g`}
+                  />
+                  <MealTextListItem
+                    name="단백질"
+                    value={`${selectedItem.protein}g`}
+                  />
+                  <MealTextListItem
+                    name="지방"
+                    value={`${selectedItem.fat}g`}
+                  />
+                  <MealTextListItem
+                    name="콜레스테롤"
+                    value={`${selectedItem.cholesterol}mg`}
+                  />
+                </SearchModalList>
+                <PrimaryButton size="l" onPress={handleAddMeal}>
+                  오늘 식단에 추가하기
+                </PrimaryButton>
+              </View>
+            </SearchModalContainer>
+          </Animated.View>
+        </>
+      )}
     </SearchContainer>
   );
 }

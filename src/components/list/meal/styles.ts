@@ -25,7 +25,6 @@ export const MealListNoneImage = styled.View`
 export const MealListNoneText = styled(Body2)`
   line-height: 18.676px;
   letter-spacing: -0.35px;
-  color: ${colors.TextDisabled};
 `;
 
 export const MealListItemContainer = styled.View`

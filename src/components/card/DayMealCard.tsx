@@ -13,10 +13,10 @@ import PrimaryButton from '../button/PrimaryButton';
 import {PrimaryTextButton} from '../button/TextButton';
 import {colors} from '../../styles/colors';
 import {DayMealCardType} from './types';
-import {useMealCard} from './hooks';
+import {useDayMealCard} from './hooks';
 
 export default function DayMealCard({time, foodData}: DayMealCardType) {
-  const {handleGoToRecording} = useMealCard();
+  const {handleGoToRecording} = useDayMealCard(time);
 
   return (
     <DayMealCardContainer>

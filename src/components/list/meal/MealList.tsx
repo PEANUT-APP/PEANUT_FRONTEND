@@ -7,6 +7,7 @@ import {
 } from './styles';
 import {MealListType} from './types';
 import MealListItem from './MealListItem';
+import {colors} from '../../../styles/colors';
 
 export default function MealList({mealListData, onDelete}: MealListType) {
   // 등록된 음식이 없는 경우
@@ -15,7 +16,7 @@ export default function MealList({mealListData, onDelete}: MealListType) {
       <MealListContainer>
         <MealListNoneBox>
           <MealListNoneImage />
-          <MealListNoneText weight="bold">
+          <MealListNoneText weight="bold" color={colors.TextDisabled}>
             등록된 음식이 존재하지 않아요
           </MealListNoneText>
         </MealListNoneBox>
@@ -28,9 +29,9 @@ export default function MealList({mealListData, onDelete}: MealListType) {
     <MealListContainer>
       {mealListData.map(({name, giIndex}, index) => (
         <MealListItem
-          key={name}
+          key={index}
           name={name}
-          giIndex={giIndex}
+          giIndex={giIndex ? giIndex : 0}
           onDelete={() => onDelete(index)}
         />
       ))}

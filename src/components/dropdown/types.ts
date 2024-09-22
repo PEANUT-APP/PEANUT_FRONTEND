@@ -16,11 +16,7 @@ export interface DropdownFieldType {
   size: 'm' | 's';
 }
 
-export interface SmallDropdownType {
-  options: string[];
-}
-
-export interface DropdownType extends SmallDropdownType {
+export interface DropdownType {
   control: Control<FormData>;
   errors: DeepMap<FieldValues, FieldError>;
   touchedFields: DeepMap<Record<string, boolean>, boolean>;
@@ -30,4 +26,6 @@ export interface DropdownType extends SmallDropdownType {
   name: keyof FormData;
   placeholder?: string;
   size: 'm' | 's';
+  options: string[];
+  isSearch?: boolean;
 }
