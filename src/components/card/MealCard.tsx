@@ -69,7 +69,7 @@ function MealGraphs({
   );
 }
 
-export default function MealCard({size}: MealCardType) {
+export default function MealCard({size, time}: MealCardType) {
   const {
     selectedTime,
     isAllFoodInfoSuccess,
@@ -81,7 +81,7 @@ export default function MealCard({size}: MealCardType) {
     protein,
     total,
     prevTotal,
-  } = useMealCard();
+  } = useMealCard(size, time);
 
   return (
     <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>

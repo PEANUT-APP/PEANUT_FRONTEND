@@ -15,6 +15,7 @@ export interface ParamList {
     mealNames?: AddMealType[] | undefined;
   };
   MealRecord: undefined;
+  MealFeedback: undefined;
   Search: undefined;
   Test: undefined;
   IconTest: undefined;

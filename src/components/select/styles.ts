@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {AddStyleType, MultiSelectStyleType} from './types';
+import {AddStyleType, MultiSelectStyleType, SelectStyleType} from './types';
 import {Body2, Caption1} from '../text/Text';
 import {colors} from '../../styles/colors';
 
@@ -59,4 +59,19 @@ export const AddChipsContainer = styled(ChipsContainer)<AddStyleType>`
 
 export const AddChipsText = styled(ChipsText)<AddStyleType>`
   color: ${({isActive}) => getTextColor(isActive)};
+`;
+
+export const SelectChipsContainer = styled.TouchableOpacity<SelectStyleType>`
+  padding: 10px 21px;
+  justify-content: center;
+  align-items: center;
+  border-bottom-color: ${({isSelected}) => getBorderColor(isSelected)};
+  border-bottom-width: ${({isSelected}) => (isSelected ? '2px' : 0)};
+  border-bottom-style: dashed;
+`;
+
+export const SelectChipsText = styled(Body2)<SelectStyleType>`
+  line-height: 18.676px;
+  letter-spacing: -0.35px;
+  color: ${({isSelected}) => getTextColor(isSelected)};
 `;
