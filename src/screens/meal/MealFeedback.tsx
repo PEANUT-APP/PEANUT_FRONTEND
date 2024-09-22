@@ -1,0 +1,76 @@
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
+import {ScrollView} from 'react-native';
+import DesignIcon from '../../components/icon/DesignIcon';
+import {useBackHandler} from '../../modules/commonHooks';
+import {colors} from '../../styles/colors';
+import {
+  FeedbackBox,
+  FeedbackContainer,
+  FeedbackFoodBox,
+  FeedbackFoodText,
+  FeedbackSelectBox,
+  FeedbackText,
+  FeedbackTextBox,
+  FeedbackTextTitle,
+  MealBack,
+  MealContent,
+  MealTitle,
+} from './styles';
+import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
+import SelectChips from '../../components/select/SelectChips';
+import {useFeedback} from './hooks';
+import MealCard from '../../components/card/MealCard';
+import SecondaryButton from '../../components/button/SecondaryButton';
+import Graph from '../../components/graph/Graph';
+
+export default function MealFeedback() {
+  const {handleBack} = useBackHandler();
+  const {selectedChip, handleSelectChip, graphData} = useFeedback();
+
+  return (
+    <FeedbackContainer>
+      <MealBack activeOpacity={1} onPress={handleBack}>
+        <DesignIcon type="back" size="l" color={colors.TextNeutral} />
+      </MealBack>
+      <ScrollView
+        contentContainerStyle={{paddingBottom: 14}}
+        showsVerticalScrollIndicator={false}>
+        <MealTitle weight="bold">식단 피드백</MealTitle>
+        <FeedbackBox>
+          <WeeklyCalendar />
+          <MealContent>
+            <FeedbackSelectBox>
+              {['전체', '아침', '점심', '저녁', '간식'].map(time => (
+                <SelectChips
+                  key={time}
+                  isSelected={selectedChip === time}
+                  onPress={() => handleSelectChip(time)}>
+                  {time}
+                </SelectChips>
+              ))}
+            </FeedbackSelectBox>
+            <FeedbackFoodBox>
+              <FeedbackFoodText weight="bold">섭취한 음식</FeedbackFoodText>
+              <FeedbackFoodText color={colors.TextNeutral}>
+                섭취한 음식
+              </FeedbackFoodText>
+            </FeedbackFoodBox>
+            <MealCard size="s" time={selectedChip} />
+            <Graph graphData={graphData} />
+            <FeedbackTextBox>
+              <FeedbackTextTitle weight="bold">
+                혈당 스파이크 발생
+              </FeedbackTextTitle>
+              <FeedbackText>
+                공복에 바로 탄수화물 덩어리인 떡볶이를 섭취하면 혈당 스파이크를
+                맞아요. 첫 끼로는 가벼운 과일이나 채소를 추천드려요.
+              </FeedbackText>
+            </FeedbackTextBox>
+          </MealContent>
+          <SecondaryButton size="l">수정하기</SecondaryButton>
+        </FeedbackBox>
+      </ScrollView>
+    </FeedbackContainer>
+  );
+}

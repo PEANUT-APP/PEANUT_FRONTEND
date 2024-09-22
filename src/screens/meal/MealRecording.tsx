@@ -3,8 +3,8 @@ import {
   RecordingBox,
   RecordingContainer,
   RecordingContentBox,
-  RecordingContent,
-  RecordingTitle,
+  MealContent,
+  MealTitle,
   RecordingTitleBox,
   RecordingButtonPair,
 } from './styles';
@@ -49,14 +49,12 @@ export default function MealRecording() {
             <TouchableOpacity activeOpacity={1} onPress={handleBack}>
               <DesignIcon type="back" size="l" color={colors.TextNeutral} />
             </TouchableOpacity>
-            <RecordingTitle color={colors.TextNormal} weight="bold">
-              식사 기록중
-            </RecordingTitle>
+            <MealTitle weight="bold">식사 기록중</MealTitle>
             <WeeklyCalendar />
           </RecordingTitleBox>
           <RecordingContentBox>
             <ImageCard source={imageSource} size="l" />
-            <RecordingContent>
+            <MealContent>
               <Dropdown
                 control={control}
                 errors={errors}
@@ -72,7 +70,7 @@ export default function MealRecording() {
                 mealListData={mealListData}
                 onDelete={handleDeleteItem}
               />
-            </RecordingContent>
+            </MealContent>
           </RecordingContentBox>
         </RecordingBox>
         <RecordingButtonPair>

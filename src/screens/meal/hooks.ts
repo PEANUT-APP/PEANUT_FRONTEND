@@ -5,7 +5,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
 import {
@@ -22,6 +22,8 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {AddMealType} from '../search/types';
 import {FoodDetailReturnType} from '../../services/food/types';
+import useMain from '../home/hooks';
+import {mapBloodSugarToGraph} from '../../components/graph/hooks';
 
 export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
@@ -168,10 +170,6 @@ export function useRecording() {
 
       // 모든 API 요청 완료 후 mealListData 업데이트
       setMealListData(prevList => [...(prevList || []), ...results]);
-
-      if (photoUri) {
-        setIsImageSaved(true);
-      }
     };
 
     if (mealNames) {
@@ -224,6 +222,7 @@ export function useRecording() {
       );
       setFoodNames(extractedFoodNames);
       setIsUpload(true);
+      setMealListData([]);
     } catch (error) {
       console.error(error);
       Alert.alert('이미지 업로드에 실패했습니다.');
@@ -289,6 +288,7 @@ export function useRecording() {
         return;
       }
     }
+    navigation.navigate('MealFeedback');
   };
 
   // 음식 아이템 삭제
@@ -338,4 +338,23 @@ export function useRecord() {
   };
 
   return {foodData};
+}
+
+export function useFeedback() {
+  const {additionalInfo} = useMain();
+
+  // 선택된 Chip의 상태를 관리
+  const [selectedChip, setSelectedChip] = useState<string>('전체');
+
+  // Chip 선택 시 호출되는 핸들러
+  const handleSelectChip = (chip: string) => {
+    setSelectedChip(chip); // 선택된 Chip 상태 업데이트
+  };
+
+  const graphData = useMemo(
+    () => mapBloodSugarToGraph(additionalInfo?.bloodSugarList),
+    [additionalInfo?.bloodSugarList],
+  );
+
+  return {selectedChip, handleSelectChip, graphData};
 }

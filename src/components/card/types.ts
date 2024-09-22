@@ -1,5 +1,6 @@
 export interface MealCardType {
   size: 'm' | 's';
+  time?: string;
 }
 
 export interface DayMealCardType {

@@ -4,7 +4,7 @@ import {
   RecordBox,
   RecordContainer,
   RecordContentBox,
-  RecordingTitle,
+  MealTitle,
   RecordingTitleBox,
 } from './styles';
 import {TouchableOpacity} from 'react-native';
@@ -29,9 +29,7 @@ export default function MealRecord() {
             <TouchableOpacity activeOpacity={1} onPress={handleBack}>
               <DesignIcon type="back" size="l" color={colors.TextNeutral} />
             </TouchableOpacity>
-            <RecordingTitle color={colors.TextNormal} weight="bold">
-              식사 기록
-            </RecordingTitle>
+            <MealTitle weight="bold">식사 기록</MealTitle>
             <WeeklyCalendar />
           </RecordingTitleBox>
           {isFoodByDateSuccess && (
