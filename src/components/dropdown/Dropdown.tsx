@@ -7,8 +7,9 @@ import Input from '../input/Input';
 import {useValidationRules} from '../../modules/validationRules';
 import {TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setTime} from '../../slices/todaySlice';
+import {RootState} from '../../store/store';
 
 const DropdownContainer = styled.View`
   position: relative;
@@ -17,10 +18,11 @@ const DropdownContainer = styled.View`
   gap: 8px;
 `;
 
-const DropdownList = styled.View<{size: 'm' | 's'}>`
+const DropdownList = styled.View<{size: 'm' | 's'; isSearch?: boolean}>`
   width: ${({size}) => (size === 's' ? '152px' : '350px')};
   position: ${({size}) => (size === 's' ? 'absolute' : 'static')};
-  top: ${({size}) => (size === 's' ? '60px' : '0')};
+  top: ${({size, isSearch}) =>
+    isSearch ? '-240px' : size === 's' ? '60px' : '0'};
   z-index: ${({size}) => (size === 's' ? '10' : '0')};
   display: flex;
   justify-content: center;
@@ -42,20 +44,23 @@ export default function Dropdown({
   placeholder,
   options,
   size,
+  isSearch,
 }: DropdownType) {
   const dispatch = useDispatch();
 
   const validationRules = useValidationRules();
 
+  const mealTime = useSelector((state: RootState) => state.today.time);
+
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(mealTime);
   const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
     'dropClose',
   );
 
   useEffect(() => {
     if (size === 's') {
-      setSelectedValue(options[0]);
+      setSelectedValue(mealTime);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -106,7 +111,7 @@ export default function Dropdown({
         size={size}
       />
       {isDropdownVisible && (
-        <DropdownList size={size}>
+        <DropdownList size={size} isSearch={isSearch}>
           {options.map((option: string) => (
             <DropdownField
               key={option}

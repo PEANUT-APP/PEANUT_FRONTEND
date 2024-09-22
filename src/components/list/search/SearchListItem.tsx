@@ -2,12 +2,16 @@ import React from 'react';
 import {
   SearchListItemContainer,
   SearchListItemContent,
-  SearchListItemBrand,
   SearchListItemFood,
 } from './styles';
 import {useButtonState} from '../../../modules/useButtonState';
+import {SearchListItemType} from './types';
 
-export default function SearchListItem() {
+export default function SearchListItem({
+  name,
+  giIndex,
+  onPress,
+}: SearchListItemType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
   return (
@@ -15,12 +19,13 @@ export default function SearchListItem() {
       isPressed={isPressed}
       activeOpacity={1}
       onPressIn={handlePressIn}
-      onPressOut={handlePressOut}>
+      onPressOut={handlePressOut}
+      onPress={onPress}>
       <SearchListItemContent>
-        <SearchListItemFood>현미밥</SearchListItemFood>
-        <SearchListItemBrand>햇반(210g)</SearchListItemBrand>
+        <SearchListItemFood>{name}</SearchListItemFood>
+        {/*<SearchListItemBrand>햇반(210g)</SearchListItemBrand>*/}
       </SearchListItemContent>
-      <SearchListItemFood>GI 20</SearchListItemFood>
+      <SearchListItemFood>GI {giIndex}</SearchListItemFood>
     </SearchListItemContainer>
   );
 }

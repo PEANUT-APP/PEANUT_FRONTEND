@@ -6,9 +6,10 @@ import {
 } from '../../services/mainPage/mainPageApi';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import dayjs from 'dayjs';
+import {setTime} from '../../slices/todaySlice';
 
 export const useMealCard = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -56,18 +57,13 @@ export const useMealCard = () => {
   const prevTotal = carbohydrate + fat;
 
   // 시간대 변경 핸들러
-  const handleTimeChange = (time: string) => {
-    setSelectedTime(time);
+  const handleTimeChange = (changedTime: string) => {
+    setSelectedTime(changedTime);
   };
 
   // 기록 화면으로 이동하는 핸들러
   const handleGoToRecord = useCallback(() => {
     navigation.navigate('MealRecord');
-  }, [navigation]);
-
-  // 식사 기록중 화면으로 이동하는 핸들러
-  const handleGoToRecording = useCallback(() => {
-    navigation.navigate('MealRecording', {photoUri: undefined});
   }, [navigation]);
 
   return {
@@ -82,6 +78,20 @@ export const useMealCard = () => {
     protein,
     total,
     prevTotal,
-    handleGoToRecording,
   };
+};
+
+export const useDayMealCard = (time: string) => {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
+
+  // 식사 기록중 화면으로 이동하는 핸들러
+  const handleGoToRecording = useCallback(() => {
+    if (time) {
+      dispatch(setTime(time));
+    }
+    navigation.navigate('MealRecording', {photoUri: undefined});
+  }, [dispatch, navigation, time]);
+
+  return {handleGoToRecording};
 };

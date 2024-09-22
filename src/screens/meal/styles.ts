@@ -14,8 +14,8 @@ const Box = styled.View`
   align-items: center;
 `;
 
-export const RecordingContainer = styled(Container)`
-  gap: 28px;
+export const RecordingContainer = styled(Container)<{isData: boolean}>`
+  gap: ${({isData}) => (isData ? '20px' : '28px')};
 `;
 
 export const RecordContainer = styled(Container)`
