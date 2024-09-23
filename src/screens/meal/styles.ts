@@ -17,8 +17,8 @@ export const MealBack = styled.TouchableOpacity`
   width: 350px;
 `;
 
-export const RecordingContainer = styled(Container)<{isData: boolean}>`
-  gap: ${({isData}) => (isData ? '20px' : '28px')};
+export const RecordingContainer = styled(Container)`
+  gap: 20px;
 `;
 
 export const RecordContainer = styled(Container)`
@@ -66,7 +66,8 @@ export const MealContent = styled.View`
   gap: 12px;
 `;
 
-export const RecordingButtonPair = styled.View`
+export const RecordingButtonPair = styled.View<{isData: boolean}>`
+  margin-top: ${({isData}) => (isData ? '20px' : '28px')};
   gap: 8px;
 `;
 

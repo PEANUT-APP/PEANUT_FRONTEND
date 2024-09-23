@@ -1,12 +1,12 @@
 import {ImageSourcePropType} from 'react-native';
 
 export interface ImageType {
-  source?: ImageSourcePropType;
+  source?: ImageSourcePropType | string | null;
   width?: number;
   height?: number;
 }
 
 export interface ImageCardType {
-  source?: string;
+  source?: string | null;
   size: 'l' | 's';
 }

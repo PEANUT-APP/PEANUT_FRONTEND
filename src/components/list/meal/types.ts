@@ -2,7 +2,7 @@ import {AddMealType} from '../../../screens/search/types';
 
 export interface MealListType {
   mealListData: AddMealType[] | undefined;
-  onDelete: (index: number) => void;
+  onDelete: (index: number, name: string) => void;
 }
 
 export interface MealListItemType {

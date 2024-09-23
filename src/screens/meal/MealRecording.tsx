@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   RecordingBox,
@@ -5,10 +6,9 @@ import {
   RecordingContentBox,
   MealContent,
   MealTitle,
-  RecordingTitleBox,
   RecordingButtonPair,
+  MealBack,
 } from './styles';
-import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import {useRecording} from './hooks';
@@ -37,21 +37,20 @@ export default function MealRecording() {
     handleDirectAdd,
     handleDeleteItem,
     handleAddMeal,
-    handleCreateNormalMeal,
+    handleRegisterMeal,
   } = useRecording();
 
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <ScrollView contentContainerStyle={{paddingBottom: 15}}>
-      <RecordingContainer isData={!!mealListData?.length}>
+    <RecordingContainer>
+      <MealBack activeOpacity={1} onPress={handleBack}>
+        <DesignIcon type="back" size="l" color={colors.TextNeutral} />
+      </MealBack>
+      <MealTitle weight="bold">식사 기록중</MealTitle>
+      <ScrollView
+        contentContainerStyle={{paddingBottom: 16}}
+        showsVerticalScrollIndicator={false}>
         <RecordingBox>
-          <RecordingTitleBox>
-            <TouchableOpacity activeOpacity={1} onPress={handleBack}>
-              <DesignIcon type="back" size="l" color={colors.TextNeutral} />
-            </TouchableOpacity>
-            <MealTitle weight="bold">식사 기록중</MealTitle>
-            <WeeklyCalendar />
-          </RecordingTitleBox>
+          <WeeklyCalendar />
           <RecordingContentBox>
             <ImageCard source={imageSource} size="l" />
             <MealContent>
@@ -73,13 +72,13 @@ export default function MealRecording() {
             </MealContent>
           </RecordingContentBox>
         </RecordingBox>
-        <RecordingButtonPair>
+        <RecordingButtonPair isData={!!mealListData?.length}>
           {isUpload ? (
             <>
               <SecondaryButton size="l" onPress={handleAddMeal}>
                 음식 추가하기
               </SecondaryButton>
-              <PrimaryButton size="l" onPress={handleCreateNormalMeal}>
+              <PrimaryButton size="l" onPress={handleRegisterMeal}>
                 오늘 식단으로 등록하기
               </PrimaryButton>
             </>
@@ -94,7 +93,7 @@ export default function MealRecording() {
             </>
           )}
         </RecordingButtonPair>
-      </RecordingContainer>
-    </ScrollView>
+      </ScrollView>
+    </RecordingContainer>
   );
 }

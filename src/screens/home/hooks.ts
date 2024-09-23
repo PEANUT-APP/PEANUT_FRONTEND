@@ -68,10 +68,13 @@ export default function useMain() {
 
   const {data: userInfo, isSuccess: isUserInfoSuccess} =
     useGetUserInfoMainPageQuery();
-  const {data: additionalInfo, isSuccess: isAdditionalInfoSuccess} =
-    useGetAdditionalInfoMainPageQuery({
-      date: dayjs(today).format('YYYY-MM-DD'),
-    });
+  const {
+    data: additionalInfo,
+    isSuccess: isAdditionalInfoSuccess,
+    refetch: additionalRefetch,
+  } = useGetAdditionalInfoMainPageQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+  });
 
   console.log(userInfo);
   console.log(additionalInfo);
@@ -112,7 +115,7 @@ export default function useMain() {
   }, []);
 
   const handleGotoSearch = useCallback(() => {
-    navigation.navigate('Search');
+    navigation.navigate('Search', {isAIProcessing: false});
   }, [navigation]);
 
   return {
@@ -125,6 +128,7 @@ export default function useMain() {
     medicineName,
     insulinName,
     isAdditionalInfoSuccess,
+    additionalRefetch,
     isCheckedMedicine,
     isCheckedInsulin,
     toggleMedicine: () => toggleChecked('medicine'),

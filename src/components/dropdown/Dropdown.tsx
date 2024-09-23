@@ -53,7 +53,7 @@ export default function Dropdown({
   const mealTime = useSelector((state: RootState) => state.today.time);
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(mealTime);
+  const [selectedValue, setSelectedValue] = useState(options[0]);
   const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
     'dropClose',
   );

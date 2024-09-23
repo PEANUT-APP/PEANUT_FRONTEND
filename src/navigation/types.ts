@@ -1,6 +1,7 @@
+import {ParamListBase} from '@react-navigation/native';
 import {AddMealType} from '../screens/search/types';
 
-export interface ParamList {
+export interface ParamList extends ParamListBase {
   onBoarding: undefined;
   SignIn: undefined;
   SignUp: undefined;
@@ -16,7 +17,7 @@ export interface ParamList {
   };
   MealRecord: undefined;
   MealFeedback: undefined;
-  Search: undefined;
+  Search: {isAIProcessing?: boolean};
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

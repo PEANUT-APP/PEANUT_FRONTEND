@@ -32,7 +32,7 @@ export default function MealList({mealListData, onDelete}: MealListType) {
           key={index}
           name={name}
           giIndex={giIndex ? giIndex : 0}
-          onDelete={() => onDelete(index)}
+          onDelete={() => onDelete(index, name)}
         />
       ))}
     </MealListContainer>

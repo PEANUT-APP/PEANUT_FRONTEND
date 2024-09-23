@@ -19,7 +19,7 @@ import {useMeal, useRecord} from './hooks';
 export default function MealRecord() {
   const {handleBack} = useBackHandler();
   const {isFoodByDateSuccess} = useMeal();
-  const {foodData} = useRecord();
+  const {foodData, handleAddMore} = useRecord();
 
   return (
     <Layout paddingBottom={130}>
@@ -40,7 +40,9 @@ export default function MealRecord() {
             </RecordContentBox>
           )}
         </RecordBox>
-        <TertiaryButton size="l">그 외 식사 추가하기</TertiaryButton>
+        <TertiaryButton size="l" onPress={handleAddMore}>
+          그 외 식사 추가하기
+        </TertiaryButton>
       </RecordContainer>
     </Layout>
   );
