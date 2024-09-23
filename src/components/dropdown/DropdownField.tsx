@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {Body1} from '../text/Text';
 import {DropdownFieldType} from './types';
-import {useButtonState} from '../button/useButtonState';
+import {useButtonState} from '../../modules/useButtonState';
 import {colors} from '../../styles/colors';
 
-const FieldContainer = styled.TouchableOpacity<{isSelected: boolean}>`
-  width: 328px;
+const FieldContainer = styled.TouchableOpacity<{
+  isSelected: boolean;
+  size: 'm' | 's';
+}>`
+  width: ${({size}) => (size === 's' ? '133px' : '328px')};
   padding: 16px;
   border-radius: 4px;
   background-color: ${props =>
@@ -22,6 +25,7 @@ export default function DropdownField({
   children,
   onPress,
   isSelected,
+  size,
 }: DropdownFieldType) {
   const {handlePressIn, handlePressOut} = useButtonState();
 
@@ -31,6 +35,7 @@ export default function DropdownField({
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onPress={onPress}
+      size={size}
       activeOpacity={1}>
       <FieldText color={isSelected ? colors.primaryStrong : colors.TextNormal}>
         {children}

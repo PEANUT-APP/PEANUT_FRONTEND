@@ -34,6 +34,10 @@ import {Alert} from 'react-native';
 import MedicineRecord from '../screens/record/MedicineRecord';
 import InsulinRecord from '../screens/record/InsulinRecord';
 import BloodSugarRecord from '../screens/record/BloodSugarRecord';
+import MealRecording from '../screens/meal/MealRecording';
+import MealRecord from '../screens/meal/MealRecord';
+import MealSearch from '../screens/search/MealSearch';
+import MealFeedback from '../screens/meal/MealFeedback';
 
 const Stack = createNativeStackNavigator();
 
@@ -101,6 +105,26 @@ export default function Navigation() {
         <Stack.Screen
           name="BloodSugar"
           component={BloodSugarRecord}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Search"
+          component={MealSearch}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MealRecording"
+          component={MealRecording}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MealRecord"
+          component={MealRecord}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MealFeedback"
+          component={MealFeedback}
           options={{headerShown: false}}
         />
         <Stack.Screen

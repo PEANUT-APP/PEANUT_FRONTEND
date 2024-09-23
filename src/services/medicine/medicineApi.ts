@@ -14,6 +14,7 @@ export const medicineApi = apiSlice.injectEndpoints({
           medicineName: data.medicineName,
         },
       }),
+      invalidatesTags: ['AdditionalInfo'],
     }),
   }),
 });

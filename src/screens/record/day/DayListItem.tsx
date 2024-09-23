@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {
   CheckBoxWrapper,
   ListItemContainer,
@@ -16,32 +16,26 @@ export default function DayListItem({
   intakeDays,
   setIntakeDays,
 }: DayListItemType) {
-  const [isEverydayChecked, setIsEverydayChecked] = useState(false);
+  const isEverydayChecked = intakeDays.length === days.length;
 
-  useEffect(() => {
-    if (intakeDays.length === days.length) {
-      setIsEverydayChecked(true); // 모든 요일이 선택되면 "모두 선택" 체크박스 활성화
-    } else {
-      setIsEverydayChecked(false); // 그렇지 않으면 체크박스 비활성화
-    }
-  }, [intakeDays]);
+  const toggleDay = useCallback(
+    (day: string) => {
+      if (intakeDays.includes(day)) {
+        setIntakeDays(intakeDays.filter(d => d !== day));
+      } else {
+        setIntakeDays([...intakeDays, day]);
+      }
+    },
+    [intakeDays, setIntakeDays],
+  );
 
-  const toggleDay = (day: string) => {
-    if (intakeDays.includes(day)) {
-      setIntakeDays(intakeDays.filter(d => d !== day));
-    } else {
-      setIntakeDays([...intakeDays, day]);
-    }
-  };
-
-  const handleCheckAllDays = () => {
+  const handleCheckAllDays = useCallback(() => {
     if (isEverydayChecked) {
       setIntakeDays([]);
     } else {
       setIntakeDays(days);
     }
-    setIsEverydayChecked(!isEverydayChecked);
-  };
+  }, [isEverydayChecked, setIntakeDays]);
 
   return (
     <ListItemContainer>

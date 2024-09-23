@@ -15,7 +15,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {LineChart} from 'react-native-gifted-charts';
 
-export default function Graph({graphData}: GraphType) {
+export default function Graph({graphData, size}: GraphType) {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const onAddBloodSugar = () => {
@@ -25,10 +25,14 @@ export default function Graph({graphData}: GraphType) {
   return (
     <GraphContainer>
       <GraphTop>
-        <GraphTitle color={colors.TextNormal} weight="bold">
-          혈당 그래프
-        </GraphTitle>
-        <PlusButton onPress={onAddBloodSugar} />
+        {size !== 's' && (
+          <>
+            <GraphTitle color={colors.TextNormal} weight="bold">
+              혈당 그래프
+            </GraphTitle>
+            <PlusButton onPress={onAddBloodSugar} />
+          </>
+        )}
       </GraphTop>
       <GraphContent>
         <LineChart

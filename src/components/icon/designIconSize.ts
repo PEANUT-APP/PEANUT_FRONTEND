@@ -85,7 +85,7 @@ export const designIconSize = {
     m: {
       strokeWidth: 1.5,
       viewBox: '0 0 20 20',
-      d: 'M4 6L9.2 12.9333C9.6 13.4667 10.4 13.4667 10.8 12.9333L16 6',
+      d: 'M16 14L10.8 7.06667C10.4 6.53333 9.6 6.53333 9.2 7.06667L4 14',
     },
     s: {
       strokeWidth: 1,

@@ -1,4 +1,4 @@
-import React, {SetStateAction} from 'react';
+import React from 'react';
 import {
   CalendarContainer,
   CalendarMonth,
@@ -10,11 +10,15 @@ import {
 import DesignIcon from '../icon/DesignIcon';
 import dayjs, {Dayjs} from 'dayjs';
 import {TouchableWithoutFeedback, View} from 'react-native';
-import {WeeklyType} from './types';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
+import {setToday} from '../../slices/todaySlice';
 
-export default function WeeklyCalendar({today, setToday}: WeeklyType) {
+export default function WeeklyCalendar() {
+  const dispatch = useDispatch();
+  const today = useSelector((state: RootState) => state.today.today);
   // 'today'가 undefined일 경우 기본값 설정
-  const currentDay = today || dayjs(); // today가 없으면 현재 날짜로 대체
+  const currentDay = dayjs(today) || dayjs(); // today가 없으면 현재 날짜로 대체
 
   // 현재 주의 일요일
   const sunday = currentDay.startOf('week'); // 일요일로 시작하는 주
@@ -26,23 +30,18 @@ export default function WeeklyCalendar({today, setToday}: WeeklyType) {
   }
 
   // 날짜 클릭 시 today 상태 업데이트
-  const handleDateClick = (date: SetStateAction<Dayjs>) => {
-    if (setToday) {
-      setToday(date);
-    }
+  const handleDateClick = (date: Dayjs) => {
+    dispatch(setToday(date.toISOString())); // Redux 상태 업데이트
   };
 
   // 이전 주로 이동
   const goToPreviousWeek = () => {
-    if (setToday) {
-      setToday(sunday.subtract(1, 'week').add(6, 'day'));
-    }
+    dispatch(setToday(sunday.subtract(1, 'week').add(6, 'day').toISOString())); // 이전 주로 이동
   };
 
+  // 다음 주로 이동
   const goToNextWeek = () => {
-    if (setToday) {
-      setToday(sunday.add(1, 'week'));
-    }
+    dispatch(setToday(sunday.add(1, 'week').toISOString())); // 다음 주로 이동
   };
 
   return (

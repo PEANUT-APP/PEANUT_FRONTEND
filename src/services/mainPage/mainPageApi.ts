@@ -21,12 +21,14 @@ export const mainPageApi = apiSlice.injectEndpoints({
         url: `/main-api/get-add-info?date=${date}`,
         method: 'GET',
       }),
+      providesTags: ['AdditionalInfo'],
     }),
     getFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
       query: ({date}) => ({
         url: `/main-api/get-all-food?date=${date}`,
         method: 'GET',
       }),
+      providesTags: ['Meal'],
     }),
     getFoodDetailByEatTime: builder.query<
       FoodReturnType,
@@ -36,6 +38,7 @@ export const mainPageApi = apiSlice.injectEndpoints({
         url: `/main-api/get-time-food?date=${date}&eatTime=${eatTime}`,
         method: 'GET',
       }),
+      providesTags: ['Meal'],
     }),
   }),
 });

@@ -108,5 +108,6 @@ export const useValidationRules = (
       required: '값이 필요해요!',
     },
     memo: {},
+    foodTime: {},
   };
 };

@@ -11,16 +11,17 @@ import {
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import useRecord, {useMedicine} from './hooks';
+import {useMedicine} from './hooks';
 import RenderInput from '../../modules/renderInput';
 import MultiSelectList from '../../components/select/MultiSelectList';
 import Toggle from '../../components/toggle/Toggle';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
 import DayListItem from './day/DayListItem';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function MedicineRecord() {
-  const {handleBack} = useRecord();
+  const {handleBack} = useBackHandler();
   const {
     control,
     errors,

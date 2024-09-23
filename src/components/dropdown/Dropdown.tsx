@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {DropdownType} from './types';
 import DesignIcon from '../icon/DesignIcon';
@@ -7,6 +7,9 @@ import Input from '../input/Input';
 import {useValidationRules} from '../../modules/validationRules';
 import {TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
+import {useDispatch, useSelector} from 'react-redux';
+import {setTime} from '../../slices/todaySlice';
+import {RootState} from '../../store/store';
 
 const DropdownContainer = styled.View`
   position: relative;
@@ -15,8 +18,12 @@ const DropdownContainer = styled.View`
   gap: 8px;
 `;
 
-const DropdownList = styled.View`
-  width: 350px;
+const DropdownList = styled.View<{size: 'm' | 's'; isSearch?: boolean}>`
+  width: ${({size}) => (size === 's' ? '152px' : '350px')};
+  position: ${({size}) => (size === 's' ? 'absolute' : 'static')};
+  top: ${({size, isSearch}) =>
+    isSearch ? '-240px' : size === 's' ? '60px' : '0'};
+  z-index: ${({size}) => (size === 's' ? '10' : '0')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,14 +43,27 @@ export default function Dropdown({
   name,
   placeholder,
   options,
+  size,
+  isSearch,
 }: DropdownType) {
+  const dispatch = useDispatch();
+
   const validationRules = useValidationRules();
 
+  const mealTime = useSelector((state: RootState) => state.today.time);
+
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(options[0]);
   const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
     'dropClose',
   );
+
+  useEffect(() => {
+    if (size === 's') {
+      setSelectedValue(mealTime);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleDropdown = useCallback(() => {
     setIsDropdownVisible(prevState => {
@@ -58,6 +78,8 @@ export default function Dropdown({
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
+
+    dispatch(setTime(value));
 
     setValue(name, value);
     await trigger(name);
@@ -79,21 +101,23 @@ export default function Dropdown({
         value={selectedValue}
         icon={
           <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
-            <DesignIcon type={dropType} size="l" />
+            <DesignIcon type={dropType} size={size === 's' ? 'm' : 'l'} />
           </TouchableOpacity>
         }
         drop={true}
         isDropdownVisible={isDropdownVisible}
         setIsDropdownVisible={setIsDropdownVisible}
         pointerEvents="none"
+        size={size}
       />
       {isDropdownVisible && (
-        <DropdownList>
+        <DropdownList size={size} isSearch={isSearch}>
           {options.map((option: string) => (
             <DropdownField
               key={option}
               onPress={() => handleSelect(option)}
-              isSelected={selectedValue === option}>
+              isSelected={selectedValue === option}
+              size={size}>
               {option}
             </DropdownField>
           ))}

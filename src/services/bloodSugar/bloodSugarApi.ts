@@ -14,6 +14,7 @@ export const bloodSugarApi = apiSlice.injectEndpoints({
           memo: data.memo,
         },
       }),
+      invalidatesTags: ['AdditionalInfo'],
     }),
   }),
 });

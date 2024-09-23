@@ -23,3 +23,13 @@ export interface AddType {
 export interface AddStyleType {
   isActive: boolean;
 }
+
+export interface SelectType {
+  children: ReactNode;
+  isSelected: boolean;
+  onPress?: () => void;
+}
+
+export interface SelectStyleType {
+  isSelected: boolean;
+}

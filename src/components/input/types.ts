@@ -25,10 +25,11 @@ export interface FormData {
   bloodSugar: string;
   measurementCondition: string;
   memo: string;
+  foodTime: string;
 }
 
 export interface InputType {
-  placeholder: string;
+  placeholder?: string;
   name: keyof FormData;
   rules?: object;
   control: Control<FormData>;
@@ -56,6 +57,7 @@ export interface InputType {
   isNicknameValid?: boolean;
   autoFocus?: boolean;
   keyboardType?: KeyboardTypeOptions;
+  size?: 'm' | 's';
 }
 
 export interface InputStyleType {
@@ -68,6 +70,7 @@ export interface InputStyleType {
   message?: boolean;
   drop?: boolean;
   isDropdownVisible?: boolean;
+  size?: 'm' | 's';
 }
 
 export interface TimeInputType {
