@@ -33,10 +33,10 @@ export default function MealFeedback() {
       <MealBack activeOpacity={1} onPress={handleBack}>
         <DesignIcon type="back" size="l" color={colors.TextNeutral} />
       </MealBack>
+      <MealTitle weight="bold">식단 피드백</MealTitle>
       <ScrollView
         contentContainerStyle={{paddingBottom: 14}}
         showsVerticalScrollIndicator={false}>
-        <MealTitle weight="bold">식단 피드백</MealTitle>
         <FeedbackBox>
           <WeeklyCalendar />
           <MealContent>
@@ -57,7 +57,7 @@ export default function MealFeedback() {
               </FeedbackFoodText>
             </FeedbackFoodBox>
             <MealCard size="s" time={selectedChip} />
-            <Graph graphData={graphData} />
+            <Graph graphData={graphData} size="s" />
             <FeedbackTextBox>
               <FeedbackTextTitle weight="bold">
                 혈당 스파이크 발생
@@ -68,7 +68,9 @@ export default function MealFeedback() {
               </FeedbackText>
             </FeedbackTextBox>
           </MealContent>
-          <SecondaryButton size="l">수정하기</SecondaryButton>
+          <SecondaryButton size="l" onPress={handleBack}>
+            수정하기
+          </SecondaryButton>
         </FeedbackBox>
       </ScrollView>
     </FeedbackContainer>

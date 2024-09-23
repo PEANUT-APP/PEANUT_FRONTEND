@@ -2,14 +2,26 @@ import {useCallback, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Alert, Animated, Easing} from 'react-native';
 import {FormData} from '../../components/input/types';
-import {useLazyGetFoodNutritionByNameQuery} from '../../services/food/foodApi';
+import {
+  useAddCustomFoodMutation,
+  useLazyGetFoodNutritionByNameQuery,
+} from '../../services/food/foodApi';
 import {FoodDetailReturnType} from '../../services/food/types';
 import {AddMealType} from './types';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 
 export function useSearch() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const route =
+    useRoute<RouteProp<{params: {isAIProcessing: boolean}}, 'params'>>();
+  const {isAIProcessing} = route.params;
 
   const {
     control,
@@ -32,10 +44,13 @@ export function useSearch() {
 
   const [triggerSearch, {data: foodByName, isSuccess: isFoodByNameSuccess}] =
     useLazyGetFoodNutritionByNameQuery();
+  const [addCustomFood] = useAddCustomFoodMutation();
 
   const handleSearch = useCallback(() => {
+    const name: string[] = [];
+    name.push(searchFood);
     if (searchFood.trim()) {
-      triggerSearch({name: searchFood});
+      triggerSearch({name: name});
     } else {
       Alert.alert('검색어를 입력해주세요.');
     }
@@ -109,14 +124,35 @@ export function useSearch() {
   };
 
   // 식단에 기록하기 버튼 클릭 핸들러
-  const handleRecordMeal = () => {
+  const handleRecordMeal = async () => {
     if (addedMeals.length !== 0) {
-      navigation.navigate('MealRecording', {
-        photoUri: undefined,
-        mealNames: addedMeals,
-      });
-      setAddedMeals([]);
-      setSearchFood('');
+      if (isAIProcessing) {
+        for (const meal of addedMeals) {
+          console.log(meal);
+          try {
+            const response = await addCustomFood({
+              foodName: meal.name,
+              servingCount: parseInt(meal?.servingCount || '1', 10),
+            }).unwrap();
+            navigation.navigate('MealRecording', {
+              photoUri: undefined,
+              mealNames: addedMeals,
+            });
+            console.log(response);
+            setAddedMeals([]);
+            setSearchFood('');
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } else {
+        navigation.navigate('MealRecording', {
+          photoUri: undefined,
+          mealNames: addedMeals,
+        });
+        setAddedMeals([]);
+        setSearchFood('');
+      }
     } else {
       Alert.alert('음식을 추가해주세요!');
     }

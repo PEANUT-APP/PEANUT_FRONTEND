@@ -14,16 +14,19 @@ import {
   useGetFoodDetailInfoQuery,
   useGetPredictInfoMutation,
   useLazyGetFoodNutritionByNameQuery,
+  useRemoveFoodFromSessionMutation,
   useSaveNormalMealInfoImageMutation,
+  useSaveNormalMealInfoMutation,
 } from '../../services/food/foodApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {AddMealType} from '../search/types';
-import {FoodDetailReturnType} from '../../services/food/types';
 import useMain from '../home/hooks';
 import {mapBloodSugarToGraph} from '../../components/graph/hooks';
+import {setTime} from '../../slices/todaySlice';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
@@ -40,6 +43,7 @@ export function useMeal() {
 
 export function useRecording() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const searchNavigation = useNavigation<StackNavigationProp<ParamList>>();
 
   const route =
     useRoute<
@@ -69,39 +73,55 @@ export function useRecording() {
   });
 
   const [isUpload, setIsUpload] = useState(false); // 버튼 상태 관리
-  const [imageSource, setImageSource] = useState(photoUri); // 이미지 상태 관리
-  const [foodNames, setFoodNames] = useState<string[]>([]); // AI 음식 이름 배열 상태 추가
+  const [imageSource, setImageSource] = useState<string | null>(photoUri); // 이미지 상태 관리
   const [mealListData, setMealListData] = useState<AddMealType[] | undefined>(
     [],
   ); // MealList로 전달될 배열 관리
   const [isImageSaved, setIsImageSaved] = useState(false); // 이미지 저장 여부 상태
+  const [isAIProcessing, setIsAIProcessing] = useState(false);
 
   // 기본 영양 성분 조회
   const [getFoodNutritionByName] = useLazyGetFoodNutritionByNameQuery();
   // 기본 이미지 등록
   const [saveNormalMealInfoImage] = useSaveNormalMealInfoImageMutation();
+  // 기본 식사 등록
+  const [saveNormalMealInfo] = useSaveNormalMealInfoMutation();
   // AI 인식
   const [getPredictInfo] = useGetPredictInfoMutation();
+  // AI 영양 성분 조회
+  const {
+    data: foodDetailInfo,
+    isSuccess: isFoodDetailSuccess,
+    refetch: foodDetailRefetch,
+  } = useGetFoodDetailInfoQuery(undefined, {
+    skip: !isUpload || !isAIProcessing, // 조건에 따라 호출을 생략
+  });
   // AI 식사 등록
   const [createAIMealInfo] = useCreateAIMealInfoMutation();
-
-  // AI 영양 성분 조회
-  const {data: foodDetail, isSuccess: isFoodDetailSuccess} =
-    useGetFoodDetailInfoQuery(
-      {
-        name: foodNames,
-      },
-      {
-        skip: !isUpload && foodNames.length === 0 && !mealNames,
-      },
-    );
+  // 식사 삭제
+  const [removeFoodFromSession] = useRemoveFoodFromSessionMutation();
 
   // photoUri가 변경되면 imageSource 업데이트
   useEffect(() => {
-    if (route.params?.photoUri) {
-      setImageSource(route.params.photoUri); // imageSource를 새로운 사진 URI로 업데이트
+    if (!isAIProcessing && !imageSource) {
+      if (route.params?.photoUri) {
+        setImageSource(route.params.photoUri); // imageSource를 새로운 사진 URI로 업데이트
+      } else if (!isUpload && foodByDate?.[mealTime]?.imageUrl) {
+        setImageSource(foodByDate?.[mealTime]?.imageUrl);
+      } else {
+        setImageSource(null);
+      }
+    } else {
+      setImageSource(imageSource);
     }
-  }, [route.params.photoUri]); // route.params.photoUri가 변경될 때만 실행
+  }, [
+    foodByDate,
+    imageSource,
+    isAIProcessing,
+    isUpload,
+    mealTime,
+    route.params.photoUri,
+  ]);
 
   // foodByDate 배열(업로드 전)을 순회하여 각각 API 요청을 보내는 함수
   useEffect(() => {
@@ -112,18 +132,16 @@ export function useRecording() {
       const mealDataForCurrentTime = foodByDate?.[mealTime];
 
       // mealTime에 해당하는 foodName이 존재하는 경우
-      if (
-        mealDataForCurrentTime &&
-        mealDataForCurrentTime.foodName.length > 0
-      ) {
-        for (const name of mealDataForCurrentTime.foodName) {
-          try {
-            // getFoodNutritionByName API 호출
-            const response = await getFoodNutritionByName({name}).unwrap();
-            results.push(response[0]); // 결과 배열에 추가
-          } catch (error) {
-            console.error(`Failed to fetch details for ${name}:`, error);
-          }
+      if (mealDataForCurrentTime) {
+        try {
+          // getFoodNutritionByName API 호출
+          const response = await getFoodNutritionByName({
+            name: mealDataForCurrentTime.foodName,
+          }).unwrap();
+          results.push(...response); // 결과 배열에 추가
+          setImageSource(mealDataForCurrentTime.imageUrl);
+        } catch (error) {
+          console.error(error);
         }
 
         // 모든 API 요청 완료 후 mealListData 업데이트
@@ -139,6 +157,59 @@ export function useRecording() {
     }
   }, [getFoodNutritionByName, foodByDate, mealTime, isUpload]);
 
+  // AI 인식, 영양 성분 조회 (AI로 식사 추가하기 버튼)
+  const handleFoodPredict = async () => {
+    const formData = createFormData();
+
+    try {
+      const response = await getPredictInfo(formData).unwrap();
+      setImageSource(response.image_url);
+      console.log(response);
+      setIsUpload(true);
+      setMealListData([]);
+      setIsAIProcessing(true);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('이미지 인식에 실패했습니다.');
+    }
+  };
+
+  // AI 영양 성분 조회 결과 저장
+  useEffect(() => {
+    if (foodDetailInfo && isFoodDetailSuccess && isUpload && isAIProcessing) {
+      console.log('ai 조회', foodDetailInfo);
+      setMealListData(foodDetailInfo);
+    }
+  }, [foodDetailInfo, isAIProcessing, isFoodDetailSuccess, isUpload]);
+
+  // AI 영양 성분 조회 결과 저장
+  useEffect(() => {
+    // mealNames가 변경될 때 refetch
+    if (isAIProcessing && isUpload && mealNames && mealNames.length > 0) {
+      foodDetailRefetch();
+    }
+  }, [mealNames, foodDetailRefetch, isAIProcessing, isUpload]);
+
+  // 직접 추가하기 버튼 (이미지 업로드)
+  const handleDirectAdd = async () => {
+    if (photoUri) {
+      const formData = createFormData();
+
+      try {
+        await saveNormalMealInfoImage(formData).unwrap();
+        setImageSource(photoUri);
+        setIsUpload(true);
+        setMealListData([]);
+        setIsImageSaved(true);
+      } catch (error) {
+        console.error(error);
+        Alert.alert('이미지 업로드에 실패했습니다.');
+      }
+    } else {
+      Alert.alert('이미지를 업로드해주세요!');
+    }
+  };
+
   // mealNames 배열(검색을 통해 가져온 데이터)을 순회하여 각각 API 요청을 보내는 함수
   useEffect(() => {
     const fetchMealDetails = async () => {
@@ -149,50 +220,34 @@ export function useRecording() {
         setIsImageSaved(false); // 이미지가 아직 저장되지 않은 상태로 설정
       }
 
-      // mealNames 배열을 순회하면서 각각의 음식 이름으로 API 요청
-      for (const mealName of mealNames) {
-        try {
-          const response = await getFoodNutritionByName({
-            name: mealName.name,
-          }).unwrap();
+      // mealNames 배열에서 name 필드만 추출하여 배열로 만듦
+      const mealNameArray = mealNames.map(meal => meal.name);
 
-          // API 응답에 인분(servingCount)을 추가하여 결과 배열에 저장
-          const mealWithServingCount = {
-            ...response[0], // 기존 API 응답 데이터
-            servingCount: mealName.servingCount,
-          };
-          console.log(mealWithServingCount);
-          results.push(mealWithServingCount); // 결과 배열에 추가
-        } catch (error) {
-          console.error(`Failed to fetch details for ${mealName}:`, error);
-        }
+      try {
+        const response = await getFoodNutritionByName({
+          name: mealNameArray,
+        }).unwrap();
+
+        // 응답에 인분 추가
+        response.forEach((mealData, index) => {
+          results.push({
+            ...mealData,
+            servingCount: mealNames[index].servingCount,
+          });
+        });
+
+        setMealListData(prevList => [...(prevList || []), ...results]);
+      } catch (error) {
+        Alert.alert('음식 추가에 실패했습니다!');
+        console.error(error);
       }
-
-      // 모든 API 요청 완료 후 mealListData 업데이트
-      setMealListData(prevList => [...(prevList || []), ...results]);
     };
 
-    if (mealNames) {
-      fetchMealDetails(); // mealNames가 있을 때만 요청 시작
+    if (mealNames && !isAIProcessing) {
+      fetchMealDetails();
       setIsUpload(true);
     }
-  }, [mealNames, getFoodNutritionByName, photoUri]);
-
-  // AI 영양 성분 조회 결과 저장 (인분 추가해서)
-  useEffect(() => {
-    if (isFoodDetailSuccess && foodDetail && !mealNames) {
-      const mealDataWithServingCount = foodDetail.map(
-        (item: FoodDetailReturnType) => ({
-          ...item,
-          servingCount: '1', // 인분 추가
-        }),
-      );
-      setMealListData(prevList => [
-        ...(prevList || []),
-        ...mealDataWithServingCount,
-      ]); // AI 조회된 결과를 mealListData에 저장
-    }
-  }, [isFoodDetailSuccess, foodDetail, mealNames]);
+  }, [mealNames, getFoodNutritionByName, photoUri, isAIProcessing]);
 
   // 폼 데이터 생성 함수
   const createFormData = () => {
@@ -210,91 +265,90 @@ export function useRecording() {
     return formData;
   };
 
-  // AI 인식, 영양 성분 조회
-  const handleFoodPredict = async () => {
-    const formData = createFormData();
-
-    try {
-      const response = await getPredictInfo(formData).unwrap();
-      setImageSource(response.image_url);
-      const extractedFoodNames = response.predictions.map(
-        (item: {foodName: string}) => item.foodName,
-      );
-      setFoodNames(extractedFoodNames);
-      setIsUpload(true);
-      setMealListData([]);
-    } catch (error) {
-      console.error(error);
-      Alert.alert('이미지 업로드에 실패했습니다.');
-    }
-  };
-
-  // 직접 추가하기 버튼 (이미지 업로드)
-  const handleDirectAdd = async () => {
-    if (photoUri) {
-      const formData = createFormData();
-
-      try {
-        const response = await saveNormalMealInfoImage(formData).unwrap();
-        console.log(response);
-        setImageSource(photoUri);
-        setIsUpload(true);
-        setMealListData([]);
-        setIsImageSaved(true);
-      } catch (error) {
-        console.error(error);
-        Alert.alert('이미지 업로드에 실패했습니다.');
-      }
-    } else {
-      Alert.alert('이미지를 업로드해주세요!');
-    }
-  };
-
   // 음식 추가하기 버튼
   const handleAddMeal = useCallback(() => {
-    navigation.navigate('Search');
-  }, [navigation]);
+    searchNavigation.push('Search', {isAIProcessing});
+  }, [isAIProcessing, searchNavigation]);
 
   // AI 식사 등록
   const handleCreateAIMeal = async () => {
     const data = {
       mealTime: mealTime,
     };
-
+    console.log(mealTime);
     try {
       const response = await createAIMealInfo(data).unwrap();
-      console.log(response);
-      setMealListData([]);
-      console.log('ai 식사 저장');
+      navigation.navigate('MealFeedback');
+      console.log('ai 식사 등록', response);
     } catch (error) {
       console.error(error);
-      Alert.alert('식사 등록에 실패했습니다.');
+      Alert.alert('식단 등록에 실패했습니다.');
     }
   };
 
   // 일반 식사 저장
   const handleCreateNormalMeal = async () => {
     // 이미지가 아직 저장되지 않은 경우, saveNormalMealInfoImage 먼저 실행
+    // 이미지 업로드 성공 후 mealListData에서 servingCount 추출
+    const servingData = mealListData
+      ?.map(meal => parseInt(meal.servingCount || '0', 10))
+      .filter(serving => !isNaN(serving)); // NaN 값 필터링
+
     if (!isImageSaved && photoUri) {
       const formData = createFormData();
       try {
-        const response = await saveNormalMealInfoImage(formData).unwrap();
-        console.log('Image saved:', response);
-        setMealListData([]);
-        console.log('일반 식사 저장');
+        await saveNormalMealInfoImage(formData).unwrap();
+
+        await saveNormalMealInfo({
+          mealTime: mealTime,
+          servingCount: servingData || [],
+        }).unwrap();
+
+        console.log(servingData);
+        navigation.navigate('MealFeedback');
       } catch (error) {
         console.error('Image upload failed:', error);
         Alert.alert('이미지 업로드에 실패했습니다.');
         return;
       }
+    } else {
+      try {
+        const response = await saveNormalMealInfo({
+          mealTime: mealTime,
+          servingCount: servingData || [],
+        }).unwrap();
+        console.log(response);
+        navigation.navigate('MealFeedback');
+      } catch (error) {
+        Alert.alert('식단 저장에 실패했습니다!');
+        console.log(error);
+      }
     }
-    navigation.navigate('MealFeedback');
+  };
+
+  // 오늘 식단 등록하기 버튼
+  const handleRegisterMeal = () => {
+    if (isAIProcessing) {
+      handleCreateAIMeal();
+    } else {
+      handleCreateNormalMeal();
+    }
   };
 
   // 음식 아이템 삭제
-  const handleDeleteItem = useCallback((index: number) => {
-    setMealListData(prevList => prevList?.filter((_, i) => i !== index));
-  }, []);
+  const handleDeleteItem = async (index: number, name: string) => {
+    if (isUpload) {
+      if (isAIProcessing) {
+        try {
+          const response = await removeFoodFromSession(name).unwrap();
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      setMealListData(prevList => prevList?.filter((_, i) => i !== index));
+    }
+  };
 
   return {
     control,
@@ -305,18 +359,21 @@ export function useRecording() {
     setFocus,
     isUpload,
     imageSource,
-    isFoodDetailSuccess,
     mealListData,
     handleFoodPredict,
     handleDirectAdd,
     handleCreateAIMeal,
     handleDeleteItem,
     handleAddMeal,
-    handleCreateNormalMeal,
+    handleRegisterMeal,
   };
 }
 
 export function useRecord() {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const dispatch = useDispatch();
+
   const {foodByDate} = useMeal();
 
   const foodData = {
@@ -337,14 +394,26 @@ export function useRecord() {
     },
   };
 
-  return {foodData};
+  const handleAddMore = () => {
+    dispatch(setTime('간식'));
+    navigation.navigate('MealRecording', {
+      photoUri: undefined,
+    });
+  };
+
+  return {foodData, handleAddMore};
 }
 
 export function useFeedback() {
   const {additionalInfo} = useMain();
+  const time = useSelector((state: RootState) => state.today.time) as
+    | '아침'
+    | '점심'
+    | '저녁'
+    | '간식';
 
   // 선택된 Chip의 상태를 관리
-  const [selectedChip, setSelectedChip] = useState<string>('전체');
+  const [selectedChip, setSelectedChip] = useState<string>(time || '전체');
 
   // Chip 선택 시 호출되는 핸들러
   const handleSelectChip = (chip: string) => {

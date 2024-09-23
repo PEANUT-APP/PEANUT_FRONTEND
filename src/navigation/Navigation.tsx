@@ -108,6 +108,11 @@ export default function Navigation() {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="Search"
+          component={MealSearch}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="MealRecording"
           component={MealRecording}
           options={{headerShown: false}}
@@ -120,11 +125,6 @@ export default function Navigation() {
         <Stack.Screen
           name="MealFeedback"
           component={MealFeedback}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Search"
-          component={MealSearch}
           options={{headerShown: false}}
         />
         <Stack.Screen

@@ -31,6 +31,7 @@ export interface FoodCheckListType {
   eatTime: string;
   feedBack: string;
   foodName: string[];
+  imageUrl: string | null;
 }
 
 export interface FoodByDateReturnType {
@@ -42,4 +43,18 @@ export interface FoodByDateReturnType {
 
 export interface FoodAISaveMealType {
   mealTime: string;
+}
+
+export interface FoodNormalSaveMealType {
+  mealTime: string;
+  servingCount: number[];
+}
+
+export interface FoodCustomFormType {
+  foodName: string;
+  servingCount: number;
+}
+
+export interface RemoveFoodFormType {
+  foodName: string;
 }
