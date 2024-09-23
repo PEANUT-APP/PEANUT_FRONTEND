@@ -4,42 +4,76 @@ import {
   useGetFoodAllDetailQuery,
   useGetFoodDetailByEatTimeQuery,
 } from '../../services/mainPage/mainPageApi';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 import dayjs from 'dayjs';
+import {setTime} from '../../slices/todaySlice';
 
-export const useMealCard = (today: dayjs.Dayjs) => {
+export const useMealCard = (size: 's' | 'm', time?: string) => {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const today = useSelector((state: RootState) => state.today.today);
+
   const [selectedTime, setSelectedTime] = useState('전체');
   const [foodData, setFoodData] = useState<FoodReturnType | undefined>(
     undefined,
   );
 
-  const {data: allFoodInfo, isSuccess: isAllFoodInfoSuccess} =
-    useGetFoodAllDetailQuery({date: today.format('YYYY-MM-DD')});
-  const {data: foodByTime, isSuccess: isFoodByTimeSuccess} =
-    useGetFoodDetailByEatTimeQuery(
-      {date: today.format('YYYY-MM-DD'), eatTime: selectedTime},
-      {skip: selectedTime === '전체'},
-    );
-
-  console.log('전체', allFoodInfo);
-  console.log(selectedTime, foodByTime);
-  //console.log(foodData);
+  const {isSuccess: isAllFoodInfoSuccess, refetch: allFoodRefetch} =
+    useGetFoodAllDetailQuery({date: dayjs(today).format('YYYY-MM-DD')});
+  const {isSuccess: isFoodByTimeSuccess, refetch: foodByTimeRefetch} =
+    useGetFoodDetailByEatTimeQuery({
+      date: dayjs(today).format('YYYY-MM-DD'),
+      eatTime: size === 's' && time ? time : selectedTime,
+    });
 
   useEffect(() => {
-    if (selectedTime === '전체') {
-      // 전체 선택 시 allFoodInfo 사용
-      setFoodData(allFoodInfo);
-    } else {
-      // 시간대별 선택 시 foodByTime 사용
-      setFoodData(foodByTime);
-    }
-  }, [selectedTime, allFoodInfo, foodByTime]);
+    const fetchData = async () => {
+      let newFoodData;
 
-  const handleTimeChange = useCallback((time: string) => {
-    setSelectedTime(time);
-  }, []);
+      if (size === 's') {
+        if (time === '전체') {
+          const result = await allFoodRefetch();
+          newFoodData = result.data;
+        } else {
+          const result = await foodByTimeRefetch();
+          newFoodData = result.data;
+        }
+      } else {
+        if (selectedTime === '전체' || !selectedTime) {
+          const result = await allFoodRefetch();
+          newFoodData = result.data;
+        } else {
+          const result = await foodByTimeRefetch();
+          newFoodData = result.data;
+        }
+      }
+
+      setFoodData(newFoodData);
+    };
+
+    fetchData();
+  }, [allFoodRefetch, foodByTimeRefetch, selectedTime, size, time, today]);
 
   const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
   const total = carbohydrate + fat + protein;
+  const prevTotal = carbohydrate + fat;
+
+  // 시간대 변경 핸들러
+  const handleTimeChange = (changedTime: string) => {
+    if (size === 'm') {
+      setSelectedTime(changedTime);
+    }
+  };
+
+  // 기록 화면으로 이동하는 핸들러
+  const handleGoToRecord = useCallback(() => {
+    if (size === 'm') {
+      navigation.navigate('MealRecord');
+    }
+  }, [navigation, size]);
 
   return {
     selectedTime,
@@ -47,9 +81,26 @@ export const useMealCard = (today: dayjs.Dayjs) => {
     isAllFoodInfoSuccess,
     isFoodByTimeSuccess,
     handleTimeChange,
+    handleGoToRecord,
     carbohydrate,
     fat,
     protein,
     total,
+    prevTotal,
   };
+};
+
+export const useDayMealCard = (time: string) => {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+  const dispatch = useDispatch();
+
+  // 식사 기록중 화면으로 이동하는 핸들러
+  const handleGoToRecording = useCallback(() => {
+    if (time) {
+      dispatch(setTime(time));
+    }
+    navigation.navigate('MealRecording', {photoUri: undefined});
+  }, [dispatch, navigation, time]);
+
+  return {handleGoToRecording};
 };

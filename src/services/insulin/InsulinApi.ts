@@ -14,6 +14,7 @@ export const insulinApi = apiSlice.injectEndpoints({
           productName: data.productName,
         },
       }),
+      invalidatesTags: ['AdditionalInfo'],
     }),
   }),
 });

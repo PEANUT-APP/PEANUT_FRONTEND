@@ -6,7 +6,7 @@ import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {Caption1} from '../text/Text';
 import {colors} from '../../styles/colors';
-import {useButtonState} from './useButtonState';
+import {useButtonState} from '../../modules/useButtonState';
 
 const Button = styled.TouchableOpacity<OutlineButtonStyleType>`
   display: inline-flex;

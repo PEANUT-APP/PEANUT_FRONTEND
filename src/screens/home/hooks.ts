@@ -1,12 +1,17 @@
-import {useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   useGetAdditionalInfoMainPageQuery,
   useGetUserInfoMainPageQuery,
 } from '../../services/mainPage/mainPageApi';
-import dayjs from 'dayjs';
 import {BloodSugarItem} from '../../services/mainPage/types';
 import moment from 'moment';
 import {FilteredData} from './types';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../navigation/types';
+import dayjs from 'dayjs';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
+import {resetToday} from '../../slices/todaySlice';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
@@ -53,24 +58,41 @@ function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
 }
 
 export default function useMain() {
-  const [today, setToday] = useState(dayjs());
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const dispatch = useDispatch();
+  const today = useSelector((state: RootState) => state.today.today);
+
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
 
   const {data: userInfo, isSuccess: isUserInfoSuccess} =
     useGetUserInfoMainPageQuery();
-  const {data: additionalInfo, isSuccess: isAdditionalInfoSuccess} =
-    useGetAdditionalInfoMainPageQuery({date: today.format('YYYY-MM-DD')});
+  const {
+    data: additionalInfo,
+    isSuccess: isAdditionalInfoSuccess,
+    refetch: additionalRefetch,
+  } = useGetAdditionalInfoMainPageQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+  });
 
   console.log(userInfo);
   console.log(additionalInfo);
+
+  useEffect(() => {
+    dispatch(resetToday());
+  }, [dispatch]);
 
   const fastingBloodSugar =
     parseInt(userInfo?.fastingBloodSugarLevel || '0', 10) || 0;
   const currentBloodSugar =
     parseInt(userInfo?.currentBloodSugarLevel || '0', 10) || 0;
 
-  const bloodSugarList = mapBloodSugarToGraph(additionalInfo?.bloodSugarList);
+  // useMemo로 그래프 데이터를 캐싱
+  const bloodSugarList = useMemo(
+    () => mapBloodSugarToGraph(additionalInfo?.bloodSugarList),
+    [additionalInfo?.bloodSugarList],
+  );
 
   const medicineName =
     additionalInfo?.medicineName === '복용 기록 없음'
@@ -82,12 +104,19 @@ export default function useMain() {
       ? '인슐린을 등록해주세요'
       : additionalInfo?.insulinName;
 
-  const toggleMedicine = () => {
-    setIsCheckedMedicine(!isCheckedMedicine);
-  };
-  const toggleInsulin = () => {
-    setIsCheckedInsulin(!isCheckedInsulin);
-  };
+  // 메모이제이션된 토글 함수
+  const toggleChecked = useCallback((type: string) => {
+    if (type === 'medicine') {
+      setIsCheckedMedicine(prev => !prev);
+    }
+    if (type === 'insulin') {
+      setIsCheckedInsulin(prev => !prev);
+    }
+  }, []);
+
+  const handleGotoSearch = useCallback(() => {
+    navigation.navigate('Search', {isAIProcessing: false});
+  }, [navigation]);
 
   return {
     currentBloodSugarLevel: currentBloodSugar.toString(),
@@ -99,11 +128,11 @@ export default function useMain() {
     medicineName,
     insulinName,
     isAdditionalInfoSuccess,
-    today,
-    setToday,
+    additionalRefetch,
     isCheckedMedicine,
     isCheckedInsulin,
-    toggleMedicine,
-    toggleInsulin,
+    toggleMedicine: () => toggleChecked('medicine'),
+    toggleInsulin: () => toggleChecked('insulin'),
+    handleGotoSearch,
   };
 }

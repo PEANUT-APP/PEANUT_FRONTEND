@@ -13,6 +13,7 @@ export interface DropdownFieldType {
   children: string;
   onPress: () => void;
   isSelected: boolean;
+  size: 'm' | 's';
 }
 
 export interface DropdownType {
@@ -23,6 +24,8 @@ export interface DropdownType {
   setValue: UseFormSetValue<FormData>;
   setFocus: UseFormSetFocus<FormData>;
   name: keyof FormData;
-  placeholder: string;
+  placeholder?: string;
+  size: 'm' | 's';
   options: string[];
+  isSearch?: boolean;
 }

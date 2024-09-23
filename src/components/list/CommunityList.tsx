@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Body1, Caption1, Caption2} from '../text/Text';
 import {CommentWithLikeType, CommunityListType} from './types';
-import ProfileImage from '../profile/ProfileImage';
+import ProfileImage from '../image/ProfileImage';
 import Heart from '../../assets/images/heart.svg';
 import Comment from '../../assets/images/comment.svg';
 

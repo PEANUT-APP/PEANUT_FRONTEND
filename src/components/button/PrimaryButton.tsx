@@ -6,7 +6,7 @@ import LoadingIcon from '../icon/LoadingIcon';
 import {DefaultButton, Label} from './styles';
 import {getButtonText} from './getText';
 import {colors} from '../../styles/colors';
-import {useButtonState} from './useButtonState';
+import {useButtonState} from '../../modules/useButtonState';
 
 const Button = styled(DefaultButton)`
   background-color: ${props =>

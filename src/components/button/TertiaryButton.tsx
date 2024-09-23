@@ -6,7 +6,7 @@ import {getButtonText} from './getText';
 import NullIcon from '../icon/NullIcon';
 import LoadingIcon from '../icon/LoadingIcon';
 import {colors} from '../../styles/colors';
-import {useButtonState} from './useButtonState';
+import {useButtonState} from '../../modules/useButtonState';
 
 const Button = styled(DefaultButton)`
   background-color: ${props =>
@@ -21,6 +21,7 @@ export default function TertiaryButton({
   right,
   children,
   isLoading,
+  onPress,
 }: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
@@ -57,7 +58,8 @@ export default function TertiaryButton({
       activeOpacity={1}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      disabled={disabled || isLoading}>
+      disabled={disabled || isLoading}
+      onPress={onPress}>
       <Label>
         {renderIcon('left')}
         <Text

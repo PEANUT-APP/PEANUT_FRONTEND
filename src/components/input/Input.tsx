@@ -42,6 +42,7 @@ export default function Input({
   isNicknameValid,
   autoFocus,
   keyboardType,
+  size,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -61,9 +62,10 @@ export default function Input({
             value ||
             isFocused ||
             field.value ||
-            (!editable && !drop)) && (
-            <InputLabel color={colors.TextNeutral}>{placeholder}</InputLabel>
-          )}
+            (!editable && !drop)) &&
+            !(size === 's') && (
+              <InputLabel color={colors.TextNeutral}>{placeholder}</InputLabel>
+            )}
           <InputBox
             isFocused={isFocused}
             editable={editable}
@@ -72,7 +74,8 @@ export default function Input({
             isValid={isValid}
             message={!!message}
             drop={drop}
-            isDropdownVisible={isDropdownVisible}>
+            isDropdownVisible={isDropdownVisible}
+            size={size}>
             <InputText
               autoFocus={autoFocus}
               placeholder={isFocused || isDropdownVisible ? '' : placeholder}

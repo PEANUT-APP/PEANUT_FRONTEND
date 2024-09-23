@@ -6,4 +6,5 @@ export interface GraphType {
         customDataPoint?: () => Element;
       }[]
     | undefined;
+  size?: 's' | 'm';
 }

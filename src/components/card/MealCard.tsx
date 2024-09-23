@@ -8,9 +8,6 @@ import {
   MealCardContainer,
   MealCardContent,
   MealCardGraphBox,
-  MealCardKcal,
-  MealCardKcalBox,
-  MealCardKcalDescription,
   MealCardNav,
   MealCardNavItem,
   MealCardTitle,
@@ -19,20 +16,75 @@ import {useMealCard} from './hooks';
 
 const times = ['전체', '아침', '점심', '저녁', '간식'];
 
-export default function MealCard({size, today}: MealCardType) {
+function MealCardNavMenu({
+  selectedTime,
+  handleTimeChange,
+}: {
+  selectedTime: string;
+  handleTimeChange: (item: string) => void;
+}) {
+  return (
+    <MealCardNav>
+      {times.map((item, index) => (
+        <TouchableWithoutFeedback
+          key={index}
+          onPress={() => handleTimeChange(item)}>
+          <MealCardNavItem
+            color={
+              item === selectedTime ? colors.primaryStrong : colors.TextDisabled
+            }>
+            {item}
+          </MealCardNavItem>
+        </TouchableWithoutFeedback>
+      ))}
+    </MealCardNav>
+  );
+}
+
+function MealGraphs({
+  carbohydrate,
+  fat,
+  protein,
+  total,
+  prevTotal,
+}: {
+  carbohydrate: number;
+  fat: number;
+  protein: number;
+  total: number;
+  prevTotal: number;
+}) {
+  return (
+    <MealCardGraphBox>
+      <MealGraph name="탄수화물" value={carbohydrate} total={total} />
+      <MealGraph name="지방" value={fat} total={total} />
+      <MealGraph
+        name="단백질"
+        value={protein}
+        total={total}
+        isLast
+        prevTotal={prevTotal}
+      />
+    </MealCardGraphBox>
+  );
+}
+
+export default function MealCard({size, time}: MealCardType) {
   const {
     selectedTime,
     isAllFoodInfoSuccess,
     isFoodByTimeSuccess,
     handleTimeChange,
+    handleGoToRecord,
     carbohydrate,
     fat,
     protein,
     total,
-  } = useMealCard(today);
+    prevTotal,
+  } = useMealCard(size, time);
 
   return (
-    <MealCardContainer>
+    <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>
       {size === 'm' && (
         <MealCardTitle weight="bold" color={colors.TextNormal}>
           식사 기록
@@ -40,34 +92,20 @@ export default function MealCard({size, today}: MealCardType) {
       )}
       <MealCardBox>
         {size === 'm' && (
-          <MealCardNav>
-            {times.map((item, index) => (
-              <TouchableWithoutFeedback
-                key={index}
-                onPress={() => handleTimeChange(item)}>
-                <MealCardNavItem
-                  color={
-                    item === selectedTime
-                      ? colors.primaryStrong
-                      : colors.TextDisabled
-                  }>
-                  {item}
-                </MealCardNavItem>
-              </TouchableWithoutFeedback>
-            ))}
-          </MealCardNav>
+          <MealCardNavMenu
+            selectedTime={selectedTime}
+            handleTimeChange={handleTimeChange}
+          />
         )}
         {(isAllFoodInfoSuccess || isFoodByTimeSuccess) && (
           <MealCardContent>
-            <MealCardGraphBox>
-              <MealGraph name="탄수화물" value={carbohydrate} total={total} />
-              <MealGraph name="지방" value={fat} total={total} />
-              <MealGraph name="단백질" value={protein} total={total} />
-            </MealCardGraphBox>
-            <MealCardKcalBox>
-              <MealCardKcal weight="bold">800 kcal</MealCardKcal>
-              <MealCardKcalDescription>총 섭취 칼로리</MealCardKcalDescription>
-            </MealCardKcalBox>
+            <MealGraphs
+              carbohydrate={carbohydrate}
+              fat={fat}
+              protein={protein}
+              total={total}
+              prevTotal={prevTotal}
+            />
           </MealCardContent>
         )}
       </MealCardBox>

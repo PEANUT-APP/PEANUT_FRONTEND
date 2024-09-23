@@ -9,14 +9,15 @@ import {
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import useRecord, {useBloodSugar} from './hooks';
+import {useBloodSugar} from './hooks';
 import RenderInput from '../../modules/renderInput';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
 import Dropdown from '../../components/dropdown/Dropdown';
+import {useBackHandler} from '../../modules/commonHooks';
 
 export default function BloodSugarRecord() {
-  const {handleBack} = useRecord();
+  const {handleBack} = useBackHandler();
   const {
     control,
     errors,
@@ -65,6 +66,7 @@ export default function BloodSugarRecord() {
             setFocus={setFocus}
             name="measurementCondition"
             placeholder="상태"
+            size="m"
             options={['공복 혈당', '식전 혈당', '식후 혈당', '자기 전 혈당']}
           />
           {RenderInput({
