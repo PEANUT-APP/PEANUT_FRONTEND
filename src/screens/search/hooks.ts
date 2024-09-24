@@ -4,20 +4,17 @@ import {Alert, Animated, Easing} from 'react-native';
 import {FormData} from '../../components/input/types';
 import {
   useAddCustomFoodMutation,
+  useLazyGetFoodDetailInfoQuery,
   useLazyGetFoodNutritionByNameQuery,
 } from '../../services/food/foodApi';
 import {FoodDetailReturnType} from '../../services/food/types';
 import {AddMealType} from './types';
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export function useSearch() {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
+  const navigation = useNavigation<StackNavigationProp<ParamList>>();
 
   const route =
     useRoute<RouteProp<{params: {isAIProcessing: boolean}}, 'params'>>();
@@ -45,6 +42,7 @@ export function useSearch() {
   const [triggerSearch, {data: foodByName, isSuccess: isFoodByNameSuccess}] =
     useLazyGetFoodNutritionByNameQuery();
   const [addCustomFood] = useAddCustomFoodMutation();
+  const [getFoodDetailInfo] = useLazyGetFoodDetailInfoQuery();
 
   const handleSearch = useCallback(() => {
     const name: string[] = [];
@@ -114,7 +112,7 @@ export function useSearch() {
         giIndex: selectedItem.giIndex,
         glIndex: selectedItem.glIndex,
         protein: selectedItem.protein,
-        servingCount,
+        servingCount: parseInt(servingCount, 10),
       };
       setAddedMeals([...addedMeals, newMeal]); // 새 음식을 추가
       closeModal();
@@ -127,32 +125,35 @@ export function useSearch() {
   const handleRecordMeal = async () => {
     if (addedMeals.length !== 0) {
       if (isAIProcessing) {
-        for (const meal of addedMeals) {
-          console.log(meal);
-          try {
+        try {
+          for (const meal of addedMeals) {
             const response = await addCustomFood({
               foodName: meal.name,
-              servingCount: parseInt(meal?.servingCount || '1', 10),
+              servingCount: meal?.servingCount || 1,
             }).unwrap();
-            navigation.navigate('MealRecording', {
-              photoUri: undefined,
-              mealNames: addedMeals,
-            });
             console.log(response);
-            setAddedMeals([]);
-            setSearchFood('');
-          } catch (error) {
-            console.log(error);
           }
+
+          // 잠시 대기 후 getFoodDetailInfo 호출
+          setTimeout(async () => {
+            const foodDetailResponse = await getFoodDetailInfo().unwrap();
+            console.log('음식 추가 후 상태: ', foodDetailResponse);
+
+            // navigation으로 이동
+            navigation.navigate('MealRecording', {
+              mealNames: foodDetailResponse,
+            });
+          }, 1000); // 1초 대기
+        } catch (error) {
+          console.log(error);
         }
       } else {
         navigation.navigate('MealRecording', {
-          photoUri: undefined,
           mealNames: addedMeals,
         });
-        setAddedMeals([]);
-        setSearchFood('');
       }
+      setAddedMeals([]);
+      setSearchFood('');
     } else {
       Alert.alert('음식을 추가해주세요!');
     }

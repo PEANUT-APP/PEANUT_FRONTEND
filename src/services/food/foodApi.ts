@@ -82,7 +82,6 @@ export const foodApi = apiSlice.injectEndpoints({
           mealTime: data.mealTime,
         },
       }),
-      invalidatesTags: ['Meal'],
     }),
     saveNormalMealInfo: builder.mutation({
       query: (data: FoodNormalSaveMealType) => ({
@@ -93,7 +92,6 @@ export const foodApi = apiSlice.injectEndpoints({
           servingCount: data.servingCount,
         },
       }),
-      invalidatesTags: ['Meal'],
     }),
     addCustomFood: builder.mutation({
       query: (data: FoodCustomFormType) => ({

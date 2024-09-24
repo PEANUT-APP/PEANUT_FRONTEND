@@ -12,4 +12,5 @@ export interface DayMealDataType {
   meal: string;
   feedback1: string;
   feedback2: string;
+  imageUrl: string;
 }
