@@ -45,13 +45,17 @@ export function useRecording() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const searchNavigation = useNavigation<StackNavigationProp<ParamList>>();
 
-  const route =
-    useRoute<
-      RouteProp<
-        {params: {photoUri: string; mealNames: AddMealType[]}},
-        'params'
-      >
-    >();
+  const route = useRoute<
+    RouteProp<
+      {
+        params: {
+          photoUri: string;
+          mealNames: AddMealType[];
+        };
+      },
+      'params'
+    >
+  >();
   const {photoUri, mealNames} = route.params;
 
   const mealTime = useSelector((state: RootState) => state.today.time) as
@@ -89,12 +93,9 @@ export function useRecording() {
   // AI 인식
   const [getPredictInfo] = useGetPredictInfoMutation();
   // AI 영양 성분 조회
-  const {
-    data: foodDetailInfo,
-    isSuccess: isFoodDetailSuccess,
-    refetch: foodDetailRefetch,
-  } = useGetFoodDetailInfoQuery(undefined, {
+  const {data: foodDetailInfo} = useGetFoodDetailInfoQuery(undefined, {
     skip: !isUpload || !isAIProcessing, // 조건에 따라 호출을 생략
+    refetchOnMountOrArgChange: true,
   });
   // AI 식사 등록
   const [createAIMealInfo] = useCreateAIMealInfoMutation();
@@ -103,11 +104,11 @@ export function useRecording() {
 
   // photoUri가 변경되면 imageSource 업데이트
   useEffect(() => {
-    if (!isAIProcessing && !imageSource) {
-      if (route.params?.photoUri) {
-        setImageSource(route.params.photoUri); // imageSource를 새로운 사진 URI로 업데이트
-      } else if (!isUpload && foodByDate?.[mealTime]?.imageUrl) {
+    if (!isUpload) {
+      if (foodByDate?.[mealTime]?.imageUrl) {
         setImageSource(foodByDate?.[mealTime]?.imageUrl);
+      } else if (route.params?.photoUri) {
+        setImageSource(route.params.photoUri);
       } else {
         setImageSource(null);
       }
@@ -174,21 +175,16 @@ export function useRecording() {
     }
   };
 
-  // AI 영양 성분 조회 결과 저장
+  // AI 영양 성분 조회
   useEffect(() => {
-    if (foodDetailInfo && isFoodDetailSuccess && isUpload && isAIProcessing) {
-      console.log('ai 조회', foodDetailInfo);
-      setMealListData(foodDetailInfo);
+    if (isAIProcessing) {
+      if (mealNames) {
+        setMealListData(mealNames);
+      } else {
+        setMealListData(foodDetailInfo);
+      }
     }
-  }, [foodDetailInfo, isAIProcessing, isFoodDetailSuccess, isUpload]);
-
-  // AI 영양 성분 조회 결과 저장
-  useEffect(() => {
-    // mealNames가 변경될 때 refetch
-    if (isAIProcessing && isUpload && mealNames && mealNames.length > 0) {
-      foodDetailRefetch();
-    }
-  }, [mealNames, foodDetailRefetch, isAIProcessing, isUpload]);
+  }, [foodDetailInfo, isAIProcessing, mealNames]);
 
   // 직접 추가하기 버튼 (이미지 업로드)
   const handleDirectAdd = async () => {
@@ -236,6 +232,7 @@ export function useRecording() {
           });
         });
 
+        console.log('일반식사 조회');
         setMealListData(prevList => [...(prevList || []), ...results]);
       } catch (error) {
         Alert.alert('음식 추가에 실패했습니다!');
@@ -291,7 +288,7 @@ export function useRecording() {
     // 이미지가 아직 저장되지 않은 경우, saveNormalMealInfoImage 먼저 실행
     // 이미지 업로드 성공 후 mealListData에서 servingCount 추출
     const servingData = mealListData
-      ?.map(meal => parseInt(meal.servingCount || '0', 10))
+      ?.map(meal => meal.servingCount || 1)
       .filter(serving => !isNaN(serving)); // NaN 값 필터링
 
     if (!isImageSaved && photoUri) {
@@ -341,12 +338,14 @@ export function useRecording() {
       if (isAIProcessing) {
         try {
           const response = await removeFoodFromSession(name).unwrap();
+          setMealListData(prevList => prevList?.filter((_, i) => i !== index));
           console.log(response);
         } catch (error) {
           console.log(error);
         }
+      } else {
+        setMealListData(prevList => prevList?.filter((_, i) => i !== index));
       }
-      setMealListData(prevList => prevList?.filter((_, i) => i !== index));
     }
   };
 
@@ -376,21 +375,26 @@ export function useRecord() {
 
   const {foodByDate} = useMeal();
 
+  console.log(foodByDate);
+
   const foodData = {
     아침: {
       meal: foodByDate?.아침?.foodName.join(', ') || '',
       feedback1: foodByDate?.아침?.feedBack.split('. ')[0] || '',
       feedback2: foodByDate?.아침?.feedBack.split('. ')[1] || '',
+      imageUrl: foodByDate?.아침?.imageUrl,
     },
     점심: {
       meal: foodByDate?.점심?.foodName.join(', ') || '',
       feedback1: foodByDate?.점심?.feedBack.split('. ')[0] || '',
       feedback2: foodByDate?.점심?.feedBack.split('. ')[1] || '',
+      imageUrl: foodByDate?.점심?.imageUrl,
     },
     저녁: {
       meal: foodByDate?.저녁?.foodName.join(', ') || '',
       feedback1: foodByDate?.저녁?.feedBack.split('. ')[0] || '',
       feedback2: foodByDate?.저녁?.feedBack.split('. ')[1] || '',
+      imageUrl: foodByDate?.저녁?.imageUrl,
     },
   };
 

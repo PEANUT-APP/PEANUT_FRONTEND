@@ -5,7 +5,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {useSaveMedicineInfoMutation} from '../../services/medicine/medicineApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
-import {useSaveInsulinIfoMutation} from '../../services/insulin/insulinApi';
+import {useSaveInsulinIfoMutation} from '../../services/insulin/InsulinApi';
 import {handleFormError} from '../../modules/formHandler';
 import {useSaveBloodSugarMutation} from '../../services/bloodSugar/bloodSugarApi';
 

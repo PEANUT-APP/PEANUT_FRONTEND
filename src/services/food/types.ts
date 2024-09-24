@@ -18,13 +18,14 @@ export interface FoodSaveImageReturnType {
 export interface FoodDetailReturnType {
   carbohydrate: number;
   cholesterol: number;
-  expectationBloodSugar: number;
+  expectedBloodSugar: number;
   fat: number;
   foodId: number;
   giIndex: number;
   glIndex: number;
   name: string;
   protein: number;
+  servingCount: number;
 }
 
 export interface FoodCheckListType {

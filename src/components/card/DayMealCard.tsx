@@ -20,7 +20,7 @@ export default function DayMealCard({time, foodData}: DayMealCardType) {
 
   return (
     <DayMealCardContainer>
-      <ImageCard size="s" />
+      <ImageCard size="s" source={foodData.imageUrl} />
       <DayMealCardBox>
         <DayMealCardContent>
           <DayMealCardTitle>

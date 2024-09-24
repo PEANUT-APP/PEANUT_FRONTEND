@@ -12,7 +12,7 @@ export interface ParamList extends ParamListBase {
   Insulin: undefined;
   BloodSugar: undefined;
   MealRecording: {
-    photoUri: string | undefined;
+    photoUri?: string | undefined;
     mealNames?: AddMealType[] | undefined;
   };
   MealRecord: undefined;
