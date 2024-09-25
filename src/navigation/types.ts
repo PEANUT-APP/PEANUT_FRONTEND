@@ -17,6 +17,7 @@ export interface ParamList extends ParamListBase {
   };
   MealRecord: undefined;
   MealFeedback: undefined;
+  Connect: undefined;
   Search: {isAIProcessing?: boolean};
   Test: undefined;
   IconTest: undefined;
