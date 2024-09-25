@@ -38,6 +38,7 @@ import MealRecording from '../screens/meal/MealRecording';
 import MealRecord from '../screens/meal/MealRecord';
 import MealSearch from '../screens/search/MealSearch';
 import MealFeedback from '../screens/meal/MealFeedback';
+import My from '../screens/my/My';
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +93,7 @@ export default function Navigation() {
           component={Home}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="My" component={My} options={{headerShown: false}} />
         <Stack.Screen
           name="Medicine"
           component={MedicineRecord}
@@ -134,7 +136,6 @@ export default function Navigation() {
         />
         <Stack.Screen name="Food" component={InputTest} />
         <Stack.Screen name="Community" component={MainValueTest} />
-        <Stack.Screen name="My" component={ProfileTest} />
         <Stack.Screen name="Test" component={Test} />
         <Stack.Screen name="IconTest" component={IconTest} />
         <Stack.Screen name="PrimaryButtonTest" component={PrimaryButtonTest} />
