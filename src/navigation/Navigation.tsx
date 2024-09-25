@@ -39,6 +39,9 @@ import MealRecord from '../screens/meal/MealRecord';
 import MealSearch from '../screens/search/MealSearch';
 import MealFeedback from '../screens/meal/MealFeedback';
 import My from '../screens/my/My';
+import Connect from '../screens/sign/patient/Connect';
+import Confirm from '../screens/sign/patient/Confirm';
+import Complete from '../screens/sign/patient/Complete';
 
 const Stack = createNativeStackNavigator();
 
@@ -127,6 +130,21 @@ export default function Navigation() {
         <Stack.Screen
           name="MealFeedback"
           component={MealFeedback}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Connect"
+          component={Connect}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Confirm"
+          component={Confirm}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Complete"
+          component={Complete}
           options={{headerShown: false}}
         />
         <Stack.Screen

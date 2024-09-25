@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
-import {Title} from '../../components/text/Text';
+import {Body1, Title} from '../../components/text/Text';
 
-export const SignContainer = styled.View`
+export const SignContainer = styled.View<{isComplete?: boolean}>`
   flex: 1;
-  padding: 93px 20px 28px;
+  padding: ${({isComplete}) => (isComplete ? '141px' : '93px')} 20px 28px;
   justify-content: space-between;
   align-items: center;
 `;
@@ -13,12 +13,22 @@ export const SignBox = styled.View`
 `;
 
 export const SignTitleBox = styled.View`
+  width: 350px;
   gap: 24px;
+`;
+
+export const ConnectTitleBox = styled.View`
+  gap: 8px;
 `;
 
 export const SignTitleText = styled(Title)`
   line-height: 32.016px;
   letter-spacing: -0.6px;
+`;
+
+export const ConnectTitleText = styled(Body1)`
+  line-height: 21.344px;
+  letter-spacing: -0.4px;
 `;
 
 export const SignFormBox = styled.View`
