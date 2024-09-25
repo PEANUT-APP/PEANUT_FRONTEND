@@ -81,7 +81,8 @@ export default function Home() {
   return (
     <Layout paddingBottom={101}>
       <HomeBox>
-        <HomeTop source={require('../../assets/images/gradientBackground.png')}>
+        <HomeTop
+          source={require('../../assets/images/gradientBackgroundDark.png')}>
           <HomeIcons>
             <MyPageIcon />
             <NoticeIcon />
