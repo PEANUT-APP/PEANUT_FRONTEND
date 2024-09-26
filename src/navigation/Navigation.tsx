@@ -40,6 +40,7 @@ import Connect from '../screens/sign/patient/Connect';
 import Confirm from '../screens/sign/patient/Confirm';
 import Complete from '../screens/sign/patient/Complete';
 import {useAuth} from '../modules/useAuth';
+import MyEdit from '../screens/my/MyEdit';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +75,7 @@ export default function Navigation() {
       <Stack.Screen name="Connect" component={Connect} />
       <Stack.Screen name="Confirm" component={Confirm} />
       <Stack.Screen name="Complete" component={Complete} />
+      <Stack.Screen name="MyEdit" component={MyEdit} />
       <Stack.Screen name="DietLog" component={DietLog} />
       <Stack.Screen name="Food" component={InputTest} />
       <Stack.Screen name="Community" component={MainValueTest} />

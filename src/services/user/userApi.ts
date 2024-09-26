@@ -1,5 +1,5 @@
 import apiSlice from '../apiSlice';
-import {SendCodeFormType} from './types';
+import {SendCodeFormType, UpdateFormType} from './types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -12,9 +12,25 @@ export const userApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    updateUserInfo: builder.mutation({
+      query: ({formData, nickname, weight, height}: UpdateFormType) => ({
+        url: '/user/update',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        method: 'PUT',
+        body: formData,
+        params: {
+          nickName: nickname,
+          weight,
+          height,
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
-export const {useSendInviteCodeMutation} = userApi;
+export const {useSendInviteCodeMutation, useUpdateUserInfoMutation} = userApi;
 
 export default userApi;

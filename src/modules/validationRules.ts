@@ -68,7 +68,7 @@ export const useValidationRules = (
     },
     nickname: {
       required: '값이 필요해요!',
-      validate: async (value: string) => {
+      /*validate: async (value: string) => {
         // 서버와 소통하는 비동기 로직 추가
         // const isUnique = await checkNicknameUnique(value);
         const isUnique = value === '땅콩'; // 서버에서 유일한 값이라는 응답을 받았다고 가정
@@ -76,7 +76,7 @@ export const useValidationRules = (
           return '이미 사용 중인 닉네임입니다!';
         }
         return true;
-      },
+      },*/
     },
     medicineName: {
       required: '값이 필요해요!',

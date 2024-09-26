@@ -64,3 +64,54 @@ export const MyUserInfoCommunity = styled.View`
 export const MyUserList = styled.View`
   gap: 8px;
 `;
+
+export const MyMoreContainer = styled.View<{color: string}>`
+  flex: 1;
+  padding: 72px 20px 28px;
+  align-items: center;
+  background-color: ${({color}) => color};
+  gap: 20px;
+`;
+
+export const MyMoreTop = styled.View`
+  width: 350px;
+  gap: 20px;
+`;
+
+export const MyMoreTitle = styled(Title)`
+  line-height: 32.016px;
+  letter-spacing: -0.6px;
+  color: ${colors.TextNormal};
+`;
+
+export const MyEditBox = styled.View``;
+
+export const MyEditProfile = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  background-color: ${colors.SolidTertiaryActive};
+  position: relative;
+`;
+
+export const MyEditIcon = styled.View`
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 100px;
+  background-color: ${colors.white};
+  elevation: 3;
+`;
+
+export const MyEditForm = styled.View`
+  flex: 1;
+  justify-content: space-between;
+`;
+
+export const MyEditInputBox = styled.View`
+  gap: 16px;
+`;

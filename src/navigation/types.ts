@@ -11,6 +11,7 @@ export interface ParamList extends ParamListBase {
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
+  Search: {isAIProcessing?: boolean};
   MealRecording: {
     photoUri?: string | undefined;
     mealNames?: AddMealType[] | undefined;
@@ -18,7 +19,9 @@ export interface ParamList extends ParamListBase {
   MealRecord: undefined;
   MealFeedback: undefined;
   Connect: undefined;
-  Search: {isAIProcessing?: boolean};
+  Confirm: undefined;
+  Complete: undefined;
+  MyEdit: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

@@ -6,6 +6,7 @@ import {Alert} from 'react-native';
 import {SendCodeFormType} from '../../../services/user/types';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {NavigationList, ParamList} from '../../../navigation/types';
+import {handleFormError} from '../../../modules/formHandler';
 
 export function useConnect() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -45,7 +46,7 @@ export function useConnect() {
     }
   };
 
-  const onSubmit = handleSubmit(handleSendEmail);
+  const onSubmit = handleSubmit(handleSendEmail, handleFormError);
 
   return {
     control,

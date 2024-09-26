@@ -18,7 +18,7 @@ const getPathProps = (
   color: string,
   strokeWidth: number | string,
 ) => {
-  if (type === 'kakao' || type === 'comment') {
+  if (type === 'kakao' || type === 'comment' || type === 'pencil') {
     return {
       fill: color,
     };
