@@ -1,4 +1,12 @@
-export interface SendCodeFormType {
+export interface GetPatientReturnType {
+  birthday: string;
+  gender: string;
+  name: string;
+  phoneNumber: string;
+  profileImage: string;
+}
+
+export interface GetPatientFormType {
   email: string;
 }
 

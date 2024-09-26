@@ -11,7 +11,8 @@ import {
 import {useConfirm} from './hooks';
 
 export default function Confirm() {
-  const {handleSendCode} = useConfirm();
+  const {handleSendCode, name, birthday, gender, phoneNumber, profileImage} =
+    useConfirm();
 
   return (
     <Patient
@@ -23,16 +24,14 @@ export default function Confirm() {
         </PrimaryButton>
       }>
       <ConfirmContainer>
-        <ConfirmProfile
-          source={require('../../../assets/images/mainProfile.png')}
-        />
-        <ConfirmName weight="bold">김유성님</ConfirmName>
+        <ConfirmProfile source={{uri: profileImage}} />
+        <ConfirmName weight="bold">{name}님</ConfirmName>
         <ConfirmInfoBox>
-          <ConfirmInfo>남성</ConfirmInfo>
+          <ConfirmInfo>{gender}</ConfirmInfo>
           <ConfirmInfo>·</ConfirmInfo>
-          <ConfirmInfo>200000910</ConfirmInfo>
+          <ConfirmInfo>{birthday}</ConfirmInfo>
           <ConfirmInfo>·</ConfirmInfo>
-          <ConfirmInfo>010****9082</ConfirmInfo>
+          <ConfirmInfo>{phoneNumber}</ConfirmInfo>
         </ConfirmInfoBox>
       </ConfirmContainer>
     </Patient>

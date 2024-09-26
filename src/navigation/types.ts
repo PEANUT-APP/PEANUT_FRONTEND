@@ -1,5 +1,6 @@
 import {ParamListBase} from '@react-navigation/native';
 import {AddMealType} from '../screens/search/types';
+import {GetPatientReturnType} from '../services/user/types';
 
 export interface ParamList extends ParamListBase {
   onBoarding: undefined;
@@ -19,7 +20,7 @@ export interface ParamList extends ParamListBase {
   MealRecord: undefined;
   MealFeedback: undefined;
   Connect: undefined;
-  Confirm: undefined;
+  Confirm: {data: GetPatientReturnType};
   Complete: undefined;
   MyEdit: undefined;
   Test: undefined;
@@ -40,7 +41,7 @@ export interface ParamList extends ParamListBase {
   ListTest: undefined;
 }
 
-export interface NavigationList {
+export interface NavigationList extends ParamListBase {
   Home: undefined;
   Medical: undefined;
   Community: undefined;
