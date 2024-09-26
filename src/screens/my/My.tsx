@@ -19,9 +19,11 @@ import MyCard from './card/MyCard';
 import PatientCard from './card/PatientCard';
 import MyListItem from '../../components/list/my/MyListItem';
 import {useAuth} from '../../modules/useAuth';
+import {useMy} from './hooks';
 
 export default function My() {
   const {handleLogout} = useAuth();
+  const {handleGoEdit} = useMy();
 
   return (
     <Layout paddingBottom={0}>
@@ -41,7 +43,9 @@ export default function My() {
                 </MyUserInfo>
               </View>
             </MyUserInfoBox>
-            <OutlineButton size="s">정보 수정하기</OutlineButton>
+            <OutlineButton size="s" onPress={handleGoEdit}>
+              정보 수정하기
+            </OutlineButton>
           </MyTop>
           <MyUserInfoContentBox>
             <MyUserInfoCommunity>
