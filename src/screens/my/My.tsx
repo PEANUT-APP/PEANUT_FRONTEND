@@ -18,8 +18,11 @@ import OutlineButton from '../../components/button/OutlineButton';
 import MyCard from './card/MyCard';
 import PatientCard from './card/PatientCard';
 import MyListItem from '../../components/list/my/MyListItem';
+import {useAuth} from '../../modules/useAuth';
 
 export default function My() {
+  const {handleLogout} = useAuth();
+
   return (
     <Layout paddingBottom={0}>
       <MyContainer>
@@ -50,7 +53,7 @@ export default function My() {
             <MyUserList>
               <MyListItem onPress={() => {}}>계정 관리하기</MyListItem>
               <MyListItem onPress={() => {}}>알림 설정</MyListItem>
-              <MyListItem onPress={() => {}}>로그아웃</MyListItem>
+              <MyListItem onPress={handleLogout}>로그아웃</MyListItem>
             </MyUserList>
           </MyUserInfoContentBox>
         </MyBox>
