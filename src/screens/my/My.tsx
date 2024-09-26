@@ -55,6 +55,7 @@ export default function My() {
             </MyUserInfoCommunity>
             <PatientCard />
             <MyUserList>
+              <MyListItem onPress={() => {}}>보호자 연결하기</MyListItem>
               <MyListItem onPress={() => {}}>계정 관리하기</MyListItem>
               <MyListItem onPress={() => {}}>알림 설정</MyListItem>
               <MyListItem onPress={handleLogout}>로그아웃</MyListItem>

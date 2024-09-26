@@ -1,23 +1,27 @@
 import apiSlice from '../apiSlice';
-import {SendCodeFormType, UpdateFormType} from './types';
+import {GetPatientReturnType, UpdateFormType} from './types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    getPatient: builder.query<GetPatientReturnType, {email: string}>({
+      query: ({email}) => ({
+        url: '/user/connect/get-patient',
+        method: 'GET',
+        params: {email},
+      }),
+      transformResponse: (response: any): GetPatientReturnType => {
+        return response.data;
+      },
+    }),
     sendInviteCode: builder.mutation({
-      query: (data: SendCodeFormType) => ({
+      query: () => ({
         url: '/user/connect/send-code',
         method: 'POST',
-        params: {
-          email: data.email,
-        },
       }),
     }),
     updateUserInfo: builder.mutation({
       query: ({formData, nickname, weight, height}: UpdateFormType) => ({
         url: '/user/update',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
         method: 'PUT',
         body: formData,
         params: {
@@ -31,6 +35,11 @@ export const userApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useSendInviteCodeMutation, useUpdateUserInfoMutation} = userApi;
+export const {
+  useGetPatientQuery,
+  useLazyGetPatientQuery,
+  useSendInviteCodeMutation,
+  useUpdateUserInfoMutation,
+} = userApi;
 
 export default userApi;
