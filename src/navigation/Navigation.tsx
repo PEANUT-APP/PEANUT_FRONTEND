@@ -43,6 +43,7 @@ import {useAuth} from '../modules/useAuth';
 import MyEdit from '../screens/my/MyEdit';
 import MyNotice from '../screens/my/MyNotice';
 import MyAccount from '../screens/my/MyAccount';
+import MyCommunity from '../screens/my/MyCommunity';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +81,9 @@ export default function Navigation() {
       <Stack.Screen name="MyEdit" component={MyEdit} />
       <Stack.Screen name="MyNotice" component={MyNotice} />
       <Stack.Screen name="MyAccount" component={MyAccount} />
+      <Stack.Screen name="MyArticle" component={MyCommunity} />
+      <Stack.Screen name="MyGood" component={MyCommunity} />
+      <Stack.Screen name="MyComment" component={MyCommunity} />
       <Stack.Screen name="DietLog" component={DietLog} />
       <Stack.Screen name="Food" component={InputTest} />
       <Stack.Screen name="Community" component={MainValueTest} />

@@ -25,6 +25,9 @@ export interface ParamList extends ParamListBase {
   MyEdit: undefined;
   MyNotice: undefined;
   MyAccount: undefined;
+  MyArticle: {title: string};
+  MyGood: {title: string};
+  MyComment: {title: string};
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;
