@@ -1,4 +1,9 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {useForm} from 'react-hook-form';
 import {FormData as InputFormData} from '../../components/input/types';
@@ -15,8 +20,8 @@ import {handleFormError} from '../../modules/formHandler';
 export const useCard = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const onPress = (navigate: string) => {
-    navigation.navigate(navigate);
+  const onPress = (navigate: string, title: string) => {
+    navigation.navigate(navigate, {title});
   };
 
   return {onPress};
@@ -192,4 +197,11 @@ export const useMyAccount = () => {
     setValue,
     isButtonDisabled,
   };
+};
+
+export const useMyCommunity = () => {
+  const route = useRoute<RouteProp<{params: {title: string}}, 'params'>>();
+  const {title} = route.params;
+
+  return {title};
 };

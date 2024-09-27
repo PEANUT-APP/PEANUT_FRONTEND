@@ -49,9 +49,15 @@ export default function My() {
           </MyTop>
           <MyUserInfoContentBox>
             <MyUserInfoCommunity>
-              <MyCard navigate="">작성글</MyCard>
-              <MyCard navigate="">좋아요</MyCard>
-              <MyCard navigate="">댓글</MyCard>
+              <MyCard navigate="MyArticle" title="작성한 글">
+                작성글
+              </MyCard>
+              <MyCard navigate="MyGood" title="좋아요한 글">
+                좋아요
+              </MyCard>
+              <MyCard navigate="MyComment" title="댓글 단 글">
+                댓글
+              </MyCard>
             </MyUserInfoCommunity>
             <PatientCard />
             <MyUserList>

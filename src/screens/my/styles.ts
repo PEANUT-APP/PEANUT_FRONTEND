@@ -2,10 +2,13 @@ import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Body1, Title} from '../../components/text/Text';
 
-export const MyContainer = styled.View`
+const Container = styled.View`
   flex: 1;
-  padding: 64px 20px 0;
   align-items: center;
+`;
+
+export const MyContainer = styled(Container)`
+  padding: 64px 20px 0;
   background-color: ${colors.background};
 `;
 
@@ -65,10 +68,8 @@ export const MyUserList = styled.View`
   gap: 8px;
 `;
 
-export const MyMoreContainer = styled.View<{color: string}>`
-  flex: 1;
+export const MyMoreContainer = styled(Container)<{color: string}>`
   padding: 72px 20px 28px;
-  align-items: center;
   background-color: ${({color}) => color};
   gap: 20px;
 `;
@@ -119,4 +120,14 @@ export const MyEditInputBox = styled.View`
 
 export const MyAccountButton = styled.View`
   margin-left: 4px;
+`;
+
+export const MyCommunityContainer = styled(Container)`
+  padding: 72px 20px 0;
+  gap: 20px;
+  background-color: ${colors.background};
+`;
+
+export const MyCommunityContent = styled.View`
+  gap: 8px;
 `;

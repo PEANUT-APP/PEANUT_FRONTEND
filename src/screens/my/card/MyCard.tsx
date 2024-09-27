@@ -5,11 +5,11 @@ import {MyCardType} from './types';
 import {colors} from '../../../styles/colors';
 import {useCard} from '../hooks';
 
-export default function MyCard({children, navigate}: MyCardType) {
+export default function MyCard({children, navigate, title}: MyCardType) {
   const {onPress} = useCard();
 
   return (
-    <MyCardContainer activeOpacity={1} onPress={() => onPress(navigate)}>
+    <MyCardContainer activeOpacity={1} onPress={() => onPress(navigate, title)}>
       <NullIcon size="xl" />
       <CardText color={colors.TextNormal}>{children}</CardText>
     </MyCardContainer>
