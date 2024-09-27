@@ -41,6 +41,8 @@ import Confirm from '../screens/sign/patient/Confirm';
 import Complete from '../screens/sign/patient/Complete';
 import {useAuth} from '../modules/useAuth';
 import MyEdit from '../screens/my/MyEdit';
+import MyNotice from '../screens/my/MyNotice';
+import MyAccount from '../screens/my/MyAccount';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +78,8 @@ export default function Navigation() {
       <Stack.Screen name="Confirm" component={Confirm} />
       <Stack.Screen name="Complete" component={Complete} />
       <Stack.Screen name="MyEdit" component={MyEdit} />
+      <Stack.Screen name="MyNotice" component={MyNotice} />
+      <Stack.Screen name="MyAccount" component={MyAccount} />
       <Stack.Screen name="DietLog" component={DietLog} />
       <Stack.Screen name="Food" component={InputTest} />
       <Stack.Screen name="Community" component={MainValueTest} />

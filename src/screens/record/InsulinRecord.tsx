@@ -5,8 +5,6 @@ import {
   RecordFormBox,
   RecordTitle,
   RecordTitleBox,
-  RecordToggle,
-  RecordToggleText,
 } from './styles';
 import {TouchableOpacity} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
@@ -14,10 +12,10 @@ import {colors} from '../../styles/colors';
 import {useInsulin} from './hooks';
 import RenderInput from '../../modules/renderInput';
 import MultiSelectList from '../../components/select/MultiSelectList';
-import Toggle from '../../components/toggle/Toggle';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import TimeInput from '../../components/input/TimeInput';
 import {useBackHandler} from '../../modules/commonHooks';
+import NotifyListItem from '../../components/list/notify/NotifyListItem';
 
 export default function InsulinRecord() {
   const {handleBack} = useBackHandler();
@@ -79,10 +77,9 @@ export default function InsulinRecord() {
               editable={true}
             />
           ))}
-          <RecordToggle>
-            <RecordToggleText>알림 기능</RecordToggleText>
-            <Toggle isToggleOn={isToggleOn} setIsToggleOn={setIsToggleOn} />
-          </RecordToggle>
+          <NotifyListItem isToggleOn={isToggleOn} setIsToggleOn={setIsToggleOn}>
+            알림 기능
+          </NotifyListItem>
         </RecordFormBox>
       </RecordBox>
       <PrimaryButton

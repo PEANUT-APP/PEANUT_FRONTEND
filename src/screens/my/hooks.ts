@@ -29,7 +29,15 @@ export const useMy = () => {
     navigation.navigate('MyEdit');
   };
 
-  return {handleGoEdit};
+  const handleGoNotice = () => {
+    navigation.navigate('MyNotice');
+  };
+
+  const handleGoAccount = () => {
+    navigation.navigate('MyAccount');
+  };
+
+  return {handleGoEdit, handleGoNotice, handleGoAccount};
 };
 
 export const useMyEdit = () => {
@@ -54,7 +62,7 @@ export const useMyEdit = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    if (profileImage && nicknameWatch && heightWatch && weightWatch) {
+    if (profileImage && (nicknameWatch || heightWatch || weightWatch)) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
@@ -122,6 +130,66 @@ export const useMyEdit = () => {
     handleProfilePress,
     profileImage,
     onSubmit: handleSubmit(handleUpdate, handleFormError),
+    isButtonDisabled,
+  };
+};
+
+export const useMyNotice = () => {
+  const [isPatientToggleOn, setIsPatientToggleOn] = useState(false);
+  const [isMedicineToggleOn, setIsMedicineToggleOn] = useState(false);
+  const [isInsulinToggleOn, setIsInsulinToggleOn] = useState(false);
+
+  return {
+    isPatientToggleOn,
+    setIsPatientToggleOn,
+    isMedicineToggleOn,
+    setIsMedicineToggleOn,
+    isInsulinToggleOn,
+    setIsInsulinToggleOn,
+  };
+};
+
+export const useMyAccount = () => {
+  const {
+    control,
+    trigger,
+    setFocus,
+    setValue,
+    watch,
+    formState: {errors, touchedFields},
+  } = useForm<InputFormData>({
+    mode: 'onBlur',
+  });
+
+  const phoneNumberWatch = watch('phoneNumber');
+  const genderWatch = watch('gender');
+  const birthWatch = watch('birth');
+  const nameWatch = watch('name');
+  const passwordWatch = watch('password');
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if (
+      phoneNumberWatch ||
+      genderWatch ||
+      birthWatch ||
+      nameWatch ||
+      passwordWatch
+    ) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [birthWatch, genderWatch, nameWatch, passwordWatch, phoneNumberWatch]);
+
+  return {
+    control,
+    trigger,
+    errors,
+    touchedFields,
+    setFocus,
+    setValue,
     isButtonDisabled,
   };
 };
