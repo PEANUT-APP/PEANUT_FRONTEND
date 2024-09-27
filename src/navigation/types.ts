@@ -23,6 +23,8 @@ export interface ParamList extends ParamListBase {
   Confirm: {data: GetPatientReturnType};
   Complete: undefined;
   MyEdit: undefined;
+  MyNotice: undefined;
+  MyAccount: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

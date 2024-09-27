@@ -114,4 +114,9 @@ export const MyEditForm = styled.View`
 
 export const MyEditInputBox = styled.View`
   gap: 16px;
+  align-items: flex-start;
+`;
+
+export const MyAccountButton = styled.View`
+  margin-left: 4px;
 `;
