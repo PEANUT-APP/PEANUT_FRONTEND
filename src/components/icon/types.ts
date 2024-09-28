@@ -36,11 +36,16 @@ export interface DesignIconType {
     | 'dropOpen'
     | 'kebab'
     | 'like'
-    | 'comment';
+    | 'comment'
+    | 'pencil';
   color?: string;
 }
 
 export interface FitIconType {
+  size: 'xl' | 'l' | 'm' | 's';
+}
+
+export interface ErrorIconType {
   size: 'xl' | 'l' | 'm' | 's';
 }
 

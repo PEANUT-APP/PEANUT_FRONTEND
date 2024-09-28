@@ -15,7 +15,7 @@ const determineBorderColor = ({
     return colors.primaryNormal;
   } else if (icon) {
     if (isError) {
-      return colors.TextError;
+      return colors.primaryStrong;
     } else if (message && isValid) {
       return colors.primaryNormal;
     }
@@ -32,8 +32,12 @@ export const InputBox = styled.View<InputStyleType>`
   justify-content: space-between;
   border-bottom-width: 1px;
   border-bottom-color: ${determineBorderColor};
-  background-color: ${({editable, drop}) =>
-    editable || drop ? 'transparent' : colors.SolidDisabled};
+  background-color: ${({editable, drop, isError, isFocused}) =>
+    isError && !isFocused
+      ? colors.SolidSecondaryActive
+      : editable || drop
+      ? 'transparent'
+      : colors.SolidDisabled};
 `;
 
 export const InputText = styled.TextInput<InputStyleType>`
@@ -60,7 +64,8 @@ export const InputMessage = styled(Caption2)<InputStyleType>`
   letter-spacing: -0.25px;
   margin-top: 7px;
   margin-left: 16px;
-  color: ${({isError}) => (isError ? colors.TextError : colors.primaryNormal)};
+  color: ${({isError}) =>
+    isError ? colors.primaryStrong : colors.primaryNormal};
 `;
 
 export const InputTimer = styled.View`

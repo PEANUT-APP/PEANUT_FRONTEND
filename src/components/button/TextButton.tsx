@@ -88,7 +88,7 @@ function DefaultTextButton({
             disabled
               ? colors.TextDisabled
               : type === 'primary'
-              ? colors.TextNeutral
+              ? colors.TextDisabled
               : colors.primaryStrong
           }
           weight="bold">
