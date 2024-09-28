@@ -37,7 +37,9 @@ export interface DesignIconType {
     | 'kebab'
     | 'like'
     | 'comment'
-    | 'pencil';
+    | 'pencil'
+    | 'search'
+    | 'declare';
   color?: string;
 }
 
