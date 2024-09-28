@@ -45,6 +45,10 @@ export interface FitIconType {
   size: 'xl' | 'l' | 'm' | 's';
 }
 
+export interface ErrorIconType {
+  size: 'xl' | 'l' | 'm' | 's';
+}
+
 export interface PlusIconType {
   size: 'l' | 'm' | 's';
   color: string;

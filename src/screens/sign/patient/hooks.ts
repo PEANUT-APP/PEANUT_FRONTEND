@@ -2,7 +2,7 @@ import {useForm} from 'react-hook-form';
 import {FormData} from '../../../components/input/types';
 import {useEffect, useState} from 'react';
 import {
-  useLazyGetPatientQuery,
+  //useLazyGetPatientQuery,
   useSendInviteCodeMutation,
 } from '../../../services/user/userApi';
 import {Alert} from 'react-native';
@@ -15,23 +15,29 @@ import {
 import {NavigationList, ParamList} from '../../../navigation/types';
 import {GetPatientReturnType} from '../../../services/user/types';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../store/store';
+import {API_URL} from '@env';
 
 export function useConnect() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const token = useSelector((state: RootState) => state.token.accessToken);
 
   const {
     control,
     trigger,
     watch,
     handleSubmit,
+    setError,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
-    mode: 'onBlur',
+    mode: 'onSubmit',
   });
 
   const emailWatch = watch('email');
 
-  const [getPatient] = useLazyGetPatientQuery();
+  //const [getPatient] = useLazyGetPatientQuery();
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
@@ -45,11 +51,29 @@ export function useConnect() {
 
   const handleSendEmail = async ({email}: {email: string}) => {
     try {
-      const response = await getPatient({email}).unwrap();
-      navigation.navigate('Confirm', {data: response});
+      const response = await fetch(
+        `${API_URL}user/connect/get-patient?email=${email}`,
+        {
+          method: 'GET',
+          headers: {
+            'X-AUTH-TOKEN': token || '',
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        navigation.navigate('Confirm', {data: data});
+      } else {
+        console.log(response);
+      }
     } catch (error) {
+      setError('email', {
+        type: 'manual',
+        message: '존재하지 않는 이메일 계정입니다!',
+      });
       console.log(error);
-      Alert.alert('이메일 조회에 실패했습니다!');
     }
   };
 
@@ -70,6 +94,7 @@ export function useConfirm() {
   const route =
     useRoute<RouteProp<{params: {data: GetPatientReturnType}}, 'params'>>();
   const {data} = route.params;
+  console.log(data);
 
   const [sendInviteCode] = useSendInviteCodeMutation();
 

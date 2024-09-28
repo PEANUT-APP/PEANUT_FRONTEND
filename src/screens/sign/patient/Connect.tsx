@@ -3,6 +3,7 @@ import Patient from './Patient';
 import RenderInput from '../../../modules/renderInput';
 import {useConnect} from './hooks';
 import PrimaryButton from '../../../components/button/PrimaryButton';
+import ErrorIcon from '../../../components/icon/ErrorIcon';
 
 export default function Connect() {
   const {control, errors, touchedFields, trigger, isButtonDisabled, onSubmit} =
@@ -24,6 +25,7 @@ export default function Connect() {
         errors,
         touchedFields,
         trigger,
+        icon: <ErrorIcon size="l" />,
       })}
     </Patient>
   );
