@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {resetToday} from '../../slices/todaySlice';
+import {setUserId} from '../../slices/userSlice';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
@@ -78,6 +79,13 @@ export default function useMain() {
 
   console.log(userInfo);
   console.log(additionalInfo);
+
+  // userInfo의 userId가 있을 때 Redux에 저장
+  useEffect(() => {
+    if (userInfo?.userId) {
+      dispatch(setUserId(userInfo.userId)); // userId를 Redux 상태에 저장
+    }
+  }, [userInfo, dispatch]);
 
   useEffect(() => {
     dispatch(resetToday());

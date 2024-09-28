@@ -17,18 +17,21 @@ import {
 } from './styles';
 import DesignIcon from '../../icon/DesignIcon';
 import {colors} from '../../../styles/colors';
-import {View} from 'react-native';
-import {CommunityListItemType} from './types';
+import {TouchableOpacity, View} from 'react-native';
+import {CommunityListReturnType} from '../../../services/community/types';
+import Writer from './Writer';
+import {useCommunityListItem} from './hooks';
 
 export default function CommunityListItem({
+  userId,
   title,
-  date,
   content,
   name,
-  likes,
-  comments,
-  profile,
-}: CommunityListItemType) {
+  like,
+  imageUrl,
+}: CommunityListReturnType) {
+  const {showWriter, handleClickKebab} = useCommunityListItem();
+
   return (
     <CommunityListItemContainer>
       <View>
@@ -39,17 +42,20 @@ export default function CommunityListItem({
             numberOfLines={1}>
             {title}
           </CommunityListItemTitle>
-          <DesignIcon type="kebab" size="l" color={colors.TextDisabled} />
+          <TouchableOpacity activeOpacity={1} onPress={handleClickKebab}>
+            <DesignIcon type="kebab" size="l" color={colors.TextDisabled} />
+          </TouchableOpacity>
+          {showWriter && <Writer userId={userId || null} />}
         </CommunityListItemTitleBox>
-        <CommunityListItemDate>{date}</CommunityListItemDate>
+        <CommunityListItemDate>2024.09.04 오후 11:30</CommunityListItemDate>
         <CommunityListItemContent ellipsizeMode="tail" numberOfLines={1}>
           {content}
         </CommunityListItemContent>
       </View>
       <CommunityListItemBottomBox>
         <CommunityListItemProfile>
-          {profile ? (
-            <CommunityListItemImage />
+          {imageUrl ? (
+            <CommunityListItemImage source={{uri: imageUrl}} />
           ) : (
             <CommunityListItemNoneImage />
           )}
@@ -58,11 +64,11 @@ export default function CommunityListItem({
         <CommunityListItemInfoBox>
           <CommunityListItemInfoPair>
             <DesignIcon type="like" size="s" color={colors.LineNomal} />
-            <CommunityListItemText>{likes}</CommunityListItemText>
+            <CommunityListItemText>{like}</CommunityListItemText>
           </CommunityListItemInfoPair>
           <CommunityListItemCommentPair>
             <DesignIcon type="comment" size="s" color={colors.LineNomal} />
-            <CommunityListItemText>{comments}</CommunityListItemText>
+            <CommunityListItemText>0</CommunityListItemText>
           </CommunityListItemCommentPair>
         </CommunityListItemInfoBox>
       </CommunityListItemBottomBox>
