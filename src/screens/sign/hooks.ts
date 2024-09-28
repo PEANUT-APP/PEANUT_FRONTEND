@@ -24,6 +24,7 @@ import {updateForm} from '../../slices/formSlice';
 import {RootState} from '../../store/store';
 import {login} from '../../slices/tokenSlice';
 import {handleFormError} from '../../modules/formHandler';
+import {useAuth} from '../../modules/useAuth';
 
 export const handleNextStep = async ({
   step,
@@ -78,6 +79,8 @@ export const useSignIn = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const dispatch = useDispatch();
 
+  const {setIsInitialRender} = useAuth();
+
   const [signIn] = useSignInMutation();
 
   const [step, setStep] = useState(0);
@@ -88,6 +91,7 @@ export const useSignIn = () => {
     handleSubmit,
     trigger,
     watch,
+    reset,
     formState: {errors, touchedFields},
   } = useForm<FormData>({
     defaultValues: {
@@ -112,6 +116,9 @@ export const useSignIn = () => {
       const response = await signIn(data).unwrap();
       dispatch(login(response.token));
       navigation.navigate('Home');
+      reset();
+      setStep(0);
+      setIsInitialRender(false);
     } catch (error) {
       console.log(error);
       Alert.alert('로그인에 실패했습니다!');

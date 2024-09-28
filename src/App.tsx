@@ -13,6 +13,7 @@ import {theme} from './styles/theme';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Provider} from 'react-redux';
 import {store} from './store/store';
+import {NavigationContainer} from '@react-navigation/native';
 
 export default function App() {
   const methods = useForm();
@@ -26,7 +27,9 @@ export default function App() {
             backgroundColor="transparent"
             barStyle="dark-content"
           />
-          <Navigation />
+          <NavigationContainer>
+            <Navigation />
+          </NavigationContainer>
         </FormProvider>
       </ThemeProvider>
     </Provider>

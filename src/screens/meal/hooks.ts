@@ -382,19 +382,19 @@ export function useRecord() {
       meal: foodByDate?.아침?.foodName.join(', ') || '',
       feedback1: foodByDate?.아침?.feedBack.split('. ')[0] || '',
       feedback2: foodByDate?.아침?.feedBack.split('. ')[1] || '',
-      imageUrl: foodByDate?.아침?.imageUrl,
+      imageUrl: foodByDate?.아침?.imageUrl || '',
     },
     점심: {
       meal: foodByDate?.점심?.foodName.join(', ') || '',
       feedback1: foodByDate?.점심?.feedBack.split('. ')[0] || '',
       feedback2: foodByDate?.점심?.feedBack.split('. ')[1] || '',
-      imageUrl: foodByDate?.점심?.imageUrl,
+      imageUrl: foodByDate?.점심?.imageUrl || '',
     },
     저녁: {
       meal: foodByDate?.저녁?.foodName.join(', ') || '',
       feedback1: foodByDate?.저녁?.feedBack.split('. ')[0] || '',
       feedback2: foodByDate?.저녁?.feedBack.split('. ')[1] || '',
-      imageUrl: foodByDate?.저녁?.imageUrl,
+      imageUrl: foodByDate?.저녁?.imageUrl || '',
     },
   };
 
