@@ -57,6 +57,13 @@ export const CommunityListItemImage = styled.Image`
   background-color: #d9d9d9;
 `;
 
+export const CommunityListItemNoneImage = styled.View`
+  width: 24px;
+  height: 24px;
+  border-radius: 100px;
+  background-color: #d9d9d9;
+`;
+
 export const CommunityListItemName = styled(Caption1)`
   line-height: 16.008px;
   letter-spacing: -0.3px;
@@ -67,4 +74,15 @@ export const CommunityListItemInfoBox = styled.View`
   flex-direction: row;
   gap: 4px;
   align-items: center;
+`;
+
+export const CommunityListItemInfoPair = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CommunityListItemCommentPair = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
 `;
