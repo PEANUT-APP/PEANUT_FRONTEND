@@ -129,5 +129,5 @@ export const MyCommunityContainer = styled(Container)`
 `;
 
 export const MyCommunityContent = styled.View`
-  gap: 8px;
+  height: 8px;
 `;
