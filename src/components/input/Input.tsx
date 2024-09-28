@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {InputType} from './types';
 import {Controller} from 'react-hook-form';
 import {colors} from '../../styles/colors';
@@ -45,12 +45,37 @@ export default function Input({
   size,
 }: InputType) {
   const [isFocused, setIsFocused] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
 
-  const isError = !!icon && editable && errors[name] && touchedFields[name];
-  const isValid =
-    (!!icon && editable && !errors[name] && touchedFields[name]) ||
-    isVerificationCodeValid ||
-    isNicknameValid;
+  useEffect(() => {
+    if (icon && editable && errors[name] && touchedFields[name]) {
+      setIsError(true);
+    } else {
+      setIsError(false);
+    }
+  }, [editable, errors, icon, name, touchedFields]);
+
+  useEffect(() => {
+    if (
+      (message && icon && editable && !errors[name] && touchedFields[name]) ||
+      isVerificationCodeValid ||
+      isNicknameValid
+    ) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [
+    editable,
+    errors,
+    icon,
+    isNicknameValid,
+    isVerificationCodeValid,
+    message,
+    name,
+    touchedFields,
+  ]);
 
   return (
     <Controller
@@ -102,7 +127,7 @@ export default function Input({
               pointerEvents={pointerEvents}
               keyboardType={keyboardType}
             />
-            {icon && (isValid || !message) && icon}
+            {icon && (isValid || drop || isError) && !isFocused && icon}
             {button && !isValid && (
               <OutlineButton
                 size="s"
