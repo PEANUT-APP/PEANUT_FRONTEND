@@ -8,7 +8,6 @@ import {
   ReportCardBox,
 } from './styles';
 import Graph from '../../components/graph/Graph';
-import Layout from '../layout/Layout';
 import Search from '../../components/search/Search';
 import TopBox from './topBox/TopBox';
 import MyPageIcon from '../../assets/images/main_mypage.svg';
@@ -17,6 +16,7 @@ import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import ReportCard from './reportCard/ReportCard';
 import useMain from './hooks';
 import MealCard from '../../components/card/MealCard';
+import ScrollLayout from '../layout/ScrollLayout';
 
 const profileImage = require('../../assets/images/mainProfile.png');
 
@@ -79,7 +79,7 @@ export default function Home() {
   };
 
   return (
-    <Layout paddingBottom={101}>
+    <ScrollLayout paddingBottom={101}>
       <HomeBox>
         <HomeTop
           source={require('../../assets/images/gradientBackgroundDark.png')}>
@@ -101,6 +101,6 @@ export default function Home() {
           <MealCard size="m" />
         </HomeContent>
       </HomeBox>
-    </Layout>
+    </ScrollLayout>
   );
 }

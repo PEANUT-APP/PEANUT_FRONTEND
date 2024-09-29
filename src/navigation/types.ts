@@ -28,6 +28,8 @@ export interface ParamList extends ParamListBase {
   MyArticle: {title: string};
   MyGood: {title: string};
   MyComment: {title: string};
+  Community: undefined;
+  Write: undefined;
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

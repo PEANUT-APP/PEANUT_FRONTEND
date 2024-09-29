@@ -1,5 +1,5 @@
 import apiSlice from '../apiSlice';
-import {CommunityListReturnType} from './types';
+import {CommunityCreateFormType, CommunityListReturnType} from './types';
 
 export const communityApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -8,10 +8,20 @@ export const communityApi = apiSlice.injectEndpoints({
         url: '/community/all/details',
         method: 'GET',
       }),
+      providesTags: ['Community'],
+    }),
+    createCommunity: builder.mutation({
+      query: (data: CommunityCreateFormType) => ({
+        url: '/community/create',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Community'],
     }),
   }),
 });
 
-export const {useGetAllCommunityQuery} = communityApi;
+export const {useGetAllCommunityQuery, useCreateCommunityMutation} =
+  communityApi;
 
 export default communityApi;

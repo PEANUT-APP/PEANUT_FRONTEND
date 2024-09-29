@@ -8,3 +8,8 @@ export interface CommunityListReturnType {
   title: string;
   userId?: number;
 }
+
+export interface CommunityCreateFormType {
+  title: string;
+  content: string;
+}

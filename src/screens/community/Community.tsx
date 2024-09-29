@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import Layout from '../layout/Layout';
 import {
@@ -9,39 +10,48 @@ import {
 } from './styles';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import {FlatList} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import CommunityListItem from '../../components/list/community/CommunityListItem';
 import {useCommunity} from './hooks';
 
 export default function Community() {
-  const {allCommunityData} = useCommunity();
+  const {allCommunityData, isAllCommunitySuccess, handleGoWrite} =
+    useCommunity();
 
   return (
-    <Layout paddingBottom={130}>
+    <Layout>
       <CommunityContainer>
         <CommunityTop>
           <CommunityTitle weight="bold">커뮤니티</CommunityTitle>
           <CommunityNav>
-            <DesignIcon type="search" size="xl" color={colors.TextNeutral} />
-            <DesignIcon type="pencil" size="xl" color={colors.TextNeutral} />
+            <TouchableOpacity>
+              <DesignIcon type="search" size="xl" color={colors.TextNeutral} />
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} onPress={handleGoWrite}>
+              <DesignIcon type="pencil" size="xl" color={colors.TextNeutral} />
+            </TouchableOpacity>
           </CommunityNav>
         </CommunityTop>
-        <FlatList
-          data={allCommunityData}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => (
-            <CommunityListItem
-              id={item.id}
-              title={item.title}
-              content={item.content}
-              name={item.name}
-              like={item.like}
-              imageUrl={item.imageUrl}
-              userId={item.userId}
-            />
-          )}
-          ItemSeparatorComponent={CommunityContent}
-        />
+        {isAllCommunitySuccess && (
+          <FlatList
+            data={allCommunityData}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({item}) => (
+              <CommunityListItem
+                id={item.id}
+                title={item.title}
+                content={item.content}
+                name={item.name}
+                like={item.like}
+                imageUrl={item.imageUrl}
+                userId={item.userId}
+              />
+            )}
+            ItemSeparatorComponent={CommunityContent}
+            contentContainerStyle={{paddingBottom: 137}}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </CommunityContainer>
     </Layout>
   );
