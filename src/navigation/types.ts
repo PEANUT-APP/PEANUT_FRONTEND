@@ -30,6 +30,7 @@ export interface ParamList extends ParamListBase {
   MyComment: {title: string};
   Community: undefined;
   Write: undefined;
+  Detail: {id: number};
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

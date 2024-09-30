@@ -1,11 +1,12 @@
-import {useState} from 'react';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ParamList} from '../../../navigation/types';
 
-export function useCommunityListItem() {
-  const [showWriter, setShowWriter] = useState(false);
+export function useCommunityListItem(id: number) {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const handleClickKebab = () => {
-    setShowWriter(prev => !prev);
+  const handleClickItem = () => {
+    navigation.navigate('Detail', {id});
   };
 
-  return {showWriter, handleClickKebab};
+  return {handleClickItem};
 }

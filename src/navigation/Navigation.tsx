@@ -26,6 +26,7 @@ import MyAccount from '../screens/my/MyAccount';
 import MyCommunity from '../screens/my/MyCommunity';
 import Community from '../screens/community/Community';
 import Write from '../screens/community/Write';
+import Detail from '../screens/community/Detail';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +69,7 @@ export default function Navigation() {
       <Stack.Screen name="MyComment" component={MyCommunity} />
       <Stack.Screen name="Community" component={Community} />
       <Stack.Screen name="Write" component={Write} />
+      <Stack.Screen name="Detail" component={Detail} />
     </Stack.Navigator>
   );
 }

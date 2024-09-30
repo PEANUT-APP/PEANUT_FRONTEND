@@ -5,12 +5,12 @@ import {
   WriterText,
   MeWriterBox,
 } from './styles';
-import DesignIcon from '../../icon/DesignIcon';
-import {colors} from '../../../styles/colors';
+import DesignIcon from '../icon/DesignIcon';
+import {colors} from '../../styles/colors';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../store/store';
+import {RootState} from '../../store/store';
 import {WriterType} from './types';
-import DeleteIcon from '../../icon/DeleteIcon';
+import DeleteIcon from '../icon/DeleteIcon';
 
 export default function Writer({userId}: WriterType) {
   const localUserId = useSelector((state: RootState) => state.user.userId);

@@ -94,3 +94,24 @@ export const WriterPlaceholder = styled(Body2)`
   top: 198px;
   left: 24px;
 `;
+
+export const DetailContainer = styled.View`
+  flex: 1;
+  justify-content: flex-end;
+`;
+
+export const DetailBox = styled.View`
+  flex: 1;
+  align-items: center;
+  padding: 72px 20px 0;
+  background-color: ${colors.background};
+  gap: 20px;
+`;
+
+export const DetailBack = styled.TouchableOpacity`
+  width: 350px;
+`;
+
+export const DetailComments = styled.View`
+  gap: 8px;
+`;

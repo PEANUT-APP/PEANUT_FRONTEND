@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {useCallback} from 'react';
+import {useCallback, useState} from 'react';
 
 export function useBackHandler() {
   const navigation = useNavigation();
@@ -9,4 +9,34 @@ export function useBackHandler() {
   }, [navigation]);
 
   return {handleBack};
+}
+
+export function useKebab() {
+  const [showWriter, setShowWriter] = useState(false);
+
+  const handleClickKebab = () => {
+    setShowWriter(prev => !prev);
+  };
+
+  return {showWriter, handleClickKebab};
+}
+
+export function formatDateTime(dateString: string | null) {
+  if (!dateString) {
+    return '';
+  }
+
+  const date = new Date(dateString);
+
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+
+  const period = hours >= 12 ? '오후' : '오전';
+  hours = hours % 12 || 12;
+
+  return `${year}.${month}.${day} ${period} ${hours}:${minutes}`;
 }
