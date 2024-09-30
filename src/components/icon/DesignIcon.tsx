@@ -17,13 +17,15 @@ const getPathProps = (
   type: string,
   color: string,
   strokeWidth: number | string,
+  size: 'xl' | 'l' | 'm' | 's',
 ) => {
   if (
     type === 'kakao' ||
     type === 'comment' ||
     type === 'pencil' ||
     type === 'search' ||
-    type === 'declare'
+    type === 'declare' ||
+    type === 'likeFill'
   ) {
     return {
       fill: color,
@@ -31,9 +33,9 @@ const getPathProps = (
   }
 
   let dropColor;
-  if (type === 'dropClose') {
+  if (type === 'dropClose' && size === 'l') {
     dropColor = colors.LineDisabled;
-  } else if (type === 'dropOpen') {
+  } else if (type === 'dropOpen' && size === 'l') {
     dropColor = colors.primaryNormal;
   } else {
     dropColor = color;
@@ -53,7 +55,7 @@ export default function DesignIcon({
 }: DesignIconType) {
   const {strokeWidth, viewBox, d} = designIconSize[type][size];
   const {r, cx, cy} = designIconSize.kebab[size];
-  const pathProps = getPathProps(type, color, strokeWidth);
+  const pathProps = getPathProps(type, color, strokeWidth, size);
 
   return (
     <IconBox size={size}>

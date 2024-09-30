@@ -36,6 +36,7 @@ export interface DesignIconType {
     | 'dropOpen'
     | 'kebab'
     | 'like'
+    | 'likeFill'
     | 'comment'
     | 'pencil'
     | 'search'

@@ -1,5 +1,11 @@
 import apiSlice from '../apiSlice';
-import {CommunityCreateFormType, CommunityListReturnType} from './types';
+import {
+  CommentFormType,
+  CommunityCreateFormType,
+  CommunityDetailReturnType,
+  CommunityLikeFormType,
+  CommunityListReturnType,
+} from './types';
 
 export const communityApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -18,10 +24,44 @@ export const communityApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Community'],
     }),
+    detailsCommunity: builder.query<CommunityDetailReturnType, {id: number}>({
+      query: ({id}) => ({
+        url: `/community/detail?id=${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['Community'],
+    }),
+    like: builder.mutation({
+      query: (data: CommunityLikeFormType) => ({
+        url: '/community/like',
+        method: 'POST',
+        params: {
+          communityId: data.communityId,
+          liked: data.liked,
+        },
+      }),
+      invalidatesTags: ['Community'],
+    }),
+    createComment: builder.mutation({
+      query: (data: CommentFormType) => ({
+        url: '/community/comment',
+        method: 'POST',
+        params: {
+          comment: data.comment,
+          id: data.id,
+        },
+      }),
+      invalidatesTags: ['Community'],
+    }),
   }),
 });
 
-export const {useGetAllCommunityQuery, useCreateCommunityMutation} =
-  communityApi;
+export const {
+  useGetAllCommunityQuery,
+  useCreateCommunityMutation,
+  useDetailsCommunityQuery,
+  useLikeMutation,
+  useCreateCommentMutation,
+} = communityApi;
 
 export default communityApi;

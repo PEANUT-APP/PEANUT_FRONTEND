@@ -19,10 +19,12 @@ import DesignIcon from '../../icon/DesignIcon';
 import {colors} from '../../../styles/colors';
 import {TouchableOpacity, View} from 'react-native';
 import {CommunityListReturnType} from '../../../services/community/types';
-import Writer from './Writer';
+import Writer from '../../edit/Writer';
 import {useCommunityListItem} from './hooks';
+import {useKebab} from '../../../modules/commonHooks';
 
 export default function CommunityListItem({
+  id,
   userId,
   title,
   content,
@@ -30,10 +32,11 @@ export default function CommunityListItem({
   like,
   imageUrl,
 }: CommunityListReturnType) {
-  const {showWriter, handleClickKebab} = useCommunityListItem();
+  const {showWriter, handleClickKebab} = useKebab();
+  const {handleClickItem} = useCommunityListItem(id);
 
   return (
-    <CommunityListItemContainer>
+    <CommunityListItemContainer activeOpacity={1} onPress={handleClickItem}>
       <View>
         <CommunityListItemTitleBox>
           <CommunityListItemTitle
