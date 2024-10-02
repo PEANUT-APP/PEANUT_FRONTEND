@@ -35,11 +35,20 @@ export function useCommunity() {
     return communityRefetch;
   }, [navigation, refetch]);
 
+  const handleGoSearch = () => {
+    navigation.navigate('CommunitySearch');
+  };
+
   const handleGoWrite = () => {
     navigation.navigate('Write');
   };
 
-  return {allCommunityData, isAllCommunitySuccess, handleGoWrite};
+  return {
+    allCommunityData,
+    isAllCommunitySuccess,
+    handleGoSearch,
+    handleGoWrite,
+  };
 }
 
 export function useWrite() {

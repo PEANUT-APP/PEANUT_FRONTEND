@@ -12,7 +12,7 @@ export interface ParamList extends ParamListBase {
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
-  Search: {isAIProcessing?: boolean};
+  MealSearch: {isAIProcessing?: boolean};
   MealRecording: {
     photoUri?: string | undefined;
     mealNames?: AddMealType[] | undefined;
@@ -29,6 +29,7 @@ export interface ParamList extends ParamListBase {
   MyGood: {title: string};
   MyComment: {title: string};
   Community: undefined;
+  CommunitySearch: undefined;
   Write: undefined;
   Detail: {id: number};
   Test: undefined;

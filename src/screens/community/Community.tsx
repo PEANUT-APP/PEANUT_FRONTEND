@@ -15,8 +15,12 @@ import CommunityListItem from '../../components/list/community/CommunityListItem
 import {useCommunity} from './hooks';
 
 export default function Community() {
-  const {allCommunityData, isAllCommunitySuccess, handleGoWrite} =
-    useCommunity();
+  const {
+    allCommunityData,
+    isAllCommunitySuccess,
+    handleGoSearch,
+    handleGoWrite,
+  } = useCommunity();
 
   return (
     <Layout>
@@ -24,7 +28,7 @@ export default function Community() {
         <CommunityTop>
           <CommunityTitle weight="bold">커뮤니티</CommunityTitle>
           <CommunityNav>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} onPress={handleGoSearch}>
               <DesignIcon type="search" size="xl" color={colors.TextNeutral} />
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={1} onPress={handleGoWrite}>

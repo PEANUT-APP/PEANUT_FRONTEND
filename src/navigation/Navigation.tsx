@@ -27,6 +27,7 @@ import MyCommunity from '../screens/my/MyCommunity';
 import Community from '../screens/community/Community';
 import Write from '../screens/community/Write';
 import Detail from '../screens/community/Detail';
+import CommunitySearch from '../screens/search/CommunitySearh';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,7 +55,7 @@ export default function Navigation() {
       <Stack.Screen name="Medicine" component={MedicineRecord} />
       <Stack.Screen name="Insulin" component={InsulinRecord} />
       <Stack.Screen name="BloodSugar" component={BloodSugarRecord} />
-      <Stack.Screen name="Search" component={MealSearch} />
+      <Stack.Screen name="MealSearch" component={MealSearch} />
       <Stack.Screen name="MealRecording" component={MealRecording} />
       <Stack.Screen name="MealRecord" component={MealRecord} />
       <Stack.Screen name="MealFeedback" component={MealFeedback} />
@@ -68,6 +69,7 @@ export default function Navigation() {
       <Stack.Screen name="MyGood" component={MyCommunity} />
       <Stack.Screen name="MyComment" component={MyCommunity} />
       <Stack.Screen name="Community" component={Community} />
+      <Stack.Screen name="CommunitySearch" component={CommunitySearch} />
       <Stack.Screen name="Write" component={Write} />
       <Stack.Screen name="Detail" component={Detail} />
     </Stack.Navigator>
