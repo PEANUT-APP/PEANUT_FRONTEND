@@ -27,6 +27,10 @@ export default function ImageCard({source, size}: ImageCardType) {
   return source ? (
     <Image source={{uri: source}} alt="이미지" fadeDuration={300} size={size} />
   ) : (
-    <DefaultImage size={size} activeOpacity={1} onPress={handlePress} />
+    <DefaultImage
+      size={size}
+      activeOpacity={1}
+      onPress={size === 'l' ? handlePress : () => {}}
+    />
   );
 }

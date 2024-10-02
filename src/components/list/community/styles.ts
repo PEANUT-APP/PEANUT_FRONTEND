@@ -8,12 +8,13 @@ export const CommunityListItemText = styled(Caption2)`
   color: ${colors.TextDisabled};
 `;
 
-export const CommunityListItemContainer = styled.View`
+export const CommunityListItemContainer = styled.TouchableOpacity`
+  position: relative;
   width: 350px;
   height: 144px;
   border-radius: 8px;
   background-color: ${colors.white};
-  padding: 23px 20px 20px;
+  padding: 20px;
   justify-content: space-between;
 `;
 
@@ -72,7 +73,7 @@ export const CommunityListItemName = styled(Caption1)`
 
 export const CommunityListItemInfoBox = styled.View`
   flex-direction: row;
-  gap: 4px;
+  gap: 6px;
   align-items: center;
 `;
 
