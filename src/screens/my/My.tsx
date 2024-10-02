@@ -26,7 +26,7 @@ export default function My() {
   const {handleGoEdit, handleGoNotice, handleGoAccount} = useMy();
 
   return (
-    <Layout paddingBottom={0}>
+    <Layout>
       <MyContainer>
         <MyBox>
           <MyTop>

@@ -182,3 +182,13 @@ export function useSearch() {
     handleRecordMeal,
   };
 }
+
+export function useCommunitySearch() {
+  const [searchCommunity, setSearchCommunity] = useState('');
+
+  const handleSearch = () => {
+    console.log(searchCommunity);
+  };
+
+  return {setSearchCommunity, handleSearch};
+}

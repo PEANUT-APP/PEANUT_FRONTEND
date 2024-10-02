@@ -22,7 +22,7 @@ export const RecordingContainer = styled(Container)`
 `;
 
 export const RecordContainer = styled(Container)`
-  gap: 16px;
+  gap: 12px;
 `;
 
 export const FeedbackContainer = styled(Container)`
@@ -34,7 +34,7 @@ export const RecordingBox = styled(Box)`
 `;
 
 export const RecordBox = styled(Box)`
-  gap: 18px;
+  gap: 35px;
 `;
 
 export const FeedbackBox = styled(Box)`

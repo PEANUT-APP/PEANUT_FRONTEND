@@ -54,6 +54,13 @@ export const SearchContent = styled.View`
   gap: 8px;
 `;
 
+export const SearchNoneImage = styled.View`
+  margin-top: 84px;
+  width: 140px;
+  height: 140px;
+  background-color: #d9d9d9;
+`;
+
 export const SearchOverlay = styled.TouchableOpacity`
   position: absolute;
   width: 100%;
