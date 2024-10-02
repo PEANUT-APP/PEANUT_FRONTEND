@@ -123,7 +123,7 @@ export default function useMain() {
   }, []);
 
   const handleGotoSearch = useCallback(() => {
-    navigation.navigate('Search', {isAIProcessing: false});
+    navigation.navigate('MealSearch', {isAIProcessing: false});
   }, [navigation]);
 
   return {

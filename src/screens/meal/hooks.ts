@@ -264,7 +264,7 @@ export function useRecording() {
 
   // 음식 추가하기 버튼
   const handleAddMeal = useCallback(() => {
-    searchNavigation.push('Search', {isAIProcessing});
+    searchNavigation.push('MealSearch', {isAIProcessing});
   }, [isAIProcessing, searchNavigation]);
 
   // AI 식사 등록
