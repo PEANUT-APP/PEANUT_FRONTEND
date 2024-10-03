@@ -14,9 +14,12 @@ import PlusButton from '../button/PlusButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {LineChart} from 'react-native-gifted-charts';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 
 export default function Graph({graphData, size}: GraphType) {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const userState = useSelector((state: RootState) => state.user.userState);
 
   const onAddBloodSugar = () => {
     navigation.navigate('BloodSugar');
@@ -30,7 +33,9 @@ export default function Graph({graphData, size}: GraphType) {
             <GraphTitle color={colors.TextNormal} weight="bold">
               혈당 그래프
             </GraphTitle>
-            <PlusButton onPress={onAddBloodSugar} />
+            {userState === 'Patient' && (
+              <PlusButton onPress={onAddBloodSugar} />
+            )}
           </>
         )}
       </GraphTop>

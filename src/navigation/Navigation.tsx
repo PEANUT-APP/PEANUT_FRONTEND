@@ -29,6 +29,7 @@ import Write from '../screens/community/Write';
 import Detail from '../screens/community/Detail';
 import CommunitySearch from '../screens/search/CommunitySearh';
 import Medical from '../screens/medical/Medical';
+import Notify from '../screens/home/notify/Notify';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,7 @@ export default function Navigation() {
         component={AdditionalInformation}
       />
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Notify" component={Notify} />
       <Stack.Screen name="My" component={My} />
       <Stack.Screen name="Medicine" component={MedicineRecord} />
       <Stack.Screen name="Insulin" component={InsulinRecord} />
