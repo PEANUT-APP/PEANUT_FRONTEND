@@ -8,7 +8,6 @@ const Typography = styled.Text<TextType>`
       : props.weight === 'light'
       ? 'Pretendard-Light'
       : 'Pretendard-Medium'};
-  line-height: 48px;
   letter-spacing: -0.5px;
   color: ${props => props.color || '#000'};
 `;

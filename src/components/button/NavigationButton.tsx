@@ -5,8 +5,8 @@ import {Body2} from '../text/Text';
 import {Path, Svg} from 'react-native-svg';
 import {colors} from '../../styles/colors';
 
-const NavigationButtonBox = styled.TouchableOpacity`
-  width: 50px;
+const NavigationButtonBox = styled.TouchableOpacity<{type: string}>`
+  width: ${({type}) => (type === 'medical' ? '52px' : '50px')};
   height: 50px;
   justify-content: center;
   align-items: center;
@@ -71,7 +71,8 @@ export default function NavigationButton({
     <NavigationButtonBox
       accessibilityRole="menuitem"
       activeOpacity={1}
-      onPress={onPress}>
+      onPress={onPress}
+      type={type}>
       {renderIcon()}
       <NavigationButtonText color={color}>{children}</NavigationButtonText>
     </NavigationButtonBox>

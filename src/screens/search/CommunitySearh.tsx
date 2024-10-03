@@ -37,6 +37,56 @@ const communityList = [
     imageUrl: '',
     userId: 1,
   },
+  {
+    id: 2,
+    title: '감자튀김은 당뇨에 안 좋나요?',
+    content:
+      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
+    name: '울적한 땅콩',
+    like: 10,
+    imageUrl: '',
+    userId: 1,
+  },
+  {
+    id: 2,
+    title: '감자튀김은 당뇨에 안 좋나요?',
+    content:
+      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
+    name: '울적한 땅콩',
+    like: 10,
+    imageUrl: '',
+    userId: 1,
+  },
+  {
+    id: 2,
+    title: '감자튀김은 당뇨에 안 좋나요?',
+    content:
+      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
+    name: '울적한 땅콩',
+    like: 10,
+    imageUrl: '',
+    userId: 1,
+  },
+  {
+    id: 2,
+    title: '감자튀김은 당뇨에 안 좋나요?',
+    content:
+      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
+    name: '울적한 땅콩',
+    like: 10,
+    imageUrl: '',
+    userId: 1,
+  },
+  {
+    id: 2,
+    title: '감자튀김은 당뇨에 안 좋나요?',
+    content:
+      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
+    name: '울적한 땅콩',
+    like: 10,
+    imageUrl: '',
+    userId: 1,
+  },
 ];
 
 export default function CommunitySearch() {
@@ -59,7 +109,7 @@ export default function CommunitySearch() {
         </SearchTop>
         {communityList.length !== 0 ? (
           <SearchContentScroll
-            contentContainerStyle={{paddingBottom: 78}}
+            contentContainerStyle={{paddingBottom: 16}}
             showsVerticalScrollIndicator={false}>
             <SearchContent>
               {communityList?.map(item => (
