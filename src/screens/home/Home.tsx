@@ -17,10 +17,14 @@ import ReportCard from './reportCard/ReportCard';
 import useMain from './hooks';
 import MealCard from '../../components/card/MealCard';
 import ScrollLayout from '../layout/ScrollLayout';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 
 const profileImage = require('../../assets/images/mainProfile.png');
 
 export default function Home() {
+  const userState = useSelector((state: RootState) => state.user.userState);
+
   const {
     fastingBloodSugarLevel,
     currentBloodSugarLevel,
@@ -34,6 +38,8 @@ export default function Home() {
     isCheckedInsulin,
     toggleMedicine,
     toggleInsulin,
+    handleMyPagePress,
+    handleNotifyPress,
     handleGotoSearch,
   } = useMain();
 
@@ -84,17 +90,23 @@ export default function Home() {
         <HomeTop
           source={require('../../assets/images/gradientBackgroundDark.png')}>
           <HomeIcons>
-            <MyPageIcon />
-            <NoticeIcon />
+            <TouchableOpacity activeOpacity={1} onPress={handleMyPagePress}>
+              <MyPageIcon />
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} onPress={handleNotifyPress}>
+              <NoticeIcon />
+            </TouchableOpacity>
           </HomeIcons>
           {renderUserInfo()}
         </HomeTop>
         <HomeContent>
           <TouchableOpacity onPress={handleGotoSearch} activeOpacity={1}>
-            <Search
-              disabled
-              placeholder="정보가 궁금한 음식명을 입력해보세요"
-            />
+            {userState === 'Patient' && (
+              <Search
+                disabled
+                placeholder="정보가 궁금한 음식명을 입력해보세요"
+              />
+            )}
           </TouchableOpacity>
           <WeeklyCalendar />
           {renderAdditionalInfo()}

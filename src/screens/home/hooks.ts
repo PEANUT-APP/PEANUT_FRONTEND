@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {resetToday} from '../../slices/todaySlice';
-import {setUserId} from '../../slices/userSlice';
+import {setUserId, setUserState} from '../../slices/userSlice';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
@@ -63,6 +63,7 @@ export default function useMain() {
 
   const dispatch = useDispatch();
   const today = useSelector((state: RootState) => state.today.today);
+  const userState = useSelector((state: RootState) => state.user.userState);
 
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
@@ -122,6 +123,18 @@ export default function useMain() {
     }
   }, []);
 
+  const handleMyPagePress = () => {
+    if (userState === 'Patient') {
+      dispatch(setUserState('Protector'));
+    } else {
+      dispatch(setUserState('Patient'));
+    }
+  };
+
+  const handleNotifyPress = useCallback(() => {
+    navigation.navigate('Notify');
+  }, [navigation]);
+
   const handleGotoSearch = useCallback(() => {
     navigation.navigate('MealSearch', {isAIProcessing: false});
   }, [navigation]);
@@ -141,6 +154,8 @@ export default function useMain() {
     isCheckedInsulin,
     toggleMedicine: () => toggleChecked('medicine'),
     toggleInsulin: () => toggleChecked('insulin'),
+    handleMyPagePress,
+    handleNotifyPress,
     handleGotoSearch,
   };
 }

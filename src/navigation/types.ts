@@ -9,6 +9,7 @@ export interface ParamList extends ParamListBase {
   BasicInformation: undefined;
   AdditionalInformation: undefined;
   Home: undefined;
+  Notify: undefined;
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
