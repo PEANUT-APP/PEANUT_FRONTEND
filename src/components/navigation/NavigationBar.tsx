@@ -46,7 +46,7 @@ export default function NavigationBar({role = 'Patient'}: NavigationType) {
             type="medical"
             active={activeTab === 'Medical'}
             onPress={() => handlePress('Medical')}>
-            식단기록
+            진료 노트
           </NavigationButton>
         </NavigationPair>
         <NavigationPair role={role}>

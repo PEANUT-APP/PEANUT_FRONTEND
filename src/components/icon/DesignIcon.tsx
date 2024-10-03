@@ -4,7 +4,6 @@ import {DesignIconType} from './types';
 import {designIconSize} from './designIconSize';
 import {Circle, Path, Svg} from 'react-native-svg';
 import {getDesignIconSize} from '../../modules/getSize';
-import {colors} from '../../styles/colors';
 
 const IconBox = styled.View<DesignIconType>`
   width: ${({size}) => getDesignIconSize(size)};
@@ -17,7 +16,6 @@ const getPathProps = (
   type: string,
   color: string,
   strokeWidth: number | string,
-  size: 'xl' | 'l' | 'm' | 's',
 ) => {
   if (
     type === 'kakao' ||
@@ -33,13 +31,7 @@ const getPathProps = (
   }
 
   let dropColor;
-  if (type === 'dropClose' && size === 'l') {
-    dropColor = colors.LineDisabled;
-  } else if (type === 'dropOpen' && size === 'l') {
-    dropColor = colors.primaryNormal;
-  } else {
-    dropColor = color;
-  }
+  dropColor = color;
   return {
     stroke: dropColor,
     strokeWidth: strokeWidth,
@@ -55,7 +47,7 @@ export default function DesignIcon({
 }: DesignIconType) {
   const {strokeWidth, viewBox, d} = designIconSize[type][size];
   const {r, cx, cy} = designIconSize.kebab[size];
-  const pathProps = getPathProps(type, color, strokeWidth, size);
+  const pathProps = getPathProps(type, color, strokeWidth);
 
   return (
     <IconBox size={size}>

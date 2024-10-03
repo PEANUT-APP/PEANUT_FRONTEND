@@ -12,3 +12,7 @@ export interface WeeklyType {
   today: dayjs.Dayjs | undefined;
   setToday: React.Dispatch<React.SetStateAction<dayjs.Dayjs>> | undefined;
 }
+
+export interface DayItem {
+  day: number | null;
+}
