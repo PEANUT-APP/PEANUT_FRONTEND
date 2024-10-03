@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import ScrollLayout from '../layout/ScrollLayout';
 import {
   MedicalBox,
@@ -15,13 +15,18 @@ import MedicineReport from './report/MedicineReport';
 export default function Medical() {
   const {selectedChip, handleSelectChip} = useMedical();
 
+  const chipItems = useMemo(() => ['혈당', '인슐린', '복약'], []);
+
+  const ReportComponent =
+    selectedChip === '혈당' ? BloodReport : MedicineReport;
+
   return (
     <ScrollLayout paddingBottom={124}>
       <MedicalContainer>
         <MedicalTitle weight="bold">진료 노트</MedicalTitle>
         <MedicalBox>
           <MedicalChipBox>
-            {['혈당', '인슐린', '복약'].map(item => (
+            {chipItems.map(item => (
               <SelectChips
                 key={item}
                 isSelected={selectedChip === item}
@@ -31,7 +36,7 @@ export default function Medical() {
             ))}
           </MedicalChipBox>
           <MonthCalendar />
-          {selectedChip === '혈당' ? <BloodReport /> : <MedicineReport />}
+          <ReportComponent />
         </MedicalBox>
       </MedicalContainer>
     </ScrollLayout>

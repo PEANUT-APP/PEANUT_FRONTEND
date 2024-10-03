@@ -186,9 +186,9 @@ export function useSearch() {
 export function useCommunitySearch() {
   const [searchCommunity, setSearchCommunity] = useState('');
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     console.log(searchCommunity);
-  };
+  }, [searchCommunity]);
 
   return {setSearchCommunity, handleSearch};
 }

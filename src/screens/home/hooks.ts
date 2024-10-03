@@ -78,9 +78,6 @@ export default function useMain() {
     date: dayjs(today).format('YYYY-MM-DD'),
   });
 
-  console.log(userInfo);
-  console.log(additionalInfo);
-
   // userInfo의 userId가 있을 때 Redux에 저장
   useEffect(() => {
     if (userInfo?.userId) {
@@ -88,6 +85,7 @@ export default function useMain() {
     }
   }, [userInfo, dispatch]);
 
+  // 오늘 날짜로 초기화
   useEffect(() => {
     dispatch(resetToday());
   }, [dispatch]);
@@ -103,15 +101,21 @@ export default function useMain() {
     [additionalInfo?.bloodSugarList],
   );
 
-  const medicineName =
-    additionalInfo?.medicineName === '복용 기록 없음'
-      ? '약을 등록해주세요'
-      : additionalInfo?.medicineName;
+  const medicineName = useMemo(
+    () =>
+      additionalInfo?.medicineName === '복용 기록 없음'
+        ? '약을 등록해주세요'
+        : additionalInfo?.medicineName,
+    [additionalInfo?.medicineName],
+  );
 
-  const insulinName =
-    additionalInfo?.insulinName === '투여 기록 없음'
-      ? '인슐린을 등록해주세요'
-      : additionalInfo?.insulinName;
+  const insulinName = useMemo(
+    () =>
+      additionalInfo?.insulinName === '투여 기록 없음'
+        ? '인슐린을 등록해주세요'
+        : additionalInfo?.insulinName,
+    [additionalInfo?.insulinName],
+  );
 
   // 메모이제이션된 토글 함수
   const toggleChecked = useCallback((type: string) => {
@@ -123,13 +127,9 @@ export default function useMain() {
     }
   }, []);
 
-  const handleMyPagePress = () => {
-    if (userState === 'Patient') {
-      dispatch(setUserState('Protector'));
-    } else {
-      dispatch(setUserState('Patient'));
-    }
-  };
+  const handleMyPagePress = useCallback(() => {
+    dispatch(setUserState(userState === 'Patient' ? 'Protector' : 'Patient'));
+  }, [dispatch, userState]);
 
   const handleNotifyPress = useCallback(() => {
     navigation.navigate('Notify');

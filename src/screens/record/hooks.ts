@@ -111,17 +111,17 @@ export function useMedicine() {
   const handleSubmit = handleFormSubmit(handleMedicineSubmit, handleFormError);
 
   // 복약 상태 토글 함수
-  const toggleMedicineState = (name: string) => {
-    setMedicineState(prevStatus => ({
-      ...prevStatus,
-      [name]: !prevStatus[name], // 상태를 토글
+  const toggleMedicineState = useCallback((name: string) => {
+    setMedicineState(prevState => ({
+      ...prevState,
+      [name]: !prevState[name],
     }));
-  };
+  }, []);
 
   // 복약 추가하기
-  const handleGoAdd = () => {
+  const handleGoAdd = useCallback(() => {
     navigation.navigate('Medicine');
-  };
+  }, [navigation]);
 
   return {
     control,
@@ -195,18 +195,18 @@ export function useInsulin() {
 
   const handleSubmit = handleFormSubmit(handleInsulinSubmit, handleFormError);
 
-  // 복약 상태 토글 함수
-  const toggleInsulinState = (name: string) => {
-    setInsulinState(prevStatus => ({
-      ...prevStatus,
-      [name]: !prevStatus[name], // 상태를 토글
+  // 인슐린 상태 토글 함수
+  const toggleInsulinState = useCallback((name: string) => {
+    setInsulinState(prevState => ({
+      ...prevState,
+      [name]: !prevState[name],
     }));
-  };
+  }, []);
 
-  // 복약 추가하기
-  const handleGoAdd = () => {
+  // 인슐린 추가하기
+  const handleGoAdd = useCallback(() => {
     navigation.navigate('Insulin');
-  };
+  }, [navigation]);
 
   return {
     control,
