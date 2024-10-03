@@ -186,7 +186,7 @@ export function useInsulin() {
 
     try {
       await saveInsulinIfo(data).unwrap();
-      navigation.navigate('Home');
+      navigation.navigate('InsulinDocument');
     } catch (error) {
       console.error(error);
       Alert.alert('복약 추가에 실패했습니다.');
