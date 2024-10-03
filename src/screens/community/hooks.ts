@@ -25,8 +25,6 @@ export function useCommunity() {
     refetch,
   } = useGetAllCommunityQuery();
 
-  console.log(allCommunityData);
-
   useEffect(() => {
     const communityRefetch = navigation.addListener('focus', () => {
       refetch();
@@ -60,12 +58,15 @@ export function useWrite() {
   const [createCommunity] = useCreateCommunityMutation();
 
   const handleCreate = async () => {
+    if (!title || !content) {
+      return;
+    }
+
     try {
-      const response = await createCommunity({
+      await createCommunity({
         title: title,
         content: content,
       }).unwrap();
-      console.log(response);
       setTitle('');
       setContent('');
       navigation.push('Community');
@@ -87,6 +88,7 @@ export function useDetail() {
     isSuccess: isDetailSuccess,
     refetch: detailRefetch,
   } = useDetailsCommunityQuery({id: id});
+
   const [like] = useLikeMutation();
   const [createComment] = useCreateCommentMutation();
 
@@ -109,6 +111,10 @@ export function useDetail() {
   };
 
   const handleComment = async () => {
+    if (!comment) {
+      return;
+    }
+
     try {
       await createComment({
         comment,

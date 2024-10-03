@@ -7,7 +7,7 @@ import {
 import {ParamList} from '../../navigation/types';
 import {useForm} from 'react-hook-form';
 import {FormData as InputFormData} from '../../components/input/types';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
   ImagePickerResponse,
   launchImageLibrary,
@@ -20,9 +20,12 @@ import {handleFormError} from '../../modules/formHandler';
 export const useCard = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const onPress = (navigate: string, title: string) => {
-    navigation.navigate(navigate, {title});
-  };
+  const onPress = useCallback(
+    (navigate: string, title: string) => {
+      navigation.navigate(navigate, {title});
+    },
+    [navigation],
+  );
 
   return {onPress};
 };
@@ -30,17 +33,17 @@ export const useCard = () => {
 export const useMy = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const handleGoEdit = () => {
+  const handleGoEdit = useCallback(() => {
     navigation.navigate('MyEdit');
-  };
+  }, [navigation]);
 
-  const handleGoNotice = () => {
+  const handleGoNotice = useCallback(() => {
     navigation.navigate('MyNotice');
-  };
+  }, [navigation]);
 
-  const handleGoAccount = () => {
+  const handleGoAccount = useCallback(() => {
     navigation.navigate('MyAccount');
-  };
+  }, [navigation]);
 
   return {handleGoEdit, handleGoNotice, handleGoAccount};
 };
@@ -67,11 +70,9 @@ export const useMyEdit = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    if (profileImage && (nicknameWatch || heightWatch || weightWatch)) {
-      setIsButtonDisabled(false);
-    } else {
-      setIsButtonDisabled(true);
-    }
+    setIsButtonDisabled(
+      !(profileImage || nicknameWatch || heightWatch || weightWatch),
+    );
   }, [profileImage, nicknameWatch, heightWatch, weightWatch]);
 
   const handleProfilePress = async () => {
@@ -175,17 +176,15 @@ export const useMyAccount = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    if (
-      phoneNumberWatch ||
-      genderWatch ||
-      birthWatch ||
-      nameWatch ||
-      passwordWatch
-    ) {
-      setIsButtonDisabled(false);
-    } else {
-      setIsButtonDisabled(true);
-    }
+    setIsButtonDisabled(
+      !(
+        phoneNumberWatch ||
+        genderWatch ||
+        birthWatch ||
+        nameWatch ||
+        passwordWatch
+      ),
+    );
   }, [birthWatch, genderWatch, nameWatch, passwordWatch, phoneNumberWatch]);
 
   return {
@@ -200,8 +199,7 @@ export const useMyAccount = () => {
 };
 
 export const useMyCommunity = () => {
-  const route = useRoute<RouteProp<{params: {title: string}}, 'params'>>();
-  const {title} = route.params;
+  const {params} = useRoute<RouteProp<{params: {title: string}}, 'params'>>();
 
-  return {title};
+  return {title: params.title};
 };
