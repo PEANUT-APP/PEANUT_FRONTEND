@@ -68,13 +68,13 @@ export default function Home() {
         <Graph graphData={bloodSugarList} />
         <ReportCardBox>
           <ReportCard
-            navigate="Medicine"
+            navigate="MedicineDocument"
             isChecked={isCheckedMedicine}
             onPress={toggleMedicine}
             name={medicineName}
           />
           <ReportCard
-            navigate="Insulin"
+            navigate="InsulinDocument"
             isChecked={isCheckedInsulin}
             onPress={toggleInsulin}
             name={insulinName}

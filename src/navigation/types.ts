@@ -13,6 +13,8 @@ export interface ParamList extends ParamListBase {
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
+  MedicineDocument: undefined;
+  InsulinDocument: undefined;
   MealSearch: {isAIProcessing?: boolean};
   MealRecording: {
     photoUri?: string | undefined;

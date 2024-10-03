@@ -85,6 +85,10 @@ export function useMedicine() {
   const [saveMedicineInfo] = useSaveMedicineInfoMutation();
 
   const [intakeDays, setIntakeDays] = useState<string[]>([]);
+  const [medicineState, setMedicineState] = useState<Record<string, boolean>>({
+    글루파정: true, // true: 복약 중, false: 복약 중단
+    로벨정: true,
+  });
 
   const handleMedicineSubmit = async () => {
     const data = {
@@ -97,7 +101,7 @@ export function useMedicine() {
 
     try {
       await saveMedicineInfo(data).unwrap();
-      navigation.navigate('Home');
+      navigation.navigate('MedicineDocument');
     } catch (error) {
       console.error(error);
       Alert.alert('복약 추가에 실패했습니다.');
@@ -105,6 +109,19 @@ export function useMedicine() {
   };
 
   const handleSubmit = handleFormSubmit(handleMedicineSubmit, handleFormError);
+
+  // 복약 상태 토글 함수
+  const toggleMedicineState = (name: string) => {
+    setMedicineState(prevStatus => ({
+      ...prevStatus,
+      [name]: !prevStatus[name], // 상태를 토글
+    }));
+  };
+
+  // 복약 추가하기
+  const handleGoAdd = () => {
+    navigation.navigate('Medicine');
+  };
 
   return {
     control,
@@ -122,6 +139,9 @@ export function useMedicine() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
+    medicineState,
+    toggleMedicineState,
+    handleGoAdd,
   };
 }
 
@@ -151,6 +171,11 @@ export function useInsulin() {
 
   const [saveInsulinIfo] = useSaveInsulinIfoMutation();
 
+  const [insulinState, setInsulinState] = useState<Record<string, boolean>>({
+    휴물린R주: true, // true: 복약 중, false: 복약 중단
+    휴물린: true,
+  });
+
   const handleInsulinSubmit = async () => {
     const data = {
       alarm: isToggleOn,
@@ -170,6 +195,19 @@ export function useInsulin() {
 
   const handleSubmit = handleFormSubmit(handleInsulinSubmit, handleFormError);
 
+  // 복약 상태 토글 함수
+  const toggleInsulinState = (name: string) => {
+    setInsulinState(prevStatus => ({
+      ...prevStatus,
+      [name]: !prevStatus[name], // 상태를 토글
+    }));
+  };
+
+  // 복약 추가하기
+  const handleGoAdd = () => {
+    navigation.navigate('Insulin');
+  };
+
   return {
     control,
     errors,
@@ -184,6 +222,9 @@ export function useInsulin() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
+    insulinState,
+    toggleInsulinState,
+    handleGoAdd,
   };
 }
 
