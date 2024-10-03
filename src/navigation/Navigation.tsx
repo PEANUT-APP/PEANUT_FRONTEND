@@ -30,6 +30,8 @@ import Detail from '../screens/community/Detail';
 import CommunitySearch from '../screens/search/CommunitySearh';
 import Medical from '../screens/medical/Medical';
 import Notify from '../screens/home/notify/Notify';
+import MedicineDocument from '../screens/record/MedicineDocument';
+import InsulinDocument from '../screens/record/InsulinDocument';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +60,8 @@ export default function Navigation() {
       <Stack.Screen name="Medicine" component={MedicineRecord} />
       <Stack.Screen name="Insulin" component={InsulinRecord} />
       <Stack.Screen name="BloodSugar" component={BloodSugarRecord} />
+      <Stack.Screen name="MedicineDocument" component={MedicineDocument} />
+      <Stack.Screen name="InsulinDocument" component={InsulinDocument} />
       <Stack.Screen name="MealSearch" component={MealSearch} />
       <Stack.Screen name="MealRecording" component={MealRecording} />
       <Stack.Screen name="MealRecord" component={MealRecord} />

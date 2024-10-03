@@ -25,11 +25,11 @@ export default function ReportCard({
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const userState = useSelector((state: RootState) => state.user.userState);
 
-  const recordName = navigate === 'Medicine' ? '복약' : '인슐린';
+  const recordName = navigate === 'MedicineDocument' ? '복약' : '인슐린';
 
   const handlePress = useCallback(() => {
     if (name?.includes('등록해주세요')) {
-      if (navigate === 'Medicine' || navigate === 'Insulin') {
+      if (navigate === 'MedicineDocument' || navigate === 'InsulinDocument') {
         navigation.navigate(navigate);
       }
     } else {
