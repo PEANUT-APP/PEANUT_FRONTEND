@@ -4,6 +4,7 @@ import PrimaryButton from '../../components/button/PrimaryButton';
 import {handleNextStep, useBasicInformation} from './hooks';
 import RenderInput from '../../modules/renderInput';
 import Dropdown from '../../components/dropdown/Dropdown';
+import DateInput from '../../components/input/DateInput';
 
 export default function BasicInformation() {
   const {
@@ -69,15 +70,18 @@ export default function BasicInformation() {
           size="m"
         />
       )}
-      {step >= 2 &&
-        RenderInput({
-          name: 'birth',
-          placeholder: '생년월일',
-          control,
-          errors,
-          touchedFields,
-          trigger,
-        })}
+      {step >= 2 && (
+        <DateInput
+          control={control}
+          errors={errors}
+          touchedFields={touchedFields}
+          trigger={trigger}
+          setValue={setValue}
+          setFocus={setFocus}
+          name="birth"
+          placeholder="생일"
+        />
+      )}
       {step >= 1 &&
         RenderInput({
           name: 'name',

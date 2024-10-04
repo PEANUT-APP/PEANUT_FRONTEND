@@ -168,6 +168,7 @@ export const useMyAccount = () => {
     setFocus,
     setValue,
     watch,
+    handleSubmit,
     formState: {errors, touchedFields},
   } = useForm<InputFormData>({
     mode: 'onBlur',
@@ -193,6 +194,10 @@ export const useMyAccount = () => {
     );
   }, [birthWatch, genderWatch, nameWatch, passwordWatch, phoneNumberWatch]);
 
+  const handleUpdate = (data: InputFormData) => {
+    console.log(data);
+  };
+
   return {
     control,
     trigger,
@@ -201,6 +206,8 @@ export const useMyAccount = () => {
     setFocus,
     setValue,
     isButtonDisabled,
+    handleSubmit,
+    handleUpdate,
   };
 };
 

@@ -4,6 +4,7 @@ import {Body1} from '../text/Text';
 import {DropdownFieldType} from './types';
 import {useButtonState} from '../../modules/useButtonState';
 import {colors} from '../../styles/colors';
+import FitIcon from '../icon/FitIcon';
 
 const FieldContainer = styled.TouchableOpacity<{
   isSelected: boolean;
@@ -12,8 +13,10 @@ const FieldContainer = styled.TouchableOpacity<{
   width: ${({size}) => (size === 's' ? '133px' : '328px')};
   padding: 16px;
   border-radius: 4px;
-  background-color: ${props =>
-    props.isSelected ? colors.SolidSecondaryActive : 'transparent'};
+  background-color: ${props => (props.isSelected ? '#F7F7F7' : 'transparent')};
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const FieldText = styled(Body1)`
@@ -37,9 +40,10 @@ export default function DropdownField({
       onPress={onPress}
       size={size}
       activeOpacity={1}>
-      <FieldText color={isSelected ? colors.primaryStrong : colors.TextNormal}>
+      <FieldText color={isSelected ? colors.TextNormal : colors.TextNeutral}>
         {children}
       </FieldText>
+      {isSelected && <FitIcon size="l" />}
     </FieldContainer>
   );
 }
