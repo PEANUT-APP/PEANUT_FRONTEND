@@ -16,6 +16,8 @@ import {useMyAccount} from './hooks';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {PrimaryTextButton} from '../../components/button/TextButton';
 import Dropdown from '../../components/dropdown/Dropdown';
+import DateInput from '../../components/input/DateInput';
+import {handleFormError} from '../../modules/formHandler';
 
 export default function MyAccount() {
   const {handleBack} = useBackHandler();
@@ -27,6 +29,8 @@ export default function MyAccount() {
     setFocus,
     setValue,
     isButtonDisabled,
+    handleSubmit,
+    handleUpdate,
   } = useMyAccount();
 
   return (
@@ -59,14 +63,16 @@ export default function MyAccount() {
             options={['남성', '여성']}
             size="m"
           />
-          {RenderInput({
-            name: 'birth',
-            placeholder: '생년월일',
-            control,
-            errors,
-            touchedFields,
-            trigger,
-          })}
+          <DateInput
+            control={control}
+            errors={errors}
+            touchedFields={touchedFields}
+            trigger={trigger}
+            setValue={setValue}
+            setFocus={setFocus}
+            name="birth"
+            placeholder="생일"
+          />
           {RenderInput({
             name: 'name',
             placeholder: '이름',
@@ -82,12 +88,16 @@ export default function MyAccount() {
             errors,
             touchedFields,
             trigger,
+            secureTextEntry: true,
           })}
           <MyAccountButton>
             <PrimaryTextButton size="m">계정 탈퇴하기</PrimaryTextButton>
           </MyAccountButton>
         </MyEditInputBox>
-        <PrimaryButton size="l" onPress={() => {}} disabled={isButtonDisabled}>
+        <PrimaryButton
+          size="l"
+          onPress={handleSubmit(handleUpdate, handleFormError)}
+          disabled={isButtonDisabled}>
           수정하기
         </PrimaryButton>
       </MyEditForm>
