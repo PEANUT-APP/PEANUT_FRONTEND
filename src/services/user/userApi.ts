@@ -1,5 +1,9 @@
 import apiSlice from '../apiSlice';
-import {GetPatientReturnType, UpdateFormType} from './types';
+import {
+  GetPatientReturnType,
+  MyCommunityReturnType,
+  UpdateFormType,
+} from './types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -32,6 +36,27 @@ export const userApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    getCreateCommunityByUser: builder.query<MyCommunityReturnType[], void>({
+      query: () => ({
+        url: '/user/create/community',
+        method: 'GET',
+      }),
+      providesTags: ['Community'],
+    }),
+    getLikeCommunityByUser: builder.query<MyCommunityReturnType[], void>({
+      query: () => ({
+        url: '/user/like/community',
+        method: 'GET',
+      }),
+      providesTags: ['Community'],
+    }),
+    getCommentAllCommunityByUser: builder.query<MyCommunityReturnType[], void>({
+      query: () => ({
+        url: '/user/comment/community',
+        method: 'GET',
+      }),
+      providesTags: ['Community'],
+    }),
   }),
 });
 
@@ -40,6 +65,12 @@ export const {
   useLazyGetPatientQuery,
   useSendInviteCodeMutation,
   useUpdateUserInfoMutation,
+  useGetCreateCommunityByUserQuery,
+  useLazyGetCreateCommunityByUserQuery,
+  useGetLikeCommunityByUserQuery,
+  useLazyGetLikeCommunityByUserQuery,
+  useGetCommentAllCommunityByUserQuery,
+  useLazyGetCommentAllCommunityByUserQuery,
 } = userApi;
 
 export default userApi;

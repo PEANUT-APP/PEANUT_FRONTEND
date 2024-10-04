@@ -16,3 +16,12 @@ export interface UpdateFormType {
   height: string;
   weight: string;
 }
+
+export interface MyCommunityReturnType {
+  comment: number;
+  content: string;
+  create_At: string;
+  like: number;
+  title: string;
+  userName: string;
+}
