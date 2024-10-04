@@ -14,8 +14,14 @@ import {
 } from 'react-native-image-picker';
 import {CameraButtonType} from './types';
 import {Alert} from 'react-native';
-import {useUpdateUserInfoMutation} from '../../services/user/userApi';
+import {
+  useLazyGetCommentAllCommunityByUserQuery,
+  useLazyGetCreateCommunityByUserQuery,
+  useLazyGetLikeCommunityByUserQuery,
+  useUpdateUserInfoMutation,
+} from '../../services/user/userApi';
 import {handleFormError} from '../../modules/formHandler';
+import {MyCommunityReturnType} from '../../services/user/types';
 
 export const useCard = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -201,5 +207,37 @@ export const useMyAccount = () => {
 export const useMyCommunity = () => {
   const {params} = useRoute<RouteProp<{params: {title: string}}, 'params'>>();
 
-  return {title: params.title};
+  const [fetchCreateCommunity, {data: createCommunity}] =
+    useLazyGetCreateCommunityByUserQuery();
+  const [fetchLikeCommunity, {data: likeCommunity}] =
+    useLazyGetLikeCommunityByUserQuery();
+  const [fetchCommentCommunity, {data: commentCommunity}] =
+    useLazyGetCommentAllCommunityByUserQuery();
+
+  let communityData: MyCommunityReturnType[] = [];
+
+  useEffect(() => {
+    if (params.title === '작성한 글') {
+      fetchCreateCommunity();
+    } else if (params.title === '좋아요한 글') {
+      fetchLikeCommunity();
+    } else if (params.title === '댓글 단 글') {
+      fetchCommentCommunity();
+    }
+  }, [
+    fetchCommentCommunity,
+    fetchCreateCommunity,
+    fetchLikeCommunity,
+    params.title,
+  ]);
+
+  if (params.title === '작성한 글') {
+    communityData = createCommunity || [];
+  } else if (params.title === '좋아요한 글') {
+    communityData = likeCommunity || [];
+  } else if (params.title === '댓글 단 글') {
+    communityData = commentCommunity || [];
+  }
+
+  return {title: params.title, communityData};
 };

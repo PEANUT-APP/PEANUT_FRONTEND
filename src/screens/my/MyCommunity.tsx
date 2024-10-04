@@ -12,30 +12,9 @@ import {useBackHandler} from '../../modules/commonHooks';
 import {useMyCommunity} from './hooks';
 import CommunityListItem from '../../components/list/community/CommunityListItem';
 
-const communityData = [
-  {
-    id: 1,
-    title: '인슐린 주사를 까먹고 안 놨어요',
-    date: '2024.09.04 오후 11:30',
-    content: '아침에 인슐린 주사를 맞았어야 했는데 제가 급하게 학교를 가느라고',
-    name: '울적한 땅콩',
-    likes: 9999,
-    comments: '9,999+',
-  },
-  {
-    id: 2,
-    title: '오늘 날씨가 너무 좋아요',
-    date: '2024.09.05 오전 09:20',
-    content: '날씨가 너무 맑고 상쾌해서 기분이 좋아졌어요.',
-    name: '행복한 감자',
-    likes: 150,
-    comments: '23',
-  },
-];
-
 export default function MyCommunity() {
   const {handleBack} = useBackHandler();
-  const {title} = useMyCommunity();
+  const {title, communityData} = useMyCommunity();
 
   return (
     <MyCommunityContainer>
@@ -47,15 +26,17 @@ export default function MyCommunity() {
       </MyMoreTop>
       <FlatList
         data={communityData}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
           <CommunityListItem
-            id={item.id}
             title={item.title}
             content={item.content}
-            name={item.name}
-            like={item.likes}
+            name={item.userName}
+            like={item.like}
+            comment={item.comment}
+            create_at={item.create_At}
             imageUrl=""
+            id={0}
           />
         )}
         ItemSeparatorComponent={MyCommunityContent}

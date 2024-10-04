@@ -21,7 +21,7 @@ export function useKebab() {
   return {showWriter, handleClickKebab};
 }
 
-export function formatDateTime(dateString: string | null) {
+export function formatDateTime(dateString: string | undefined) {
   if (!dateString) {
     return '';
   }

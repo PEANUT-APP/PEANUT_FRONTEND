@@ -7,6 +7,8 @@ export interface CommunityListReturnType {
   name: string;
   title: string;
   userId?: number;
+  comment: number;
+  create_at: string;
 }
 
 export interface CommunityCreateFormType {
@@ -16,7 +18,7 @@ export interface CommunityCreateFormType {
 
 export interface CommentReturnType {
   content: string;
-  createTime: string | null;
+  createTime: string | undefined;
   id: number;
   imageUrl: string;
   userId: number;
