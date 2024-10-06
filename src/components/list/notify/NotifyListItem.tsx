@@ -7,11 +7,16 @@ export default function NotifyListItem({
   children,
   isToggleOn,
   setIsToggleOn,
+  onToggleChange,
 }: NotifyListItemType) {
   return (
     <NotifyContainer>
       <NotifyText>{children}</NotifyText>
-      <Toggle isToggleOn={isToggleOn} setIsToggleOn={setIsToggleOn} />
+      <Toggle
+        isToggleOn={isToggleOn}
+        setIsToggleOn={setIsToggleOn}
+        onToggleChange={onToggleChange}
+      />
     </NotifyContainer>
   );
 }

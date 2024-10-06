@@ -103,6 +103,9 @@ export const useValidationRules = (
     measurementCondition: {
       required: '값이 필요해요!',
     },
+    bloodSugarTime: {
+      required: '기록 시간이 필요해요!',
+    },
     memo: {},
     foodTime: {},
   };

@@ -15,10 +15,12 @@ import {
 import {CameraButtonType} from './types';
 import {Alert} from 'react-native';
 import {
+  useGetPatientInfoQuery,
   useLazyGetCommentAllCommunityByUserQuery,
   useLazyGetCreateCommunityByUserQuery,
   useLazyGetLikeCommunityByUserQuery,
   useUpdateUserInfoMutation,
+  useUserAlamInfoMutation,
 } from '../../services/user/userApi';
 import {handleFormError} from '../../modules/formHandler';
 import {MyCommunityReturnType} from '../../services/user/types';
@@ -39,6 +41,8 @@ export const useCard = () => {
 export const useMy = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
+  const {data: userData, isSuccess: isUserSuccess} = useGetPatientInfoQuery();
+
   const handleGoEdit = useCallback(() => {
     navigation.navigate('MyEdit');
   }, [navigation]);
@@ -51,7 +55,13 @@ export const useMy = () => {
     navigation.navigate('MyAccount');
   }, [navigation]);
 
-  return {handleGoEdit, handleGoNotice, handleGoAccount};
+  return {
+    handleGoEdit,
+    handleGoNotice,
+    handleGoAccount,
+    userData,
+    isUserSuccess,
+  };
 };
 
 export const useMyEdit = () => {
@@ -147,9 +157,26 @@ export const useMyEdit = () => {
 };
 
 export const useMyNotice = () => {
+  const [userAlamInfo] = useUserAlamInfoMutation();
+
   const [isPatientToggleOn, setIsPatientToggleOn] = useState(false);
   const [isMedicineToggleOn, setIsMedicineToggleOn] = useState(false);
   const [isInsulinToggleOn, setIsInsulinToggleOn] = useState(false);
+
+  const handleEditNotice = async (type: string, newToggleState: boolean) => {
+    try {
+      const response = await userAlamInfo({
+        guardianAlam: type === 'patient' ? newToggleState : isPatientToggleOn,
+        insulinAlam: type === 'insulin' ? newToggleState : isInsulinToggleOn,
+        medicationAlam:
+          type === 'medicine' ? newToggleState : isMedicineToggleOn,
+      }).unwrap();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('알림 업데이트에 실패했습니다!');
+    }
+  };
 
   return {
     isPatientToggleOn,
@@ -158,6 +185,7 @@ export const useMyNotice = () => {
     setIsMedicineToggleOn,
     isInsulinToggleOn,
     setIsInsulinToggleOn,
+    handleEditNotice,
   };
 };
 

@@ -10,7 +10,6 @@ export const GraphContainer = styled.View`
   border-radius: 8px;
   background-color: ${colors.white};
   padding: 20px 0;
-  overflow: hidden;
 `;
 
 export const GraphTop = styled.View`
@@ -28,13 +27,15 @@ export const GraphTitle = styled(Body1)`
 export const GraphContent = styled.View`
   flex-direction: row;
   gap: 6px;
+  overflow: visible;
 `;
 
 export const GraphChart = styled(LineChart)`
   width: 265px;
   height: 125px;
-  top: 5px;
+  top: 6px;
   left: 25px;
+  overflow: visible;
 `;
 
 export const GraphMainToolTip = styled.View`

@@ -23,26 +23,36 @@ import {useMy} from './hooks';
 
 export default function My() {
   const {handleLogout} = useAuth();
-  const {handleGoEdit, handleGoNotice, handleGoAccount} = useMy();
+  const {
+    handleGoEdit,
+    handleGoNotice,
+    handleGoAccount,
+    userData,
+    isUserSuccess,
+  } = useMy();
+
+  console.log(userData);
 
   return (
     <Layout>
       <MyContainer>
         <MyBox>
           <MyTop>
-            <MyUserInfoBox>
-              <MyUserProfile
-                source={require('../../assets/images/mainProfile.png')}
-              />
-              <View>
-                <MyUserInfoName weight="bold">나는 땅콩님</MyUserInfoName>
-                <MyUserInfo>
-                  <MyUserInfoText>160cm</MyUserInfoText>
-                  <MyUserInfoText>·</MyUserInfoText>
-                  <MyUserInfoText>50kg</MyUserInfoText>
-                </MyUserInfo>
-              </View>
-            </MyUserInfoBox>
+            {isUserSuccess && (
+              <MyUserInfoBox>
+                <MyUserProfile
+                  source={require('../../assets/images/mainProfile.png')}
+                />
+                <View>
+                  <MyUserInfoName weight="bold">나는 땅콩님</MyUserInfoName>
+                  <MyUserInfo>
+                    <MyUserInfoText>160cm</MyUserInfoText>
+                    <MyUserInfoText>·</MyUserInfoText>
+                    <MyUserInfoText>50kg</MyUserInfoText>
+                  </MyUserInfo>
+                </View>
+              </MyUserInfoBox>
+            )}
             <OutlineButton size="s" onPress={handleGoEdit}>
               정보 수정하기
             </OutlineButton>

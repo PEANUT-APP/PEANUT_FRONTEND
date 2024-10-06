@@ -1,12 +1,20 @@
 import apiSlice from '../apiSlice';
 import {
+  AlarmFormType,
   GetPatientReturnType,
+  GetUserReturnType,
   MyCommunityReturnType,
   UpdateFormType,
 } from './types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    getPatientInfo: builder.query<GetUserReturnType[], void>({
+      query: () => ({
+        url: '/user/get-patient',
+        method: 'GET',
+      }),
+    }),
     getPatient: builder.query<GetPatientReturnType, {email: string}>({
       query: ({email}) => ({
         url: '/user/connect/get-patient',
@@ -57,10 +65,22 @@ export const userApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Community'],
     }),
+    userAlamInfo: builder.mutation({
+      query: ({guardianAlam, insulinAlam, medicationAlam}: AlarmFormType) => ({
+        url: '/user/alam-info',
+        method: 'PUT',
+        params: {
+          guardianAlam,
+          insulinAlam,
+          medicationAlam,
+        },
+      }),
+    }),
   }),
 });
 
 export const {
+  useGetPatientInfoQuery,
   useGetPatientQuery,
   useLazyGetPatientQuery,
   useSendInviteCodeMutation,
@@ -71,6 +91,7 @@ export const {
   useLazyGetLikeCommunityByUserQuery,
   useGetCommentAllCommunityByUserQuery,
   useLazyGetCommentAllCommunityByUserQuery,
+  useUserAlamInfoMutation,
 } = userApi;
 
 export default userApi;

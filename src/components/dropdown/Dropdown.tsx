@@ -81,6 +81,7 @@ export default function Dropdown({
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
+    setDropColor('LineDisabled');
 
     dispatch(setTime(value));
 

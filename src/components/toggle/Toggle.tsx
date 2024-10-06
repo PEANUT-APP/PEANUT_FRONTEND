@@ -4,7 +4,11 @@ import {ToggleContainer, ToggleWheel} from './styles';
 import {colors} from '../../styles/colors';
 import {ToggleType} from './types';
 
-export default function Toggle({isToggleOn, setIsToggleOn}: ToggleType) {
+export default function Toggle({
+  isToggleOn,
+  setIsToggleOn,
+  onToggleChange,
+}: ToggleType) {
   const animatedValue = useRef(new Animated.Value(isToggleOn ? 1 : 0)).current;
 
   useEffect(() => {
@@ -22,7 +26,12 @@ export default function Toggle({isToggleOn, setIsToggleOn}: ToggleType) {
   });
 
   const handleToggle = () => {
-    setIsToggleOn((prevState: boolean) => !prevState);
+    const newToggleState = !isToggleOn;
+    setIsToggleOn(newToggleState);
+
+    if (onToggleChange) {
+      onToggleChange(newToggleState);
+    }
   };
 
   const color = isToggleOn ? colors.primaryNormal : colors.SolidTertiaryActive;
