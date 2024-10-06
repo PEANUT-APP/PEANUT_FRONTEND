@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Input from './Input'; // 기존 Input 컴포넌트를 가져옴
+import DatePicker from 'react-native-date-picker';
+import Input from './Input';
 import {TouchableOpacity} from 'react-native';
 import {DateInputType} from './types';
 
@@ -14,16 +14,17 @@ export default function DateInput({
   setValue,
   setFocus,
 }: DateInputType) {
+  const [date, setDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | undefined>(
     undefined,
   );
 
   // 날짜 포맷 함수
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+  const formatDate = (selectDate: Date) => {
+    const year = selectDate.getFullYear();
+    const month = (selectDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = selectDate.getDate().toString().padStart(2, '0');
     return `${year}.${month}.${day}`;
   };
 
@@ -33,8 +34,9 @@ export default function DateInput({
   };
 
   // 날짜 선택 시 처리
-  const handleConfirm = async (date: Date) => {
-    const formattedDate = formatDate(date);
+  const handleConfirm = async (selectDate: Date) => {
+    const formattedDate = formatDate(selectDate);
+    setDate(selectDate);
     setSelectedDate(formattedDate);
     setValue(name, formattedDate);
     setDatePickerVisibility(false);
@@ -55,10 +57,12 @@ export default function DateInput({
         trigger={trigger}
         date={true}
       />
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
+      <DatePicker
+        modal
+        open={isDatePickerVisible}
+        date={date}
         mode="date"
-        onConfirm={date => handleConfirm(date)}
+        onConfirm={selectDate => handleConfirm(selectDate)}
         onCancel={() => setDatePickerVisibility(false)}
       />
     </TouchableOpacity>

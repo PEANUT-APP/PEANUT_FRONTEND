@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Body1, Caption1} from '../text/Text';
+import {LineChart} from 'react-native-svg-charts';
 
 export const GraphContainer = styled.View`
   width: 350px;
@@ -29,12 +30,43 @@ export const GraphContent = styled.View`
   gap: 6px;
 `;
 
+export const GraphChart = styled(LineChart)`
+  width: 265px;
+  height: 125px;
+  top: 5px;
+  left: 25px;
+`;
+
+export const GraphMainToolTip = styled.View`
+  width: 90px;
+  height: 52px;
+  border-radius: 4px;
+  background-color: ${colors.primaryNormal};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const GraphMainToolTipValue = styled.View`
+  flex-direction: row;
+  gap: 4px;
+`;
+
+export const GraphMainToolTipValueText = styled(Body1)`
+  line-height: 21.344px;
+  letter-spacing: -0.4px;
+  color: ${colors.white};
+`;
+
+export const GraphMainToolTipTimeText = styled(Caption1)`
+  line-height: 16.008px;
+  letter-spacing: -0.3px;
+  color: ${colors.white};
+`;
+
 export const YAxisLabels = styled.View`
-  gap: 20.5px;
-  margin-top: 8px;
+  gap: 13px;
   position: absolute;
-  right: 26px;
-  top: -9px;
+  right: 27px;
 `;
 
 export const AxisLabel = styled(Caption1)`
@@ -46,7 +78,5 @@ export const AxisLabel = styled(Caption1)`
 export const XAxisLabel = styled.View`
   flex-direction: row;
   gap: 51px;
-  position: absolute;
-  bottom: 18px;
-  left: 40px;
+  left: 35px;
 `;
