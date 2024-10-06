@@ -1,3 +1,13 @@
+export interface GetUserReturnType {
+  birthday: string;
+  gender: string;
+  height: string;
+  id: number;
+  profileUrl: string;
+  userName: string;
+  weight: string;
+}
+
 export interface GetPatientReturnType {
   birthday: string;
   gender: string;
@@ -24,4 +34,10 @@ export interface MyCommunityReturnType {
   like: number;
   title: string;
   userName: string;
+}
+
+export interface AlarmFormType {
+  guardianAlam: boolean;
+  insulinAlam: boolean;
+  medicationAlam: boolean;
 }

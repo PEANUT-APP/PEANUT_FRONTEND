@@ -134,7 +134,7 @@ export default function Graph({graphData, size}: GraphType) {
                   {isSelected ? (
                     <Circle
                       cx={x}
-                      cy={y}
+                      cy={y + 2}
                       r={4}
                       fill={colors.white}
                       stroke={colors.primaryNormal}

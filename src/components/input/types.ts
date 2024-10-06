@@ -27,6 +27,7 @@ export interface FormData {
   bloodSugar: string;
   measurementCondition: string;
   memo: string;
+  bloodSugarTime: string;
   foodTime: string;
 }
 
@@ -78,10 +79,18 @@ export interface InputStyleType {
 }
 
 export interface TimeInputType {
-  placeholder: string;
-  value: string;
+  placeholder?: string;
+  name?: keyof FormData;
+  rules?: object;
+  control?: Control<FormData>;
+  errors?: DeepMap<FieldValues, FieldError>;
+  touchedFields?: DeepMap<Record<string, boolean>, boolean>;
+  trigger?: UseFormTrigger<FormData>;
+  setValue?: UseFormSetValue<FormData>;
+  setFocus?: UseFormSetFocus<FormData>;
+  value?: string;
   editable?: boolean;
-  onChangeText: (text: any) => void;
+  onChangeText?: (text: any) => void;
 }
 
 export interface DateInputType {

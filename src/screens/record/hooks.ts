@@ -248,13 +248,16 @@ export function useBloodSugar() {
 
   const bloodSugar = watch('bloodSugar');
   const measurementCondition = watch('measurementCondition');
+  const bloodSugarTime = watch('bloodSugarTime');
 
   const [input, setInput] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
-    setIsButtonDisabled(!(bloodSugar && measurementCondition && input));
-  }, [bloodSugar, measurementCondition, input]);
+    setIsButtonDisabled(
+      !(bloodSugar && measurementCondition && bloodSugarTime),
+    );
+  }, [bloodSugar, measurementCondition, bloodSugarTime]);
 
   const handleInputChange = useCallback((text: string) => {
     setInput(text);
@@ -264,7 +267,7 @@ export function useBloodSugar() {
     const data = {
       bloodSugarLevel: getValues('bloodSugar'),
       measurementCondition: getValues('measurementCondition'),
-      measurementTime: input,
+      measurementTime: getValues('bloodSugarTime'),
       memo: getValues('memo'),
     };
 
