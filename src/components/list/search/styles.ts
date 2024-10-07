@@ -5,6 +5,7 @@ import {TouchableOpacity} from 'react-native';
 
 export const SearchListItemContainer = styled(TouchableOpacity)<{
   isPressed: boolean;
+  isSelected?: boolean;
 }>`
   flex-direction: row;
   justify-content: space-between;
@@ -15,10 +16,20 @@ export const SearchListItemContainer = styled(TouchableOpacity)<{
   background-color: ${({isPressed}) =>
     isPressed ? colors.SolidSecondaryActive : colors.white};
   padding: 20px;
+  border-width: ${({isSelected}) => (isSelected ? '1px' : 0)};
+  border-color: ${({isSelected}) =>
+    isSelected ? colors.primaryNormal : 'transparent'};
+  elevation: ${({isSelected}) => (isSelected ? 4 : 0)};
 `;
 
 export const SearchListItemContent = styled.View`
   justify-content: space-between;
+`;
+
+export const SearchListItemInfoBox = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
 `;
 
 export const SearchListItemFood = styled(Body1)`

@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {TouchableWithoutFeedback} from 'react-native';
 import {
   CardContainer,
-  CardGrayBox,
+  CardImage,
   CardMedicineName,
   CardSubTitle,
   CardTitle,
@@ -15,6 +15,8 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import CheckButton from '../../../components/button/CheckButton';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
+import MedicineIcon from '../../../assets/images/medicine.svg';
+import InsulinIcon from '../../../assets/images/insulin.svg';
 
 export default function ReportCard({
   navigate,
@@ -63,7 +65,9 @@ export default function ReportCard({
             <CheckButton isChecked={isChecked} onPress={onPress} />
           )}
         </CardTop>
-        <CardGrayBox />
+        <CardImage>
+          {recordName === '복약' ? <MedicineIcon /> : <InsulinIcon />}
+        </CardImage>
         <CardMedicineName>{name}</CardMedicineName>
       </CardContainer>
     </TouchableWithoutFeedback>

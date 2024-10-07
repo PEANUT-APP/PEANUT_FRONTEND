@@ -20,7 +20,7 @@ import ScrollLayout from '../layout/ScrollLayout';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 
-const profileImage = require('../../assets/images/mainProfile.png');
+const profileImage = require('../../assets/images/default_character.png');
 
 export default function Home() {
   const userState = useSelector((state: RootState) => state.user.userState);

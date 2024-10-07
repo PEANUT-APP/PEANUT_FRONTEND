@@ -56,6 +56,7 @@ export default function MealSearch() {
     addedMeals,
     handleAddMeal,
     handleRecordMeal,
+    isFoodSuccess,
   } = useSearch();
 
   return (
@@ -75,17 +76,34 @@ export default function MealSearch() {
         <SearchContentScroll
           contentContainerStyle={{paddingBottom: 78}}
           showsVerticalScrollIndicator={false}>
-          {isFoodByNameSuccess && foodByName?.length !== 0 && (
+          {addedMeals.length > 0 && !isFoodSuccess ? (
             <SearchContent>
-              {foodByName?.map((item, index) => (
+              {addedMeals.map((item, index) => (
                 <SearchListItem
                   key={index}
                   name={item.name}
                   giIndex={item.giIndex}
-                  onPress={() => handleItemPress(item)}
+                  onPress={() => handleItemPress(item)} // 추가된 식단 아이템을 선택할 수 있도록
+                  isSelected
                 />
               ))}
             </SearchContent>
+          ) : (
+            // 검색어가 입력된 경우 foodByName 배열을 렌더링
+            isFoodByNameSuccess &&
+            foodByName?.length !== 0 &&
+            isFoodSuccess && (
+              <SearchContent>
+                {foodByName?.map((item, index) => (
+                  <SearchListItem
+                    key={index}
+                    name={item.name}
+                    giIndex={item.giIndex}
+                    onPress={() => handleItemPress(item)} // 검색 결과의 아이템을 선택할 수 있도록
+                  />
+                ))}
+              </SearchContent>
+            )
           )}
         </SearchContentScroll>
       </SearchBox>
@@ -151,9 +169,9 @@ export default function MealSearch() {
                 </SearchModalTop>
                 <SearchModalFeedback>
                   <SearchModalFeedbackText weight="bold">
-                    {selectedItem.giIndex > 70
+                    {selectedItem.giIndex > 70 || selectedItem.glIndex > 20
                       ? '고'
-                      : selectedItem.giIndex < 55
+                      : selectedItem.giIndex < 55 || selectedItem.glIndex < 11
                       ? '저'
                       : '중'}{' '}
                     혈당지수의 음식이에요.

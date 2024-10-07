@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Alert, Animated, Easing} from 'react-native';
 import {FormData} from '../../components/input/types';
@@ -38,17 +38,31 @@ export function useSearch() {
   const [overlayAnimation] = useState(new Animated.Value(0)); // 배경 애니메이션 상태
   const [servingCount, setServingCount] = useState('1'); // 인분 수 관리
   const [addedMeals, setAddedMeals] = useState<AddMealType[]>([]); // 추가된 식단 배열
+  const [isFoodSuccess, setIsFoodSuccess] = useState(false); // 검색 성공 여부
 
   const [triggerSearch, {data: foodByName, isSuccess: isFoodByNameSuccess}] =
     useLazyGetFoodNutritionByNameQuery();
   const [addCustomFood] = useAddCustomFoodMutation();
   const [getFoodDetailInfo] = useLazyGetFoodDetailInfoQuery();
 
+  // 검색어가 변경될 때 검색 결과 초기화
+  useEffect(() => {
+    if (!searchFood.trim()) {
+      setIsFoodSuccess(false); // 검색 성공 여부 초기화
+    }
+  }, [searchFood]);
+
   const handleSearch = useCallback(() => {
     const name: string[] = [];
     name.push(searchFood);
     if (searchFood.trim()) {
-      triggerSearch({name: name});
+      triggerSearch({name: name}).then(({data}) => {
+        if (data) {
+          setIsFoodSuccess(true);
+        } else {
+          setIsFoodSuccess(false);
+        }
+      });
     } else {
       Alert.alert('검색어를 입력해주세요.');
     }
@@ -56,6 +70,7 @@ export function useSearch() {
 
   const handleItemPress = (item: FoodDetailReturnType) => {
     setSelectedItem(item); // 선택한 아이템을 저장
+    setServingCount((item.servingCount || 1).toString());
     Animated.parallel([
       Animated.timing(modalAnimation, {
         toValue: 1,
@@ -112,6 +127,8 @@ export function useSearch() {
         giIndex: selectedItem.giIndex,
         glIndex: selectedItem.glIndex,
         protein: selectedItem.protein,
+        foodId: selectedItem.foodId,
+        expectedBloodSugar: selectedItem.expectedBloodSugar,
         servingCount: parseInt(servingCount, 10),
       };
       setAddedMeals([...addedMeals, newMeal]); // 새 음식을 추가
@@ -180,6 +197,7 @@ export function useSearch() {
     addedMeals,
     handleAddMeal,
     handleRecordMeal,
+    isFoodSuccess,
   };
 }
 

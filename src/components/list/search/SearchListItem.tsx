@@ -3,14 +3,17 @@ import {
   SearchListItemContainer,
   SearchListItemContent,
   SearchListItemFood,
+  SearchListItemInfoBox,
 } from './styles';
 import {useButtonState} from '../../../modules/useButtonState';
 import {SearchListItemType} from './types';
+import FitIcon from '../../icon/FitIcon';
 
 export default function SearchListItem({
   name,
   giIndex,
   onPress,
+  isSelected,
 }: SearchListItemType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
@@ -20,12 +23,16 @@ export default function SearchListItem({
       activeOpacity={1}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={onPress}>
+      onPress={onPress}
+      isSelected={isSelected}>
       <SearchListItemContent>
         <SearchListItemFood>{name}</SearchListItemFood>
         {/*<SearchListItemBrand>햇반(210g)</SearchListItemBrand>*/}
       </SearchListItemContent>
-      <SearchListItemFood>GI {giIndex}</SearchListItemFood>
+      <SearchListItemInfoBox>
+        <SearchListItemFood>GI {giIndex}</SearchListItemFood>
+        {isSelected && <FitIcon size="l" />}
+      </SearchListItemInfoBox>
     </SearchListItemContainer>
   );
 }
