@@ -16,6 +16,7 @@ import {CameraButtonType} from './types';
 import {Alert} from 'react-native';
 import {
   useGetPatientInfoQuery,
+  useGetUserInfoMyPageQuery,
   useLazyGetCommentAllCommunityByUserQuery,
   useLazyGetCreateCommunityByUserQuery,
   useLazyGetLikeCommunityByUserQuery,
@@ -29,7 +30,7 @@ export const useCard = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const onPress = useCallback(
-    (navigate: string, title: string) => {
+    (navigate: string, title?: string) => {
       navigation.navigate(navigate, {title});
     },
     [navigation],
@@ -41,7 +42,12 @@ export const useCard = () => {
 export const useMy = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const {data: userData, isSuccess: isUserSuccess} = useGetPatientInfoQuery();
+  const {data: userInfo, isSuccess: isUserInfoSuccess} =
+    useGetUserInfoMyPageQuery();
+  const {data: patientInfo, isSuccess: isPatientSuccess} =
+    useGetPatientInfoQuery();
+
+  console.log(userInfo);
 
   const handleGoEdit = useCallback(() => {
     navigation.navigate('MyEdit');
@@ -59,8 +65,10 @@ export const useMy = () => {
     handleGoEdit,
     handleGoNotice,
     handleGoAccount,
-    userData,
-    isUserSuccess,
+    userInfo,
+    isUserInfoSuccess,
+    patientInfo,
+    isPatientSuccess,
   };
 };
 
@@ -69,6 +77,7 @@ export const useMyEdit = () => {
     control,
     trigger,
     handleSubmit,
+    setValue,
     getValues,
     watch,
     formState: {errors, touchedFields},
@@ -80,16 +89,42 @@ export const useMyEdit = () => {
   const heightWatch = watch('height');
   const weightWatch = watch('weight');
 
+  const {data: userInfo, refetch: userInfoRefetch} =
+    useGetUserInfoMyPageQuery();
+
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState<string | undefined>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
+    setProfileImage(userInfo?.profileUrl);
+    setValue('nickname', userInfo?.username || '');
+    setValue('height', userInfo?.height || '');
+    setValue('weight', userInfo?.weight || '');
+  }, [
+    setValue,
+    userInfo?.height,
+    userInfo?.profileUrl,
+    userInfo?.username,
+    userInfo?.weight,
+  ]);
+
+  useEffect(() => {
+    const isProfileChanged = profileImage !== userInfo?.profileUrl;
+    const isNicknameChanged = nicknameWatch !== userInfo?.username;
+    const isHeightChanged = heightWatch !== userInfo?.height;
+    const isWeightChanged = weightWatch !== userInfo?.weight;
+
     setIsButtonDisabled(
-      !(profileImage || nicknameWatch || heightWatch || weightWatch),
+      !(
+        isProfileChanged ||
+        isNicknameChanged ||
+        isHeightChanged ||
+        isWeightChanged
+      ),
     );
-  }, [profileImage, nicknameWatch, heightWatch, weightWatch]);
+  }, [profileImage, nicknameWatch, heightWatch, weightWatch, userInfo]);
 
   const handleProfilePress = async () => {
     const options: CameraButtonType = {
@@ -105,7 +140,6 @@ export const useMyEdit = () => {
       if (result?.assets && result.assets.length > 0) {
         const selectedImageUri = result.assets[0].uri || '';
         setProfileImage(selectedImageUri); // 선택한 이미지 URI를 상태에 저장
-        console.log(profileImage);
       } else if (result?.errorCode) {
         console.log(result.errorMessage);
         Alert.alert('이미지 선택 중 오류가 발생했습니다.');
@@ -139,6 +173,7 @@ export const useMyEdit = () => {
         height,
         weight,
       }).unwrap();
+      userInfoRefetch();
     } catch (error) {
       console.log(error);
     }

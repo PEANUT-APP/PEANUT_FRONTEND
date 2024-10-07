@@ -1,4 +1,11 @@
-export interface GetUserReturnType {
+export interface GetUserInfoReturnType {
+  height: string;
+  id: number;
+  profileUrl: string;
+  username: string;
+  weight: string;
+}
+export interface GetPatientInfoReturnType {
   birthday: string;
   gender: string;
   height: string;
