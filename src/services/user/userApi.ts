@@ -2,14 +2,22 @@ import apiSlice from '../apiSlice';
 import {
   AlarmFormType,
   GetPatientReturnType,
-  GetUserReturnType,
+  GetPatientInfoReturnType,
   MyCommunityReturnType,
   UpdateFormType,
+  GetUserInfoReturnType,
 } from './types';
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getPatientInfo: builder.query<GetUserReturnType[], void>({
+    getUserInfoMyPage: builder.query<GetUserInfoReturnType, void>({
+      query: () => ({
+        url: '/user/get-info',
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
+    getPatientInfo: builder.query<GetPatientInfoReturnType[], void>({
       query: () => ({
         url: '/user/get-patient',
         method: 'GET',
@@ -80,6 +88,7 @@ export const userApi = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetUserInfoMyPageQuery,
   useGetPatientInfoQuery,
   useGetPatientQuery,
   useLazyGetPatientQuery,

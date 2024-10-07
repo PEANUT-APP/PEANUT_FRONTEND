@@ -11,6 +11,7 @@ import {
   MyUserInfoName,
   MyUserInfoText,
   MyUserList,
+  MyUserNoneProfile,
   MyUserProfile,
 } from './styles';
 import {View} from 'react-native';
@@ -27,28 +28,34 @@ export default function My() {
     handleGoEdit,
     handleGoNotice,
     handleGoAccount,
-    userData,
-    isUserSuccess,
+    userInfo,
+    isUserInfoSuccess,
+    patientInfo,
+    isPatientSuccess,
   } = useMy();
 
-  console.log(userData);
+  console.log(userInfo);
 
   return (
     <Layout>
       <MyContainer>
         <MyBox>
           <MyTop>
-            {isUserSuccess && (
+            {isUserInfoSuccess && (
               <MyUserInfoBox>
-                <MyUserProfile
-                  source={require('../../assets/images/mainProfile.png')}
-                />
+                {userInfo?.profileUrl ? (
+                  <MyUserProfile source={{uri: userInfo?.profileUrl}} />
+                ) : (
+                  <MyUserNoneProfile />
+                )}
                 <View>
-                  <MyUserInfoName weight="bold">나는 땅콩님</MyUserInfoName>
+                  <MyUserInfoName weight="bold">
+                    {userInfo?.username}
+                  </MyUserInfoName>
                   <MyUserInfo>
-                    <MyUserInfoText>160cm</MyUserInfoText>
+                    <MyUserInfoText>{userInfo?.height}cm</MyUserInfoText>
                     <MyUserInfoText>·</MyUserInfoText>
-                    <MyUserInfoText>50kg</MyUserInfoText>
+                    <MyUserInfoText>{userInfo?.weight}kg</MyUserInfoText>
                   </MyUserInfo>
                 </View>
               </MyUserInfoBox>
@@ -69,7 +76,9 @@ export default function My() {
                 댓글
               </MyCard>
             </MyUserInfoCommunity>
-            <PatientCard />
+            {isPatientSuccess && patientInfo && (
+              <PatientCard data={patientInfo} />
+            )}
             <MyUserList>
               <MyListItem onPress={() => {}}>보호자 연결하기</MyListItem>
               <MyListItem onPress={handleGoAccount}>계정 관리하기</MyListItem>

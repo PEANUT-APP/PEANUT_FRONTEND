@@ -3,6 +3,7 @@ import {
   MyEditForm,
   MyEditIcon,
   MyEditInputBox,
+  MyEditNoneProfile,
   MyEditProfile,
   MyMoreContainer,
   MyMoreTitle,
@@ -38,7 +39,11 @@ export default function MyEdit() {
         <MyMoreTitle weight="bold">정보 수정하기</MyMoreTitle>
       </MyMoreTop>
       <TouchableOpacity activeOpacity={1} onPress={handleProfilePress}>
-        <MyEditProfile source={{uri: profileImage}} />
+        {profileImage ? (
+          <MyEditProfile source={{uri: profileImage}} />
+        ) : (
+          <MyEditNoneProfile />
+        )}
         <MyEditIcon>
           <DesignIcon type="pencil" size="s" color={colors.TextNeutral} />
         </MyEditIcon>
