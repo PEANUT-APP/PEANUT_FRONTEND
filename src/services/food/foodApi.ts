@@ -33,7 +33,9 @@ export const foodApi = apiSlice.injectEndpoints({
           저녁:
             response.foodCheckList.find(meal => meal.eatTime === '저녁') ||
             null,
-          간식: null,
+          간식:
+            response.foodCheckList.find(meal => meal.eatTime === '간식') ||
+            null,
         };
         return foodByTime;
       },
@@ -92,6 +94,7 @@ export const foodApi = apiSlice.injectEndpoints({
           servingCount: data.servingCount,
         },
       }),
+      invalidatesTags: ['Meal'],
     }),
     addCustomFood: builder.mutation({
       query: (data: FoodCustomFormType) => ({

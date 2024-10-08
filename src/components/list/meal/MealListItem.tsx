@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   MealListItemContainer,
+  MealListItemDescription,
   MealListItemFunc,
   MealListItemGI,
   MealListItemName,
@@ -13,12 +14,14 @@ import {MealListItemType} from './types';
 export default function MealListItem({
   name,
   giIndex,
+  servingCount,
   onDelete,
 }: MealListItemType) {
   return (
     <MealListItemContainer>
       <View>
         <MealListItemName>{name}</MealListItemName>
+        <MealListItemDescription>{servingCount}인분</MealListItemDescription>
       </View>
       <MealListItemFunc>
         <MealListItemGI>GI {giIndex}</MealListItemGI>

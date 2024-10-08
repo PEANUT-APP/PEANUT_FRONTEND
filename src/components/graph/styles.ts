@@ -61,7 +61,30 @@ export const GraphMainToolTipValueText = styled(Body1)`
 export const GraphMainToolTipTimeText = styled(Caption1)`
   line-height: 16.008px;
   letter-spacing: -0.3px;
-  color: ${colors.white};
+`;
+
+export const GraphFeedbackBeforeToolTip = styled.View`
+  height: 30px;
+  padding: 0 8px;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  background-color: ${colors.white};
+  border-width: 1px;
+  border-color: ${colors.primaryNormal};
+  gap: 4px;
+  align-self: flex-start;
+`;
+
+export const GraphFeedbackAfterToolTip = styled.View`
+  height: 30px;
+  padding: 0 12px;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  background-color: ${colors.primaryNormal};
+  gap: 6px;
+  align-self: flex-start;
 `;
 
 export const YAxisLabels = styled.View`
