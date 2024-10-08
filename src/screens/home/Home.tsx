@@ -65,7 +65,7 @@ export default function Home() {
     }
     return (
       <>
-        <Graph graphData={bloodSugarList} />
+        <Graph graphData={bloodSugarList} size="m" />
         <ReportCardBox>
           <ReportCard
             navigate="MedicineDocument"

@@ -14,6 +14,8 @@ import {
   GraphMainToolTipValue,
   GraphMainToolTipValueText,
   GraphMainToolTipTimeText,
+  GraphFeedbackBeforeToolTip,
+  GraphFeedbackAfterToolTip,
 } from './styles';
 import PlusButton from '../button/PlusButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -40,10 +42,10 @@ export default function Graph({graphData, size}: GraphType) {
     setSelectedPoint(index === selectedPoint ? null : index);
   };
 
-  const formatTime = (time: number, minute: number) => {
-    const momentTime = moment({hour: time, minute: minute});
+  const formatTime = (time: number, minute: number | null) => {
+    const momentTime = moment({hour: time, minute: minute || 0});
     return minute !== 0
-      ? momentTime.format('A h시 mm분')
+      ? momentTime.format('A h시 m분')
       : momentTime.format('A h시');
   };
 
@@ -54,6 +56,13 @@ export default function Graph({graphData, size}: GraphType) {
   const padding = 20; // 그래프 여백
   const yMaxValue = 200; // Y축 최대값
   const yStep = 50; // Y축 간격
+
+  // 첫 번째와 두 번째 데이터 포인트 추출 (size가 s일 때 사용)
+  const firstPoint = graphData.find(point => point.value !== null);
+  const secondPoint = graphData.find(
+    (point, index) =>
+      point.value !== null && index > graphData.indexOf(firstPoint!),
+  );
 
   return (
     <GraphContainer>
@@ -122,63 +131,125 @@ export default function Graph({graphData, size}: GraphType) {
               return null; // 선을 그리지 않음
             })}
 
-          {graphData.map((point, index) => {
-            if (point.value !== null) {
-              const x = padding + (index * chartWidth) / (graphData.length - 1); // X축 위치 계산
-              const y = chartHeight - (point.value * chartHeight) / 200; // Y축 위치 계산
+          {size === 'm' ? (
+            <>
+              {graphData.map((point, index) => {
+                if (point.value !== null) {
+                  const x =
+                    padding + (index * chartWidth) / (graphData.length - 1); // X축 위치 계산
+                  const y = chartHeight - (point.value * chartHeight) / 200; // Y축 위치 계산
 
-              const isSelected = index === selectedPoint;
+                  const isSelected = index === selectedPoint;
 
-              return (
-                <G key={index}>
-                  {isSelected ? (
-                    <Circle
-                      cx={x}
-                      cy={y + 2}
-                      r={4}
-                      fill={colors.white}
-                      stroke={colors.primaryNormal}
-                      strokeWidth={2}
-                      onPress={() => handleCircleClick(index)}
-                    />
-                  ) : (
-                    <Circle
-                      cx={x}
-                      cy={y}
-                      r={3}
-                      fill={colors.primaryNormal}
-                      onPress={() => handleCircleClick(index)}
-                    />
-                  )}
-                  {isSelected && (
-                    <GraphMainToolTip
-                      style={[
-                        {
-                          top: y - 61,
-                          left: x - 45,
-                        },
-                      ]}>
-                      <GraphMainToolTipValue>
-                        <GraphMainToolTipValueText weight="bold">
-                          식전
-                        </GraphMainToolTipValueText>
-                        <GraphMainToolTipValueText weight="bold">
-                          {graphData[selectedPoint].value}
-                        </GraphMainToolTipValueText>
-                      </GraphMainToolTipValue>
-                      <GraphMainToolTipTimeText>
-                        {formatTime(
-                          graphData[selectedPoint].time,
-                          graphData[selectedPoint].minute,
-                        )}
-                      </GraphMainToolTipTimeText>
-                    </GraphMainToolTip>
-                  )}
-                </G>
-              );
-            }
-            return null; // null 값인 경우 점을 그리지 않음
-          })}
+                  return (
+                    <G key={index}>
+                      {isSelected ? (
+                        <Circle
+                          cx={x}
+                          cy={y}
+                          r={4}
+                          fill={colors.white}
+                          stroke={colors.primaryNormal}
+                          strokeWidth={2}
+                          onPress={() => handleCircleClick(index)}
+                        />
+                      ) : (
+                        <Circle
+                          cx={x}
+                          cy={y}
+                          r={3}
+                          fill={colors.primaryNormal}
+                          onPress={() => handleCircleClick(index)}
+                        />
+                      )}
+                      {isSelected && (
+                        <GraphMainToolTip
+                          style={[
+                            {
+                              top: y - 61,
+                              left: x - 45,
+                            },
+                          ]}>
+                          <GraphMainToolTipValue>
+                            <GraphMainToolTipValueText weight="bold">
+                              식전
+                            </GraphMainToolTipValueText>
+                            <GraphMainToolTipValueText weight="bold">
+                              {graphData[selectedPoint].value}
+                            </GraphMainToolTipValueText>
+                          </GraphMainToolTipValue>
+                          <GraphMainToolTipTimeText color={colors.white}>
+                            {formatTime(
+                              graphData[selectedPoint].time,
+                              graphData[selectedPoint].minute,
+                            )}
+                          </GraphMainToolTipTimeText>
+                        </GraphMainToolTip>
+                      )}
+                    </G>
+                  );
+                }
+                return null; // null 값인 경우 점을 그리지 않음
+              })}
+            </>
+          ) : (
+            graphData.map((point, index) => {
+              if (point.value !== null) {
+                const x =
+                  padding + (index * chartWidth) / (graphData.length - 1);
+                const y = chartHeight - (point.value * chartHeight) / 200;
+
+                return (
+                  <G key={index}>
+                    {/* 첫 번째 데이터 포인트 아래에 값 표시 */}
+                    {firstPoint && index === graphData.indexOf(firstPoint) && (
+                      <GraphFeedbackBeforeToolTip
+                        style={{
+                          top: y + 10,
+                          left: x - 15,
+                        }}>
+                        <GraphMainToolTipTimeText
+                          weight="bold"
+                          color={colors.primaryNormal}>
+                          식전 혈당
+                        </GraphMainToolTipTimeText>
+                        <GraphMainToolTipTimeText
+                          weight="bold"
+                          color={colors.primaryNormal}>
+                          {firstPoint.value}
+                        </GraphMainToolTipTimeText>
+                      </GraphFeedbackBeforeToolTip>
+                    )}
+
+                    {/* 두 번째 데이터 포인트 위에 값 표시 */}
+                    {secondPoint &&
+                      index === graphData.indexOf(secondPoint) && (
+                        <GraphFeedbackAfterToolTip
+                          style={{
+                            top: y - 65, // 두 번째 점 위
+                            left: x + 5,
+                          }}>
+                          <GraphMainToolTipTimeText
+                            weight="bold"
+                            color={colors.white}>
+                            식후 예상 혈당
+                          </GraphMainToolTipTimeText>
+                          <GraphMainToolTipTimeText
+                            weight="bold"
+                            color={colors.white}>
+                            {secondPoint.value}
+                          </GraphMainToolTipTimeText>
+                        </GraphFeedbackAfterToolTip>
+                      )}
+
+                    {/* 데이터 포인트를 그리지만 클릭 기능 없음 */}
+                    <Circle cx={x} cy={y} r={3} fill={colors.primaryNormal} />
+                  </G>
+                );
+              }
+              return null;
+            })
+          )}
         </GraphChart>
         <YAxisLabels>
           {['200', '150', '100', '50', '0'].map((label, index) => (

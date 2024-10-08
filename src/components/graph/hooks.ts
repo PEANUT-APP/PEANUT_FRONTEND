@@ -1,49 +1,41 @@
 import moment from 'moment';
-import {FilteredData} from '../../screens/home/types';
-import {BloodSugarItem} from '../../services/mainPage/types';
+
+const bloodSugarList = [
+  {'87': '2024-10-08T06:02:00'},
+  {'167': '2024-10-08T10:00:00'},
+];
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
-export function mapBloodSugarToGraph(
-  bloodSugarList: BloodSugarItem[] | undefined,
-) {
-  const filteredData: FilteredData = {}; // 시간별로 최신 데이터를 저장할 객체
+export function mapBloodSugarToGraph() {
+  const graphData: {
+    time: number;
+    minute: number | null;
+    value: number | null;
+  }[] = [];
 
+  // 6시부터 23시까지의 시간대를 모두 미리 null 값으로 초기화
+  for (let hour = 6; hour <= 24; hour++) {
+    graphData.push({
+      time: hour,
+      minute: 0,
+      value: null,
+    });
+  }
+
+  // 혈당 데이터를 변환
   bloodSugarList?.forEach(item => {
     const bloodSugarValue = parseInt(Object.keys(item)[0], 10); // 혈당 값
     const time = moment(Object.values(item)[0], 'YYYY-MM-DDTHH:mm:ss.SSSSSS'); // 시간 파싱
     const hour = time.hour(); // 시간 (0시 ~ 23시)
+    const minute = time.minute();
 
-    // 6시부터 23시까지 데이터만 처리
-    if (hour >= 6 && hour <= 23) {
-      // 같은 시간에 여러 개의 데이터가 있을 경우 최신 데이터를 유지
-      if (
-        !filteredData[hour] ||
-        moment(filteredData[hour].time).isBefore(time)
-      ) {
-        filteredData[hour] = {
-          value: bloodSugarValue,
-          time: time.toISOString(),
-        };
-      }
+    // 만약 6시부터 23시 사이의 값이면 해당하는 시간에 값 할당
+    if (hour >= 6 && hour <= 24) {
+      graphData[hour - 6].value = bloodSugarValue;
+      graphData[hour - 6].minute = minute;
     }
   });
-
-  // 6시부터 23시까지의 시간을 기준으로 데이터 생성, 없는 시간대는 hideDataPoint 처리
-  const graphData = [];
-
-  for (let hour = 6; hour <= 23; hour++) {
-    if (filteredData[hour]) {
-      graphData.push({
-        value: filteredData[hour].value,
-        hideDataPoint: false,
-      });
-    } else {
-      graphData.push({
-        value: null,
-        hideDataPoint: true, // 해당 시간대에 데이터가 없으면 포인트를 숨김
-      });
-    }
-  }
+  console.log(graphData);
 
   return graphData;
 }

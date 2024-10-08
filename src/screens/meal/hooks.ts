@@ -23,10 +23,10 @@ import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {AddMealType} from '../search/types';
-import useMain from '../home/hooks';
 import {mapBloodSugarToGraph} from '../../components/graph/hooks';
 import {setTime} from '../../slices/todaySlice';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {formatDate} from '../../modules/commonHooks';
 
 export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
@@ -165,7 +165,6 @@ export function useRecording() {
     try {
       const response = await getPredictInfo(formData).unwrap();
       setImageSource(response.image_url);
-      console.log(response);
       setIsUpload(true);
       setMealListData([]);
       setIsAIProcessing(true);
@@ -375,8 +374,6 @@ export function useRecord() {
 
   const {foodByDate} = useMeal();
 
-  console.log(foodByDate);
-
   const foodData = {
     아침: {
       meal: foodByDate?.아침?.foodName.join(', ') || '',
@@ -396,6 +393,12 @@ export function useRecord() {
       feedback2: foodByDate?.저녁?.feedBack.split('. ')[1] || '',
       imageUrl: foodByDate?.저녁?.imageUrl || '',
     },
+    간식: {
+      meal: foodByDate?.간식?.foodName.join(', ') || '',
+      feedback1: foodByDate?.간식?.feedBack.split('. ')[0] || '',
+      feedback2: foodByDate?.간식?.feedBack.split('. ')[1] || '',
+      imageUrl: foodByDate?.간식?.imageUrl || '',
+    },
   };
 
   const handleAddMore = () => {
@@ -405,11 +408,13 @@ export function useRecord() {
     });
   };
 
-  return {foodData, handleAddMore};
+  return {foodByDate, foodData, handleAddMore};
 }
 
 export function useFeedback() {
-  const {additionalInfo} = useMain();
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const today = useSelector((state: RootState) => state.today.today);
   const time = useSelector((state: RootState) => state.today.time) as
     | '아침'
     | '점심'
@@ -424,10 +429,19 @@ export function useFeedback() {
     setSelectedChip(chip); // 선택된 Chip 상태 업데이트
   };
 
-  const graphData = useMemo(
-    () => mapBloodSugarToGraph(additionalInfo?.bloodSugarList),
-    [additionalInfo?.bloodSugarList],
-  );
+  const handleComplete = () => {
+    navigation.navigate('MealRecord');
+  };
 
-  return {selectedChip, handleSelectChip, graphData};
+  const formattedToday = formatDate(today);
+
+  const graphData = useMemo(() => mapBloodSugarToGraph(), []);
+
+  return {
+    formattedToday,
+    selectedChip,
+    handleSelectChip,
+    graphData,
+    handleComplete,
+  };
 }

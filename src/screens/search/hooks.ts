@@ -131,7 +131,13 @@ export function useSearch() {
         expectedBloodSugar: selectedItem.expectedBloodSugar,
         servingCount: parseInt(servingCount, 10),
       };
-      setAddedMeals([...addedMeals, newMeal]); // 새 음식을 추가
+
+      // 기존 배열에서 같은 name을 가진 항목이 있는지 확인하고, 있으면 교체, 없으면 추가
+      const updatedMeals = addedMeals.some(meal => meal.name === newMeal.name)
+        ? addedMeals.map(meal => (meal.name === newMeal.name ? newMeal : meal))
+        : [...addedMeals, newMeal];
+      setAddedMeals(updatedMeals);
+
       closeModal();
       setServingCount('1');
       console.log(addedMeals);

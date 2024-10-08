@@ -21,6 +21,8 @@ function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
     value: number | null;
   }[] = [];
 
+  console.log(bloodSugarList);
+
   // 6시부터 23시까지의 시간대를 모두 미리 null 값으로 초기화
   for (let hour = 6; hour <= 24; hour++) {
     graphData.push({
@@ -81,6 +83,11 @@ export default function useMain() {
     additionalRefetch();
   }, [additionalRefetch, dispatch]);
 
+  useEffect(() => {
+    setIsCheckedInsulin(additionalInfo?.insulinAlam || false);
+    setIsCheckedMedicine(additionalInfo?.medicineAlam || false);
+  }, [additionalInfo?.insulinAlam, additionalInfo?.medicineAlam]);
+
   const fastingBloodSugar =
     parseInt(userInfo?.fastingBloodSugarLevel || '0', 10) || 0;
   const currentBloodSugar =
@@ -91,8 +98,6 @@ export default function useMain() {
     () => mapBloodSugarToGraph(additionalInfo?.bloodSugarList),
     [additionalInfo?.bloodSugarList],
   );
-
-  console.log(additionalInfo);
 
   const medicineName = useMemo(
     () =>
@@ -111,14 +116,17 @@ export default function useMain() {
   );
 
   // 메모이제이션된 토글 함수
-  const toggleChecked = useCallback((type: string) => {
-    if (type === 'medicine') {
-      setIsCheckedMedicine(prev => !prev);
-    }
-    if (type === 'insulin') {
-      setIsCheckedInsulin(prev => !prev);
-    }
-  }, []);
+  const toggleChecked = useCallback(
+    (type: string) => {
+      if (type === 'medicine' && !isCheckedMedicine) {
+        setIsCheckedMedicine(true);
+      }
+      if (type === 'insulin' && !isCheckedInsulin) {
+        setIsCheckedInsulin(true);
+      }
+    },
+    [isCheckedInsulin, isCheckedMedicine],
+  );
 
   const handleMyPagePress = useCallback(() => {
     dispatch(setUserState(userState === 'Patient' ? 'Protector' : 'Patient'));
