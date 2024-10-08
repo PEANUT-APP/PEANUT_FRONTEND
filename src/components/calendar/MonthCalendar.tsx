@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useCallback, useMemo, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
 import dayjs from 'dayjs';
 import {
   MonthCalendarBox,
   MonthCalendarContainer,
   MonthCalendarDateText,
+  MonthCalendarDay,
   MonthCalendarDayCircle,
   MonthCalendarDayContainer,
   MonthCalendarDaysContainer,
@@ -19,7 +19,11 @@ import {
 } from './styles';
 import DesignIcon from '../icon/DesignIcon';
 import {colors} from '../../styles/colors';
-import {DayItem} from './types';
+import {DayItem, MonthCalendarType} from './types';
+import {
+  AverageItem,
+  BloodSugarItem,
+} from '../../screens/medical/item/CalendarItem';
 
 // 상수 선언
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -62,7 +66,7 @@ const splitIntoWeeks = (days: DayItem[]) => {
   return weeks;
 };
 
-export default function MonthCalendar() {
+export default function MonthCalendar({type}: MonthCalendarType) {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState(dayjs().date());
 
@@ -83,17 +87,19 @@ export default function MonthCalendar() {
         {weekDays.map((item, idx) => (
           <MonthCalendarDayContainer key={idx}>
             {item.day ? (
-              <TouchableOpacity
+              <MonthCalendarDay
                 activeOpacity={1}
                 onPress={() => handleSelectDate(item.day)}>
                 {item.day === selectedDate && <MonthCalendarDayCircle />}
                 <MonthCalendarDayText selected={item.day === selectedDate}>
                   {item.day}
                 </MonthCalendarDayText>
-                <MonthCalendarIcon
-                  source={{uri: 'https://via.placeholder.com/20'}}
-                />
-              </TouchableOpacity>
+                {type === 'bloodSugar' ? (
+                  <BloodSugarItem name="good" />
+                ) : (
+                  <AverageItem name="great" />
+                )}
+              </MonthCalendarDay>
             ) : (
               <MonthCalendarEmptyDay />
             )}
@@ -101,7 +107,7 @@ export default function MonthCalendar() {
         ))}
       </MonthCalendarWeekRow>
     ),
-    [handleSelectDate, selectedDate],
+    [handleSelectDate, selectedDate, type],
   );
 
   return (

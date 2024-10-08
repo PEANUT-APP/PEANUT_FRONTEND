@@ -4,7 +4,6 @@ import {
   MedicineReportBox,
   MedicineReportButton,
   MedicineReportContent,
-  MedicineReportImage,
   MonthReportContainer,
   ReportTitle,
   ReportValueText,
@@ -13,6 +12,7 @@ import {colors} from '../../../styles/colors';
 import {PrimaryTextButton} from '../../../components/button/TextButton';
 import DesignIcon from '../../../components/icon/DesignIcon';
 import {useMedical} from '../hooks';
+import {AverageImageItem} from '../item/ImageItem';
 
 export default function MedicineReport() {
   const {handleGoAlarm} = useMedical();
@@ -23,7 +23,7 @@ export default function MedicineReport() {
         월 평균 리포트
       </ReportTitle>
       <MedicineReportBox>
-        <MedicineReportImage />
+        <AverageImageItem name="bad" />
         <MedicineReportContent>
           <ReportValueText color={colors.TextNormal}>
             총 투여량의{' '}

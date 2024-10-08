@@ -7,11 +7,11 @@ import {
   BloodReportValueBox,
   BloodReportValue,
   ReportValueText,
-  BloodReportImage,
   BloodFigureContainer,
-  BloodFigureImage,
 } from './styles';
 import {colors} from '../../../styles/colors';
+import {BloodSugarItem} from '../item/CalendarItem';
+import {BloodSugarImageItem} from '../item/ImageItem';
 
 export default function BloodReport() {
   return (
@@ -26,7 +26,7 @@ export default function BloodReport() {
             <ReportValueText color={colors.TextDisabled}>mg/dl</ReportValueText>
           </BloodReportValueBox>
           <BloodReportValueBox>
-            <BloodReportImage />
+            <BloodSugarItem type="report" name="good" />
             <ReportValueText color={colors.TextNormal}>
               정상 수치
             </ReportValueText>
@@ -34,10 +34,10 @@ export default function BloodReport() {
         </BloodReportContentBox>
       </MonthReportContainer>
       <BloodFigureContainer>
-        <BloodFigureImage />
-        <ReportValueText color={colors.white}>
+        <BloodSugarImageItem name="good" />
+        <ReportValueText color={colors.TextNormal}>
           이번 달은{' '}
-          <ReportTitle color={colors.white} weight="bold">
+          <ReportTitle color={colors.primaryNormal} weight="bold">
             정상 수치
           </ReportTitle>
           {'를 잘 유지하고 있어요.\n이대로만 유지해주세요!'}

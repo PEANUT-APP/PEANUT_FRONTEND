@@ -100,7 +100,13 @@ export const MonthCalendarWeekRow = styled.View`
 `;
 
 export const MonthCalendarDayContainer = styled.View`
-  height: 69px;
+  height: 68px;
+  align-items: center;
+`;
+
+export const MonthCalendarDay = styled.TouchableOpacity`
+  width: 20px;
+  gap: 8px;
   align-items: center;
 `;
 
@@ -118,7 +124,7 @@ export const MonthCalendarDayCircle = styled.View`
   background-color: ${colors.primaryNormal};
   position: absolute;
   bottom: 16px;
-  left: -5px;
+  left: -4.7px;
   z-index: 0;
 `;
 
@@ -130,4 +136,9 @@ export const MonthCalendarEmptyDay = styled.View`
 export const MonthCalendarIcon = styled.Image`
   width: 20px;
   height: 20px;
+`;
+
+export const MonthCalendarNoneItem = styled.View`
+  width: 12px;
+  height: 12px;
 `;

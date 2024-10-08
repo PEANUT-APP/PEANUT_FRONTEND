@@ -16,3 +16,7 @@ export interface WeeklyType {
 export interface DayItem {
   day: number | null;
 }
+
+export interface MonthCalendarType {
+  type: 'bloodSugar' | 'average';
+}

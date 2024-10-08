@@ -71,7 +71,7 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
   // 기록 화면으로 이동하는 핸들러
   const handleGoToRecord = useCallback(() => {
     if (size === 'm') {
-      navigation.navigate('MealFeedback');
+      navigation.navigate('MealRecord');
     }
   }, [navigation, size]);
 

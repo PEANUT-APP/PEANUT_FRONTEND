@@ -27,3 +27,8 @@ export const MedicalChipBox = styled.View`
   gap: 4px;
   align-items: center;
 `;
+
+export const MedicalCalendarBox = styled.View`
+  gap: 8px;
+  margin-bottom: 4px;
+`;
