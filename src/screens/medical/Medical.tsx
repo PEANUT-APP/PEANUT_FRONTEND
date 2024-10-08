@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import ScrollLayout from '../layout/ScrollLayout';
 import {
   MedicalBox,
+  MedicalCalendarBox,
   MedicalChipBox,
   MedicalContainer,
   MedicalTitle,
@@ -11,6 +12,7 @@ import {useMedical} from './hooks';
 import MonthCalendar from '../../components/calendar/MonthCalendar';
 import BloodReport from './report/BloodReport';
 import MedicineReport from './report/MedicineReport';
+import Guide from './guide/Guide';
 
 export default function Medical() {
   const {selectedChip, handleSelectChip} = useMedical();
@@ -35,7 +37,12 @@ export default function Medical() {
               </SelectChips>
             ))}
           </MedicalChipBox>
-          <MonthCalendar />
+          <MedicalCalendarBox>
+            <Guide type={selectedChip === '혈당' ? 'bloodSugar' : 'average'} />
+            <MonthCalendar
+              type={selectedChip === '혈당' ? 'bloodSugar' : 'average'}
+            />
+          </MedicalCalendarBox>
           <ReportComponent />
         </MedicalBox>
       </MedicalContainer>

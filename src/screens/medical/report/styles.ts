@@ -57,7 +57,7 @@ export const BloodFigureContainer = styled.View`
   height: 90px;
   padding: 0 20px;
   border-radius: 6px;
-  background-color: ${colors.primaryNormal};
+  background-color: ${colors.white};
   flex-direction: row;
   align-items: center;
   gap: 12px;
