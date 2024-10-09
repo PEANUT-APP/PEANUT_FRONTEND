@@ -30,7 +30,7 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import SearchListItem from '../../components/list/search/SearchListItem';
 import {useBackHandler} from '../../modules/commonHooks';
-import {Animated, View} from 'react-native';
+import {Modal, View} from 'react-native';
 import MealTextListItem from './MealTextListItem';
 
 export default function MealSearch() {
@@ -49,8 +49,6 @@ export default function MealSearch() {
     selectedItem,
     handleItemPress,
     closeModal,
-    modalTranslateY,
-    overlayOpacity,
     servingCount,
     setServingCount,
     addedMeals,
@@ -125,7 +123,11 @@ export default function MealSearch() {
         </PrimaryButton>
       </SearchBottom>
       {selectedItem && (
-        <>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={!!selectedItem}
+          onRequestClose={closeModal}>
           <BlurView
             style={{
               position: 'absolute',
@@ -135,81 +137,64 @@ export default function MealSearch() {
             blurType="light"
             blurAmount={1}
           />
-          <SearchOverlay
-            activeOpacity={1}
-            onPress={closeModal}
-            style={{
-              opacity: overlayOpacity,
-            }}
-          />
-          <Animated.View
-            style={{
-              width: '100%',
-              transform: [{translateY: modalTranslateY}],
-              position: 'absolute',
-              bottom: 0,
-            }}>
-            <SearchModalContainer>
-              <View>
-                <SearchModalTop>
-                  <SearchModalNameBox>
-                    <SearchModalFoodName weight="bold">
-                      {selectedItem.name}
-                    </SearchModalFoodName>
-                  </SearchModalNameBox>
-                  <SearchModalAmountBox>
-                    <SearchModalInput
-                      value={servingCount}
-                      onChangeText={setServingCount}
-                    />
-                    <SearchModalTopText color={colors.TextNeutral}>
-                      인분
-                    </SearchModalTopText>
-                  </SearchModalAmountBox>
-                </SearchModalTop>
-                <SearchModalFeedback>
-                  <SearchModalFeedbackText weight="bold">
-                    {selectedItem.giIndex > 70 || selectedItem.glIndex > 20
-                      ? '고'
-                      : selectedItem.giIndex < 55 || selectedItem.glIndex < 11
-                      ? '저'
-                      : '중'}{' '}
-                    혈당지수의 음식이에요.
-                  </SearchModalFeedbackText>
-                </SearchModalFeedback>
-                <SearchModalList>
-                  <MealTextListItem
-                    name="혈당 지수(GI)"
-                    value={selectedItem.giIndex}
+          <SearchOverlay activeOpacity={1} onPress={closeModal} />
+          <SearchModalContainer>
+            <View>
+              <SearchModalTop>
+                <SearchModalNameBox>
+                  <SearchModalFoodName weight="bold">
+                    {selectedItem.name}
+                  </SearchModalFoodName>
+                </SearchModalNameBox>
+                <SearchModalAmountBox>
+                  <SearchModalInput
+                    value={servingCount}
+                    onChangeText={setServingCount}
                   />
-                  <MealTextListItem
-                    name="당 부하지수(GL)"
-                    value={selectedItem.glIndex}
-                  />
-                  <MealTextListItem
-                    name="탄수화물"
-                    value={`${selectedItem.carbohydrate}g`}
-                  />
-                  <MealTextListItem
-                    name="단백질"
-                    value={`${selectedItem.protein}g`}
-                  />
-                  <MealTextListItem
-                    name="지방"
-                    value={`${selectedItem.fat}g`}
-                  />
-                  <MealTextListItem
-                    name="콜레스테롤"
-                    value={`${selectedItem.cholesterol}mg`}
-                  />
-                </SearchModalList>
-                <PrimaryButton size="l" onPress={handleAddMeal}>
-                  오늘 식단에 추가하기
-                </PrimaryButton>
-              </View>
-            </SearchModalContainer>
-          </Animated.View>
-        </>
+                  <SearchModalTopText color={colors.TextNeutral}>
+                    인분
+                  </SearchModalTopText>
+                </SearchModalAmountBox>
+              </SearchModalTop>
+              <SearchModalFeedback>
+                <SearchModalFeedbackText weight="bold">
+                  {selectedItem.giIndex > 70 || selectedItem.glIndex > 20
+                    ? '고'
+                    : selectedItem.giIndex < 55 || selectedItem.glIndex < 11
+                    ? '저'
+                    : '중'}{' '}
+                  혈당지수의 음식이에요.
+                </SearchModalFeedbackText>
+              </SearchModalFeedback>
+              <SearchModalList>
+                <MealTextListItem
+                  name="혈당 지수(GI)"
+                  value={selectedItem.giIndex}
+                />
+                <MealTextListItem
+                  name="당 부하지수(GL)"
+                  value={selectedItem.glIndex}
+                />
+                <MealTextListItem
+                  name="탄수화물"
+                  value={`${selectedItem.carbohydrate}g`}
+                />
+                <MealTextListItem
+                  name="단백질"
+                  value={`${selectedItem.protein}g`}
+                />
+                <MealTextListItem name="지방" value={`${selectedItem.fat}g`} />
+                <MealTextListItem
+                  name="콜레스테롤"
+                  value={`${selectedItem.cholesterol}mg`}
+                />
+              </SearchModalList>
+              <PrimaryButton size="l" onPress={handleAddMeal}>
+                오늘 식단에 추가하기
+              </PrimaryButton>
+            </View>
+          </SearchModalContainer>
+        </Modal>
       )}
     </SearchContainer>
   );
