@@ -73,12 +73,14 @@ export default function Detail() {
           {detailData && isDetailSuccess && (
             <CommunityCard
               imageUrl={detailData?.imageUrl}
-              name={detailData?.name}
+              nickName={detailData?.nickName}
               title={detailData?.title}
               content={detailData?.content}
               like={detailData?.like}
               userId={detailData?.userId}
               id={detailData?.id}
+              liked={detailData?.liked}
+              create_At={detailData?.create_At}
             />
           )}
           <CommentInformation

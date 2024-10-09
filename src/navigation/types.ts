@@ -35,6 +35,9 @@ export interface ParamList extends ParamListBase {
   CommunitySearch: undefined;
   Write: undefined;
   Detail: {id: number};
+  Medical: undefined;
+  GuardianConnect: {name: string};
+  GuardianComplete: {name: string};
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;

@@ -108,5 +108,8 @@ export const useValidationRules = (
     },
     memo: {},
     foodTime: {},
+    guardianCode: {
+      required: '인증번호가 필요해요!',
+    },
   };
 };

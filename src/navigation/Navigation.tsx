@@ -32,6 +32,8 @@ import Medical from '../screens/medical/Medical';
 import Notify from '../screens/home/notify/Notify';
 import MedicineDocument from '../screens/record/MedicineDocument';
 import InsulinDocument from '../screens/record/InsulinDocument';
+import GuardianConnect from '../screens/sign/guardian/Connect';
+import GuardianComplete from '../screens/sign/guardian/Complete';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +82,8 @@ export default function Navigation() {
       <Stack.Screen name="Write" component={Write} />
       <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Medical" component={Medical} />
+      <Stack.Screen name="GuardianConnect" component={GuardianConnect} />
+      <Stack.Screen name="GuardianComplete" component={GuardianComplete} />
     </Stack.Navigator>
   );
 }

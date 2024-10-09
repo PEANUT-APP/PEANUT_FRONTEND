@@ -38,6 +38,10 @@ export default function Home() {
     isCheckedInsulin,
     toggleMedicine,
     toggleInsulin,
+    isPushedMedicine,
+    isPushedInsulin,
+    pushMedicine,
+    pushInsulin,
     handleMyPagePress,
     handleNotifyPress,
     handleGotoSearch,
@@ -66,20 +70,37 @@ export default function Home() {
     return (
       <>
         <Graph graphData={bloodSugarList} size="m" />
-        <ReportCardBox>
-          <ReportCard
-            navigate="MedicineDocument"
-            isChecked={isCheckedMedicine}
-            onPress={toggleMedicine}
-            name={medicineName}
-          />
-          <ReportCard
-            navigate="InsulinDocument"
-            isChecked={isCheckedInsulin}
-            onPress={toggleInsulin}
-            name={insulinName}
-          />
-        </ReportCardBox>
+        {userState === 'Patient' ? (
+          <ReportCardBox>
+            <ReportCard
+              navigate="MedicineDocument"
+              isChecked={isCheckedMedicine}
+              onPress={toggleMedicine}
+              name={medicineName}
+            />
+            <ReportCard
+              navigate="InsulinDocument"
+              isChecked={isCheckedInsulin}
+              onPress={toggleInsulin}
+              name={insulinName}
+            />
+          </ReportCardBox>
+        ) : (
+          <ReportCardBox>
+            <ReportCard
+              navigate="MedicineDocument"
+              isPushed={isPushedMedicine}
+              onPush={pushMedicine}
+              name={medicineName}
+            />
+            <ReportCard
+              navigate="InsulinDocument"
+              isPushed={isPushedInsulin}
+              onPush={pushInsulin}
+              name={insulinName}
+            />
+          </ReportCardBox>
+        )}
       </>
     );
   };

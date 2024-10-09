@@ -16,9 +16,9 @@ export interface BloodSugarItem {
 
 export interface AdditionalInfoReturnType {
   bloodSugarList: BloodSugarItem[];
-  insulinAlam: boolean;
+  insulinState: boolean;
   insulinName: string;
-  medicineAlam: boolean;
+  medicineState: boolean;
   medicineName: string;
 }
 

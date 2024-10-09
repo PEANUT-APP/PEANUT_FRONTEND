@@ -35,7 +35,7 @@ export default function CommunityListItem({
   create_at,
 }: CommunityListReturnType) {
   const {showWriter, handleClickKebab} = useKebab();
-  const {handleClickItem} = useCommunityListItem(id || 0);
+  const {handleClickItem} = useCommunityListItem(id);
 
   return (
     <CommunityListItemContainer activeOpacity={1} onPress={handleClickItem}>

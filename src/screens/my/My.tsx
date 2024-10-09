@@ -25,6 +25,7 @@ import {useMy} from './hooks';
 export default function My() {
   const {handleLogout} = useAuth();
   const {
+    handleGoConnectGuardian,
     handleGoEdit,
     handleGoNotice,
     handleGoAccount,
@@ -80,7 +81,9 @@ export default function My() {
               <PatientCard data={patientInfo} />
             )}
             <MyUserList>
-              <MyListItem onPress={() => {}}>보호자 연결하기</MyListItem>
+              <MyListItem onPress={handleGoConnectGuardian}>
+                보호자 연결하기
+              </MyListItem>
               <MyListItem onPress={handleGoAccount}>계정 관리하기</MyListItem>
               <MyListItem onPress={handleGoNotice}>알림 설정</MyListItem>
               <MyListItem onPress={handleLogout}>로그아웃</MyListItem>

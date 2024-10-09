@@ -49,6 +49,12 @@ export const useMy = () => {
 
   console.log(userInfo);
 
+  const handleGoConnectGuardian = useCallback(() => {
+    navigation.navigate('GuardianConnect', {
+      name: userInfo?.username || '사용자',
+    });
+  }, [navigation, userInfo?.username]);
+
   const handleGoEdit = useCallback(() => {
     navigation.navigate('MyEdit');
   }, [navigation]);
@@ -62,6 +68,7 @@ export const useMy = () => {
   }, [navigation]);
 
   return {
+    handleGoConnectGuardian,
     handleGoEdit,
     handleGoNotice,
     handleGoAccount,
@@ -309,5 +316,6 @@ export const useMyCommunity = () => {
     communityData = commentCommunity || [];
   }
 
+  console.log(communityData);
   return {title: params.title, communityData};
 };

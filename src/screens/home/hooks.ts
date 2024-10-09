@@ -59,6 +59,8 @@ export default function useMain() {
 
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
+  const [isPushedMedicine, setIsPushedMedicine] = useState(false);
+  const [isPushedInsulin, setIsPushedInsulin] = useState(false);
 
   const {data: userInfo, isSuccess: isUserInfoSuccess} =
     useGetUserInfoMainPageQuery();
@@ -84,9 +86,14 @@ export default function useMain() {
   }, [additionalRefetch, dispatch]);
 
   useEffect(() => {
-    setIsCheckedInsulin(additionalInfo?.insulinAlam || false);
-    setIsCheckedMedicine(additionalInfo?.medicineAlam || false);
-  }, [additionalInfo?.insulinAlam, additionalInfo?.medicineAlam]);
+    setIsCheckedInsulin(additionalInfo?.insulinState || false);
+    setIsCheckedMedicine(additionalInfo?.medicineState || false);
+  }, [additionalInfo?.insulinState, additionalInfo?.medicineState]);
+
+  useEffect(() => {
+    setIsPushedInsulin(additionalInfo?.insulinState || false);
+    setIsPushedMedicine(additionalInfo?.medicineState || false);
+  }, [additionalInfo?.insulinState, additionalInfo?.medicineState]);
 
   const fastingBloodSugar =
     parseInt(userInfo?.fastingBloodSugarLevel || '0', 10) || 0;
@@ -99,21 +106,29 @@ export default function useMain() {
     [additionalInfo?.bloodSugarList],
   );
 
-  const medicineName = useMemo(
-    () =>
-      additionalInfo?.medicineName === '복용 기록 없음'
+  const medicineName = useMemo(() => {
+    if (userState === 'Patient') {
+      return additionalInfo?.medicineName === '복용 기록 없음'
         ? '약을 등록해주세요'
-        : additionalInfo?.medicineName,
-    [additionalInfo?.medicineName],
-  );
+        : additionalInfo?.medicineName;
+    } else {
+      return additionalInfo?.medicineName === '복용 기록 없음'
+        ? '약의 정보가 없어요'
+        : additionalInfo?.medicineName;
+    }
+  }, [additionalInfo?.medicineName, userState]);
 
-  const insulinName = useMemo(
-    () =>
-      additionalInfo?.insulinName === '투여 기록 없음'
+  const insulinName = useMemo(() => {
+    if (userState === 'Patient') {
+      return additionalInfo?.insulinName === '투여 기록 없음'
         ? '인슐린을 등록해주세요'
-        : additionalInfo?.insulinName,
-    [additionalInfo?.insulinName],
-  );
+        : additionalInfo?.insulinName;
+    } else {
+      return additionalInfo?.insulinName === '투여 기록 없음'
+        ? '인슐린의 정보가 없어요'
+        : additionalInfo?.insulinName;
+    }
+  }, [additionalInfo?.insulinName, userState]);
 
   // 메모이제이션된 토글 함수
   const toggleChecked = useCallback(
@@ -126,6 +141,18 @@ export default function useMain() {
       }
     },
     [isCheckedInsulin, isCheckedMedicine],
+  );
+
+  const handlePush = useCallback(
+    (type: string) => {
+      if (type === 'medicine' && !isPushedMedicine) {
+        setIsPushedMedicine(true);
+      }
+      if (type === 'insulin' && !isPushedInsulin) {
+        setIsPushedInsulin(true);
+      }
+    },
+    [isPushedInsulin, isPushedMedicine],
   );
 
   const handleMyPagePress = useCallback(() => {
@@ -153,8 +180,12 @@ export default function useMain() {
     additionalRefetch,
     isCheckedMedicine,
     isCheckedInsulin,
+    isPushedMedicine,
+    isPushedInsulin,
     toggleMedicine: () => toggleChecked('medicine'),
     toggleInsulin: () => toggleChecked('insulin'),
+    pushMedicine: () => handlePush('medicine'),
+    pushInsulin: () => handlePush('insulin'),
     handleMyPagePress,
     handleNotifyPress,
     handleGotoSearch,

@@ -31,9 +31,11 @@ export interface CommunityDetailCardReturnType {
   id: number;
   imageUrl: string | null;
   like: number;
-  name: string;
+  nickName: string;
   title: string;
   userId: number;
+  liked: boolean;
+  create_At: string;
 }
 
 export interface CommunityDetailReturnType
