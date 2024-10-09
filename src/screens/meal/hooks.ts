@@ -10,8 +10,10 @@ import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
 import {
   useCreateAIMealInfoMutation,
+  useGetFeedbackFoodDetailByEatTimeQuery,
   useGetFoodCheckByDateQuery,
   useGetFoodDetailInfoQuery,
+  useGetFoodFeedBackBloodSugarInfoQuery,
   useGetPredictInfoMutation,
   useLazyGetFoodNutritionByNameQuery,
   useRemoveFoodFromSessionMutation,
@@ -23,7 +25,6 @@ import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {AddMealType} from '../search/types';
-import {mapBloodSugarToGraph} from '../../components/graph/hooks';
 import {setTime} from '../../slices/todaySlice';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {formatDate} from '../../modules/commonHooks';
@@ -421,6 +422,18 @@ export function useFeedback() {
     | '저녁'
     | '간식';
 
+  const {data: feedbackFoodData, isSuccess: isFeedbackFoodByTimeSuccess} =
+    useGetFeedbackFoodDetailByEatTimeQuery({
+      date: dayjs(today).format('YYYY-MM-DD'),
+      eatTime: time,
+    });
+
+  const {data: feedbackBloodSugarData, isSuccess: isFeedbackBloodSugarSuccess} =
+    useGetFoodFeedBackBloodSugarInfoQuery({
+      date: dayjs(today).format('YYYY-MM-DD'),
+      eatTime: time,
+    });
+
   // 선택된 Chip의 상태를 관리
   const [selectedChip, setSelectedChip] = useState<string>(time || '전체');
 
@@ -435,13 +448,34 @@ export function useFeedback() {
 
   const formattedToday = formatDate(today);
 
-  const graphData = useMemo(() => mapBloodSugarToGraph(), []);
+  const formattedFoodName = useMemo(() => {
+    return feedbackFoodData?.foodName?.join(', ') || ''; // 배열이 있으면 쉼표로 연결, 없으면 빈 문자열
+  }, [feedbackFoodData]);
+
+  console.log(feedbackBloodSugarData);
+
+  const graphData = [
+    {
+      value: feedbackBloodSugarData?.beforeBloodSugar || null,
+      time: 6,
+      minute: null,
+    },
+    {
+      value: feedbackBloodSugarData?.afterBloodSugar || null,
+      time: 11,
+      minute: null,
+    },
+  ];
 
   return {
     formattedToday,
     selectedChip,
     handleSelectChip,
+    isFeedbackFoodByTimeSuccess,
+    formattedFoodName,
     graphData,
+    feedbackBloodSugarData,
+    isFeedbackBloodSugarSuccess,
     handleComplete,
   };
 }

@@ -1,5 +1,5 @@
 import apiSlice from '../apiSlice';
-import {MedicineFormType} from './types';
+import {MedicineFormType, MedicineRecordReturnType} from './types';
 
 export const medicineApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -16,9 +16,19 @@ export const medicineApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['AdditionalInfo'],
     }),
+    getMedicineInfoList: builder.query<MedicineRecordReturnType[], void>({
+      query: () => ({
+        url: '/medicine/get/record',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const {useSaveMedicineInfoMutation} = medicineApi;
+export const {
+  useSaveMedicineInfoMutation,
+  useGetMedicineInfoListQuery,
+  useLazyGetMedicineInfoListQuery,
+} = medicineApi;
 
 export default medicineApi;

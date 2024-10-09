@@ -1,8 +1,9 @@
 import React from 'react';
 import Guardian from './Guardian';
 import PrimaryButton from '../../../components/button/PrimaryButton';
-import {CompleteBox, CompleteImage} from '../patient/styles';
+import {CompleteBox} from '../patient/styles';
 import {useComplete} from './hooks';
+import GuardianCompleteIcon from '../../../assets/images/GuardianCompleteIcon.svg';
 
 export default function GuardianComplete() {
   const {handleGoMy, name} = useComplete();
@@ -18,7 +19,7 @@ export default function GuardianComplete() {
       }
       isComplete={true}>
       <CompleteBox>
-        <CompleteImage />
+        <GuardianCompleteIcon />
       </CompleteBox>
     </Guardian>
   );

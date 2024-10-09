@@ -2,7 +2,8 @@ import React from 'react';
 import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import FitIcon from '../../components/icon/FitIcon';
-import {handleFormError, useSignUp} from './hooks';
+import {useSignUp} from './hooks';
+import {handleFormError} from '../../modules/formHandler';
 import RenderInput from '../../modules/renderInput';
 
 export default function SignUp() {

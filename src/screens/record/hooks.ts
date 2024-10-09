@@ -2,10 +2,16 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useForm, UseFormTrigger} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {useCallback, useEffect, useState} from 'react';
-import {useSaveMedicineInfoMutation} from '../../services/medicine/medicineApi';
+import {
+  useLazyGetMedicineInfoListQuery,
+  useSaveMedicineInfoMutation,
+} from '../../services/medicine/medicineApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
-import {useSaveInsulinIfoMutation} from '../../services/insulin/InsulinApi';
+import {
+  useLazyGetInsulinInfoListQuery,
+  useSaveInsulinIfoMutation,
+} from '../../services/insulin/InsulinApi';
 import {handleFormError} from '../../modules/formHandler';
 import {useSaveBloodSugarMutation} from '../../services/bloodSugar/bloodSugarApi';
 
@@ -84,11 +90,30 @@ export function useMedicine() {
 
   const [saveMedicineInfo] = useSaveMedicineInfoMutation();
 
+  const [fetchMedicineData, {data: medicineData}] =
+    useLazyGetMedicineInfoListQuery();
+
   const [intakeDays, setIntakeDays] = useState<string[]>([]);
-  const [medicineState, setMedicineState] = useState<Record<string, boolean>>({
-    글루파정: true, // true: 복약 중, false: 복약 중단
-    로벨정: true,
-  });
+  const [medicineState, setMedicineState] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  useEffect(() => {
+    fetchMedicineData();
+    console.log(medicineData);
+  }, [fetchMedicineData, medicineData]);
+
+  useEffect(() => {
+    if (medicineData) {
+      const initialMedicineState: Record<string, boolean> = {};
+
+      medicineData.map(item => {
+        initialMedicineState[item.medicineName] = true; // true: 복약 중, false: 복약 중단
+      });
+
+      setMedicineState(initialMedicineState);
+    }
+  }, [medicineData]);
 
   const handleMedicineSubmit = async () => {
     const data = {
@@ -123,6 +148,11 @@ export function useMedicine() {
     navigation.navigate('Medicine');
   }, [navigation]);
 
+  const transformedData = medicineData?.map(item => ({
+    ...item,
+    intakeTime: item.intakeTime.join(', '),
+  }));
+
   return {
     control,
     errors,
@@ -142,6 +172,7 @@ export function useMedicine() {
     medicineState,
     toggleMedicineState,
     handleGoAdd,
+    transformedData,
   };
 }
 
@@ -171,10 +202,27 @@ export function useInsulin() {
 
   const [saveInsulinIfo] = useSaveInsulinIfoMutation();
 
-  const [insulinState, setInsulinState] = useState<Record<string, boolean>>({
-    휴물린R주: true, // true: 복약 중, false: 복약 중단
-    휴물린: true,
-  });
+  const [fetchInsulinData, {data: insulinData}] =
+    useLazyGetInsulinInfoListQuery();
+
+  const [insulinState, setInsulinState] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    fetchInsulinData();
+    console.log(insulinData);
+  }, [fetchInsulinData, insulinData]);
+
+  useEffect(() => {
+    if (insulinData) {
+      const initialMedicineState: Record<string, boolean> = {};
+
+      insulinData.map(item => {
+        initialMedicineState[item.productName] = true;
+      });
+
+      setInsulinState(initialMedicineState);
+    }
+  }, [insulinData]);
 
   const handleInsulinSubmit = async () => {
     const data = {
@@ -225,6 +273,7 @@ export function useInsulin() {
     insulinState,
     toggleInsulinState,
     handleGoAdd,
+    insulinData,
   };
 }
 

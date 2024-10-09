@@ -15,6 +15,7 @@ import {
 import {CameraButtonType} from './types';
 import {Alert} from 'react-native';
 import {
+  useGetConnectingInfoQuery,
   useGetPatientInfoQuery,
   useGetUserInfoMyPageQuery,
   useLazyGetCommentAllCommunityByUserQuery,
@@ -46,9 +47,19 @@ export const useMy = () => {
     useGetUserInfoMyPageQuery();
   const {data: patientInfo, isSuccess: isPatientSuccess} =
     useGetPatientInfoQuery();
+  const {data: connectingInfo, isSuccess: isConnectingSuccess} =
+    useGetConnectingInfoQuery();
 
-  console.log(userInfo);
-  console.log(patientInfo);
+  const [isGuardianConnected, setIsGuardianConnected] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (isConnectingSuccess && connectingInfo.length !== 0) {
+      const isApproved = connectingInfo[0].status === '대기중';
+      setIsGuardianConnected(isApproved);
+    }
+    console.log(isGuardianConnected);
+  }, [connectingInfo, isConnectingSuccess, isGuardianConnected]);
 
   const handleGoConnectGuardian = useCallback(() => {
     navigation.navigate('GuardianConnect', {
@@ -77,6 +88,7 @@ export const useMy = () => {
     isUserInfoSuccess,
     patientInfo,
     isPatientSuccess,
+    isGuardianConnected,
   };
 };
 
@@ -119,7 +131,8 @@ export const useMyEdit = () => {
   ]);
 
   useEffect(() => {
-    const isProfileChanged = profileImage !== userInfo?.profileUrl;
+    const isProfileChanged =
+      profileImage !== userInfo?.profileUrl || profileImage !== '';
     const isNicknameChanged = nicknameWatch !== userInfo?.username;
     const isHeightChanged = heightWatch !== userInfo?.height;
     const isWeightChanged = weightWatch !== userInfo?.weight;
@@ -173,14 +186,15 @@ export const useMyEdit = () => {
         type: `image/${fileType}`,
       });
     }
-
+    console.log(nickname, height, weight);
     try {
-      await updateUserInfo({
+      const response = await updateUserInfo({
         formData,
         nickname,
         height,
         weight,
       }).unwrap();
+      console.log('수정 완료', response);
       userInfoRefetch();
     } catch (error) {
       console.log(error);

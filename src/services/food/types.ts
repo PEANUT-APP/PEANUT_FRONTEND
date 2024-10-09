@@ -66,3 +66,9 @@ export interface FeedbackFoodReturnType {
   protein: number;
   totalFat: number;
 }
+
+export interface FeedbackBloodSugarType {
+  afterBloodSugar: number;
+  beforeBloodSugar: number;
+  msg: string;
+}

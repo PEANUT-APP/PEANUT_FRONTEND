@@ -14,22 +14,10 @@ import {useBackHandler} from '../../modules/commonHooks';
 import RecordCard from './card/RecordCard';
 import {useInsulin} from './hooks';
 
-const insulinRecords = [
-  {
-    name: '휴물린R주',
-    amount: '100',
-    time: ['아침 후', '오전 11시 30분'],
-  },
-  {
-    name: '휴물린',
-    amount: '100',
-    time: ['점심 후', '오후 12시 30분'],
-  },
-];
-
 export default function InsulinDocument() {
   const {handleBack} = useBackHandler();
-  const {insulinState, toggleInsulinState, handleGoAdd} = useInsulin();
+  const {insulinState, toggleInsulinState, handleGoAdd, insulinData} =
+    useInsulin();
 
   return (
     <DocumentContainer>
@@ -43,18 +31,18 @@ export default function InsulinDocument() {
           </RecordTitle>
         </RecordTitleBox>
         <FlatList
-          data={insulinRecords}
+          data={insulinData}
           renderItem={({item}) => (
             <RecordCard
-              name={item.name}
-              description={item.amount}
-              time={item.time}
-              isOngoing={insulinState[item.name]}
-              onToggle={() => toggleInsulinState(item.name)}
+              name={item.productName}
+              description={item.dosage}
+              time={item.administrationTime}
+              isOngoing={insulinState[item.productName]}
+              onToggle={() => toggleInsulinState(item.productName)}
               type="insulin"
             />
           )}
-          keyExtractor={item => item.name}
+          keyExtractor={item => item.productName}
           ItemSeparatorComponent={DocumentContent}
         />
       </DocumentBox>

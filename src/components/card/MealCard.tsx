@@ -76,6 +76,7 @@ export default function MealCard({size, time}: MealCardType) {
     isFoodByTimeSuccess,
     isPatientAllFoodInfoSuccess,
     isPatientFoodByTimeSuccess,
+    isFeedbackFoodByTimeSuccess,
     handleTimeChange,
     handleGoToRecord,
     carbohydrate,
@@ -102,7 +103,8 @@ export default function MealCard({size, time}: MealCardType) {
         {(isAllFoodInfoSuccess ||
           isFoodByTimeSuccess ||
           isPatientAllFoodInfoSuccess ||
-          isPatientFoodByTimeSuccess) && (
+          isPatientFoodByTimeSuccess ||
+          isFeedbackFoodByTimeSuccess) && (
           <MealCardContent>
             <MealGraphs
               carbohydrate={carbohydrate}

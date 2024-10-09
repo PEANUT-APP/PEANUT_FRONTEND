@@ -16,78 +16,10 @@ import {colors} from '../../styles/colors';
 import {useCommunitySearch} from './hooks';
 import Search from '../../components/search/Search';
 import CommunityListItem from '../../components/list/community/CommunityListItem';
+import {CommunityListReturnType} from '../../services/community/types';
+import SearchIcon from '../../assets/images/CommunitySearchIcon.svg';
 
-const communityList = [
-  {
-    id: 1,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content: '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 3,
-  },
-  {
-    id: 2,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content:
-      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 1,
-  },
-  {
-    id: 2,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content:
-      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 1,
-  },
-  {
-    id: 2,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content:
-      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 1,
-  },
-  {
-    id: 2,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content:
-      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 1,
-  },
-  {
-    id: 2,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content:
-      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 1,
-  },
-  {
-    id: 2,
-    title: '감자튀김은 당뇨에 안 좋나요?',
-    content:
-      '제가 감자튀김을 너무 좋아해서 꼭 먹고 싶은데 밥대신 먹어도 되나요?',
-    name: '울적한 땅콩',
-    like: 10,
-    imageUrl: '',
-    userId: 1,
-  },
-];
+const communityList: CommunityListReturnType[] = [];
 
 export default function CommunitySearch() {
   const {handleBack} = useBackHandler();
@@ -122,12 +54,16 @@ export default function CommunitySearch() {
                   like={item.like}
                   imageUrl={item.imageUrl}
                   userId={item.userId}
+                  comment={item.comment}
+                  create_at={item.create_at}
                 />
               ))}
             </SearchContent>
           </SearchContentScroll>
         ) : (
-          <SearchNoneImage />
+          <SearchNoneImage>
+            <SearchIcon />
+          </SearchNoneImage>
         )}
       </SearchBox>
     </SearchContainer>

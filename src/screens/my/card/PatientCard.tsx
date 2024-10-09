@@ -4,7 +4,6 @@ import {
   PatientCardBox,
   PatientCardContainer,
   PatientCardContentBox,
-  PatientCardImage,
   PatientCardInfo,
   PatientCardInfoBox,
   PatientCardInfoText,
@@ -18,8 +17,13 @@ import {useCard} from '../hooks';
 import {TouchableOpacity} from 'react-native';
 import {PatientCardType} from './types';
 import {PrimaryTextButton} from '../../../components/button/TextButton';
+import NonePatientIcon from '../../../assets/images/NonePatientIcon.svg';
+import LoadingPatientIcon from '../../../assets/images/LoadingPatientIcon.svg';
 
-export default function PatientCard({data}: PatientCardType) {
+export default function PatientCard({
+  data,
+  isGuardianConnected,
+}: PatientCardType) {
   const {onPress} = useCard();
 
   return (
@@ -29,9 +33,16 @@ export default function PatientCard({data}: PatientCardType) {
         {data && <PrimaryTextButton size="s">연결 끊기</PrimaryTextButton>}
       </PatientCardTop>
       <>
-        {!data ? (
+        {isGuardianConnected ? (
           <PatientCardBox>
-            <PatientCardImage />
+            <LoadingPatientIcon />
+            <CardText color={colors.TextNeutral}>
+              상대방의 요청 수락을 기다리는 중이에요
+            </CardText>
+          </PatientCardBox>
+        ) : !data ? (
+          <PatientCardBox>
+            <NonePatientIcon />
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => onPress('Connect')}>

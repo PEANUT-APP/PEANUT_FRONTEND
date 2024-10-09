@@ -12,6 +12,10 @@ export const MyCardContainer = styled.TouchableOpacity`
   padding: 12px 0 8px;
 `;
 
+export const MyCommentIcon = styled.View`
+  margin-top: 8px;
+`;
+
 export const CardText = styled(Caption1)`
   line-height: 16.008px;
   letter-spacing: -0.3px;
@@ -22,7 +26,7 @@ export const PatientCardContainer = styled.View`
   border-radius: 6px;
   background-color: ${colors.white};
   padding: 20px;
-  gap: 12px;
+  gap: 8px;
 `;
 
 export const PatientCardTop = styled.View`
@@ -39,7 +43,7 @@ export const PatientCardTitle = styled(Body2)`
 
 export const PatientCardBox = styled.View`
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 `;
 
 export const PatientCardImage = styled.View`

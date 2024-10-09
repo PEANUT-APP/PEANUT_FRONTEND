@@ -22,7 +22,7 @@ import ScrollLayout from '../layout/ScrollLayout';
 const profileImage = require('../../assets/images/default_character.png');
 
 export default function PatientHome() {
-  const {handleMyPagePress, handleNotifyPress} = useMain();
+  const {handleMyPagePress, handleNotifyPress, handleGotoSearch} = useMain();
   const {
     fastingBloodSugar,
     currentBloodSugar,
@@ -99,11 +99,7 @@ export default function PatientHome() {
           {renderUserInfo()}
         </HomeTop>
         <HomeContent>
-          <TouchableOpacity
-            onPress={() => {
-              /* 검색 이동 */
-            }}
-            activeOpacity={1}>
+          <TouchableOpacity onPress={handleGotoSearch} activeOpacity={1}>
             <Search
               disabled
               placeholder="정보가 궁금한 음식명을 입력해보세요"

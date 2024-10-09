@@ -6,6 +6,9 @@ import {
   MyCommunityReturnType,
   UpdateFormType,
   GetUserInfoReturnType,
+  GetConnectingInfoReturnType,
+  GetGuardianReturnType,
+  GuardianRelationFormType,
 } from './types';
 
 export const userApi = apiSlice.injectEndpoints({
@@ -23,6 +26,13 @@ export const userApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getGuardianInfo: builder.query<GetGuardianReturnType, void>({
+      query: () => ({
+        url: '/user/get-guardian',
+        method: 'GET',
+      }),
+      providesTags: ['Connect'],
+    }),
     getPatient: builder.query<GetPatientReturnType, {email: string}>({
       query: ({email}) => ({
         url: '/user/connect/get-patient',
@@ -32,12 +42,28 @@ export const userApi = apiSlice.injectEndpoints({
       transformResponse: (response: any): GetPatientReturnType => {
         return response.data;
       },
+      providesTags: ['Connect'],
+    }),
+    getConnectingInfo: builder.query<GetConnectingInfoReturnType[], void>({
+      query: () => ({
+        url: '/user/get-connecting-info',
+        method: 'GET',
+      }),
+      providesTags: ['Connect'],
     }),
     sendInviteCode: builder.mutation({
       query: () => ({
         url: '/user/connect/send-code',
         method: 'POST',
       }),
+      invalidatesTags: ['Connect'],
+    }),
+    confirmGuardianRelation: builder.mutation({
+      query: (data: GuardianRelationFormType) => ({
+        url: `/user/connect/patient-guardian?confirmationCode=${data.guardianCode}`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Connect'],
     }),
     updateUserInfo: builder.mutation({
       query: ({formData, nickname, weight, height}: UpdateFormType) => ({
@@ -92,7 +118,10 @@ export const {
   useGetPatientInfoQuery,
   useGetPatientQuery,
   useLazyGetPatientQuery,
+  useGetGuardianInfoQuery,
+  useGetConnectingInfoQuery,
   useSendInviteCodeMutation,
+  useConfirmGuardianRelationMutation,
   useUpdateUserInfoMutation,
   useGetCreateCommunityByUserQuery,
   useLazyGetCreateCommunityByUserQuery,

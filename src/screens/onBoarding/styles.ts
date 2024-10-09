@@ -13,9 +13,6 @@ export const OnBoardingBox = styled.View`
 `;
 
 export const OnBoardingLogo = styled.View`
-  width: 131px;
-  height: 131px;
-  background-color: #d9d9d9;
   margin-top: 136px;
 `;
 

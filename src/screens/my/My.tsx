@@ -33,6 +33,7 @@ export default function My() {
     isUserInfoSuccess,
     patientInfo,
     isPatientSuccess,
+    isGuardianConnected,
   } = useMy();
 
   console.log(userInfo);
@@ -77,8 +78,11 @@ export default function My() {
                 댓글
               </MyCard>
             </MyUserInfoCommunity>
-            {isPatientSuccess && patientInfo && (
-              <PatientCard data={patientInfo} />
+            {isPatientSuccess && (
+              <PatientCard
+                data={patientInfo || null}
+                isGuardianConnected={isGuardianConnected}
+              />
             )}
             <MyUserList>
               <MyListItem onPress={handleGoConnectGuardian}>

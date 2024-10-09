@@ -1,8 +1,9 @@
 import React from 'react';
 import Patient from './Patient';
 import PrimaryButton from '../../../components/button/PrimaryButton';
-import {CompleteBox, CompleteImage} from './styles';
+import {CompleteBox} from './styles';
 import {useComplete} from './hooks';
+import PatientCompleteIcon from '../../../assets/images/PatientCompleteIcon.svg';
 
 export default function Complete() {
   const {handleGoMy} = useComplete();
@@ -19,7 +20,7 @@ export default function Complete() {
       }
       isComplete={true}>
       <CompleteBox>
-        <CompleteImage />
+        <PatientCompleteIcon />
       </CompleteBox>
     </Patient>
   );

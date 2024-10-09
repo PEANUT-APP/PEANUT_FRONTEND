@@ -21,6 +21,7 @@ import {
   SearchModalFeedback,
   SearchModalFeedbackText,
   SearchModalList,
+  SearchModalFeedbackIcon,
 } from './styles';
 import DesignIcon from '../../components/icon/DesignIcon';
 import {colors} from '../../styles/colors';
@@ -32,6 +33,16 @@ import SearchListItem from '../../components/list/search/SearchListItem';
 import {useBackHandler} from '../../modules/commonHooks';
 import {Modal, View} from 'react-native';
 import MealTextListItem from './MealTextListItem';
+
+const getFeedback = (giIndex: number, glIndex: number) => {
+  if (giIndex > 70 || glIndex > 20) {
+    return '고'; // 고혈당 색상
+  } else if (giIndex < 55 || glIndex < 11) {
+    return '저'; // 저혈당 색상
+  } else {
+    return '중'; // 중혈당 색상
+  }
+};
 
 export default function MealSearch() {
   const {handleBack} = useBackHandler();
@@ -157,12 +168,14 @@ export default function MealSearch() {
                 </SearchModalAmountBox>
               </SearchModalTop>
               <SearchModalFeedback>
+                <SearchModalFeedbackIcon
+                  color={getFeedback(
+                    selectedItem.giIndex,
+                    selectedItem.glIndex,
+                  )}
+                />
                 <SearchModalFeedbackText weight="bold">
-                  {selectedItem.giIndex > 70 || selectedItem.glIndex > 20
-                    ? '고'
-                    : selectedItem.giIndex < 55 || selectedItem.glIndex < 11
-                    ? '저'
-                    : '중'}{' '}
+                  {getFeedback(selectedItem.giIndex, selectedItem.glIndex)}{' '}
                   혈당지수의 음식이에요.
                 </SearchModalFeedbackText>
               </SearchModalFeedback>
