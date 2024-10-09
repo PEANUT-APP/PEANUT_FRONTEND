@@ -69,6 +69,8 @@ export const SearchOverlay = styled.TouchableOpacity`
 `;
 
 export const SearchModalContainer = styled.View`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: 615px;
   background-color: ${colors.background};

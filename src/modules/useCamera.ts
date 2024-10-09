@@ -2,7 +2,6 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {ParamList} from '../navigation/types';
 import {
-  ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
   PhotoQuality,
@@ -17,10 +16,17 @@ interface CameraButtonType {
 }
 
 export function useCamera() {
-  const [isActive, setIsActive] = useState(false);
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const handlePress = async () => {
+  const [isActive, setIsActive] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handlePress = () => {
+    setModalVisible(true);
+    console.log(modalVisible);
+  };
+
+  const handleOptionSelect = async (option: 'camera' | 'gallery') => {
     const options: CameraButtonType = {
       mediaType: 'photo',
       quality: 0.8,
@@ -29,27 +35,15 @@ export function useCamera() {
     };
 
     setIsActive(true);
+    setModalVisible(false);
 
     try {
       // 선택 옵션을 묻는 알림을 표시
-      const result = await new Promise<ImagePickerResponse | null>(resolve => {
-        Alert.alert(
-          '사진 선택',
-          '카메라로 사진을 찍거나 갤러리에서 선택하세요.',
-          [
-            {text: '취소', style: 'cancel', onPress: () => resolve(null)},
-            {
-              text: '카메라',
-              onPress: () => launchCamera(options, resolve),
-            },
-            {
-              text: '갤러리',
-              onPress: () => launchImageLibrary(options, resolve),
-            },
-          ],
-          {cancelable: true},
-        );
-      });
+      const result =
+        option === 'camera'
+          ? await launchCamera(options)
+          : await launchImageLibrary(options);
+
       if (result && result.assets && result.assets.length > 0) {
         const uri = result.assets[0].uri;
         navigation.navigate('MealRecording', {photoUri: uri}); // 이미지를 다음 페이지로 전달
@@ -64,5 +58,11 @@ export function useCamera() {
     }
   };
 
-  return {isActive, handlePress};
+  return {
+    isActive,
+    handlePress,
+    modalVisible,
+    setModalVisible,
+    handleOptionSelect,
+  };
 }
