@@ -33,7 +33,7 @@ export default function RecordCard({
           <RecordCardDate>{description}</RecordCardDate>
           <RecordTagBox>
             {isOngoing ? (
-              time.map((t, index) => (
+              time?.map((t, index) => (
                 <Tag isOngoing={true} key={index}>
                   {t}
                 </Tag>

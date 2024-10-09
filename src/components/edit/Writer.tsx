@@ -11,9 +11,22 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {WriterType} from './types';
 import DeleteIcon from '../icon/DeleteIcon';
+import {useDeleteCommunityMutation} from '../../services/community/communityApi';
 
-export default function Writer({userId}: WriterType) {
+export default function Writer({userId, id}: WriterType) {
   const localUserId = useSelector((state: RootState) => state.user.userId);
+
+  const [deleteCommunity] = useDeleteCommunityMutation();
+
+  const handleDelete = async () => {
+    console.log(id);
+    try {
+      const response = deleteCommunity(id).unwrap();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return localUserId !== userId ? (
     <OtherWriterContainer activeOpacity={1}>
@@ -26,7 +39,7 @@ export default function Writer({userId}: WriterType) {
         <DesignIcon type="pencil" size="s" color={colors.TextNeutral} />
         <WriterText>수정하기</WriterText>
       </MeWriterBox>
-      <MeWriterBox activeOpacity={1}>
+      <MeWriterBox activeOpacity={1} onPress={handleDelete}>
         <DeleteIcon size="s" color={colors.TextNeutral} />
         <WriterText>삭제하기</WriterText>
       </MeWriterBox>

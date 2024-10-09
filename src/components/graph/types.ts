@@ -2,7 +2,7 @@ export interface GraphType {
   graphData:
     | {
         value: number | null;
-        time: number;
+        time: number | null;
         minute: number | null;
         key?: string;
       }[];

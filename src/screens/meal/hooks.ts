@@ -28,6 +28,7 @@ import {AddMealType} from '../search/types';
 import {setTime} from '../../slices/todaySlice';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {formatDate} from '../../modules/commonHooks';
+import moment from 'moment';
 
 export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
@@ -422,20 +423,38 @@ export function useFeedback() {
     | '저녁'
     | '간식';
 
-  const {data: feedbackFoodData, isSuccess: isFeedbackFoodByTimeSuccess} =
-    useGetFeedbackFoodDetailByEatTimeQuery({
-      date: dayjs(today).format('YYYY-MM-DD'),
-      eatTime: time,
-    });
+  const {
+    data: feedbackFoodData,
+    isSuccess: isFeedbackFoodByTimeSuccess,
+    refetch: feedbackFoodByTimeRefetch,
+  } = useGetFeedbackFoodDetailByEatTimeQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+    eatTime: time,
+  });
 
-  const {data: feedbackBloodSugarData, isSuccess: isFeedbackBloodSugarSuccess} =
-    useGetFoodFeedBackBloodSugarInfoQuery({
-      date: dayjs(today).format('YYYY-MM-DD'),
-      eatTime: time,
-    });
+  const {
+    data: feedbackBloodSugarData,
+    isSuccess: isFeedbackBloodSugarSuccess,
+    refetch: feedbackBloodSugarRefetch,
+  } = useGetFoodFeedBackBloodSugarInfoQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+    eatTime: time,
+  });
+
+  console.log(feedbackFoodData);
 
   // 선택된 Chip의 상태를 관리
   const [selectedChip, setSelectedChip] = useState<string>(time || '전체');
+
+  useEffect(() => {
+    feedbackBloodSugarRefetch();
+    feedbackFoodByTimeRefetch();
+  }, [
+    time,
+    selectedChip,
+    feedbackBloodSugarRefetch,
+    feedbackFoodByTimeRefetch,
+  ]);
 
   // Chip 선택 시 호출되는 핸들러
   const handleSelectChip = (chip: string) => {
@@ -454,18 +473,66 @@ export function useFeedback() {
 
   console.log(feedbackBloodSugarData);
 
-  const graphData = [
-    {
-      value: feedbackBloodSugarData?.beforeBloodSugar || null,
-      time: 6,
+  const graphData: {
+    time: number;
+    minute: number | null;
+    value: number | null;
+    key: string;
+  }[] = [];
+
+  // 6시부터 24시까지의 데이터 포인트 초기화
+  for (let hour = 6; hour <= 24; hour++) {
+    graphData.push({
+      value: null,
+      time: hour,
       minute: null,
-    },
-    {
-      value: feedbackBloodSugarData?.afterBloodSugar || null,
-      time: 11,
-      minute: null,
-    },
-  ];
+      key: '',
+    });
+  }
+
+  if (feedbackBloodSugarData?.beforeBloodSugar) {
+    const beforeBloodSugar = feedbackBloodSugarData.beforeBloodSugar;
+    const bloodSugarValue = Number(Object.keys(beforeBloodSugar)[0]);
+    const timestamp = Object.values(beforeBloodSugar)[0];
+    const time = moment(timestamp);
+    let hour = time.hour();
+    const minute = time.minute();
+
+    if (hour >= 1 && hour <= 5) {
+      hour = 6;
+    }
+
+    if (hour >= 6 && hour <= 24) {
+      graphData[hour - 6] = {
+        value: bloodSugarValue,
+        time: hour,
+        minute: minute,
+        key: 'beforeBloodSugar',
+      };
+    }
+  }
+
+  if (feedbackBloodSugarData?.afterBloodSugar) {
+    const afterBloodSugar = feedbackBloodSugarData.afterBloodSugar;
+    const bloodSugarValue = Number(Object.keys(afterBloodSugar)[0]);
+    const timestamp = Object.values(afterBloodSugar)[0];
+    const time = moment(timestamp);
+    let hour = time.hour();
+    const minute = time.minute();
+
+    if (hour >= 1 && hour <= 5) {
+      hour = 24;
+    }
+
+    if (hour >= 6 && hour <= 24) {
+      graphData[hour - 6] = {
+        value: bloodSugarValue,
+        time: hour,
+        minute: minute,
+        key: 'afterBloodSugar',
+      };
+    }
+  }
 
   return {
     formattedToday,

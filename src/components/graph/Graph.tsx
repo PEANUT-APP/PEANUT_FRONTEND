@@ -42,8 +42,8 @@ export default function Graph({graphData, size}: GraphType) {
     setSelectedPoint(index === selectedPoint ? null : index);
   };
 
-  const formatTime = (time: number, minute: number | null) => {
-    const momentTime = moment({hour: time, minute: minute || 0});
+  const formatTime = (time: number | null, minute: number | null) => {
+    const momentTime = moment({hour: time || 0, minute: minute || 0});
     return minute !== 0
       ? momentTime.format('A h시 m분')
       : momentTime.format('A h시');
@@ -58,8 +58,8 @@ export default function Graph({graphData, size}: GraphType) {
   const yStep = 50; // Y축 간격
 
   // 첫 번째와 두 번째 데이터 포인트 추출 (size가 s일 때 사용)
-  const firstPoint = graphData.find(point => point.value !== null);
-  const secondPoint = graphData.find(
+  let firstPoint = graphData.find(point => point.value !== null);
+  let secondPoint = graphData.find(
     (point, index) =>
       point.value !== null && index > graphData.indexOf(firstPoint!),
   );
@@ -199,6 +199,10 @@ export default function Graph({graphData, size}: GraphType) {
                   padding + (index * chartWidth) / (graphData.length - 1);
                 const y = chartHeight - (point.value * chartHeight) / 200;
 
+                let yToolTip = y;
+                if (point.value > 200) {
+                  yToolTip = -chartWidth + 215;
+                }
                 return (
                   <G key={index}>
                     {/* 첫 번째 데이터 포인트 아래에 값 표시 */}
@@ -226,7 +230,7 @@ export default function Graph({graphData, size}: GraphType) {
                       index === graphData.indexOf(secondPoint) && (
                         <GraphFeedbackAfterToolTip
                           style={{
-                            top: y - 65, // 두 번째 점 위
+                            top: yToolTip - 65, // 두 번째 점 위
                             left: x + 5,
                           }}>
                           <GraphMainToolTipTimeText

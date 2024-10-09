@@ -53,6 +53,13 @@ export const communityApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Community'],
     }),
+    deleteCommunity: builder.mutation({
+      query: (id: number) => ({
+        url: `/community/delete?id=${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Community'],
+    }),
   }),
 });
 
@@ -62,6 +69,7 @@ export const {
   useDetailsCommunityQuery,
   useLikeMutation,
   useCreateCommentMutation,
+  useDeleteCommunityMutation,
 } = communityApi;
 
 export default communityApi;

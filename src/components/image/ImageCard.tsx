@@ -6,6 +6,7 @@ import {useCamera} from '../../modules/useCamera';
 import ImageIconSmall from '../../assets/images/ImageIconSmall.svg';
 import ImageIconLarge from '../../assets/images/ImageIconLarge.svg';
 import {Body2} from '../text/Text';
+import CameraModal from '../camera/CameraModal';
 
 const DefaultImage = styled.TouchableOpacity<{size: 'l' | 's'}>`
   width: ${({size}) => (size === 'l' ? 350 : 112)}px;
@@ -37,25 +38,33 @@ const ImageText = styled(Body2)`
 `;
 
 export default function ImageCard({source, size}: ImageCardType) {
-  const {handlePress} = useCamera();
+  const {handlePress, modalVisible, setModalVisible, handleOptionSelect} =
+    useCamera();
 
   return source ? (
     <Image source={{uri: source}} alt="이미지" fadeDuration={300} size={size} />
   ) : (
-    <DefaultImage
-      size={size}
-      activeOpacity={1}
-      onPress={size === 'l' ? handlePress : () => {}}>
-      {size === 's' ? (
-        <ImageIconSmall />
-      ) : (
-        <ImagePair>
-          <ImageIconLarge />
-          <ImageText color={colors.TextDisabled}>
-            음식 이미지를 등록해주세요
-          </ImageText>
-        </ImagePair>
-      )}
-    </DefaultImage>
+    <>
+      <DefaultImage
+        size={size}
+        activeOpacity={1}
+        onPress={size === 'l' ? handlePress : () => {}}>
+        {size === 's' ? (
+          <ImageIconSmall />
+        ) : (
+          <ImagePair>
+            <ImageIconLarge />
+            <ImageText color={colors.TextDisabled}>
+              음식 이미지를 등록해주세요
+            </ImageText>
+          </ImagePair>
+        )}
+      </DefaultImage>
+      <CameraModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        handleOptionSelect={handleOptionSelect}
+      />
+    </>
   );
 }
