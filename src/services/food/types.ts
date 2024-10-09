@@ -59,3 +59,10 @@ export interface FoodCustomFormType {
 export interface RemoveFoodFormType {
   foodName: string;
 }
+
+export interface FeedbackFoodReturnType {
+  foodName: string[];
+  carbohydrate: number;
+  protein: number;
+  totalFat: number;
+}

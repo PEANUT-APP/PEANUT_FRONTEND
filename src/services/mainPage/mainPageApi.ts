@@ -2,6 +2,7 @@ import apiSlice from '../apiSlice';
 import {
   AdditionalInfoReturnType,
   FoodReturnType,
+  PatientAdditionalInfoReturnType,
   UserInfoReturnType,
 } from './types';
 
@@ -38,6 +39,36 @@ export const mainPageApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getPatientUserInfoMainPage: builder.query<UserInfoReturnType, void>({
+      query: () => ({
+        url: '/main-api/patient/get-user',
+        method: 'GET',
+      }),
+    }),
+    getPatientAdditionalInfoMainPage: builder.query<
+      PatientAdditionalInfoReturnType,
+      {date: string}
+    >({
+      query: ({date}) => ({
+        url: `/main-api/patient/get-add-info?date=${date}`,
+        method: 'GET',
+      }),
+    }),
+    getPatientFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
+      query: ({date}) => ({
+        url: `/main-api/patient/get-all-food?date=${date}`,
+        method: 'GET',
+      }),
+    }),
+    getPatientFoodDetailByEatTime: builder.query<
+      FoodReturnType,
+      {date: string; eatTime: string}
+    >({
+      query: ({date, eatTime}) => ({
+        url: `/main-api/patient/get-time-food?date=${date}&eatTime=${eatTime}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -46,6 +77,10 @@ export const {
   useGetAdditionalInfoMainPageQuery,
   useGetFoodAllDetailQuery,
   useGetFoodDetailByEatTimeQuery,
+  useGetPatientUserInfoMainPageQuery,
+  useGetPatientAdditionalInfoMainPageQuery,
+  useGetPatientFoodAllDetailQuery,
+  useGetPatientFoodDetailByEatTimeQuery,
 } = mainPageApi;
 
 export default mainPageApi;

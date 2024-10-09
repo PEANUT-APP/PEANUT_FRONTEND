@@ -172,7 +172,7 @@ export default function Graph({graphData, size}: GraphType) {
                           ]}>
                           <GraphMainToolTipValue>
                             <GraphMainToolTipValueText weight="bold">
-                              식전
+                              {graphData[selectedPoint].key}
                             </GraphMainToolTipValueText>
                             <GraphMainToolTipValueText weight="bold">
                               {graphData[selectedPoint].value}

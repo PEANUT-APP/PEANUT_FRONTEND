@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface UserState {
-  userId: number | null;
+  userId: number | undefined;
   userState: 'Protector' | 'Patient';
 }
 
 const initialState: UserState = {
-  userId: null,
+  userId: undefined,
   userState: 'Patient',
 };
 
@@ -14,11 +14,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserId: (state, action: PayloadAction<number>) => {
+    setUserId: (state, action: PayloadAction<number | undefined>) => {
       state.userId = action.payload;
     },
     resetUserId: state => {
-      state.userId = null;
+      state.userId = undefined;
     },
     setUserState: (state, action: PayloadAction<'Protector' | 'Patient'>) => {
       state.userState = action.payload;

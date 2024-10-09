@@ -26,12 +26,10 @@ export default function PatientCard({data}: PatientCardType) {
     <PatientCardContainer>
       <PatientCardTop>
         <PatientCardTitle>연결된 환자 관리하기</PatientCardTitle>
-        {data.length !== 0 && (
-          <PrimaryTextButton size="s">연결 끊기</PrimaryTextButton>
-        )}
+        {data && <PrimaryTextButton size="s">연결 끊기</PrimaryTextButton>}
       </PatientCardTop>
       <>
-        {data.length === 0 ? (
+        {!data ? (
           <PatientCardBox>
             <PatientCardImage />
             <TouchableOpacity
@@ -44,23 +42,23 @@ export default function PatientCard({data}: PatientCardType) {
           </PatientCardBox>
         ) : (
           <PatientCardInfoBox>
-            {data[0].profileUrl ? (
-              <PatientCardProfile source={{uri: data[0].profileUrl}} />
+            {data.profileUrl ? (
+              <PatientCardProfile source={{uri: data.profileUrl}} />
             ) : (
               <PatientCardNoneProfile />
             )}
             <PatientCardContentBox>
               <CardText weight="bold" color={colors.TextNeutral}>
-                {data[0].userName}님
+                {data.userName}님
               </CardText>
               <PatientCardInfo>
-                <PatientCardInfoText>{data[0].gender}</PatientCardInfoText>
+                <PatientCardInfoText>{data.gender}</PatientCardInfoText>
                 <PatientCardInfoText>·</PatientCardInfoText>
-                <PatientCardInfoText>{data[0].birthday}</PatientCardInfoText>
+                <PatientCardInfoText>{data.birthday}</PatientCardInfoText>
                 <PatientCardInfoText>·</PatientCardInfoText>
-                <PatientCardInfoText>{data[0].height}cm</PatientCardInfoText>
+                <PatientCardInfoText>{data.height}cm</PatientCardInfoText>
                 <PatientCardInfoText>·</PatientCardInfoText>
-                <PatientCardInfoText>{data[0].weight}kg</PatientCardInfoText>
+                <PatientCardInfoText>{data.weight}kg</PatientCardInfoText>
               </PatientCardInfo>
             </PatientCardContentBox>
           </PatientCardInfoBox>

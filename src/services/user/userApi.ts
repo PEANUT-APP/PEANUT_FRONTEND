@@ -17,7 +17,7 @@ export const userApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['User'],
     }),
-    getPatientInfo: builder.query<GetPatientInfoReturnType[], void>({
+    getPatientInfo: builder.query<GetPatientInfoReturnType, void>({
       query: () => ({
         url: '/user/get-patient',
         method: 'GET',
