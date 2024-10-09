@@ -1,4 +1,4 @@
 export interface MainTextType {
-  value?: string;
+  value?: number;
   text?: string;
 }

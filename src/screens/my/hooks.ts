@@ -48,6 +48,7 @@ export const useMy = () => {
     useGetPatientInfoQuery();
 
   console.log(userInfo);
+  console.log(patientInfo);
 
   const handleGoConnectGuardian = useCallback(() => {
     navigation.navigate('GuardianConnect', {

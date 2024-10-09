@@ -1,5 +1,6 @@
 import apiSlice from '../apiSlice';
 import {
+  FeedbackFoodReturnType,
   FoodAISaveMealType,
   FoodByDateReturnType,
   FoodCheckListType,
@@ -117,6 +118,15 @@ export const foodApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['AI'],
     }),
+    getFoodDetailByEatTime: builder.query<
+      FeedbackFoodReturnType,
+      {date: string; eatTime: string}
+    >({
+      query: ({date, eatTime}) => ({
+        url: `/food/feed-back/food?date=${date}&eatTime=${eatTime}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -132,6 +142,7 @@ export const {
   useSaveNormalMealInfoMutation,
   useAddCustomFoodMutation,
   useRemoveFoodFromSessionMutation,
+  useGetFoodDetailByEatTimeQuery,
 } = foodApi;
 
 export default foodApi;

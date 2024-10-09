@@ -7,5 +7,5 @@ export interface MyCardType {
 }
 
 export interface PatientCardType {
-  data: GetPatientInfoReturnType[];
+  data: GetPatientInfoReturnType;
 }

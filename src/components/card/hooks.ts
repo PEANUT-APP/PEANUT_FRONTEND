@@ -3,6 +3,8 @@ import {FoodReturnType} from '../../services/mainPage/types';
 import {
   useGetFoodAllDetailQuery,
   useGetFoodDetailByEatTimeQuery,
+  useGetPatientFoodAllDetailQuery,
+  useGetPatientFoodDetailByEatTimeQuery,
 } from '../../services/mainPage/mainPageApi';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
@@ -15,12 +17,14 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const today = useSelector((state: RootState) => state.today.today);
+  const userState = useSelector((state: RootState) => state.user.userState);
 
   const [selectedTime, setSelectedTime] = useState('전체');
   const [foodData, setFoodData] = useState<FoodReturnType | undefined>(
     undefined,
   );
 
+  // Patient용
   const {isSuccess: isAllFoodInfoSuccess, refetch: allFoodRefetch} =
     useGetFoodAllDetailQuery({date: dayjs(today).format('YYYY-MM-DD')});
   const {isSuccess: isFoodByTimeSuccess, refetch: foodByTimeRefetch} =
@@ -29,33 +33,79 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
       eatTime: size === 's' && time ? time : selectedTime,
     });
 
+  // Protector 용
+  const {
+    isSuccess: isPatientAllFoodInfoSuccess,
+    refetch: patientAllFoodRefetch,
+  } = useGetPatientFoodAllDetailQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+  });
+  const {
+    isSuccess: isPatientFoodByTimeSuccess,
+    refetch: patientFoodByTimeRefetch,
+  } = useGetPatientFoodDetailByEatTimeQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+    eatTime: size === 's' && time ? time : selectedTime,
+  });
+
+  // feedback 용
+
   useEffect(() => {
     const fetchData = async () => {
       let newFoodData;
 
-      if (size === 's') {
-        if (time === '전체') {
-          const result = await allFoodRefetch();
-          newFoodData = result.data;
+      if (userState === 'Patient') {
+        if (size === 's') {
+          if (time === '전체') {
+            const result = await allFoodRefetch();
+            newFoodData = result.data;
+          } else {
+            const result = await foodByTimeRefetch();
+            newFoodData = result.data;
+          }
         } else {
-          const result = await foodByTimeRefetch();
-          newFoodData = result.data;
+          if (selectedTime === '전체' || !selectedTime) {
+            const result = await allFoodRefetch();
+            newFoodData = result.data;
+          } else {
+            const result = await foodByTimeRefetch();
+            newFoodData = result.data;
+          }
         }
       } else {
-        if (selectedTime === '전체' || !selectedTime) {
-          const result = await allFoodRefetch();
-          newFoodData = result.data;
+        if (size === 's') {
+          if (time === '전체') {
+            const result = await patientAllFoodRefetch();
+            newFoodData = result.data;
+          } else {
+            const result = await patientFoodByTimeRefetch();
+            newFoodData = result.data;
+          }
         } else {
-          const result = await foodByTimeRefetch();
-          newFoodData = result.data;
+          if (selectedTime === '전체' || !selectedTime) {
+            const result = await patientAllFoodRefetch();
+            newFoodData = result.data;
+          } else {
+            const result = await patientFoodByTimeRefetch();
+            newFoodData = result.data;
+          }
         }
       }
-
       setFoodData(newFoodData);
     };
 
     fetchData();
-  }, [allFoodRefetch, foodByTimeRefetch, selectedTime, size, time, today]);
+  }, [
+    allFoodRefetch,
+    foodByTimeRefetch,
+    patientAllFoodRefetch,
+    patientFoodByTimeRefetch,
+    selectedTime,
+    size,
+    time,
+    today,
+    userState,
+  ]);
 
   const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
   const total = carbohydrate + fat + protein;
@@ -70,16 +120,18 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
 
   // 기록 화면으로 이동하는 핸들러
   const handleGoToRecord = useCallback(() => {
-    if (size === 'm') {
+    if (size === 'm' && userState === 'Patient') {
       navigation.navigate('MealRecord');
     }
-  }, [navigation, size]);
+  }, [navigation, size, userState]);
 
   return {
     selectedTime,
     foodData,
     isAllFoodInfoSuccess,
     isFoodByTimeSuccess,
+    isPatientAllFoodInfoSuccess,
+    isPatientFoodByTimeSuccess,
     handleTimeChange,
     handleGoToRecord,
     carbohydrate,

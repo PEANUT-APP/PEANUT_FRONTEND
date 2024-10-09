@@ -26,6 +26,7 @@ export default function ReportCard({
   onPress,
   onPush,
   name,
+  time,
 }: ReportCardType) {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const userState = useSelector((state: RootState) => state.user.userState);
@@ -52,12 +53,14 @@ export default function ReportCard({
             <CardTitle weight="bold">{recordName} 기록</CardTitle>
             {userState === 'Patient' ? (
               <CardSubTitle>
-                {isChecked ? '매우 잘하고 있어요!' : '현재 상태 설명 텍스트'}
+                {isChecked ? '매우 잘하고 있어요!' : time}
               </CardSubTitle>
             ) : (
               <CardSubTitle>
                 {isPushed
-                  ? recordName === '복약'
+                  ? name?.includes('없어요')
+                    ? ''
+                    : recordName === '복약'
                     ? '제시간에 섭취했어요'
                     : '제시간에 맞았어요'
                   : recordName === '복약'

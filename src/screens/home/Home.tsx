@@ -1,139 +1,17 @@
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {
-  HomeBox,
-  HomeContent,
-  HomeIcons,
-  HomeTop,
-  ReportCardBox,
-} from './styles';
-import Graph from '../../components/graph/Graph';
-import Search from '../../components/search/Search';
-import TopBox from './topBox/TopBox';
-import MyPageIcon from '../../assets/images/main_mypage.svg';
-import NoticeIcon from '../../assets/images/main_notice.svg';
-import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
-import ReportCard from './reportCard/ReportCard';
-import useMain from './hooks';
-import MealCard from '../../components/card/MealCard';
-import ScrollLayout from '../layout/ScrollLayout';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
-
-const profileImage = require('../../assets/images/default_character.png');
+import PatientHome from './PatientHome';
+import ProtectorHome from './ProtectorHome';
+import {setUserState} from '../../slices/userSlice';
 
 export default function Home() {
   const userState = useSelector((state: RootState) => state.user.userState);
+  const dispatch = useDispatch();
 
-  const {
-    fastingBloodSugarLevel,
-    currentBloodSugarLevel,
-    userName,
-    isUserInfoSuccess,
-    medicineName,
-    insulinName,
-    bloodSugarList,
-    isAdditionalInfoSuccess,
-    isCheckedMedicine,
-    isCheckedInsulin,
-    toggleMedicine,
-    toggleInsulin,
-    isPushedMedicine,
-    isPushedInsulin,
-    pushMedicine,
-    pushInsulin,
-    handleMyPagePress,
-    handleNotifyPress,
-    handleGotoSearch,
-  } = useMain();
+  useEffect(() => {
+    dispatch(setUserState('Patient'));
+  }, [dispatch]);
 
-  // 사용자 정보를 표시하는 함수
-  const renderUserInfo = () => {
-    if (!isUserInfoSuccess) {
-      return null;
-    }
-    return (
-      <TopBox
-        profileImage={profileImage}
-        userName={userName}
-        fastingBloodSugar={fastingBloodSugarLevel}
-        currentBloodSugar={currentBloodSugarLevel}
-      />
-    );
-  };
-
-  // 추가 정보를 표시하는 함수
-  const renderAdditionalInfo = () => {
-    if (!isAdditionalInfoSuccess) {
-      return null;
-    }
-    return (
-      <>
-        <Graph graphData={bloodSugarList} size="m" />
-        {userState === 'Patient' ? (
-          <ReportCardBox>
-            <ReportCard
-              navigate="MedicineDocument"
-              isChecked={isCheckedMedicine}
-              onPress={toggleMedicine}
-              name={medicineName}
-            />
-            <ReportCard
-              navigate="InsulinDocument"
-              isChecked={isCheckedInsulin}
-              onPress={toggleInsulin}
-              name={insulinName}
-            />
-          </ReportCardBox>
-        ) : (
-          <ReportCardBox>
-            <ReportCard
-              navigate="MedicineDocument"
-              isPushed={isPushedMedicine}
-              onPush={pushMedicine}
-              name={medicineName}
-            />
-            <ReportCard
-              navigate="InsulinDocument"
-              isPushed={isPushedInsulin}
-              onPush={pushInsulin}
-              name={insulinName}
-            />
-          </ReportCardBox>
-        )}
-      </>
-    );
-  };
-
-  return (
-    <ScrollLayout paddingBottom={101}>
-      <HomeBox>
-        <HomeTop
-          source={require('../../assets/images/gradientBackgroundDark.png')}>
-          <HomeIcons>
-            <TouchableOpacity activeOpacity={1} onPress={handleMyPagePress}>
-              <MyPageIcon />
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} onPress={handleNotifyPress}>
-              <NoticeIcon />
-            </TouchableOpacity>
-          </HomeIcons>
-          {renderUserInfo()}
-        </HomeTop>
-        <HomeContent>
-          <TouchableOpacity onPress={handleGotoSearch} activeOpacity={1}>
-            {userState === 'Patient' && (
-              <Search
-                disabled
-                placeholder="정보가 궁금한 음식명을 입력해보세요"
-              />
-            )}
-          </TouchableOpacity>
-          <WeeklyCalendar />
-          {renderAdditionalInfo()}
-          <MealCard size="m" />
-        </HomeContent>
-      </HomeBox>
-    </ScrollLayout>
-  );
+  return <>{userState === 'Patient' ? <PatientHome /> : <ProtectorHome />}</>;
 }
