@@ -67,8 +67,12 @@ export interface FeedbackFoodReturnType {
   totalFat: number;
 }
 
+export interface FeedbackBloodSugarRecord {
+  [value: string]: string;
+}
+
 export interface FeedbackBloodSugarType {
-  afterBloodSugar: number;
-  beforeBloodSugar: number;
+  afterBloodSugar: FeedbackBloodSugarRecord;
+  beforeBloodSugar: FeedbackBloodSugarRecord;
   msg: string;
 }

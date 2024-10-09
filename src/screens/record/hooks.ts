@@ -126,6 +126,7 @@ export function useMedicine() {
 
     try {
       await saveMedicineInfo(data).unwrap();
+      fetchMedicineData();
       navigation.navigate('MedicineDocument');
     } catch (error) {
       console.error(error);
@@ -209,18 +210,18 @@ export function useInsulin() {
 
   useEffect(() => {
     fetchInsulinData();
-    console.log(insulinData);
+    console.log('인슐린', insulinData);
   }, [fetchInsulinData, insulinData]);
 
   useEffect(() => {
     if (insulinData) {
-      const initialMedicineState: Record<string, boolean> = {};
+      const initialInsulinState: Record<string, boolean> = {};
 
       insulinData.map(item => {
-        initialMedicineState[item.productName] = true;
+        initialInsulinState[item.productName] = true;
       });
 
-      setInsulinState(initialMedicineState);
+      setInsulinState(initialInsulinState);
     }
   }, [insulinData]);
 

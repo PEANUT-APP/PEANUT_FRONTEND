@@ -18,7 +18,7 @@ export const insulinApi = apiSlice.injectEndpoints({
     }),
     getInsulinInfoList: builder.query<InsulinRecordReturnType[], void>({
       query: () => ({
-        url: '/medicine/get/record',
+        url: '/insulin/get/record',
         method: 'GET',
       }),
     }),

@@ -9,9 +9,17 @@ interface TodayState {
 }
 
 const initialState: TodayState = {
-  today: dayjs().toISOString(),
+  today: getInitialToday(),
   time: '아침',
 };
+
+function getInitialToday(): string {
+  const now = dayjs();
+  // 새벽 6시 이전이면 어제 날짜로 설정, 아니면 오늘 날짜로 설정
+  return now.hour() < 6
+    ? now.subtract(1, 'day').format('YYYY-MM-DD')
+    : now.format('YYYY-MM-DD');
+}
 
 const todaySlice = createSlice({
   name: 'today',
@@ -21,7 +29,7 @@ const todaySlice = createSlice({
       state.today = action.payload;
     },
     resetToday: state => {
-      state.today = dayjs().toISOString();
+      state.today = getInitialToday();
     },
     setTime: (state, action: PayloadAction<string>) => {
       state.time = action.payload;
