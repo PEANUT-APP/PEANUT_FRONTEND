@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import dayjs from 'dayjs';
 import {setTime} from '../../slices/todaySlice';
+import {useGetFeedbackFoodDetailByEatTimeQuery} from '../../services/food/foodApi';
 
 export const useMealCard = (size: 's' | 'm', time?: string) => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -49,6 +50,13 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
   });
 
   // feedback 용
+  const {
+    isSuccess: isFeedbackFoodByTimeSuccess,
+    refetch: feedbackFoodByTimeRefetch,
+  } = useGetFeedbackFoodDetailByEatTimeQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+    eatTime: size === 's' && time ? time : selectedTime,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,13 +64,12 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
 
       if (userState === 'Patient') {
         if (size === 's') {
-          if (time === '전체') {
-            const result = await allFoodRefetch();
-            newFoodData = result.data;
-          } else {
-            const result = await foodByTimeRefetch();
-            newFoodData = result.data;
-          }
+          const result = await feedbackFoodByTimeRefetch();
+          newFoodData = {
+            fat: result.data?.totalFat || 0,
+            carbohydrate: result.data?.carbohydrate || 0,
+            protein: result.data?.protein || 0,
+          };
         } else {
           if (selectedTime === '전체' || !selectedTime) {
             const result = await allFoodRefetch();
@@ -73,15 +80,7 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
           }
         }
       } else {
-        if (size === 's') {
-          if (time === '전체') {
-            const result = await patientAllFoodRefetch();
-            newFoodData = result.data;
-          } else {
-            const result = await patientFoodByTimeRefetch();
-            newFoodData = result.data;
-          }
-        } else {
+        if (size === 'm') {
           if (selectedTime === '전체' || !selectedTime) {
             const result = await patientAllFoodRefetch();
             newFoodData = result.data;
@@ -97,6 +96,7 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     fetchData();
   }, [
     allFoodRefetch,
+    feedbackFoodByTimeRefetch,
     foodByTimeRefetch,
     patientAllFoodRefetch,
     patientFoodByTimeRefetch,
@@ -132,6 +132,7 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     isFoodByTimeSuccess,
     isPatientAllFoodInfoSuccess,
     isPatientFoodByTimeSuccess,
+    isFeedbackFoodByTimeSuccess,
     handleTimeChange,
     handleGoToRecord,
     carbohydrate,

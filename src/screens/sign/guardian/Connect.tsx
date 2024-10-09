@@ -13,17 +13,7 @@ import {
   GuardianCardNoneImage,
   GuardianInfoBox,
 } from './styles';
-import {GuardianInfoType} from './types';
 import {PrimaryTextButton} from '../../../components/button/TextButton';
-
-const guardianInfo: GuardianInfoType = {
-  userName: '김유성',
-  gender: '남성',
-  birth: '2000.09.10',
-  height: 175,
-  weight: 75,
-  imageUrl: null,
-};
 
 export default function GuardianConnect() {
   const {
@@ -34,14 +24,19 @@ export default function GuardianConnect() {
     isButtonDisabled,
     onSubmit,
     name,
+    guardianInfoData,
   } = useConnect();
 
   return (
     <Guardian
       title="보호자 연결하기"
-      subTitle={`보호자가 연결 요청을 보냈나요?\n${name}님이 가입한 이메일에 도착한 코드를 입력해주세요.`}
+      subTitle={
+        guardianInfoData
+          ? `${name}님은 보호자와 성공적으로 연결되었어요.`
+          : `보호자가 연결 요청을 보냈나요?\n${name}님이 가입한 이메일에 도착한 코드를 입력해주세요.`
+      }
       button={
-        !guardianInfo && (
+        !guardianInfoData && (
           <PrimaryButton
             size="l"
             onPress={onSubmit}
@@ -50,7 +45,7 @@ export default function GuardianConnect() {
           </PrimaryButton>
         )
       }>
-      {!guardianInfo ? (
+      {!guardianInfoData ? (
         <>
           {RenderInput({
             name: 'guardianCode',
@@ -64,23 +59,23 @@ export default function GuardianConnect() {
       ) : (
         <GuardianCardContainer>
           <GuardianCardBox>
-            {guardianInfo.imageUrl ? (
-              <GuardianCardImage />
+            {guardianInfoData.profileUrl ? (
+              <GuardianCardImage source={{uri: guardianInfoData.profileUrl}} />
             ) : (
               <GuardianCardNoneImage />
             )}
             <GuardianInfoBox>
               <GuardianCardName weight="bold">
-                {guardianInfo.userName}님
+                {guardianInfoData.userName}님
               </GuardianCardName>
               <GuardianCardInfoBox>
-                <GuardianCardInfo>{guardianInfo.gender}</GuardianCardInfo>
+                <GuardianCardInfo>{guardianInfoData.gender}</GuardianCardInfo>
                 <GuardianCardInfo>·</GuardianCardInfo>
-                <GuardianCardInfo>{guardianInfo.birth}</GuardianCardInfo>
+                <GuardianCardInfo>{guardianInfoData.birthday}</GuardianCardInfo>
                 <GuardianCardInfo>·</GuardianCardInfo>
-                <GuardianCardInfo>{guardianInfo.height}cm</GuardianCardInfo>
+                <GuardianCardInfo>{guardianInfoData.height}cm</GuardianCardInfo>
                 <GuardianCardInfo>·</GuardianCardInfo>
-                <GuardianCardInfo>{guardianInfo.weight}kg</GuardianCardInfo>
+                <GuardianCardInfo>{guardianInfoData.weight}kg</GuardianCardInfo>
               </GuardianCardInfoBox>
             </GuardianInfoBox>
           </GuardianCardBox>

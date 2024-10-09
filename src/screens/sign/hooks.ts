@@ -20,11 +20,12 @@ import {
   VerifyFormType,
 } from '../../services/sign/types';
 import {useDispatch, useSelector} from 'react-redux';
-import {updateForm} from '../../slices/formSlice';
+import {resetForm, updateForm} from '../../slices/formSlice';
 import {RootState} from '../../store/store';
 import {login} from '../../slices/tokenSlice';
 import {handleFormError} from '../../modules/formHandler';
 import {useAuth} from '../../modules/useAuth';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export const handleNextStep = async ({
   step,
@@ -356,7 +357,7 @@ export const useBasicInformation = () => {
 };
 
 export const useAdditionalInformation = () => {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
+  const navigation = useNavigation<StackNavigationProp<ParamList>>();
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.form); // Redux 상태 가져오기
 
@@ -427,10 +428,8 @@ export const useAdditionalInformation = () => {
     dispatch(updateForm(data));
 
     try {
-      console.log(formData);
-      const response = await signUp(formData).unwrap();
-      console.log(response);
-      navigation.navigate('SignIn');
+      await signUp(formData).unwrap();
+      navigation.push('SignUpComplete');
     } catch (error) {
       console.error(error);
       Alert.alert('회원가입에 실패했습니다.');
@@ -450,4 +449,18 @@ export const useAdditionalInformation = () => {
     isNicknameValid,
     handleAdditionalFormSubmit,
   };
+};
+
+export const UseSignUpComplete = () => {
+  const dispatch = useDispatch();
+  const name = useSelector((state: RootState) => state.form.name);
+
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const handleGoLogin = () => {
+    navigation.navigate('SignIn');
+    dispatch(resetForm());
+  };
+
+  return {name, handleGoLogin};
 };

@@ -13,6 +13,7 @@ import {
 } from './styles';
 import {PrimaryTextButton} from '../../components/button/TextButton';
 import {useOnBoarding} from './hooks';
+import Logo from '../../assets/images/Logo.svg';
 
 export default function OnBoarding() {
   const {onPress} = useOnBoarding();
@@ -20,7 +21,9 @@ export default function OnBoarding() {
   return (
     <GlobalView>
       <OnBoardingContainer>
-        <OnBoardingLogo />
+        <OnBoardingLogo>
+          <Logo />
+        </OnBoardingLogo>
         <OnBoardingBox>
           <OnBoardingLoginBox>
             <PrimaryButton size="l" onPress={() => onPress('SignIn')}>

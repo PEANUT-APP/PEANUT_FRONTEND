@@ -13,7 +13,6 @@ import {
   FeedbackSelectBox,
   FeedbackText,
   FeedbackTextBox,
-  FeedbackTextTitle,
   MealBack,
   MealContent,
   MealTitle,
@@ -31,7 +30,11 @@ export default function MealFeedback() {
     formattedToday,
     selectedChip,
     handleSelectChip,
+    formattedFoodName,
+    isFeedbackFoodByTimeSuccess,
     graphData,
+    feedbackBloodSugarData,
+    isFeedbackBloodSugarSuccess,
     handleComplete,
   } = useFeedback();
 
@@ -61,20 +64,18 @@ export default function MealFeedback() {
             </FeedbackSelectBox>
             <FeedbackFoodBox>
               <FeedbackFoodText weight="bold">섭취한 음식</FeedbackFoodText>
-              <FeedbackFoodText color={colors.TextNeutral}>
-                섭취한 음식
-              </FeedbackFoodText>
+              {isFeedbackFoodByTimeSuccess && (
+                <FeedbackFoodText color={colors.TextNeutral}>
+                  {formattedFoodName}
+                </FeedbackFoodText>
+              )}
             </FeedbackFoodBox>
             <MealCard size="s" time={selectedChip} />
-            <Graph graphData={graphData} size="s" />
+            {isFeedbackBloodSugarSuccess && (
+              <Graph graphData={graphData} size="s" />
+            )}
             <FeedbackTextBox>
-              <FeedbackTextTitle weight="bold">
-                혈당 스파이크 발생
-              </FeedbackTextTitle>
-              <FeedbackText>
-                공복에 바로 탄수화물 덩어리인 떡볶이를 섭취하면 혈당 스파이크를
-                맞아요. 첫 끼로는 가벼운 과일이나 채소를 추천드려요.
-              </FeedbackText>
+              <FeedbackText>{feedbackBloodSugarData?.msg}</FeedbackText>
             </FeedbackTextBox>
           </MealContent>
           <FeedbackButtonPair>

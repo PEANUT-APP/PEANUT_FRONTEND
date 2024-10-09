@@ -1,5 +1,5 @@
 import apiSlice from '../apiSlice';
-import {InsulinFormType} from './types';
+import {InsulinFormType, InsulinRecordReturnType} from './types';
 
 export const insulinApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -16,9 +16,16 @@ export const insulinApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['AdditionalInfo'],
     }),
+    getInsulinInfoList: builder.query<InsulinRecordReturnType[], void>({
+      query: () => ({
+        url: '/medicine/get/record',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const {useSaveInsulinIfoMutation} = insulinApi;
+export const {useSaveInsulinIfoMutation, useLazyGetInsulinInfoListQuery} =
+  insulinApi;
 
 export default insulinApi;

@@ -4,7 +4,7 @@ export interface GraphType {
         value: number | null;
         time: number;
         minute: number | null;
-        key: string;
+        key?: string;
       }[];
   size?: 's' | 'm';
 }

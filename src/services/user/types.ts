@@ -23,8 +23,28 @@ export interface GetPatientReturnType {
   profileImage: string;
 }
 
+export interface GetGuardianReturnType {
+  birthday: string;
+  gender: string;
+  height: string;
+  id: number;
+  profileUrl: string;
+  userName: string;
+  weight: string;
+}
+
 export interface GetPatientFormType {
   email: string;
+}
+
+export interface GetConnectingInfoReturnType {
+  status: string;
+  userId: number;
+  userName: string;
+}
+
+export interface GuardianRelationFormType {
+  guardianCode: string;
 }
 
 export interface UpdateFormType {

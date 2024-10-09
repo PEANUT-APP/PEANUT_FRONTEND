@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {resetToday} from '../../slices/todaySlice';
 import {setUserId, setUserState} from '../../slices/userSlice';
+import {useGetPatientInfoQuery} from '../../services/user/userApi';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
@@ -63,17 +64,26 @@ export function useMain() {
 
   const userState = useSelector((state: RootState) => state.user.userState);
 
+  const {data: patientInfo} = useGetPatientInfoQuery();
+
   const handleMyPagePress = useCallback(() => {
-    dispatch(setUserState(userState === 'Patient' ? 'Protector' : 'Patient'));
-  }, [dispatch, userState]);
+    if (patientInfo) {
+      dispatch(setUserState(userState === 'Patient' ? 'Protector' : 'Patient'));
+    }
+  }, [dispatch, patientInfo, userState]);
 
   const handleNotifyPress = useCallback(() => {
     navigation.navigate('Notify');
   }, [navigation]);
 
+  const handleGotoSearch = useCallback(() => {
+    navigation.navigate('MealSearch', {isAIProcessing: false});
+  }, [navigation]);
+
   return {
     handleMyPagePress,
     handleNotifyPress,
+    handleGotoSearch,
   };
 }
 

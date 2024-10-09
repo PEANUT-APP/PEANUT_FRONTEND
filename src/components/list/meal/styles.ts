@@ -8,9 +8,6 @@ export const MealListContainer = styled.View`
 
 export const MealListNoneBox = styled.View`
   width: 350px;
-  height: 123px;
-  border-radius: 8px;
-  background-color: ${colors.white};
   align-items: center;
   justify-content: center;
   gap: 4px;
