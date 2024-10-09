@@ -17,11 +17,14 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
 import MedicineIcon from '../../../assets/images/medicine.svg';
 import InsulinIcon from '../../../assets/images/insulin.svg';
+import NotifyButton from '../../../components/button/NotifyButton';
 
 export default function ReportCard({
   navigate,
   isChecked,
+  isPushed,
   onPress,
+  onPush,
   name,
 }: ReportCardType) {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -30,14 +33,16 @@ export default function ReportCard({
   const recordName = navigate === 'MedicineDocument' ? '복약' : '인슐린';
 
   const handlePress = useCallback(() => {
-    if (name?.includes('등록해주세요')) {
+    if (name?.includes('등록해주세요') && userState === 'Patient') {
       if (navigate === 'MedicineDocument' || navigate === 'InsulinDocument') {
         navigation.navigate(navigate);
       }
     } else {
       return;
     }
-  }, [name, navigate, navigation]);
+  }, [name, navigate, navigation, userState]);
+
+  console.log(isPushed);
 
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
@@ -51,7 +56,7 @@ export default function ReportCard({
               </CardSubTitle>
             ) : (
               <CardSubTitle>
-                {isChecked
+                {isPushed
                   ? recordName === '복약'
                     ? '제시간에 섭취했어요'
                     : '제시간에 맞았어요'
@@ -61,12 +66,24 @@ export default function ReportCard({
               </CardSubTitle>
             )}
           </CardTopText>
-          {!name?.includes('등록해주세요') && onPress && (
-            <CheckButton isChecked={isChecked} onPress={onPress} />
-          )}
+          {!name?.includes('등록해주세요') &&
+            onPress &&
+            userState === 'Patient' && (
+              <CheckButton isChecked={isChecked || false} onPress={onPress} />
+            )}
         </CardTop>
         <CardImage>
-          {recordName === '복약' ? <MedicineIcon /> : <InsulinIcon />}
+          {userState === 'Patient' ? (
+            recordName === '복약' ? (
+              <MedicineIcon />
+            ) : (
+              <InsulinIcon />
+            )
+          ) : (
+            onPush && (
+              <NotifyButton isPushed={isPushed || false} onPress={onPush} />
+            )
+          )}
         </CardImage>
         <CardMedicineName>{name}</CardMedicineName>
       </CardContainer>

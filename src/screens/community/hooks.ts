@@ -79,20 +79,22 @@ export function useWrite() {
   return {title, setTitle, content, setContent, handleCreate};
 }
 
-export function useDetail() {
+export function useDetail(liked?: boolean) {
   const route = useRoute<RouteProp<{params: {id: number}}, 'params'>>();
   const {id} = route.params;
+
+  console.log(id);
 
   const {
     data: detailData,
     isSuccess: isDetailSuccess,
     refetch: detailRefetch,
-  } = useDetailsCommunityQuery({id: id});
+  } = useDetailsCommunityQuery({id});
 
   const [like] = useLikeMutation();
   const [createComment] = useCreateCommentMutation();
 
-  const [liked, setLiked] = useState(false);
+  const [isLike, setIsLike] = useState(liked);
   const [selectedFilter, setSelectedFilter] = useState('좋아요순');
   const [comment, setComment] = useState('');
 
@@ -100,9 +102,9 @@ export function useDetail() {
     try {
       await like({
         communityId: id,
-        liked: !liked,
+        liked: !isLike,
       }).unwrap();
-      setLiked(!liked);
+      setIsLike(!isLike);
       detailRefetch();
     } catch (error) {
       console.error(error);
@@ -143,7 +145,7 @@ export function useDetail() {
     selectedFilter,
     setSelectedFilter,
     sortedComments,
-    liked,
+    isLike,
     handleLike,
     comment,
     setComment,

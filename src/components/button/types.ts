@@ -52,3 +52,8 @@ export interface CheckButtonType {
   isChecked: boolean;
   onPress: () => void;
 }
+
+export interface NotifyButtonType {
+  isPushed: boolean;
+  onPress: () => void;
+}

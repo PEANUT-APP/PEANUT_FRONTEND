@@ -29,6 +29,7 @@ export interface FormData {
   memo: string;
   bloodSugarTime: string;
   foodTime: string;
+  guardianCode: string;
 }
 
 export interface InputType {

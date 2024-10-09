@@ -17,20 +17,22 @@ import {CommunityDetailCardReturnType} from '../../../services/community/types';
 import {TouchableOpacity, View} from 'react-native';
 import DesignIcon from '../../../components/icon/DesignIcon';
 import {colors} from '../../../styles/colors';
-import {useKebab} from '../../../modules/commonHooks';
+import {formatDateTime, useKebab} from '../../../modules/commonHooks';
 import Writer from '../../../components/edit/Writer';
 import {useDetail} from '../hooks';
 
 export default function CommunityCard({
   imageUrl,
-  name,
+  nickName,
   userId,
   title,
   content,
   like,
+  liked,
+  create_At,
 }: CommunityDetailCardReturnType) {
   const {showWriter, handleClickKebab} = useKebab();
-  const {liked, handleLike} = useDetail();
+  const {isLike, handleLike} = useDetail(liked);
 
   return (
     <CommunityCardContainer>
@@ -42,8 +44,8 @@ export default function CommunityCard({
             <CommunityCardUserNoneProfile />
           )}
           <View>
-            <CommunityCardName weight="bold">{name}</CommunityCardName>
-            <CommunityCardDate>2024.09.04 오후 11:30</CommunityCardDate>
+            <CommunityCardName weight="bold">{nickName}</CommunityCardName>
+            <CommunityCardDate>{formatDateTime(create_At)}</CommunityCardDate>
           </View>
         </CommunityCardUserInfoBox>
         <TouchableOpacity activeOpacity={1} onPress={handleClickKebab}>
@@ -58,7 +60,7 @@ export default function CommunityCard({
       <CommunityCardLikeBox>
         <TouchableOpacity activeOpacity={1} onPress={handleLike}>
           <DesignIcon
-            type={liked ? 'likeFill' : 'like'}
+            type={isLike ? 'likeFill' : 'like'}
             size="l"
             color={like ? colors.primaryNormal : colors.LineNomal}
           />
