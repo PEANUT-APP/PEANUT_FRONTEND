@@ -3,6 +3,7 @@ import DatePicker from 'react-native-date-picker';
 import Input from './Input';
 import {TouchableOpacity} from 'react-native';
 import {DateInputType} from './types';
+import {formatDate} from './hooks';
 
 export default function DateInput({
   name,
@@ -19,14 +20,6 @@ export default function DateInput({
   const [selectedDate, setSelectedDate] = useState<string | undefined>(
     undefined,
   );
-
-  // 날짜 포맷 함수
-  const formatDate = (selectDate: Date) => {
-    const year = selectDate.getFullYear();
-    const month = (selectDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = selectDate.getDate().toString().padStart(2, '0');
-    return `${year}.${month}.${day}`;
-  };
 
   const handleOpenDate = () => {
     setDatePickerVisibility(true);

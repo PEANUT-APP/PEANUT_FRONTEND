@@ -41,10 +41,9 @@ export default function CameraModal({
             <ModalTitle weight="bold">
               이미지 접근 방법을 선택해주세요
             </ModalTitle>
-            <ModalContent
-              color={
-                colors.TextNeutral
-              }>{`카메라로 사진을 찍거나 갤러리에서${'\n'}선택할 수 있어요.`}</ModalContent>
+            <ModalContent color={colors.TextNeutral}>
+              카메라로 사진을 찍거나 갤러리에서{'\n'}선택할 수 있어요.
+            </ModalContent>
           </ModalContentBox>
           <ModalButtonBox>
             <ModalButton onPress={() => setModalVisible(false)}>

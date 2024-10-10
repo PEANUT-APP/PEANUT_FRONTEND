@@ -14,9 +14,9 @@ export function useBackHandler() {
 export function useKebab() {
   const [showWriter, setShowWriter] = useState(false);
 
-  const handleClickKebab = () => {
+  const handleClickKebab = useCallback(() => {
     setShowWriter(prev => !prev);
-  };
+  }, []);
 
   return {showWriter, handleClickKebab};
 }

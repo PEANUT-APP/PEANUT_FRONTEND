@@ -1,6 +1,11 @@
 // src/slices/todaySlice.ts
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 // 초기 상태
 interface TodayState {
@@ -14,11 +19,8 @@ const initialState: TodayState = {
 };
 
 function getInitialToday(): string {
-  const now = dayjs();
-  // 새벽 6시 이전이면 어제 날짜로 설정, 아니면 오늘 날짜로 설정
-  return now.hour() < 6
-    ? now.subtract(1, 'day').format('YYYY-MM-DD')
-    : now.format('YYYY-MM-DD');
+  const now = dayjs().tz('Asia/Seoul').add(9, 'hour');
+  return now.format('YYYY-MM-DD');
 }
 
 const todaySlice = createSlice({
