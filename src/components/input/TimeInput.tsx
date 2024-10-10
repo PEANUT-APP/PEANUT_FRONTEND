@@ -5,6 +5,7 @@ import {TouchableOpacity} from 'react-native';
 import {TimeInputType} from './types';
 import {InputBox, InputLabel, InputText} from './styles';
 import {colors} from '../../styles/colors';
+import {formatTime} from './hooks';
 
 export default function TimeInput({
   name,
@@ -38,16 +39,6 @@ export default function TimeInput({
     }
   }, [name, setValue]);
 
-  // 시간 포맷 함수
-  const formatTime = (selectDate: Date) => {
-    const hours = selectDate.getHours();
-    const minutes = selectDate.getMinutes();
-    const period = hours >= 12 ? '오후' : '오전';
-    const formattedHours = hours % 12 || 12;
-
-    return `${period} ${formattedHours}시 ${minutes}분`;
-  };
-
   const handleOpenDate = () => {
     setDatePickerVisibility(true);
     if (setFocus && name) {
@@ -73,16 +64,12 @@ export default function TimeInput({
   };
 
   const handleFocus = useCallback(() => {
-    if (!isFocused) {
-      setIsFocused(true);
-    }
-  }, [isFocused]);
+    setIsFocused(true);
+  }, []);
 
   const handleBlur = useCallback(() => {
-    if (isFocused) {
-      setIsFocused(false);
-    }
-  }, [isFocused]);
+    setIsFocused(false);
+  }, []);
 
   if (control && name && errors && touchedFields && trigger) {
     return (

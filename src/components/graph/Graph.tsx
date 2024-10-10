@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {colors} from '../../styles/colors';
 import {GraphType} from './types';
 import {
@@ -34,35 +34,41 @@ export default function Graph({graphData, size}: GraphType) {
 
   const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
 
-  const onAddBloodSugar = () => {
+  const onAddBloodSugar = useCallback(() => {
     navigation.navigate('BloodSugar');
-  };
+  }, [navigation]);
 
-  const handleCircleClick = (index: number) => {
-    setSelectedPoint(index === selectedPoint ? null : index);
-  };
+  const handleCircleClick = useCallback(
+    (index: number) => {
+      setSelectedPoint(prev => (prev === index ? null : index));
+    },
+    [setSelectedPoint],
+  );
 
-  const formatTime = (time: number | null, minute: number | null) => {
-    const momentTime = moment({hour: time || 0, minute: minute || 0});
-    return minute !== 0
-      ? momentTime.format('A h시 m분')
-      : momentTime.format('A h시');
-  };
+  const formatTime = useCallback(
+    (time: number | null, minute: number | null) => {
+      const momentTime = moment({hour: time || 0, minute: minute || 0});
+      return minute !== 0
+        ? momentTime.format('A h시 m분')
+        : momentTime.format('A h시');
+    },
+    [],
+  );
 
-  const data = graphData?.map(point => point.value) || [];
+  // 첫 번째와 두 번째 데이터 포인트 추출 (size가 s일 때 사용)
+  const [firstPoint, secondPoint] = useMemo(() => {
+    const validPoints = graphData.filter(point => point.value !== null);
+    return [validPoints[0], validPoints[1]];
+  }, [graphData]);
 
+  // 차트 관련 상수
   const chartWidth = 225; // 그래프 너비
   const chartHeight = 120; // 그래프 높이
   const padding = 20; // 그래프 여백
   const yMaxValue = 200; // Y축 최대값
   const yStep = 50; // Y축 간격
 
-  // 첫 번째와 두 번째 데이터 포인트 추출 (size가 s일 때 사용)
-  let firstPoint = graphData.find(point => point.value !== null);
-  let secondPoint = graphData.find(
-    (point, index) =>
-      point.value !== null && index > graphData.indexOf(firstPoint!),
-  );
+  const data = graphData?.map(point => point.value) || [];
 
   return (
     <GraphContainer>

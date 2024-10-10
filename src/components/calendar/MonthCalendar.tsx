@@ -11,7 +11,6 @@ import {
   MonthCalendarDaysContainer,
   MonthCalendarDayText,
   MonthCalendarEmptyDay,
-  MonthCalendarIcon,
   MonthCalendarTitle,
   MonthCalendarWeekDay,
   MonthCalendarWeekDays,
@@ -35,14 +34,12 @@ const generateCalendarDays = (currentDate: dayjs.Dayjs) => {
   const daysArray = [];
 
   // 시작 날짜 앞에 빈 칸 추가
-  for (let i = 0; i < startOfMonth; i++) {
-    daysArray.push({day: null});
-  }
+  daysArray.push(...Array.from({length: startOfMonth}, () => ({day: null})));
 
   // 날짜 채우기
-  for (let i = 1; i <= daysInMonth; i++) {
-    daysArray.push({day: i});
-  }
+  daysArray.push(
+    ...Array.from({length: daysInMonth}, (_, i) => ({day: i + 1})),
+  );
 
   // 마지막 줄에 필요한 빈칸 계산
   const totalDays = startOfMonth + daysInMonth; // 시작 빈칸 + 월의 총 날짜 수
@@ -50,25 +47,20 @@ const generateCalendarDays = (currentDate: dayjs.Dayjs) => {
 
   // 남은 칸이 7보다 작으면 빈칸(null)을 추가하여 마지막 줄을 채움
   if (remainingDays < 7) {
-    for (let i = 0; i < remainingDays; i++) {
-      daysArray.push({day: null});
-    }
+    daysArray.push(...Array.from({length: remainingDays}, () => ({day: null})));
   }
 
   return daysArray;
 };
 
-const splitIntoWeeks = (days: DayItem[]) => {
-  const weeks = [];
-  for (let i = 0; i < days.length; i += 7) {
-    weeks.push(days.slice(i, i + 7));
-  }
-  return weeks;
-};
+const splitIntoWeeks = (days: DayItem[]) =>
+  Array.from({length: Math.ceil(days.length / 7)}, (_, i) =>
+    days.slice(i * 7, i * 7 + 7),
+  );
 
 export default function MonthCalendar({type}: MonthCalendarType) {
-  const [currentDate, setCurrentDate] = useState(dayjs());
-  const [selectedDate, setSelectedDate] = useState(dayjs().date());
+  const [currentDate, setCurrentDate] = useState(dayjs().add(9, 'hour'));
+  const [selectedDate, setSelectedDate] = useState(currentDate.date());
 
   const calendarDays = useMemo(
     () => generateCalendarDays(currentDate),
@@ -125,9 +117,7 @@ export default function MonthCalendar({type}: MonthCalendarType) {
           ))}
         </MonthCalendarWeekDays>
         <MonthCalendarDaysContainer>
-          {splitIntoWeeks(calendarDays).map((weekDays, index) =>
-            renderWeek(weekDays, index),
-          )}
+          {splitIntoWeeks(calendarDays).map(renderWeek)}
         </MonthCalendarDaysContainer>
       </MonthCalendarBox>
     </MonthCalendarContainer>

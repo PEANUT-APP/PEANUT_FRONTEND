@@ -33,7 +33,6 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
       date: dayjs(today).format('YYYY-MM-DD'),
       eatTime: size === 's' && time ? time : selectedTime,
     });
-
   // Protector 용
   const {
     isSuccess: isPatientAllFoodInfoSuccess,
@@ -48,7 +47,6 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     date: dayjs(today).format('YYYY-MM-DD'),
     eatTime: size === 's' && time ? time : selectedTime,
   });
-
   // feedback 용
   const {
     isSuccess: isFeedbackFoodByTimeSuccess,
@@ -58,10 +56,10 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     eatTime: size === 's' && time ? time : selectedTime,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      let newFoodData;
-
+  // 데이터를 가져오는 함수
+  const fetchData = useCallback(async () => {
+    let newFoodData: FoodReturnType | undefined;
+    try {
       if (userState === 'Patient') {
         if (size === 's') {
           const result = await feedbackFoodByTimeRefetch();
@@ -79,7 +77,7 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
             newFoodData = result.data;
           }
         }
-      } else {
+      } else if (userState === 'Protector') {
         if (size === 'm') {
           if (selectedTime === '전체' || !selectedTime) {
             const result = await patientAllFoodRefetch();
@@ -91,9 +89,9 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
         }
       }
       setFoodData(newFoodData);
-    };
-
-    fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   }, [
     allFoodRefetch,
     feedbackFoodByTimeRefetch,
@@ -102,14 +100,12 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     patientFoodByTimeRefetch,
     selectedTime,
     size,
-    time,
-    today,
     userState,
   ]);
 
-  const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
-  const total = carbohydrate + fat + protein;
-  const prevTotal = carbohydrate + fat;
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, today, selectedTime, time]);
 
   // 시간대 변경 핸들러
   const handleTimeChange = (changedTime: string) => {
@@ -124,6 +120,10 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
       navigation.navigate('MealFeedback');
     }
   }, [navigation, size, userState]);
+
+  const {carbohydrate = 0, fat = 0, protein = 0} = foodData || {};
+  const total = carbohydrate + fat + protein;
+  const prevTotal = carbohydrate + fat;
 
   return {
     selectedTime,
