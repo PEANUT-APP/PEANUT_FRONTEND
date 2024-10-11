@@ -37,47 +37,6 @@ export default function ProtectorHome() {
     isPatientAdditionalInfoSuccess,
   } = useProtectorMain();
 
-  // 사용자 정보를 표시하는 함수
-  const renderUserInfo = () => {
-    if (!isPatientInfoSuccess) {
-      return null;
-    }
-    return (
-      <TopBox
-        profileImage={profileImage}
-        userName={patientName} // 보호자 이름 표시
-        fastingBloodSugar={fastingBloodSugar}
-        currentBloodSugar={currentBloodSugar}
-      />
-    );
-  };
-
-  // 추가 정보를 표시하는 함수
-  const renderAdditionalInfo = () => {
-    if (!isPatientAdditionalInfoSuccess) {
-      return null;
-    }
-    return (
-      <>
-        <Graph graphData={bloodSugarList} size="m" />
-        <ReportCardBox>
-          <ReportCard
-            navigate="MedicineDocument"
-            isPushed={isPushedMedicine}
-            onPush={pushMedicine}
-            name={medicineName}
-          />
-          <ReportCard
-            navigate="InsulinDocument"
-            isPushed={isPushedInsulin}
-            onPush={pushInsulin}
-            name={insulinName}
-          />
-        </ReportCardBox>
-      </>
-    );
-  };
-
   return (
     <ScrollLayout paddingBottom={101}>
       <HomeBox>
@@ -91,11 +50,36 @@ export default function ProtectorHome() {
               <NoticeIcon />
             </TouchableOpacity>
           </HomeIcons>
-          {renderUserInfo()}
+          {isPatientInfoSuccess && (
+            <TopBox
+              profileImage={profileImage}
+              userName={patientName}
+              fastingBloodSugar={fastingBloodSugar}
+              currentBloodSugar={currentBloodSugar}
+            />
+          )}
         </HomeTop>
         <HomeContent>
           <WeeklyCalendar />
-          {renderAdditionalInfo()}
+          {isPatientAdditionalInfoSuccess && (
+            <>
+              <Graph graphData={bloodSugarList} size="m" />
+              <ReportCardBox>
+                <ReportCard
+                  navigate="MedicineDocument"
+                  isPushed={isPushedMedicine}
+                  onPush={pushMedicine}
+                  name={medicineName}
+                />
+                <ReportCard
+                  navigate="InsulinDocument"
+                  isPushed={isPushedInsulin}
+                  onPush={pushInsulin}
+                  name={insulinName}
+                />
+              </ReportCardBox>
+            </>
+          )}
           <MealCard size="m" />
         </HomeContent>
       </HomeBox>

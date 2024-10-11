@@ -423,13 +423,16 @@ export function useFeedback() {
     | '저녁'
     | '간식';
 
+  // 선택된 Chip의 상태를 관리
+  const [selectedChip, setSelectedChip] = useState<string>(time || '전체');
+
   const {
     data: feedbackFoodData,
     isSuccess: isFeedbackFoodByTimeSuccess,
     refetch: feedbackFoodByTimeRefetch,
   } = useGetFeedbackFoodDetailByEatTimeQuery({
     date: dayjs(today).format('YYYY-MM-DD'),
-    eatTime: time,
+    eatTime: selectedChip,
   });
 
   const {
@@ -438,27 +441,16 @@ export function useFeedback() {
     refetch: feedbackBloodSugarRefetch,
   } = useGetFoodFeedBackBloodSugarInfoQuery({
     date: dayjs(today).format('YYYY-MM-DD'),
-    eatTime: time,
+    eatTime: selectedChip,
   });
-
-  console.log(feedbackFoodData);
-
-  // 선택된 Chip의 상태를 관리
-  const [selectedChip, setSelectedChip] = useState<string>(time || '전체');
 
   useEffect(() => {
     feedbackBloodSugarRefetch();
     feedbackFoodByTimeRefetch();
-  }, [
-    time,
-    selectedChip,
-    feedbackBloodSugarRefetch,
-    feedbackFoodByTimeRefetch,
-  ]);
+  }, [selectedChip, feedbackBloodSugarRefetch, feedbackFoodByTimeRefetch]);
 
-  // Chip 선택 시 호출되는 핸들러
   const handleSelectChip = (chip: string) => {
-    setSelectedChip(chip); // 선택된 Chip 상태 업데이트
+    setSelectedChip(chip);
   };
 
   const handleComplete = () => {
@@ -471,68 +463,58 @@ export function useFeedback() {
     return feedbackFoodData?.foodName?.join(', ') || ''; // 배열이 있으면 쉼표로 연결, 없으면 빈 문자열
   }, [feedbackFoodData]);
 
-  console.log(feedbackBloodSugarData);
-
-  const graphData: {
-    time: number;
-    minute: number | null;
-    value: number | null;
-    key: string;
-  }[] = [];
-
-  // 6시부터 24시까지의 데이터 포인트 초기화
-  for (let hour = 6; hour <= 24; hour++) {
-    graphData.push({
-      value: null,
-      time: hour,
-      minute: null,
-      key: '',
-    });
-  }
-
-  if (feedbackBloodSugarData?.beforeBloodSugar) {
-    const beforeBloodSugar = feedbackBloodSugarData.beforeBloodSugar;
-    const bloodSugarValue = Number(Object.keys(beforeBloodSugar)[0]);
-    const timestamp = Object.values(beforeBloodSugar)[0];
-    const time = moment(timestamp);
-    let hour = time.hour();
-    const minute = time.minute();
-
-    if (hour >= 1 && hour <= 5) {
-      hour = 6;
+  const graphData = useMemo(() => {
+    const data = [];
+    for (let hour = 6; hour <= 24; hour++) {
+      data.push({value: null, time: hour, minute: null, key: ''});
     }
 
-    if (hour >= 6 && hour <= 24) {
-      graphData[hour - 6] = {
-        value: bloodSugarValue,
-        time: hour,
-        minute: minute,
-        key: 'beforeBloodSugar',
-      };
-    }
-  }
+    if (feedbackBloodSugarData?.beforeBloodSugar) {
+      const beforeBloodSugar = feedbackBloodSugarData.beforeBloodSugar;
+      const bloodSugarValue = Number(Object.keys(beforeBloodSugar)[0]);
+      const timestamp = Object.values(beforeBloodSugar)[0];
+      const time = moment(timestamp);
+      let hour = time.hour();
+      const minute = time.minute();
 
-  if (feedbackBloodSugarData?.afterBloodSugar) {
-    const afterBloodSugar = feedbackBloodSugarData.afterBloodSugar;
-    const bloodSugarValue = Number(Object.keys(afterBloodSugar)[0]);
-    const timestamp = Object.values(afterBloodSugar)[0];
-    const time = moment(timestamp);
-    let hour = time.hour();
-    const minute = time.minute();
+      if (hour >= 1 && hour <= 5) {
+        hour = 6;
+      }
 
-    if (hour >= 1 && hour <= 5) {
-      hour = 24;
+      if (hour >= 6 && hour <= 24) {
+        data[hour - 6] = {
+          value: bloodSugarValue,
+          time: hour,
+          minute: minute,
+          key: 'beforeBloodSugar',
+        };
+      }
     }
 
-    if (hour >= 6 && hour <= 24) {
-      graphData[hour - 6] = {
-        value: bloodSugarValue,
-        time: hour,
-        minute: minute,
-        key: 'afterBloodSugar',
-      };
+    if (feedbackBloodSugarData?.afterBloodSugar) {
+      const afterBloodSugar = feedbackBloodSugarData.afterBloodSugar;
+      const bloodSugarValue = Number(Object.keys(afterBloodSugar)[0]);
+      const timestamp = Object.values(afterBloodSugar)[0];
+      const time = moment(timestamp);
+      let hour = time.hour();
+      const minute = time.minute();
+
+      if (hour >= 1 && hour <= 5) {
+        hour = 24;
+      }
+
+      if (hour >= 6 && hour <= 24) {
+        data[hour - 6] = {
+          value: bloodSugarValue,
+          time: hour,
+          minute: minute,
+          key: 'afterBloodSugar',
+        };
+      }
     }
-  }
+
+    return data;
+  }, [feedbackBloodSugarData]);
 
   return {
     formattedToday,

@@ -55,10 +55,8 @@ export const useMy = () => {
 
   useEffect(() => {
     if (isConnectingSuccess && connectingInfo.length !== 0) {
-      const isApproved = connectingInfo[0].status === '대기중';
-      setIsGuardianConnected(isApproved);
+      setIsGuardianConnected(connectingInfo[0].status === '대기중');
     }
-    console.log(isGuardianConnected);
   }, [connectingInfo, isConnectingSuccess, isGuardianConnected]);
 
   const handleGoConnectGuardian = useCallback(() => {
@@ -118,33 +116,23 @@ export const useMyEdit = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    setProfileImage(userInfo?.profileUrl);
-    setValue('nickname', userInfo?.username || '');
-    setValue('height', userInfo?.height || '');
-    setValue('weight', userInfo?.weight || '');
-  }, [
-    setValue,
-    userInfo?.height,
-    userInfo?.profileUrl,
-    userInfo?.username,
-    userInfo?.weight,
-  ]);
+    if (userInfo) {
+      setProfileImage(userInfo.profileUrl);
+      setValue('nickname', userInfo.username || '');
+      setValue('height', userInfo.height || '');
+      setValue('weight', userInfo.weight || '');
+    }
+  }, [setValue, userInfo]);
 
   useEffect(() => {
-    const isProfileChanged =
-      profileImage !== userInfo?.profileUrl || profileImage !== '';
-    const isNicknameChanged = nicknameWatch !== userInfo?.username;
-    const isHeightChanged = heightWatch !== userInfo?.height;
-    const isWeightChanged = weightWatch !== userInfo?.weight;
+    const hasChanges =
+      profileImage !== userInfo?.profileUrl ||
+      profileImage !== '' ||
+      nicknameWatch !== userInfo?.username ||
+      heightWatch !== userInfo?.height ||
+      weightWatch !== userInfo?.weight;
 
-    setIsButtonDisabled(
-      !(
-        isProfileChanged ||
-        isNicknameChanged ||
-        isHeightChanged ||
-        isWeightChanged
-      ),
-    );
+    setIsButtonDisabled(!hasChanges);
   }, [profileImage, nicknameWatch, heightWatch, weightWatch, userInfo]);
 
   const handleProfilePress = async () => {
@@ -186,15 +174,13 @@ export const useMyEdit = () => {
         type: `image/${fileType}`,
       });
     }
-    console.log(nickname, height, weight);
     try {
-      const response = await updateUserInfo({
+      await updateUserInfo({
         formData,
         nickname,
         height,
         weight,
       }).unwrap();
-      console.log('수정 완료', response);
       userInfoRefetch();
     } catch (error) {
       console.log(error);
@@ -222,13 +208,12 @@ export const useMyNotice = () => {
 
   const handleEditNotice = async (type: string, newToggleState: boolean) => {
     try {
-      const response = await userAlamInfo({
+      await userAlamInfo({
         guardianAlam: type === 'patient' ? newToggleState : isPatientToggleOn,
         insulinAlam: type === 'insulin' ? newToggleState : isInsulinToggleOn,
         medicationAlam:
           type === 'medicine' ? newToggleState : isMedicineToggleOn,
       }).unwrap();
-      console.log(response);
     } catch (error) {
       console.log(error);
       Alert.alert('알림 업데이트에 실패했습니다!');

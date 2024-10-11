@@ -26,7 +26,7 @@ export default function MyCommunity() {
       </MyMoreTop>
       <FlatList
         data={communityData}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={index => index.toString()}
         renderItem={({item}) => (
           <CommunityListItem
             title={item.title}

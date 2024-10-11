@@ -36,8 +36,6 @@ export default function My() {
     isGuardianConnected,
   } = useMy();
 
-  console.log(userInfo);
-
   return (
     <Layout>
       <MyContainer>
