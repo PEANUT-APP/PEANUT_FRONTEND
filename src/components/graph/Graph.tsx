@@ -116,11 +116,15 @@ export default function Graph({graphData, size}: GraphType) {
 
                 const x1 =
                   padding + (point.index * chartWidth) / (graphData.length - 1);
-                const y1 = chartHeight - (point.value * chartHeight) / 200;
+                const y1 =
+                  chartHeight -
+                  (Math.min(point.value, 200) * chartHeight) / 200;
                 const x2 =
                   padding +
                   (nextPoint.index * chartWidth) / (graphData.length - 1);
-                const y2 = chartHeight - (nextPoint.value * chartHeight) / 200;
+                const y2 =
+                  chartHeight -
+                  (Math.min(nextPoint.value, 200) * chartHeight) / 200;
 
                 return (
                   <Line
@@ -143,7 +147,9 @@ export default function Graph({graphData, size}: GraphType) {
                 if (point.value !== null) {
                   const x =
                     padding + (index * chartWidth) / (graphData.length - 1); // X축 위치 계산
-                  const y = chartHeight - (point.value * chartHeight) / 200; // Y축 위치 계산
+                  const y =
+                    chartHeight -
+                    (Math.min(point.value, 200) * chartHeight) / 200; // Y축 위치 계산
 
                   const isSelected = index === selectedPoint;
 
@@ -203,12 +209,10 @@ export default function Graph({graphData, size}: GraphType) {
               if (point.value !== null) {
                 const x =
                   padding + (index * chartWidth) / (graphData.length - 1);
-                const y = chartHeight - (point.value * chartHeight) / 200;
+                const y =
+                  chartHeight -
+                  (Math.min(point.value, 200) * chartHeight) / 200;
 
-                let yToolTip = y;
-                if (point.value > 200) {
-                  yToolTip = -chartWidth + 215;
-                }
                 return (
                   <G key={index}>
                     {/* 첫 번째 데이터 포인트 아래에 값 표시 */}
@@ -236,7 +240,7 @@ export default function Graph({graphData, size}: GraphType) {
                       index === graphData.indexOf(secondPoint) && (
                         <GraphFeedbackAfterToolTip
                           style={{
-                            top: yToolTip - 65, // 두 번째 점 위
+                            top: y - 65, // 두 번째 점 위
                             left: x + 5,
                           }}>
                           <GraphMainToolTipTimeText

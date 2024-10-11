@@ -7,10 +7,15 @@ export default function SelectChips({
   isSelected,
   onPress,
 }: SelectType) {
+  const handlePress = () => {
+    if (children !== '전체' && onPress) {
+      onPress(); // '전체'가 아닐 때만 onPress 실행
+    }
+  };
   return (
     <SelectChipsContainer
       isSelected={isSelected}
-      onPress={onPress}
+      onPress={handlePress}
       activeOpacity={1}>
       <SelectChipsText isSelected={isSelected}>{children}</SelectChipsText>
     </SelectChipsContainer>

@@ -4,7 +4,7 @@ import {FormData} from '../../components/input/types';
 import {HandleNextStepProps} from './types';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
   useSendSimpleMessageMutation,
   useSignInMutation,
@@ -428,7 +428,7 @@ export const useAdditionalInformation = () => {
     dispatch(updateForm(data));
 
     try {
-      await signUp(formData).unwrap();
+      await signUp({...formData, ...data}).unwrap();
       navigation.push('SignUpComplete');
     } catch (error) {
       console.error(error);
@@ -451,16 +451,16 @@ export const useAdditionalInformation = () => {
   };
 };
 
-export const UseSignUpComplete = () => {
+export const useSignUpComplete = () => {
   const dispatch = useDispatch();
   const name = useSelector((state: RootState) => state.form.name);
 
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const handleGoLogin = () => {
+  const handleGoLogin = useCallback(() => {
     navigation.navigate('SignIn');
     dispatch(resetForm());
-  };
+  }, [navigation, dispatch]);
 
   return {name, handleGoLogin};
 };

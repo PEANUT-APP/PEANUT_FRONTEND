@@ -3,10 +3,10 @@ import Sign from './Sign';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {SignCompleteIcon} from './styles';
 import SignUpCompleteIcon from '../../assets/images/SignUpCompleteIcon.svg';
-import {UseSignUpComplete} from './hooks';
+import {useSignUpComplete} from './hooks';
 
 export default function SignUpComplete() {
-  const {name, handleGoLogin} = UseSignUpComplete();
+  const {name, handleGoLogin} = useSignUpComplete();
 
   return (
     <Sign

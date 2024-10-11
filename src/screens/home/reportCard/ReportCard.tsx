@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {TouchableWithoutFeedback} from 'react-native';
 import {
   CardContainer,
@@ -31,19 +31,35 @@ export default function ReportCard({
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const userState = useSelector((state: RootState) => state.user.userState);
 
-  const recordName = navigate === 'MedicineDocument' ? '복약' : '인슐린';
+  const recordName = useMemo(
+    () => (navigate === 'MedicineDocument' ? '복약' : '인슐린'),
+    [navigate],
+  );
 
   const handlePress = useCallback(() => {
     if (name?.includes('등록해주세요') && userState === 'Patient') {
       if (navigate === 'MedicineDocument' || navigate === 'InsulinDocument') {
         navigation.navigate(navigate);
       }
-    } else {
-      return;
     }
   }, [name, navigate, navigation, userState]);
 
-  console.log(isPushed);
+  const subtitleText = useMemo(() => {
+    if (userState === 'Patient') {
+      return isChecked ? '매우 잘하고 있어요!' : time;
+    } else if (userState === 'Protector') {
+      if (isPushed) {
+        return name?.includes('없어요')
+          ? ''
+          : recordName === '복약'
+          ? '제시간에 섭취했어요'
+          : '제시간에 맞았어요';
+      }
+      return recordName === '복약'
+        ? '복용 시간이 지났어요!'
+        : '투약 시간이 지났어요!';
+    }
+  }, [isChecked, isPushed, name, recordName, time, userState]);
 
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
@@ -51,23 +67,7 @@ export default function ReportCard({
         <CardTop>
           <CardTopText>
             <CardTitle weight="bold">{recordName} 기록</CardTitle>
-            {userState === 'Patient' ? (
-              <CardSubTitle>
-                {isChecked ? '매우 잘하고 있어요!' : time}
-              </CardSubTitle>
-            ) : (
-              <CardSubTitle>
-                {isPushed
-                  ? name?.includes('없어요')
-                    ? ''
-                    : recordName === '복약'
-                    ? '제시간에 섭취했어요'
-                    : '제시간에 맞았어요'
-                  : recordName === '복약'
-                  ? '복용 시간이 지났어요!'
-                  : '투약 시간이 지났어요!'}
-              </CardSubTitle>
-            )}
+            <CardSubTitle>{subtitleText}</CardSubTitle>
           </CardTopText>
           {!name?.includes('등록해주세요') &&
             onPress &&

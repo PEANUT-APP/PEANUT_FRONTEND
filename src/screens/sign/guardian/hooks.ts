@@ -42,7 +42,6 @@ export function useConnect() {
   } = useGetGuardianInfoQuery();
   //const [confirmGuardianRelation] = useConfirmGuardianRelationMutation();
 
-  console.log(guardianInfoData);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {

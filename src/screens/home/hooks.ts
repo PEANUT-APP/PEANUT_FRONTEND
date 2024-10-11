@@ -15,15 +15,11 @@ import {RootState} from '../../store/store';
 import {resetToday} from '../../slices/todaySlice';
 import {setUserId, setUserState} from '../../slices/userSlice';
 import {useGetPatientInfoQuery} from '../../services/user/userApi';
+import {GraphType} from './types';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
-  const graphData: {
-    time: number;
-    minute: number | null;
-    value: number | null;
-    key: string;
-  }[] = [];
+  const graphData: GraphType[] = [];
 
   // 6시부터 23시까지의 시간대를 모두 미리 null 값으로 초기화
   for (let hour = 6; hour <= 24; hour++) {
@@ -88,26 +84,16 @@ export function useMain() {
 }
 
 export function usePatientMain() {
-  const userState = useSelector((state: RootState) => state.user.userState);
   const dispatch = useDispatch();
+  const userState = useSelector((state: RootState) => state.user.userState);
   const today = useSelector((state: RootState) => state.today.today);
-
-  const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
-  const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
-  const [bloodSugarList, setBloodSugarList] = useState<
-    {
-      time: number;
-      minute: number | null;
-      value: number | null;
-      key: string;
-    }[]
-  >([]);
 
   const {
     data: userInfo,
     isSuccess: isUserInfoSuccess,
     refetch: userInfoRefetch,
   } = useGetUserInfoMainPageQuery();
+
   const {
     data: additionalInfo,
     isSuccess: isAdditionalInfoSuccess,
@@ -115,6 +101,10 @@ export function usePatientMain() {
   } = useGetAdditionalInfoMainPageQuery({
     date: dayjs(today).format('YYYY-MM-DD'),
   });
+
+  const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
+  const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
+  const [bloodSugarList, setBloodSugarList] = useState<GraphType[]>([]);
 
   useEffect(() => {
     dispatch(resetToday());
@@ -131,18 +121,12 @@ export function usePatientMain() {
   ]);
 
   useEffect(() => {
+    if (additionalInfo?.bloodSugarList) {
+      setBloodSugarList(mapBloodSugarToGraph(additionalInfo.bloodSugarList));
+    }
     setIsCheckedInsulin(additionalInfo?.insulinState || false);
     setIsCheckedMedicine(additionalInfo?.medicineState || false);
-  }, [additionalInfo?.insulinState, additionalInfo?.medicineState]);
-
-  useEffect(() => {
-    if (additionalInfo?.bloodSugarList) {
-      const updatedBloodSugarList = mapBloodSugarToGraph(
-        additionalInfo.bloodSugarList,
-      );
-      setBloodSugarList(updatedBloodSugarList);
-    }
-  }, [additionalInfo?.bloodSugarList]);
+  }, [additionalInfo]);
 
   const fastingBloodSugar =
     parseInt(userInfo?.fastingBloodSugarLevel || '0', 10) || 0;
@@ -183,16 +167,14 @@ export function usePatientMain() {
     }
   }, [additionalInfo?.insulinTime]);
 
-  const toggleChecked = useCallback(
-    (type: string) => {
-      if (type === 'medicine' && !isCheckedMedicine) {
-        setIsCheckedMedicine(true);
-      }
-      if (type === 'insulin' && !isCheckedInsulin) {
-        setIsCheckedInsulin(true);
-      }
-    },
-    [isCheckedInsulin, isCheckedMedicine],
+  const toggleMedicine = useCallback(
+    () => setIsCheckedMedicine(!isCheckedMedicine),
+    [isCheckedMedicine],
+  );
+
+  const toggleInsulin = useCallback(
+    () => setIsCheckedInsulin(!isCheckedInsulin),
+    [isCheckedInsulin],
   );
 
   return {
@@ -208,8 +190,8 @@ export function usePatientMain() {
     insulinTime,
     isCheckedMedicine,
     isCheckedInsulin,
-    toggleMedicine: () => toggleChecked('medicine'),
-    toggleInsulin: () => toggleChecked('insulin'),
+    toggleMedicine,
+    toggleInsulin,
     isAdditionalInfoSuccess,
   };
 }
@@ -218,17 +200,6 @@ export function useProtectorMain() {
   const userState = useSelector((state: RootState) => state.user.userState);
   const dispatch = useDispatch();
   const today = useSelector((state: RootState) => state.today.today);
-
-  const [isPushedMedicine, setIsPushedMedicine] = useState(false);
-  const [isPushedInsulin, setIsPushedInsulin] = useState(false);
-  const [bloodSugarList, setBloodSugarList] = useState<
-    {
-      time: number;
-      minute: number | null;
-      value: number | null;
-      key: string;
-    }[]
-  >([]);
 
   const {
     data: patientInfo,
@@ -243,6 +214,12 @@ export function useProtectorMain() {
     date: dayjs(today).format('YYYY-MM-DD'),
   });
 
+  console.log(patientAdditionalInfo);
+
+  const [isPushedMedicine, setIsPushedMedicine] = useState(false);
+  const [isPushedInsulin, setIsPushedInsulin] = useState(false);
+  const [bloodSugarList, setBloodSugarList] = useState<GraphType[]>([]);
+
   useEffect(() => {
     dispatch(resetToday());
     dispatch(setUserState('Protector'));
@@ -251,30 +228,22 @@ export function useProtectorMain() {
   }, [patientAdditionalRefetch, dispatch, userState, patientInfoRefetch]);
 
   useEffect(() => {
-    setIsPushedInsulin(patientAdditionalInfo?.insulinAlam || false);
-    setIsPushedMedicine(patientAdditionalInfo?.medicationAlam || false);
-  }, [
-    patientAdditionalInfo?.insulinAlam,
-    patientAdditionalInfo?.medicationAlam,
-  ]);
-
-  useEffect(() => {
     if (patientAdditionalInfo?.bloodSugarList) {
-      const updatedBloodSugarList = mapBloodSugarToGraph(
-        patientAdditionalInfo.bloodSugarList,
+      setBloodSugarList(
+        mapBloodSugarToGraph(patientAdditionalInfo.bloodSugarList),
       );
-      setBloodSugarList(updatedBloodSugarList);
     }
-  }, [patientAdditionalInfo?.bloodSugarList]);
-
-  useEffect(() => {
     if (patientAdditionalInfo?.medicineName === '복용 기록 없음') {
       setIsPushedMedicine(true);
+    } else {
+      setIsPushedInsulin(patientAdditionalInfo?.insulinAlam || false);
     }
     if (patientAdditionalInfo?.insulinName === '투여 기록 없음') {
       setIsPushedInsulin(true);
+    } else {
+      setIsPushedMedicine(patientAdditionalInfo?.medicationAlam || false);
     }
-  }, [patientAdditionalInfo?.insulinName, patientAdditionalInfo?.medicineName]);
+  }, [patientAdditionalInfo]);
 
   const fastingBloodSugar =
     parseInt(patientInfo?.fastingBloodSugarLevel || '0', 10) || 0;
@@ -293,17 +262,8 @@ export function useProtectorMain() {
       : patientAdditionalInfo?.insulinName;
   }, [patientAdditionalInfo?.insulinName]);
 
-  const handlePush = useCallback(
-    (type: string) => {
-      if (type === 'medicine' && !isPushedMedicine) {
-        setIsPushedMedicine(true);
-      }
-      if (type === 'insulin' && !isPushedInsulin) {
-        setIsPushedInsulin(true);
-      }
-    },
-    [isPushedInsulin, isPushedMedicine],
-  );
+  const pushMedicine = useCallback(() => setIsPushedMedicine(true), []);
+  const pushInsulin = useCallback(() => setIsPushedInsulin(true), []);
 
   return {
     fastingBloodSugar,
@@ -315,8 +275,8 @@ export function useProtectorMain() {
     insulinName,
     isPushedMedicine,
     isPushedInsulin,
-    pushMedicine: () => handlePush('medicine'),
-    pushInsulin: () => handlePush('insulin'),
+    pushMedicine,
+    pushInsulin,
     isPatientAdditionalInfoSuccess,
   };
 }

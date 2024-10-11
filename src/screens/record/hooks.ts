@@ -100,8 +100,8 @@ export function useMedicine() {
 
   useEffect(() => {
     fetchMedicineData();
-    console.log(medicineData);
-  }, [fetchMedicineData, medicineData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [medicineData]);
 
   useEffect(() => {
     if (medicineData) {
@@ -210,16 +210,15 @@ export function useInsulin() {
 
   useEffect(() => {
     fetchInsulinData();
-    console.log('인슐린', insulinData);
-  }, [fetchInsulinData, insulinData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [insulinData]);
 
   useEffect(() => {
     if (insulinData) {
-      const initialInsulinState: Record<string, boolean> = {};
-
-      insulinData.map(item => {
-        initialInsulinState[item.productName] = true;
-      });
+      const initialInsulinState = insulinData.reduce((acc, item) => {
+        acc[item.productName] = true;
+        return acc;
+      }, {} as Record<string, boolean>);
 
       setInsulinState(initialInsulinState);
     }
@@ -257,6 +256,11 @@ export function useInsulin() {
     navigation.navigate('Insulin');
   }, [navigation]);
 
+  const transformedInsulinData = insulinData?.map(item => ({
+    ...item,
+    dosage: `${item.dosage}(U/mL)`, // Append (U/mL) to the dosage
+  }));
+
   return {
     control,
     errors,
@@ -274,7 +278,7 @@ export function useInsulin() {
     insulinState,
     toggleInsulinState,
     handleGoAdd,
-    insulinData,
+    insulinData: transformedInsulinData,
   };
 }
 
