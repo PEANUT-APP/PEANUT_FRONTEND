@@ -50,7 +50,14 @@ export default function CommunityListItem({
           <TouchableOpacity activeOpacity={1} onPress={handleClickKebab}>
             <DesignIcon type="kebab" size="l" color={colors.TextDisabled} />
           </TouchableOpacity>
-          {showWriter && <Writer userId={userId || null} id={id} />}
+          {showWriter && (
+            <Writer
+              userId={userId || null}
+              id={id}
+              title={title}
+              content={content}
+            />
+          )}
         </CommunityListItemTitleBox>
         <CommunityListItemDate>
           {formatDateTime(create_at)}

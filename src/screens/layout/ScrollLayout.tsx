@@ -13,7 +13,7 @@ export default function ScrollLayout({children, paddingBottom}: LayoutType) {
           {children}
         </ScrollView>
       </ContainerView>
-      <NavigationBar role="Patient" />
+      <NavigationBar />
     </GlobalView>
   );
 }

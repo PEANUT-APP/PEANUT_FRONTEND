@@ -23,6 +23,7 @@ import {
   AverageItem,
   BloodSugarItem,
 } from '../../screens/medical/item/CalendarItem';
+import DatePicker from 'react-native-date-picker';
 
 // 상수 선언
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -61,6 +62,8 @@ const splitIntoWeeks = (days: DayItem[]) =>
 export default function MonthCalendar({type}: MonthCalendarType) {
   const [currentDate, setCurrentDate] = useState(dayjs().add(9, 'hour'));
   const [selectedDate, setSelectedDate] = useState(currentDate.date());
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   const calendarDays = useMemo(
     () => generateCalendarDays(currentDate),
@@ -72,6 +75,33 @@ export default function MonthCalendar({type}: MonthCalendarType) {
       setSelectedDate(day);
     }
   }, []);
+
+  const handleOpenDate = useCallback(() => {
+    setDatePickerVisibility(true); // DatePicker 열기
+  }, []);
+
+  const handleConfirm = useCallback(
+    (selectDate: Date) => {
+      const selectedDayjs = dayjs(selectDate);
+      const isSameMonth = selectedDayjs.isSame(currentDate, 'month');
+      const isSameYear = selectedDayjs.isSame(currentDate, 'year');
+
+      let newDate;
+
+      if (!isSameYear || !isSameMonth) {
+        newDate = selectedDayjs.startOf('month'); // 1일로 설정
+      } else {
+        newDate = selectedDayjs; // 현재 연도 및 월인 경우 선택한 날짜 그대로 사용
+      }
+
+      setDate(selectDate);
+      setCurrentDate(newDate); // 선택된 날짜로 currentDate 설정
+      setSelectedDate(newDate.date()); // 새로운 currentDate의 날짜로 선택된 날짜 설정
+
+      setDatePickerVisibility(false); // DatePicker 닫기
+    },
+    [currentDate],
+  );
 
   const renderWeek = useCallback(
     (weekDays: DayItem[], index: number) => (
@@ -104,7 +134,7 @@ export default function MonthCalendar({type}: MonthCalendarType) {
 
   return (
     <MonthCalendarContainer>
-      <MonthCalendarTitle>
+      <MonthCalendarTitle onPress={handleOpenDate} activeOpacity={1}>
         <MonthCalendarDateText weight="bold">
           {currentDate.format('YYYY년 M월')}
         </MonthCalendarDateText>
@@ -120,6 +150,14 @@ export default function MonthCalendar({type}: MonthCalendarType) {
           {splitIntoWeeks(calendarDays).map(renderWeek)}
         </MonthCalendarDaysContainer>
       </MonthCalendarBox>
+      <DatePicker
+        modal
+        open={isDatePickerVisible}
+        date={date}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={() => setDatePickerVisibility(false)} // DatePicker 닫기
+      />
     </MonthCalendarContainer>
   );
 }

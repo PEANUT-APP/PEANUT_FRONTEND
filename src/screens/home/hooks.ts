@@ -4,6 +4,7 @@ import {
   useGetPatientAdditionalInfoMainPageQuery,
   useGetPatientUserInfoMainPageQuery,
   useGetUserInfoMainPageQuery,
+  useSaveMedicineInsulinStatusMutation,
 } from '../../services/mainPage/mainPageApi';
 import {BloodSugarItem} from '../../services/mainPage/types';
 import moment from 'moment';
@@ -16,9 +17,10 @@ import {resetToday} from '../../slices/todaySlice';
 import {setUserId, setUserState} from '../../slices/userSlice';
 import {useGetPatientInfoQuery} from '../../services/user/userApi';
 import {GraphType} from './types';
+import {Alert} from 'react-native';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
-function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
+function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | []) {
   const graphData: GraphType[] = [];
 
   // 6시부터 23시까지의 시간대를 모두 미리 null 값으로 초기화
@@ -50,6 +52,8 @@ function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | undefined) {
       graphData[hour - 6].key = bloodSugarKey;
     }
   });
+
+  console.log(graphData);
 
   return graphData;
 }
@@ -91,16 +95,20 @@ export function usePatientMain() {
   const {
     data: userInfo,
     isSuccess: isUserInfoSuccess,
+    isLoading: isUserInfoLoading,
     refetch: userInfoRefetch,
   } = useGetUserInfoMainPageQuery();
 
   const {
     data: additionalInfo,
     isSuccess: isAdditionalInfoSuccess,
+    isLoading: isAdditionalInfoLoading,
     refetch: additionalRefetch,
   } = useGetAdditionalInfoMainPageQuery({
     date: dayjs(today).format('YYYY-MM-DD'),
   });
+
+  const [saveMedicineInsulinStatus] = useSaveMedicineInsulinStatusMutation();
 
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
@@ -120,12 +128,15 @@ export function usePatientMain() {
     userState,
   ]);
 
+  console.log(additionalInfo);
+
   useEffect(() => {
     if (additionalInfo?.bloodSugarList) {
       setBloodSugarList(mapBloodSugarToGraph(additionalInfo.bloodSugarList));
     }
+
     setIsCheckedInsulin(additionalInfo?.insulinState || false);
-    setIsCheckedMedicine(additionalInfo?.medicineState || false);
+    setIsCheckedMedicine(additionalInfo?.medicationState || false);
   }, [additionalInfo]);
 
   const fastingBloodSugar =
@@ -134,16 +145,22 @@ export function usePatientMain() {
     parseInt(userInfo?.currentBloodSugarLevel || '0', 10) || 0;
 
   const medicineName = useMemo(() => {
-    return additionalInfo?.medicineName === '복용 기록 없음'
+    return additionalInfo?.medicineName === '복용 기록 없음' ||
+      additionalInfo?.medicineTime === '복용 기록 없음'
       ? '약을 등록해주세요'
       : additionalInfo?.medicineName;
-  }, [additionalInfo?.medicineName]);
+  }, [additionalInfo?.medicineName, additionalInfo?.medicineTime]);
 
   const insulinName = useMemo(() => {
-    return additionalInfo?.insulinName === '투여 기록 없음'
+    return additionalInfo?.insulinName === '투여 기록 없음' ||
+      additionalInfo?.insulinTime === '투여 기록 없음'
       ? '인슐린을 등록해주세요'
-      : additionalInfo?.insulinName;
-  }, [additionalInfo?.insulinName]);
+      : `${additionalInfo?.insulinName} ${additionalInfo?.insulinDosage} U/mL`;
+  }, [
+    additionalInfo?.insulinDosage,
+    additionalInfo?.insulinName,
+    additionalInfo?.insulinTime,
+  ]);
 
   const medicineTime = useMemo(() => {
     if (
@@ -167,15 +184,53 @@ export function usePatientMain() {
     }
   }, [additionalInfo?.insulinTime]);
 
-  const toggleMedicine = useCallback(
-    () => setIsCheckedMedicine(!isCheckedMedicine),
-    [isCheckedMedicine],
-  );
+  const toggleMedicine = useCallback(async () => {
+    const newMedicineState = !isCheckedMedicine;
 
-  const toggleInsulin = useCallback(
-    () => setIsCheckedInsulin(!isCheckedInsulin),
-    [isCheckedInsulin],
-  );
+    try {
+      const response = await saveMedicineInsulinStatus({
+        date: dayjs(today).format('YYYY-MM-DD'),
+        insulinStatus: isCheckedInsulin,
+        medicineStatus: newMedicineState,
+      }).unwrap();
+      setIsCheckedMedicine(newMedicineState);
+      additionalRefetch();
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('복약 상태 저장에 실패했습니다!');
+    }
+  }, [
+    additionalRefetch,
+    isCheckedInsulin,
+    isCheckedMedicine,
+    saveMedicineInsulinStatus,
+    today,
+  ]);
+
+  const toggleInsulin = useCallback(async () => {
+    const newInsulinState = !isCheckedInsulin;
+
+    try {
+      const response = await saveMedicineInsulinStatus({
+        date: dayjs(today).format('YYYY-MM-DD'),
+        insulinStatus: newInsulinState,
+        medicineStatus: isCheckedMedicine,
+      }).unwrap();
+      setIsCheckedInsulin(newInsulinState);
+      additionalRefetch();
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('복약 상태 저장에 실패했습니다!');
+    }
+  }, [
+    additionalRefetch,
+    isCheckedInsulin,
+    isCheckedMedicine,
+    saveMedicineInsulinStatus,
+    today,
+  ]);
 
   return {
     fastingBloodSugar,
@@ -193,6 +248,8 @@ export function usePatientMain() {
     toggleMedicine,
     toggleInsulin,
     isAdditionalInfoSuccess,
+    isUserInfoLoading,
+    isAdditionalInfoLoading,
   };
 }
 
@@ -204,11 +261,13 @@ export function useProtectorMain() {
   const {
     data: patientInfo,
     isSuccess: isPatientInfoSuccess,
+    isLoading: isPatientInfoLoading,
     refetch: patientInfoRefetch,
   } = useGetPatientUserInfoMainPageQuery();
   const {
     data: patientAdditionalInfo,
     isSuccess: isPatientAdditionalInfoSuccess,
+    isLoading: isPatientAdditionalInfoLoading,
     refetch: patientAdditionalRefetch,
   } = useGetPatientAdditionalInfoMainPageQuery({
     date: dayjs(today).format('YYYY-MM-DD'),
@@ -278,5 +337,7 @@ export function useProtectorMain() {
     pushMedicine,
     pushInsulin,
     isPatientAdditionalInfoSuccess,
+    isPatientInfoLoading,
+    isPatientAdditionalInfoLoading,
   };
 }

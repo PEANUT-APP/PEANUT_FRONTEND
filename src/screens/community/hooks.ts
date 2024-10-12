@@ -10,6 +10,7 @@ import {
   useDetailsCommunityQuery,
   useGetAllCommunityQuery,
   useLikeMutation,
+  useUpdateCommunityMutation,
 } from '../../services/community/communityApi';
 import {ParamList} from '../../navigation/types';
 import {useEffect, useMemo, useState} from 'react';
@@ -38,7 +39,7 @@ export function useCommunity() {
   };
 
   const handleGoWrite = () => {
-    navigation.navigate('Write');
+    navigation.navigate('Write', {});
   };
 
   return {
@@ -52,38 +53,78 @@ export function useCommunity() {
 export function useWrite() {
   const navigation = useNavigation<StackNavigationProp<ParamList>>();
 
+  const route =
+    useRoute<
+      RouteProp<
+        {params: {id: number; editTitle: string; editContent: string}},
+        'params'
+      >
+    >();
+  const {id, editTitle, editContent} = route.params;
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [createCommunity] = useCreateCommunityMutation();
+  const [updateCommunity] = useUpdateCommunityMutation();
 
-  const handleCreate = async () => {
+  useEffect(() => {
+    if (editTitle && editContent) {
+      setIsButtonDisabled(title === editTitle && content === editContent);
+    } else {
+      setIsButtonDisabled(!title || !content);
+    }
+  }, [content, editContent, editTitle, title]);
+
+  useEffect(() => {
+    if (editTitle && editContent) {
+      setTitle(editTitle);
+      setContent(editContent);
+    }
+  }, [editContent, editTitle]);
+
+  const handleRegister = async () => {
     if (!title || !content) {
       return;
     }
 
     try {
-      await createCommunity({
-        title: title,
-        content: content,
-      }).unwrap();
+      if (editTitle && editContent && id) {
+        await updateCommunity({
+          id,
+          title,
+          content,
+        }).unwrap();
+        navigation.push('Detail', {id});
+      } else {
+        await createCommunity({
+          title: title,
+          content: content,
+        }).unwrap();
+        navigation.push('Community');
+      }
       setTitle('');
       setContent('');
-      navigation.push('Community');
     } catch (error) {
       console.error(error);
       Alert.alert('글 등록에 실패했습니다.');
     }
   };
 
-  return {title, setTitle, content, setContent, handleCreate};
+  return {
+    title,
+    setTitle,
+    content,
+    setContent,
+    handleRegister,
+    isButtonDisabled,
+  };
 }
 
 export function useDetail(liked?: boolean) {
   const route = useRoute<RouteProp<{params: {id: number}}, 'params'>>();
   const {id} = route.params;
-
-  console.log(id);
 
   const {
     data: detailData,

@@ -25,6 +25,7 @@ export default function CommunityCard({
   imageUrl,
   nickName,
   userId,
+  id,
   title,
   content,
   like,
@@ -51,7 +52,9 @@ export default function CommunityCard({
         <TouchableOpacity activeOpacity={1} onPress={handleClickKebab}>
           <DesignIcon type="kebab" size="l" color={colors.TextDisabled} />
         </TouchableOpacity>
-        {showWriter && <Writer userId={userId} />}
+        {showWriter && (
+          <Writer userId={userId} id={id} title={title} content={content} />
+        )}
       </CommunityCardTop>
       <CommunityCardContentBox>
         <CommunityCardTitle weight="bold">{title}</CommunityCardTitle>

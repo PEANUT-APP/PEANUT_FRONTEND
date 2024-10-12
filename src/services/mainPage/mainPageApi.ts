@@ -3,6 +3,7 @@ import {
   AdditionalInfoReturnType,
   FoodReturnType,
   PatientAdditionalInfoReturnType,
+  SaveStatusFormType,
   UserInfoReturnType,
 } from './types';
 
@@ -23,6 +24,14 @@ export const mainPageApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       providesTags: ['AdditionalInfo'],
+    }),
+    saveMedicineInsulinStatus: builder.mutation({
+      query: ({date, insulinStatus, medicineStatus}: SaveStatusFormType) => ({
+        url: '/main-api/get-add-info/save/status',
+        method: 'PUT',
+        params: {date, insulinStatus, medicineStatus},
+      }),
+      invalidatesTags: ['AdditionalInfo'],
     }),
     getFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
       query: ({date}) => ({
@@ -77,6 +86,7 @@ export const {
   useGetAdditionalInfoMainPageQuery,
   useGetFoodAllDetailQuery,
   useGetFoodDetailByEatTimeQuery,
+  useSaveMedicineInsulinStatusMutation,
   useGetPatientUserInfoMainPageQuery,
   useGetPatientAdditionalInfoMainPageQuery,
   useGetPatientFoodAllDetailQuery,

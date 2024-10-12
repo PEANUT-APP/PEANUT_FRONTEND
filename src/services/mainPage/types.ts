@@ -16,13 +16,20 @@ export interface BloodSugarItem {
 }
 
 export interface AdditionalInfoReturnType {
-  bloodSugarList: BloodSugarItem[];
+  bloodSugarList: BloodSugarItem[] | [];
   insulinState: boolean;
   insulinName: string;
+  insulinDosage: string;
   insulinTime: string;
-  medicineState: boolean;
+  medicationState: boolean;
   medicineName: string;
   medicineTime: string;
+}
+
+export interface SaveStatusFormType {
+  date: string;
+  insulinStatus: boolean;
+  medicineStatus: boolean;
 }
 
 export interface PatientAdditionalInfoReturnType {
