@@ -8,7 +8,7 @@ export default function Layout({children}: LayoutType) {
   return (
     <GlobalView>
       <ContainerView>{children}</ContainerView>
-      <NavigationBar role="Patient" />
+      <NavigationBar />
     </GlobalView>
   );
 }

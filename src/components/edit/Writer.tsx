@@ -12,6 +12,9 @@ import {RootState} from '../../store/store';
 import {WriterType} from './types';
 import DeleteIcon from '../icon/DeleteIcon';
 import {useDeleteCommunityMutation} from '../../services/community/communityApi';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {ParamList} from '../../navigation/types';
 
 // 공통 아이콘 버튼 컴포넌트
 const IconButton = ({
@@ -29,21 +32,27 @@ const IconButton = ({
   </MeWriterBox>
 );
 
-export default function Writer({userId, id}: WriterType) {
+export default function Writer({userId, id, title, content}: WriterType) {
   const localUserId = useSelector((state: RootState) => state.user.userId);
+
+  const navigation = useNavigation<StackNavigationProp<ParamList>>();
 
   const [deleteCommunity] = useDeleteCommunityMutation();
 
   const handleDelete = useCallback(async () => {
     if (id) {
       try {
-        const response = deleteCommunity(id).unwrap();
-        console.log(response);
+        await deleteCommunity(id).unwrap();
+        navigation.push('Community');
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
-  }, [deleteCommunity, id]);
+  }, [deleteCommunity, id, navigation]);
+
+  const handleEdit = useCallback(() => {
+    navigation.navigate('Write', {id, editTitle: title, editContent: content});
+  }, [content, id, navigation, title]);
 
   // 자신이 작성자가 아닌 경우
   if (localUserId !== userId) {
@@ -59,7 +68,7 @@ export default function Writer({userId, id}: WriterType) {
   return (
     <MeWriterContainer>
       <IconButton
-        onPress={() => console.log('Edit clicked')}
+        onPress={handleEdit}
         icon={<DesignIcon type="pencil" size="s" color={colors.TextNeutral} />}
         text="수정하기"
       />

@@ -41,59 +41,61 @@ export default function PatientHome() {
   } = usePatientMain();
 
   return (
-    <ScrollLayout paddingBottom={101}>
-      <HomeBox>
-        <HomeTop
-          source={require('../../assets/images/gradientBackgroundDark.png')}>
-          <HomeIcons>
-            <TouchableOpacity activeOpacity={1} onPress={handleMyPagePress}>
-              <MyPageIcon />
+    <>
+      <ScrollLayout paddingBottom={101}>
+        <HomeBox>
+          <HomeTop
+            source={require('../../assets/images/gradientBackgroundDark.png')}>
+            <HomeIcons>
+              <TouchableOpacity activeOpacity={1} onPress={handleMyPagePress}>
+                <MyPageIcon />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={1} onPress={handleNotifyPress}>
+                <NoticeIcon />
+              </TouchableOpacity>
+            </HomeIcons>
+            {isUserInfoSuccess && (
+              <TopBox
+                profileImage={profileImage}
+                userName={userName}
+                fastingBloodSugar={fastingBloodSugar}
+                currentBloodSugar={currentBloodSugar}
+              />
+            )}
+          </HomeTop>
+          <HomeContent>
+            <TouchableOpacity activeOpacity={1} onPress={handleGotoSearch}>
+              <Search
+                disabled
+                placeholder="정보가 궁금한 음식명을 입력해보세요"
+              />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} onPress={handleNotifyPress}>
-              <NoticeIcon />
-            </TouchableOpacity>
-          </HomeIcons>
-          {isUserInfoSuccess && (
-            <TopBox
-              profileImage={profileImage}
-              userName={userName}
-              fastingBloodSugar={fastingBloodSugar}
-              currentBloodSugar={currentBloodSugar}
-            />
-          )}
-        </HomeTop>
-        <HomeContent>
-          <TouchableOpacity activeOpacity={1} onPress={handleGotoSearch}>
-            <Search
-              disabled
-              placeholder="정보가 궁금한 음식명을 입력해보세요"
-            />
-          </TouchableOpacity>
-          <WeeklyCalendar />
-          {isAdditionalInfoSuccess && (
-            <>
-              <Graph graphData={bloodSugarList} size="m" />
-              <ReportCardBox>
-                <ReportCard
-                  navigate="MedicineDocument"
-                  isChecked={isCheckedMedicine}
-                  onPress={toggleMedicine}
-                  name={medicineName}
-                  time={medicineTime}
-                />
-                <ReportCard
-                  navigate="InsulinDocument"
-                  isChecked={isCheckedInsulin}
-                  onPress={toggleInsulin}
-                  name={insulinName}
-                  time={insulinTime}
-                />
-              </ReportCardBox>
-            </>
-          )}
-          <MealCard size="m" />
-        </HomeContent>
-      </HomeBox>
-    </ScrollLayout>
+            <WeeklyCalendar />
+            {isAdditionalInfoSuccess && (
+              <>
+                <Graph graphData={bloodSugarList} size="m" />
+                <ReportCardBox>
+                  <ReportCard
+                    navigate="MedicineDocument"
+                    isChecked={isCheckedMedicine}
+                    onPress={toggleMedicine}
+                    name={medicineName}
+                    time={medicineTime}
+                  />
+                  <ReportCard
+                    navigate="InsulinDocument"
+                    isChecked={isCheckedInsulin}
+                    onPress={toggleInsulin}
+                    name={insulinName}
+                    time={insulinTime}
+                  />
+                </ReportCardBox>
+              </>
+            )}
+            <MealCard size="m" />
+          </HomeContent>
+        </HomeBox>
+      </ScrollLayout>
+    </>
   );
 }

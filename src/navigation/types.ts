@@ -34,7 +34,7 @@ export interface ParamList extends ParamListBase {
   MyComment: {title: string};
   Community: undefined;
   CommunitySearch: undefined;
-  Write: undefined;
+  Write: {id?: number; editTitle?: string; editContent?: string};
   Detail: {id: number};
   Medical: undefined;
   GuardianConnect: {name: string};

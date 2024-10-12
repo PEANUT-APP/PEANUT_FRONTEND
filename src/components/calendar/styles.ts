@@ -58,7 +58,7 @@ export const MonthCalendarContainer = styled.View`
   gap: 24px;
 `;
 
-export const MonthCalendarTitle = styled.View`
+export const MonthCalendarTitle = styled.TouchableOpacity`
   flex-direction: row;
   gap: 2px;
   align-items: center;
