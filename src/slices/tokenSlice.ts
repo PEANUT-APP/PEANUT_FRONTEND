@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {resetUserId} from './userSlice';
 
 interface TokenState {
   accessToken: string | null;
@@ -17,6 +18,7 @@ const tokenSlice = createSlice({
     },
     logout: state => {
       state.accessToken = null;
+      resetUserId();
     },
   },
 });
