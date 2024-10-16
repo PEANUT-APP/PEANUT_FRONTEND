@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import {ParamList} from '../../navigation/types';
 import {FormData} from '../../components/input/types';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export interface SignType {
   title: string;
@@ -27,7 +28,7 @@ export type HandleNextStepProps = {
   fields: (keyof FormData)[];
   trigger: UseFormTrigger<FormData>;
   handleSubmit: UseFormHandleSubmit<FormData>;
-  navigation: NavigationProp<ParamList>;
+  navigation: NavigationProp<ParamList> | StackNavigationProp<ParamList>;
   targetScreen: string;
   errors: FieldErrors<FormData>;
   handleBasicFormSubmit?: SubmitHandler<FormData>;
