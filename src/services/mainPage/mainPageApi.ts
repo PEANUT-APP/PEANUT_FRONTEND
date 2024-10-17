@@ -14,6 +14,7 @@ export const mainPageApi = apiSlice.injectEndpoints({
         url: '/main-api/get-user',
         method: 'GET',
       }),
+      providesTags: ['AdditionalInfo'],
     }),
     getAdditionalInfoMainPage: builder.query<
       AdditionalInfoReturnType,

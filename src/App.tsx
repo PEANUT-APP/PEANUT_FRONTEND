@@ -14,9 +14,11 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {Provider} from 'react-redux';
 import {store} from './store/store';
 import {NavigationContainer} from '@react-navigation/native';
+import {useMessage} from './modules/message';
 
 export default function App() {
   const methods = useForm();
+  useMessage();
 
   return (
     <Provider store={store}>

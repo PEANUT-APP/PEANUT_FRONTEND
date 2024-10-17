@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -81,7 +82,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        resvalue "string", "kakao_app_key", "\"${System.getenv("KAKAO_APP_KEY") ?: ""}\""
+        resValue "string", "kakao_app_key", "\"${System.getenv("KAKAO_APP_KEY") ?: ""}\""
     }
     signingConfigs {
         debug {
@@ -115,6 +116,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
