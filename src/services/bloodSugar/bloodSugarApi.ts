@@ -1,5 +1,24 @@
 import apiSlice from '../apiSlice';
-import {BloodSugarFormType} from './types';
+import {
+  BloodSugarFormType,
+  BloodSugarReportType,
+  TransformedBloodSugarReportType,
+} from './types';
+
+const mapBloodSugarStatus = (status: string) => {
+  switch (status) {
+    case '정상 수치':
+      return 'good';
+    case '고혈당 수치':
+      return 'high';
+    case '저혈당 수치':
+      return 'low';
+    case '위험 수치':
+      return 'danger';
+    default:
+      return 'unknown'; // 알 수 없는 상태 처리
+  }
+};
 
 export const bloodSugarApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -16,9 +35,31 @@ export const bloodSugarApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['AdditionalInfo'],
     }),
+    getMonthlyBloodSugarStatus: builder.query<
+      TransformedBloodSugarReportType,
+      {month: number; year: number}
+    >({
+      query: ({month, year}) => ({
+        url: `/blood-sugar/monthly-report?month=${month}&year=${year}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: BloodSugarReportType) => {
+        const transformedDailyStatuses = response.dailyStatuses.map(status => ({
+          ...status,
+          bloodSugarStatus: mapBloodSugarStatus(status.bloodSugarStatus), // 변환
+        }));
+
+        return {
+          ...response,
+          dailyStatuses: transformedDailyStatuses,
+          monthlyAvgStatus: mapBloodSugarStatus(response.monthlyAvgStatus), // 변환
+        };
+      },
+    }),
   }),
 });
 
-export const {useSaveBloodSugarMutation} = bloodSugarApi;
+export const {useSaveBloodSugarMutation, useGetMonthlyBloodSugarStatusQuery} =
+  bloodSugarApi;
 
 export default bloodSugarApi;

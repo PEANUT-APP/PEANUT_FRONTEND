@@ -59,8 +59,12 @@ const splitIntoWeeks = (days: DayItem[]) =>
     days.slice(i * 7, i * 7 + 7),
   );
 
-export default function MonthCalendar({type}: MonthCalendarType) {
-  const [currentDate, setCurrentDate] = useState(dayjs().add(9, 'hour'));
+export default function MonthCalendar({
+  currentDate,
+  setCurrentDate,
+  type,
+  bloodDailyStatuses,
+}: MonthCalendarType) {
   const [selectedDate, setSelectedDate] = useState(currentDate.date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(new Date());
@@ -100,7 +104,18 @@ export default function MonthCalendar({type}: MonthCalendarType) {
 
       setDatePickerVisibility(false); // DatePicker 닫기
     },
-    [currentDate],
+    [currentDate, setCurrentDate],
+  );
+
+  const getBloodSugarStatusForDate = useCallback(
+    (day: number) => {
+      const dateStr = currentDate.date(day).format('YYYY-MM-DD');
+      const foundStatus = bloodDailyStatuses?.find(
+        status => status.date === dateStr,
+      );
+      return foundStatus ? foundStatus.bloodSugarStatus : undefined;
+    },
+    [currentDate, bloodDailyStatuses],
   );
 
   const renderWeek = useCallback(
@@ -117,7 +132,7 @@ export default function MonthCalendar({type}: MonthCalendarType) {
                   {item.day}
                 </MonthCalendarDayText>
                 {type === 'bloodSugar' ? (
-                  <BloodSugarItem name="good" />
+                  <BloodSugarItem name={getBloodSugarStatusForDate(item.day)} />
                 ) : (
                   <AverageItem name="great" />
                 )}
@@ -129,7 +144,7 @@ export default function MonthCalendar({type}: MonthCalendarType) {
         ))}
       </MonthCalendarWeekRow>
     ),
-    [handleSelectDate, selectedDate, type],
+    [getBloodSugarStatusForDate, handleSelectDate, selectedDate, type],
   );
 
   return (

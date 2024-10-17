@@ -15,12 +15,27 @@ import MedicineReport from './report/MedicineReport';
 import Guide from './guide/Guide';
 
 export default function Medical() {
-  const {selectedChip, handleSelectChip} = useMedical();
+  const {
+    currentDate,
+    setCurrentDate,
+    selectedChip,
+    handleSelectChip,
+    bloodDailyStatuses,
+    bloodMonthlyAvg,
+    bloodMonthlyAvgStatus,
+  } = useMedical();
 
   const chipItems = useMemo(() => ['혈당', '인슐린', '복약'], []);
 
   const ReportComponent =
-    selectedChip === '혈당' ? BloodReport : MedicineReport;
+    selectedChip === '혈당' ? (
+      <BloodReport
+        monthlyAvg={bloodMonthlyAvg}
+        monthlyAvgStatus={bloodMonthlyAvgStatus}
+      />
+    ) : (
+      <MedicineReport />
+    );
 
   return (
     <ScrollLayout paddingBottom={124}>
@@ -40,10 +55,13 @@ export default function Medical() {
           <MedicalCalendarBox>
             <Guide type={selectedChip === '혈당' ? 'bloodSugar' : 'average'} />
             <MonthCalendar
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
               type={selectedChip === '혈당' ? 'bloodSugar' : 'average'}
+              bloodDailyStatuses={bloodDailyStatuses}
             />
           </MedicalCalendarBox>
-          <ReportComponent />
+          {ReportComponent}
         </MedicalBox>
       </MedicalContainer>
     </ScrollLayout>
