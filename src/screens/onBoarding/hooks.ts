@@ -1,6 +1,6 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {login} from '@react-native-seoul/kakao-login';
+import {loginWithKakaoAccount} from '@react-native-seoul/kakao-login';
 import {Alert} from 'react-native';
 
 export const useOnBoarding = () => {
@@ -12,7 +12,7 @@ export const useOnBoarding = () => {
 
   const handleKakaoLogin = async () => {
     try {
-      const result = await login();
+      const result = await loginWithKakaoAccount();
       if (result) {
         console.log(result.accessToken);
       }
