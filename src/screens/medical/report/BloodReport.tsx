@@ -12,8 +12,29 @@ import {
 import {colors} from '../../../styles/colors';
 import {BloodSugarItem} from '../item/CalendarItem';
 import {BloodSugarImageItem} from '../item/ImageItem';
+import {BloodReportType} from './types';
 
-export default function BloodReport() {
+const getKoreanStatus = (status: string | undefined) => {
+  switch (status) {
+    case 'good':
+      return '정상 수치';
+    case 'high':
+      return '고혈당 수치';
+    case 'low':
+      return '저혈당 수치';
+    case 'danger':
+      return '위험 수치';
+    default:
+      return '';
+  }
+};
+
+export default function BloodReport({
+  monthlyAvg,
+  monthlyAvgStatus,
+}: BloodReportType) {
+  const koreanStatus = getKoreanStatus(monthlyAvgStatus);
+
   return (
     <BloodReportContainer>
       <MonthReportContainer>
@@ -22,23 +43,23 @@ export default function BloodReport() {
         </ReportTitle>
         <BloodReportContentBox>
           <BloodReportValueBox>
-            <BloodReportValue>103</BloodReportValue>
+            <BloodReportValue>{monthlyAvg}</BloodReportValue>
             <ReportValueText color={colors.TextDisabled}>mg/dl</ReportValueText>
           </BloodReportValueBox>
           <BloodReportValueBox>
-            <BloodSugarItem type="report" name="good" />
+            <BloodSugarItem type="report" name={monthlyAvgStatus} />
             <ReportValueText color={colors.TextNormal}>
-              정상 수치
+              {koreanStatus}
             </ReportValueText>
           </BloodReportValueBox>
         </BloodReportContentBox>
       </MonthReportContainer>
       <BloodFigureContainer>
-        <BloodSugarImageItem name="good" />
+        <BloodSugarImageItem name={monthlyAvgStatus} />
         <ReportValueText color={colors.TextNormal}>
           이번 달은{' '}
           <ReportTitle color={colors.primaryNormal} weight="bold">
-            정상 수치
+            {koreanStatus}
           </ReportTitle>
           {'를 잘 유지하고 있어요.\n이대로만 유지해주세요!'}
         </ReportValueText>

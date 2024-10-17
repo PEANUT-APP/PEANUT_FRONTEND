@@ -9,10 +9,12 @@ const ItemView = styled.View<{type?: 'guide' | 'report'}>`
     type === 'guide' ? '16px' : type === 'report' ? '20.998px' : '12px'};
   padding: ${({type}) =>
     type === 'guide' ? '1px' : type === 'report' ? '1.5px' : 0};
-  border-radius: 100px;
+  border-radius: 200px;
 `;
 
-const BloodSugarItemView = styled(ItemView)<{name: string}>`
+const BloodSugarItemView = styled(ItemView)<{
+  name: 'good' | 'high' | 'low' | 'danger' | string | undefined;
+}>`
   background-color: ${({name}) =>
     name === 'high'
       ? '#F76363'
@@ -21,11 +23,15 @@ const BloodSugarItemView = styled(ItemView)<{name: string}>`
       : name === 'low'
       ? '#6279DD'
       : '#282828'};
+  opacity: ${({name}) => (name ? 1 : 0)};
 `;
 
-const AverageItemView = styled(ItemView)<{name: string}>`
+const AverageItemView = styled(ItemView)<{
+  name: 'great' | 'normal' | 'bad' | string | undefined;
+}>`
   background-color: ${({name}) =>
     name === 'great' ? '#F76363' : name === 'normal' ? '#FFAC33' : '#6279DD'};
+  opacity: ${({name}) => (name ? 1 : 0)};
 `;
 
 export function BloodSugarItem({name, type}: BloodSugarItemType) {
