@@ -1,5 +1,11 @@
+import {mapStatus} from '../../screens/medical/hooks';
 import apiSlice from '../apiSlice';
-import {InsulinFormType, InsulinRecordReturnType} from './types';
+import {
+  InsulinFormType,
+  InsulinRecordReturnType,
+  InsulinReportReturnType,
+  TransformedInsulinReportReturnType,
+} from './types';
 
 export const insulinApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -22,10 +28,33 @@ export const insulinApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getInsulinInfoReportList: builder.query<
+      TransformedInsulinReportReturnType,
+      {month: number; year: number}
+    >({
+      query: ({month, year}) => ({
+        url: `/insulin/get/report?month=${month}&year=${year}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: InsulinReportReturnType) => {
+        const transformedDailyStatuses = response.dailyStatuses.map(status => ({
+          ...status,
+          recordStatus: mapStatus(status.recordStatus),
+        }));
+
+        return {
+          ...response,
+          dailyStatuses: transformedDailyStatuses,
+        };
+      },
+    }),
   }),
 });
 
-export const {useSaveInsulinIfoMutation, useLazyGetInsulinInfoListQuery} =
-  insulinApi;
+export const {
+  useSaveInsulinIfoMutation,
+  useLazyGetInsulinInfoListQuery,
+  useGetInsulinInfoReportListQuery,
+} = insulinApi;
 
 export default insulinApi;

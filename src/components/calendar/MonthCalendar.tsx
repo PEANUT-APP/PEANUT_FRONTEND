@@ -64,6 +64,8 @@ export default function MonthCalendar({
   setCurrentDate,
   type,
   bloodDailyStatuses,
+  insulinDailyStatuses,
+  medicineDailyStatuses,
 }: MonthCalendarType) {
   const [selectedDate, setSelectedDate] = useState(currentDate.date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -107,15 +109,28 @@ export default function MonthCalendar({
     [currentDate, setCurrentDate],
   );
 
-  const getBloodSugarStatusForDate = useCallback(
+  const getStatusForDate = useCallback(
     (day: number) => {
       const dateStr = currentDate.date(day).format('YYYY-MM-DD');
-      const foundStatus = bloodDailyStatuses?.find(
-        status => status.date === dateStr,
-      );
-      return foundStatus ? foundStatus.bloodSugarStatus : undefined;
+      if (type === 'medicine') {
+        return medicineDailyStatuses?.find(
+          status => status.recordDate === dateStr,
+        )?.recordStatus;
+      } else if (type === 'insulin') {
+        return insulinDailyStatuses?.find(
+          status => status.recordDate === dateStr,
+        )?.recordStatus;
+      }
+      return bloodDailyStatuses?.find(status => status.date === dateStr)
+        ?.bloodSugarStatus;
     },
-    [currentDate, bloodDailyStatuses],
+    [
+      currentDate,
+      type,
+      bloodDailyStatuses,
+      insulinDailyStatuses,
+      medicineDailyStatuses,
+    ],
   );
 
   const renderWeek = useCallback(
@@ -132,9 +147,9 @@ export default function MonthCalendar({
                   {item.day}
                 </MonthCalendarDayText>
                 {type === 'bloodSugar' ? (
-                  <BloodSugarItem name={getBloodSugarStatusForDate(item.day)} />
+                  <BloodSugarItem name={getStatusForDate(item.day)} />
                 ) : (
-                  <AverageItem name="great" />
+                  <AverageItem name={getStatusForDate(item.day)} />
                 )}
               </MonthCalendarDay>
             ) : (
@@ -144,7 +159,7 @@ export default function MonthCalendar({
         ))}
       </MonthCalendarWeekRow>
     ),
-    [getBloodSugarStatusForDate, handleSelectDate, selectedDate, type],
+    [getStatusForDate, handleSelectDate, selectedDate, type],
   );
 
   return (

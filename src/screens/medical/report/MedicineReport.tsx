@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   MedicineReportBox,
   MedicineReportButton,
@@ -11,11 +11,17 @@ import {
 import {colors} from '../../../styles/colors';
 import {PrimaryTextButton} from '../../../components/button/TextButton';
 import DesignIcon from '../../../components/icon/DesignIcon';
-import {useMedical} from '../hooks';
+import {splitMessage, useMedical} from '../hooks';
 import {AverageImageItem} from '../item/ImageItem';
+import {MedicineReportType} from './types';
 
-export default function MedicineReport() {
+export default function MedicineReport({
+  monthlyAvg,
+  monthlyAvgStatus,
+  monthlyMessage,
+}: MedicineReportType) {
   const {handleGoAlarm} = useMedical();
+  const messageParts = splitMessage(monthlyMessage || '');
 
   return (
     <MonthReportContainer>
@@ -23,15 +29,27 @@ export default function MedicineReport() {
         월 평균 리포트
       </ReportTitle>
       <MedicineReportBox>
-        <AverageImageItem name="bad" />
+        <AverageImageItem name={monthlyAvgStatus} />
         <MedicineReportContent>
-          <ReportValueText color={colors.TextNormal}>
-            총 투여량의{' '}
-            <ReportValueText weight="bold" color={colors.primaryStrong}>
-              50%
-            </ReportValueText>
-            를 투여했어요.{'\n'}다음부턴 까먹지 말고 목표치에 도달할 수 있도록
-            해요.
+          <ReportValueText>
+            {messageParts.map((part, index) => (
+              <Fragment key={index}>
+                {monthlyAvg !== null && part.includes(`${monthlyAvg}일`)
+                  ? part.split(`${monthlyAvg}일`).map((text, i) => (
+                      <Fragment key={i}>
+                        {text}
+                        {i === 0 && (
+                          <ReportValueText
+                            weight="bold"
+                            color={colors.primaryNormal}>
+                            {` ${monthlyAvg}일`}
+                          </ReportValueText>
+                        )}
+                      </Fragment>
+                    ))
+                  : part}
+              </Fragment>
+            ))}
           </ReportValueText>
         </MedicineReportContent>
       </MedicineReportBox>
