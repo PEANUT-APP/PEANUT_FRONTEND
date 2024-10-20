@@ -6,39 +6,51 @@ import {useBackHandler} from '../../modules/commonHooks';
 import {colors} from '../../styles/colors';
 import {
   FeedbackBox,
+  FeedbackButtonPair,
   FeedbackContainer,
   FeedbackFoodBox,
   FeedbackFoodText,
   FeedbackSelectBox,
   FeedbackText,
   FeedbackTextBox,
-  FeedbackTextTitle,
   MealBack,
   MealContent,
   MealTitle,
 } from './styles';
-import WeeklyCalendar from '../../components/calendar/WeeklyCalendar';
 import SelectChips from '../../components/select/SelectChips';
 import {useFeedback} from './hooks';
 import MealCard from '../../components/card/MealCard';
 import SecondaryButton from '../../components/button/SecondaryButton';
 import Graph from '../../components/graph/Graph';
+import PrimaryButton from '../../components/button/PrimaryButton';
 
 export default function MealFeedback() {
   const {handleBack} = useBackHandler();
-  const {selectedChip, handleSelectChip, graphData} = useFeedback();
+  const {
+    formattedToday,
+    selectedChip,
+    handleSelectChip,
+    formattedFoodName,
+    isFeedbackFoodByTimeSuccess,
+    graphData,
+    feedbackBloodSugarData,
+    isFeedbackBloodSugarSuccess,
+    handleComplete,
+  } = useFeedback();
 
   return (
     <FeedbackContainer>
       <MealBack activeOpacity={1} onPress={handleBack}>
         <DesignIcon type="back" size="l" color={colors.TextNeutral} />
       </MealBack>
-      <MealTitle weight="bold">식단 피드백</MealTitle>
+      <MealTitle weight="bold">
+        {formattedToday}
+        {'\n'}식단 피드백
+      </MealTitle>
       <ScrollView
         contentContainerStyle={{paddingBottom: 14}}
         showsVerticalScrollIndicator={false}>
         <FeedbackBox>
-          <WeeklyCalendar />
           <MealContent>
             <FeedbackSelectBox>
               {['전체', '아침', '점심', '저녁', '간식'].map(time => (
@@ -52,25 +64,28 @@ export default function MealFeedback() {
             </FeedbackSelectBox>
             <FeedbackFoodBox>
               <FeedbackFoodText weight="bold">섭취한 음식</FeedbackFoodText>
-              <FeedbackFoodText color={colors.TextNeutral}>
-                섭취한 음식
-              </FeedbackFoodText>
+              {isFeedbackFoodByTimeSuccess && (
+                <FeedbackFoodText color={colors.TextNeutral}>
+                  {formattedFoodName}
+                </FeedbackFoodText>
+              )}
             </FeedbackFoodBox>
             <MealCard size="s" time={selectedChip} />
-            <Graph graphData={graphData} size="s" />
+            {isFeedbackBloodSugarSuccess && (
+              <Graph graphData={graphData} size="s" />
+            )}
             <FeedbackTextBox>
-              <FeedbackTextTitle weight="bold">
-                혈당 스파이크 발생
-              </FeedbackTextTitle>
-              <FeedbackText>
-                공복에 바로 탄수화물 덩어리인 떡볶이를 섭취하면 혈당 스파이크를
-                맞아요. 첫 끼로는 가벼운 과일이나 채소를 추천드려요.
-              </FeedbackText>
+              <FeedbackText>{feedbackBloodSugarData?.msg}</FeedbackText>
             </FeedbackTextBox>
           </MealContent>
-          <SecondaryButton size="l" onPress={handleBack}>
-            수정하기
-          </SecondaryButton>
+          <FeedbackButtonPair>
+            <SecondaryButton size="l" onPress={handleBack}>
+              수정하기
+            </SecondaryButton>
+            <PrimaryButton size="l" onPress={handleComplete}>
+              완료하기
+            </PrimaryButton>
+          </FeedbackButtonPair>
         </FeedbackBox>
       </ScrollView>
     </FeedbackContainer>

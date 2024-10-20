@@ -53,10 +53,12 @@ export default function Dropdown({
   const mealTime = useSelector((state: RootState) => state.today.time);
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(options[0]);
+  const [selectedValue, setSelectedValue] = useState('');
   const [dropType, setDropType] = useState<'dropClose' | 'dropOpen'>(
     'dropClose',
   );
+  const [dropColor, setDropColor] =
+    useState<keyof typeof colors>('LineDisabled');
 
   useEffect(() => {
     if (size === 's') {
@@ -69,6 +71,7 @@ export default function Dropdown({
     setIsDropdownVisible(prevState => {
       const newState = !prevState;
       setDropType(newState ? 'dropOpen' : 'dropClose');
+      setDropColor(newState ? 'primaryNormal' : 'LineDisabled');
       setFocus(name);
       return newState;
     });
@@ -78,6 +81,7 @@ export default function Dropdown({
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
+    setDropColor('LineDisabled');
 
     dispatch(setTime(value));
 
@@ -101,7 +105,11 @@ export default function Dropdown({
         value={selectedValue}
         icon={
           <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
-            <DesignIcon type={dropType} size={size === 's' ? 'm' : 'l'} />
+            <DesignIcon
+              type={dropType}
+              size={size === 's' ? 'm' : 'l'}
+              color={colors[dropColor]}
+            />
           </TouchableOpacity>
         }
         drop={true}

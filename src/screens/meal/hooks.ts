@@ -10,8 +10,10 @@ import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
 import {
   useCreateAIMealInfoMutation,
+  useGetFeedbackFoodDetailByEatTimeQuery,
   useGetFoodCheckByDateQuery,
   useGetFoodDetailInfoQuery,
+  useGetFoodFeedBackBloodSugarInfoQuery,
   useGetPredictInfoMutation,
   useLazyGetFoodNutritionByNameQuery,
   useRemoveFoodFromSessionMutation,
@@ -23,10 +25,10 @@ import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {AddMealType} from '../search/types';
-import useMain from '../home/hooks';
-import {mapBloodSugarToGraph} from '../../components/graph/hooks';
 import {setTime} from '../../slices/todaySlice';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {formatDate} from '../../modules/commonHooks';
+import moment from 'moment';
 
 export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
@@ -165,7 +167,6 @@ export function useRecording() {
     try {
       const response = await getPredictInfo(formData).unwrap();
       setImageSource(response.image_url);
-      console.log(response);
       setIsUpload(true);
       setMealListData([]);
       setIsAIProcessing(true);
@@ -375,8 +376,6 @@ export function useRecord() {
 
   const {foodByDate} = useMeal();
 
-  console.log(foodByDate);
-
   const foodData = {
     아침: {
       meal: foodByDate?.아침?.foodName.join(', ') || '',
@@ -396,6 +395,12 @@ export function useRecord() {
       feedback2: foodByDate?.저녁?.feedBack.split('. ')[1] || '',
       imageUrl: foodByDate?.저녁?.imageUrl || '',
     },
+    간식: {
+      meal: foodByDate?.간식?.foodName.join(', ') || '',
+      feedback1: foodByDate?.간식?.feedBack.split('. ')[0] || '',
+      feedback2: foodByDate?.간식?.feedBack.split('. ')[1] || '',
+      imageUrl: foodByDate?.간식?.imageUrl || '',
+    },
   };
 
   const handleAddMore = () => {
@@ -405,11 +410,13 @@ export function useRecord() {
     });
   };
 
-  return {foodData, handleAddMore};
+  return {foodByDate, foodData, handleAddMore};
 }
 
 export function useFeedback() {
-  const {additionalInfo} = useMain();
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  const today = useSelector((state: RootState) => state.today.today);
   const time = useSelector((state: RootState) => state.today.time) as
     | '아침'
     | '점심'
@@ -419,15 +426,105 @@ export function useFeedback() {
   // 선택된 Chip의 상태를 관리
   const [selectedChip, setSelectedChip] = useState<string>(time || '전체');
 
-  // Chip 선택 시 호출되는 핸들러
+  const {
+    data: feedbackFoodData,
+    isSuccess: isFeedbackFoodByTimeSuccess,
+    refetch: feedbackFoodByTimeRefetch,
+  } = useGetFeedbackFoodDetailByEatTimeQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+    eatTime: selectedChip,
+  });
+
+  const {
+    data: feedbackBloodSugarData,
+    isSuccess: isFeedbackBloodSugarSuccess,
+    refetch: feedbackBloodSugarRefetch,
+  } = useGetFoodFeedBackBloodSugarInfoQuery({
+    date: dayjs(today).format('YYYY-MM-DD'),
+    eatTime: selectedChip,
+  });
+
+  useEffect(() => {
+    feedbackBloodSugarRefetch();
+    feedbackFoodByTimeRefetch();
+  }, [selectedChip, feedbackBloodSugarRefetch, feedbackFoodByTimeRefetch]);
+
   const handleSelectChip = (chip: string) => {
-    setSelectedChip(chip); // 선택된 Chip 상태 업데이트
+    setSelectedChip(chip);
   };
 
-  const graphData = useMemo(
-    () => mapBloodSugarToGraph(additionalInfo?.bloodSugarList),
-    [additionalInfo?.bloodSugarList],
-  );
+  const handleComplete = () => {
+    navigation.navigate('MealRecord');
+  };
 
-  return {selectedChip, handleSelectChip, graphData};
+  const formattedToday = formatDate(today);
+
+  const formattedFoodName = useMemo(() => {
+    return feedbackFoodData?.foodName?.join(', ') || ''; // 배열이 있으면 쉼표로 연결, 없으면 빈 문자열
+  }, [feedbackFoodData]);
+
+  const graphData = useMemo(() => {
+    const data = [];
+    for (let hour = 6; hour <= 24; hour++) {
+      data.push({value: null, time: hour, minute: null, key: ''});
+    }
+
+    if (feedbackBloodSugarData?.beforeBloodSugar) {
+      const beforeBloodSugar = feedbackBloodSugarData.beforeBloodSugar;
+      const bloodSugarValue = Number(Object.keys(beforeBloodSugar)[0]);
+      const timestamp = Object.values(beforeBloodSugar)[0];
+      const time = moment(timestamp);
+      let hour = time.hour();
+      const minute = time.minute();
+
+      if (hour >= 1 && hour <= 5) {
+        hour = 6;
+      }
+
+      if (hour >= 6 && hour <= 24) {
+        data[hour - 6] = {
+          value: bloodSugarValue,
+          time: hour,
+          minute: minute,
+          key: 'beforeBloodSugar',
+        };
+      }
+    }
+
+    if (feedbackBloodSugarData?.afterBloodSugar) {
+      const afterBloodSugar = feedbackBloodSugarData.afterBloodSugar;
+      const bloodSugarValue = Number(Object.keys(afterBloodSugar)[0]);
+      const timestamp = Object.values(afterBloodSugar)[0];
+      const time = moment(timestamp);
+      let hour = time.hour();
+      const minute = time.minute();
+
+      if (hour >= 1 && hour <= 5) {
+        hour = 24;
+      }
+
+      if (hour >= 6 && hour <= 24) {
+        data[hour - 6] = {
+          value: bloodSugarValue,
+          time: hour,
+          minute: minute,
+          key: 'afterBloodSugar',
+        };
+      }
+    }
+
+    return data;
+  }, [feedbackBloodSugarData]);
+
+  return {
+    formattedToday,
+    selectedChip,
+    handleSelectChip,
+    isFeedbackFoodByTimeSuccess,
+    formattedFoodName,
+    graphData,
+    feedbackBloodSugarData,
+    isFeedbackBloodSugarSuccess,
+    handleComplete,
+  };
 }

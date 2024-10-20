@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Body1, Caption1} from '../text/Text';
+import {LineChart} from 'react-native-svg-charts';
 
 export const GraphContainer = styled.View`
   width: 350px;
@@ -9,7 +10,6 @@ export const GraphContainer = styled.View`
   border-radius: 8px;
   background-color: ${colors.white};
   padding: 20px 0;
-  overflow: hidden;
 `;
 
 export const GraphTop = styled.View`
@@ -27,14 +27,70 @@ export const GraphTitle = styled(Body1)`
 export const GraphContent = styled.View`
   flex-direction: row;
   gap: 6px;
+  overflow: visible;
+`;
+
+export const GraphChart = styled(LineChart)`
+  width: 265px;
+  height: 125px;
+  top: 6px;
+  left: 25px;
+  overflow: visible;
+`;
+
+export const GraphMainToolTip = styled.View`
+  width: 90px;
+  height: 52px;
+  border-radius: 4px;
+  background-color: ${colors.primaryNormal};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const GraphMainToolTipValue = styled.View`
+  flex-direction: row;
+  gap: 4px;
+`;
+
+export const GraphMainToolTipValueText = styled(Body1)`
+  line-height: 21.344px;
+  letter-spacing: -0.4px;
+  color: ${colors.white};
+`;
+
+export const GraphMainToolTipTimeText = styled(Caption1)`
+  line-height: 16.008px;
+  letter-spacing: -0.3px;
+`;
+
+export const GraphFeedbackBeforeToolTip = styled.View`
+  height: 30px;
+  padding: 0 8px;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  background-color: ${colors.white};
+  border-width: 1px;
+  border-color: ${colors.primaryNormal};
+  gap: 4px;
+  align-self: flex-start;
+`;
+
+export const GraphFeedbackAfterToolTip = styled.View`
+  height: 30px;
+  padding: 0 12px;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  background-color: ${colors.primaryNormal};
+  gap: 6px;
+  align-self: flex-start;
 `;
 
 export const YAxisLabels = styled.View`
-  gap: 20.5px;
-  margin-top: 8px;
+  gap: 13px;
   position: absolute;
-  right: 26px;
-  top: -9px;
+  right: 27px;
 `;
 
 export const AxisLabel = styled(Caption1)`
@@ -46,7 +102,5 @@ export const AxisLabel = styled(Caption1)`
 export const XAxisLabel = styled.View`
   flex-direction: row;
   gap: 51px;
-  position: absolute;
-  bottom: 18px;
-  left: 40px;
+  left: 35px;
 `;

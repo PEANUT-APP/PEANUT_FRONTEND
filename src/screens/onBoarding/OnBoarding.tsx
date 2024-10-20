@@ -13,20 +13,23 @@ import {
 } from './styles';
 import {PrimaryTextButton} from '../../components/button/TextButton';
 import {useOnBoarding} from './hooks';
+import Logo from '../../assets/images/Logo.svg';
 
 export default function OnBoarding() {
-  const {onPress} = useOnBoarding();
+  const {onPress, handleKakaoLogin} = useOnBoarding();
 
   return (
     <GlobalView>
       <OnBoardingContainer>
-        <OnBoardingLogo />
+        <OnBoardingLogo>
+          <Logo />
+        </OnBoardingLogo>
         <OnBoardingBox>
           <OnBoardingLoginBox>
             <PrimaryButton size="l" onPress={() => onPress('SignIn')}>
               이메일로 로그인
             </PrimaryButton>
-            <KakaoLoginBox>
+            <KakaoLoginBox onPress={handleKakaoLogin}>
               <DesignIcon type="kakao" size="m" />
               <KakaoLoginText weight="bold" color={colors.TextNormal}>
                 카카오로 로그인

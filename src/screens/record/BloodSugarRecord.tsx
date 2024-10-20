@@ -23,8 +23,6 @@ export default function BloodSugarRecord() {
     errors,
     touchedFields,
     trigger,
-    input,
-    handleInputChange,
     handleSubmit,
     isButtonDisabled,
     setValue,
@@ -52,10 +50,14 @@ export default function BloodSugarRecord() {
             trigger,
           })}
           <TimeInput
+            control={control}
+            errors={errors}
+            touchedFields={touchedFields}
+            trigger={trigger}
+            setValue={setValue}
+            setFocus={setFocus}
+            name="bloodSugarTime"
             placeholder="시간"
-            value={input}
-            onChangeText={(text: any) => handleInputChange(text)}
-            editable={true}
           />
           <Dropdown
             control={control}

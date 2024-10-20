@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import {ButtonStyleType, PrimaryButtonType} from './types';
 import {Label} from './styles';
 import {getButtonText} from './getText';
-import NullIcon from '../icon/NullIcon';
 import {colors} from '../../styles/colors';
 import {useButtonState} from '../../modules/useButtonState';
 
@@ -45,27 +44,22 @@ function DefaultTextButton({
   right,
   children,
   onPress,
+  icon,
 }: PrimaryButtonType) {
   const {isPressed, handlePressIn, handlePressOut} = useButtonState();
 
   const Text = getButtonText(isPressed && size === 'm' ? 's' : size);
 
   const renderIcon = (position: string) => {
-    if (left && position === 'left') {
-      return (
-        <NullIcon
-          type={disabled ? 'textDisabled' : `${type}Text`}
-          size={isPressed ? 'l' : size}
-        />
-      );
+    const iconProps = {
+      size: isPressed ? 'l' : size,
+    };
+
+    if (left && position === 'left' && icon) {
+      return icon(iconProps);
     }
-    if (right && position === 'right') {
-      return (
-        <NullIcon
-          type={disabled ? 'textDisabled' : `${type}Text`}
-          size={isPressed ? 'l' : size}
-        />
-      );
+    if (right && position === 'right' && icon) {
+      return icon(iconProps);
     }
     return null;
   };
@@ -91,7 +85,7 @@ function DefaultTextButton({
               ? colors.TextDisabled
               : colors.primaryStrong
           }
-          weight="bold">
+          weight="normal">
           {children}
         </Text>
         {renderIcon('right')}

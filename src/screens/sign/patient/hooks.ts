@@ -73,7 +73,7 @@ export function useConnect() {
         type: 'manual',
         message: '존재하지 않는 이메일 계정입니다!',
       });
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -99,10 +99,9 @@ export function useConfirm() {
   const [sendInviteCode] = useSendInviteCodeMutation();
 
   const birthday = data.birthday.replace(/[^0-9]/g, '');
-
-  const phoneParts = data.phoneNumber.split('-');
-  const formattedPhoneNumber = `${phoneParts[0]}****${phoneParts[2]}`;
-
+  const formattedPhoneNumber = `${data.phoneNumber.split('-')[0]}****${
+    data.phoneNumber.split('-')[2]
+  }`;
   const handleSendCode = async () => {
     try {
       await sendInviteCode({}).unwrap();

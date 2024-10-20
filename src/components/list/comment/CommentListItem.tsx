@@ -25,6 +25,7 @@ export default function CommentListItem({
   userName,
   createTime,
   userId,
+  id,
   content,
 }: CommentReturnType) {
   const {showWriter, handleClickKebab} = useKebab();
@@ -48,7 +49,7 @@ export default function CommentListItem({
         <TouchableOpacity activeOpacity={1} onPress={handleClickKebab}>
           <DesignIcon type="kebab" size="l" color={colors.TextDisabled} />
         </TouchableOpacity>
-        {showWriter && <Writer userId={userId} />}
+        {showWriter && <Writer userId={userId} id={id} />}
       </CommentListItemTop>
       <CommentListItemContent>{content}</CommentListItemContent>
       <CommentListItemInfoBox>

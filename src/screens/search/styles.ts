@@ -55,10 +55,7 @@ export const SearchContent = styled.View`
 `;
 
 export const SearchNoneImage = styled.View`
-  margin-top: 84px;
-  width: 140px;
-  height: 140px;
-  background-color: #d9d9d9;
+  margin-top: 58px;
 `;
 
 export const SearchOverlay = styled.TouchableOpacity`
@@ -69,6 +66,8 @@ export const SearchOverlay = styled.TouchableOpacity`
 `;
 
 export const SearchModalContainer = styled.View`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: 615px;
   background-color: ${colors.background};
@@ -127,6 +126,14 @@ export const SearchModalFeedback = styled.View`
   flex-direction: row;
   gap: 4px;
   align-items: center;
+`;
+
+export const SearchModalFeedbackIcon = styled.View<{color: string}>`
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: ${({color}) =>
+    color === '고' ? '#F76363' : color === '중' ? '#FFAC33' : '#6279DD'};
 `;
 
 export const SearchModalFeedbackText = styled(Body2)`

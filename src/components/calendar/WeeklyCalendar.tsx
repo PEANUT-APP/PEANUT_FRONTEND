@@ -17,6 +17,7 @@ import {setToday} from '../../slices/todaySlice';
 export default function WeeklyCalendar() {
   const dispatch = useDispatch();
   const today = useSelector((state: RootState) => state.today.today);
+
   // 'today'가 undefined일 경우 기본값 설정
   const currentDay = dayjs(today) || dayjs(); // today가 없으면 현재 날짜로 대체
 
@@ -31,17 +32,19 @@ export default function WeeklyCalendar() {
 
   // 날짜 클릭 시 today 상태 업데이트
   const handleDateClick = (date: Dayjs) => {
-    dispatch(setToday(date.toISOString())); // Redux 상태 업데이트
+    dispatch(setToday(date.format('YYYY-MM-DD'))); // Redux 상태 업데이트
   };
 
   // 이전 주로 이동
   const goToPreviousWeek = () => {
-    dispatch(setToday(sunday.subtract(1, 'week').add(6, 'day').toISOString())); // 이전 주로 이동
+    dispatch(
+      setToday(sunday.subtract(1, 'week').add(6, 'day').format('YYYY-MM-DD')),
+    ); // 이전 주로 이동
   };
 
   // 다음 주로 이동
   const goToNextWeek = () => {
-    dispatch(setToday(sunday.add(1, 'week').toISOString())); // 다음 주로 이동
+    dispatch(setToday(sunday.add(1, 'week').format('YYYY-MM-DD'))); // 다음 주로 이동
   };
 
   return (

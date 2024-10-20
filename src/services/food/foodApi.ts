@@ -1,5 +1,7 @@
 import apiSlice from '../apiSlice';
 import {
+  FeedbackBloodSugarType,
+  FeedbackFoodReturnType,
   FoodAISaveMealType,
   FoodByDateReturnType,
   FoodCheckListType,
@@ -33,7 +35,9 @@ export const foodApi = apiSlice.injectEndpoints({
           저녁:
             response.foodCheckList.find(meal => meal.eatTime === '저녁') ||
             null,
-          간식: null,
+          간식:
+            response.foodCheckList.find(meal => meal.eatTime === '간식') ||
+            null,
         };
         return foodByTime;
       },
@@ -92,6 +96,7 @@ export const foodApi = apiSlice.injectEndpoints({
           servingCount: data.servingCount,
         },
       }),
+      invalidatesTags: ['Meal'],
     }),
     addCustomFood: builder.mutation({
       query: (data: FoodCustomFormType) => ({
@@ -114,6 +119,24 @@ export const foodApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['AI'],
     }),
+    getFeedbackFoodDetailByEatTime: builder.query<
+      FeedbackFoodReturnType,
+      {date: string; eatTime: string}
+    >({
+      query: ({date, eatTime}) => ({
+        url: `/food/feed-back/food?date=${date}&eatTime=${eatTime}`,
+        method: 'GET',
+      }),
+    }),
+    getFoodFeedBackBloodSugarInfo: builder.query<
+      FeedbackBloodSugarType,
+      {date: string; eatTime: string}
+    >({
+      query: ({date, eatTime}) => ({
+        url: `/food/feed-back/blood-sugar?date=${date}&eatTime=${eatTime}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -129,6 +152,8 @@ export const {
   useSaveNormalMealInfoMutation,
   useAddCustomFoodMutation,
   useRemoveFoodFromSessionMutation,
+  useGetFeedbackFoodDetailByEatTimeQuery,
+  useGetFoodFeedBackBloodSugarInfoQuery,
 } = foodApi;
 
 export default foodApi;

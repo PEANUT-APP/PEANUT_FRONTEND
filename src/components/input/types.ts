@@ -4,6 +4,8 @@ import {
   DeepMap,
   FieldError,
   FieldValues,
+  UseFormSetFocus,
+  UseFormSetValue,
   UseFormTrigger,
 } from 'react-hook-form';
 import {KeyboardTypeOptions, ReturnKeyTypeOptions} from 'react-native';
@@ -25,7 +27,9 @@ export interface FormData {
   bloodSugar: string;
   measurementCondition: string;
   memo: string;
+  bloodSugarTime: string;
   foodTime: string;
+  guardianCode: string;
 }
 
 export interface InputType {
@@ -46,6 +50,7 @@ export interface InputType {
   secureTextEntry?: boolean;
   onSubmitEditing?: () => {};
   drop?: boolean;
+  date?: boolean;
   value?: string;
   isDropdownVisible?: boolean;
   setIsDropdownVisible?: Dispatch<SetStateAction<boolean>>;
@@ -69,13 +74,34 @@ export interface InputStyleType {
   isValid?: boolean;
   message?: boolean;
   drop?: boolean;
+  date?: boolean;
   isDropdownVisible?: boolean;
   size?: 'm' | 's';
 }
 
 export interface TimeInputType {
-  placeholder: string;
-  value: string;
+  placeholder?: string;
+  name?: keyof FormData;
+  rules?: object;
+  control?: Control<FormData>;
+  errors?: DeepMap<FieldValues, FieldError>;
+  touchedFields?: DeepMap<Record<string, boolean>, boolean>;
+  trigger?: UseFormTrigger<FormData>;
+  setValue?: UseFormSetValue<FormData>;
+  setFocus?: UseFormSetFocus<FormData>;
+  value?: string;
   editable?: boolean;
-  onChangeText: (text: any) => void;
+  onChangeText?: (text: any) => void;
+}
+
+export interface DateInputType {
+  placeholder?: string;
+  name: keyof FormData;
+  rules?: object;
+  control: Control<FormData>;
+  errors: DeepMap<FieldValues, FieldError>;
+  touchedFields: DeepMap<Record<string, boolean>, boolean>;
+  trigger: UseFormTrigger<FormData>;
+  setValue: UseFormSetValue<FormData>;
+  setFocus: UseFormSetFocus<FormData>;
 }

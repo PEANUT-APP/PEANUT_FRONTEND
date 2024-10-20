@@ -1,16 +1,26 @@
 import React from 'react';
-import NullIcon from '../../../components/icon/NullIcon';
-import {MyCardContainer, CardText} from './styles';
+import {MyCardContainer, CardText, MyCommentIcon} from './styles';
 import {MyCardType} from './types';
 import {colors} from '../../../styles/colors';
 import {useCard} from '../hooks';
+import MyWriting from '../../../assets/images/MyWriting.svg';
+import MyLike from '../../../assets/images/MyLike.svg';
+import MyComment from '../../../assets/images/MyComment.svg';
 
 export default function MyCard({children, navigate, title}: MyCardType) {
   const {onPress} = useCard();
 
   return (
     <MyCardContainer activeOpacity={1} onPress={() => onPress(navigate, title)}>
-      <NullIcon size="xl" />
+      {children === '작성글' ? (
+        <MyWriting />
+      ) : children === '좋아요' ? (
+        <MyLike />
+      ) : (
+        <MyCommentIcon>
+          <MyComment />
+        </MyCommentIcon>
+      )}
       <CardText color={colors.TextNormal}>{children}</CardText>
     </MyCardContainer>
   );

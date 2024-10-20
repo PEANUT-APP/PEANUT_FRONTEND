@@ -11,13 +11,16 @@ import {
   NavigationBarContainer,
   NavigationPair,
 } from './styles';
-import {NavigationType} from './types';
 import CameraButton from '../camera/CameraButton';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 
-export default function NavigationBar({role = 'Patient'}: NavigationType) {
+export default function NavigationBar() {
   const [activeTab, setActiveTab] = useState<keyof NavigationList>('Home');
   const navigation = useNavigation<NavigationProp<NavigationList>>();
   const route = useRoute();
+
+  const userState = useSelector((state: RootState) => state.user.userState);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -33,9 +36,9 @@ export default function NavigationBar({role = 'Patient'}: NavigationType) {
 
   return (
     <NavigationBarContainer>
-      {role === 'Patient' && <CameraButton />}
-      <NavigationBarBox role={role}>
-        <NavigationPair role={role}>
+      {userState === 'Patient' && <CameraButton />}
+      <NavigationBarBox role={userState}>
+        <NavigationPair role={userState}>
           <NavigationButton
             type="home"
             active={activeTab === 'Home' || activeTab === 'MealRecord'}
@@ -46,10 +49,10 @@ export default function NavigationBar({role = 'Patient'}: NavigationType) {
             type="medical"
             active={activeTab === 'Medical'}
             onPress={() => handlePress('Medical')}>
-            식단기록
+            진료 노트
           </NavigationButton>
         </NavigationPair>
-        <NavigationPair role={role}>
+        <NavigationPair role={userState}>
           <NavigationButton
             type="community"
             active={activeTab === 'Community'}

@@ -36,6 +36,13 @@ export const MyUserProfile = styled.Image`
   background-color: ${colors.SolidTertiaryActive};
 `;
 
+export const MyUserNoneProfile = styled.View`
+  width: 80px;
+  height: 80px;
+  border-radius: 80px;
+  background-color: ${colors.SolidTertiaryActive};
+`;
+
 export const MyUserInfoName = styled(Title)`
   line-height: 32.016px;
   letter-spacing: -0.6px;
@@ -88,6 +95,14 @@ export const MyMoreTitle = styled(Title)`
 export const MyEditBox = styled.View``;
 
 export const MyEditProfile = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  background-color: ${colors.SolidTertiaryActive};
+  position: relative;
+`;
+
+export const MyEditNoneProfile = styled.View`
   width: 100px;
   height: 100px;
   border-radius: 100px;

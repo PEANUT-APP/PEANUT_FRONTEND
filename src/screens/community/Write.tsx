@@ -18,7 +18,14 @@ import {useWrite} from './hooks';
 
 export default function Write() {
   const {handleBack} = useBackHandler();
-  const {title, setTitle, content, setContent, handleCreate} = useWrite();
+  const {
+    title,
+    setTitle,
+    content,
+    setContent,
+    handleRegister,
+    isButtonDisabled,
+  } = useWrite();
 
   return (
     <WriteContainer>
@@ -29,8 +36,8 @@ export default function Write() {
         <WriterTitle weight="bold">글 작성중</WriterTitle>
         <OutlineButton
           size="s"
-          disabled={!title || !content}
-          onPress={handleCreate}>
+          disabled={isButtonDisabled}
+          onPress={handleRegister}>
           등록
         </OutlineButton>
       </WriterTop>

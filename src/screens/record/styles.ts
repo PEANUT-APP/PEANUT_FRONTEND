@@ -42,3 +42,21 @@ export const RecordToggleText = styled(Body1)`
   letter-spacing: -0.4px;
   color: ${colors.TextNeutral};
 `;
+
+export const DocumentContainer = styled.View`
+  flex: 1;
+  padding: 72px 20px 28px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: ${colors.background};
+`;
+
+export const DocumentBox = styled.View`
+  flex: 1;
+  gap: 20px;
+  align-items: center;
+`;
+
+export const DocumentContent = styled.View`
+  height: 8px;
+`;

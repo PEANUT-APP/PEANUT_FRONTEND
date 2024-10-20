@@ -32,6 +32,7 @@ export interface DesignIconType {
     | 'kakao'
     | 'check'
     | 'back'
+    | 'front'
     | 'dropClose'
     | 'dropOpen'
     | 'kebab'

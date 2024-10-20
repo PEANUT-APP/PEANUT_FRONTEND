@@ -31,6 +31,7 @@ export default function Input({
   secureTextEntry,
   onSubmitEditing,
   drop = false,
+  date = false,
   value,
   isDropdownVisible,
   setIsDropdownVisible,
@@ -87,7 +88,7 @@ export default function Input({
             value ||
             isFocused ||
             field.value ||
-            (!editable && !drop)) &&
+            (!editable && !drop && !date)) &&
             !(size === 's') && (
               <InputLabel color={colors.TextNeutral}>{placeholder}</InputLabel>
             )}
@@ -99,6 +100,7 @@ export default function Input({
             isValid={isValid}
             message={!!message}
             drop={drop}
+            date={date}
             isDropdownVisible={isDropdownVisible}
             size={size}>
             <InputText
@@ -124,6 +126,7 @@ export default function Input({
               secureTextEntry={secureTextEntry}
               onSubmitEditing={onSubmitEditing}
               drop={drop}
+              date={date}
               pointerEvents={pointerEvents}
               keyboardType={keyboardType}
             />

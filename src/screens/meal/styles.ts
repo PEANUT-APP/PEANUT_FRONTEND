@@ -38,8 +38,7 @@ export const RecordBox = styled(Box)`
 `;
 
 export const FeedbackBox = styled(Box)`
-  margin-top: 20px;
-  gap: 8px;
+  gap: 12px;
 `;
 
 export const RecordingTitleBox = styled.View`
@@ -110,4 +109,8 @@ export const FeedbackText = styled(Body2)`
   line-height: 18.676px;
   letter-spacing: -0.35px;
   color: ${colors.white};
+`;
+
+export const FeedbackButtonPair = styled.View`
+  gap: 8px;
 `;

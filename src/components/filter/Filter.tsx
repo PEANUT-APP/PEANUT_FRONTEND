@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   FilterDefaultBox,
   FilterOptionBottom,
@@ -17,14 +17,23 @@ export default function Filter({
 }: FilterType) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setIsOpen(prev => !prev);
-  };
+  }, []);
 
-  const handleSelect = (option: string) => {
-    setSelectedFilter(option);
-    setIsOpen(false);
-  };
+  const handleSelect = useCallback(
+    (option: string) => {
+      setSelectedFilter(option);
+      setIsOpen(false);
+    },
+    [setSelectedFilter],
+  );
+
+  const getFilterTextColor = useCallback(
+    (filter: string) =>
+      selectedFilter === filter ? colors.primaryNormal : colors.TextNeutral,
+    [selectedFilter],
+  );
 
   return (
     <View>
@@ -42,12 +51,7 @@ export default function Filter({
             activeOpacity={1}
             onPress={() => handleSelect('좋아요순')}
             isSelected={selectedFilter === '좋아요순'}>
-            <FilterText
-              color={
-                selectedFilter === '좋아요순'
-                  ? colors.primaryNormal
-                  : colors.TextNeutral
-              }>
+            <FilterText color={getFilterTextColor('좋아요순')}>
               좋아요순
             </FilterText>
           </FilterOptionTop>
@@ -55,14 +59,7 @@ export default function Filter({
             activeOpacity={1}
             onPress={() => handleSelect('최신순')}
             isSelected={selectedFilter === '최신순'}>
-            <FilterText
-              color={
-                selectedFilter === '최신순'
-                  ? colors.primaryNormal
-                  : colors.TextNeutral
-              }>
-              최신순
-            </FilterText>
+            <FilterText color={getFilterTextColor('최신순')}>최신순</FilterText>
           </FilterOptionBottom>
         </FilterOptionBox>
       )}

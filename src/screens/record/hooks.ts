@@ -2,10 +2,16 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useForm, UseFormTrigger} from 'react-hook-form';
 import {FormData} from '../../components/input/types';
 import {useCallback, useEffect, useState} from 'react';
-import {useSaveMedicineInfoMutation} from '../../services/medicine/medicineApi';
+import {
+  useLazyGetMedicineInfoListQuery,
+  useSaveMedicineInfoMutation,
+} from '../../services/medicine/medicineApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
-import {useSaveInsulinIfoMutation} from '../../services/insulin/InsulinApi';
+import {
+  useLazyGetInsulinInfoListQuery,
+  useSaveInsulinIfoMutation,
+} from '../../services/insulin/InsulinApi';
 import {handleFormError} from '../../modules/formHandler';
 import {useSaveBloodSugarMutation} from '../../services/bloodSugar/bloodSugarApi';
 
@@ -84,7 +90,30 @@ export function useMedicine() {
 
   const [saveMedicineInfo] = useSaveMedicineInfoMutation();
 
+  const [fetchMedicineData, {data: medicineData}] =
+    useLazyGetMedicineInfoListQuery();
+
   const [intakeDays, setIntakeDays] = useState<string[]>([]);
+  const [medicineState, setMedicineState] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  useEffect(() => {
+    fetchMedicineData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [medicineData]);
+
+  useEffect(() => {
+    if (medicineData) {
+      const initialMedicineState: Record<string, boolean> = {};
+
+      medicineData.map(item => {
+        initialMedicineState[item.medicineName] = true; // true: 복약 중, false: 복약 중단
+      });
+
+      setMedicineState(initialMedicineState);
+    }
+  }, [medicineData]);
 
   const handleMedicineSubmit = async () => {
     const data = {
@@ -97,7 +126,8 @@ export function useMedicine() {
 
     try {
       await saveMedicineInfo(data).unwrap();
-      navigation.navigate('Home');
+      fetchMedicineData();
+      navigation.navigate('MedicineDocument');
     } catch (error) {
       console.error(error);
       Alert.alert('복약 추가에 실패했습니다.');
@@ -105,6 +135,24 @@ export function useMedicine() {
   };
 
   const handleSubmit = handleFormSubmit(handleMedicineSubmit, handleFormError);
+
+  // 복약 상태 토글 함수
+  const toggleMedicineState = useCallback((name: string) => {
+    setMedicineState(prevState => ({
+      ...prevState,
+      [name]: !prevState[name],
+    }));
+  }, []);
+
+  // 복약 추가하기
+  const handleGoAdd = useCallback(() => {
+    navigation.navigate('Medicine');
+  }, [navigation]);
+
+  const transformedData = medicineData?.map(item => ({
+    ...item,
+    intakeTime: item.intakeTime.join(', '),
+  }));
 
   return {
     control,
@@ -122,6 +170,10 @@ export function useMedicine() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
+    medicineState,
+    toggleMedicineState,
+    handleGoAdd,
+    transformedData,
   };
 }
 
@@ -151,6 +203,27 @@ export function useInsulin() {
 
   const [saveInsulinIfo] = useSaveInsulinIfoMutation();
 
+  const [fetchInsulinData, {data: insulinData}] =
+    useLazyGetInsulinInfoListQuery();
+
+  const [insulinState, setInsulinState] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    fetchInsulinData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [insulinData]);
+
+  useEffect(() => {
+    if (insulinData) {
+      const initialInsulinState = insulinData.reduce((acc, item) => {
+        acc[item.productName] = true;
+        return acc;
+      }, {} as Record<string, boolean>);
+
+      setInsulinState(initialInsulinState);
+    }
+  }, [insulinData]);
+
   const handleInsulinSubmit = async () => {
     const data = {
       alarm: isToggleOn,
@@ -161,7 +234,7 @@ export function useInsulin() {
 
     try {
       await saveInsulinIfo(data).unwrap();
-      navigation.navigate('Home');
+      navigation.navigate('InsulinDocument');
     } catch (error) {
       console.error(error);
       Alert.alert('복약 추가에 실패했습니다.');
@@ -169,6 +242,24 @@ export function useInsulin() {
   };
 
   const handleSubmit = handleFormSubmit(handleInsulinSubmit, handleFormError);
+
+  // 인슐린 상태 토글 함수
+  const toggleInsulinState = useCallback((name: string) => {
+    setInsulinState(prevState => ({
+      ...prevState,
+      [name]: !prevState[name],
+    }));
+  }, []);
+
+  // 인슐린 추가하기
+  const handleGoAdd = useCallback(() => {
+    navigation.navigate('Insulin');
+  }, [navigation]);
+
+  const transformedInsulinData = insulinData?.map(item => ({
+    ...item,
+    dosage: `${item.dosage}(U/mL)`, // Append (U/mL) to the dosage
+  }));
 
   return {
     control,
@@ -184,6 +275,10 @@ export function useInsulin() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
+    insulinState,
+    toggleInsulinState,
+    handleGoAdd,
+    insulinData: transformedInsulinData,
   };
 }
 
@@ -207,13 +302,16 @@ export function useBloodSugar() {
 
   const bloodSugar = watch('bloodSugar');
   const measurementCondition = watch('measurementCondition');
+  const bloodSugarTime = watch('bloodSugarTime');
 
   const [input, setInput] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
-    setIsButtonDisabled(!(bloodSugar && measurementCondition && input));
-  }, [bloodSugar, measurementCondition, input]);
+    setIsButtonDisabled(
+      !(bloodSugar && measurementCondition && bloodSugarTime),
+    );
+  }, [bloodSugar, measurementCondition, bloodSugarTime]);
 
   const handleInputChange = useCallback((text: string) => {
     setInput(text);
@@ -223,7 +321,7 @@ export function useBloodSugar() {
     const data = {
       bloodSugarLevel: getValues('bloodSugar'),
       measurementCondition: getValues('measurementCondition'),
-      measurementTime: input,
+      measurementTime: getValues('bloodSugarTime'),
       memo: getValues('memo'),
     };
 

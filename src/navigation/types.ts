@@ -8,10 +8,14 @@ export interface ParamList extends ParamListBase {
   SignUp: undefined;
   BasicInformation: undefined;
   AdditionalInformation: undefined;
+  SignUpComplete: undefined;
   Home: undefined;
+  Notify: undefined;
   Medicine: undefined;
   Insulin: undefined;
   BloodSugar: undefined;
+  MedicineDocument: undefined;
+  InsulinDocument: undefined;
   MealSearch: {isAIProcessing?: boolean};
   MealRecording: {
     photoUri?: string | undefined;
@@ -30,8 +34,11 @@ export interface ParamList extends ParamListBase {
   MyComment: {title: string};
   Community: undefined;
   CommunitySearch: undefined;
-  Write: undefined;
+  Write: {id?: number; editTitle?: string; editContent?: string};
   Detail: {id: number};
+  Medical: undefined;
+  GuardianConnect: {name: string};
+  GuardianComplete: {name: string};
   Test: undefined;
   IconTest: undefined;
   PrimaryButtonTest: undefined;
