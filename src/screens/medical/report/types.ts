@@ -1,4 +1,11 @@
 export interface BloodReportType {
-  monthlyAvg?: number | undefined;
-  monthlyAvgStatus?: string | undefined;
+  monthlyAvg: number | null;
+  monthlyAvgStatus: string | undefined;
+  monthlyMessage: string | undefined;
+}
+
+export interface MedicineReportType {
+  monthlyAvg: number | null;
+  monthlyAvgStatus: string | undefined;
+  monthlyMessage: string | undefined;
 }

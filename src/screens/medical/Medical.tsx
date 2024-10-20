@@ -14,6 +14,8 @@ import BloodReport from './report/BloodReport';
 import MedicineReport from './report/MedicineReport';
 import Guide from './guide/Guide';
 
+const CHIP_ITEMS = ['혈당', '인슐린', '복약'] as const;
+
 export default function Medical() {
   const {
     currentDate,
@@ -23,19 +25,60 @@ export default function Medical() {
     bloodDailyStatuses,
     bloodMonthlyAvg,
     bloodMonthlyAvgStatus,
+    bloodMonthlyMessage,
+    insulinDailyStatuses,
+    insulinMonthlyAvg,
+    insulinMonthlyAvgStatus,
+    insulinMonthlyMessage,
+    medicineDailyStatuses,
+    medicineMonthlyAvg,
+    medicineMonthlyAvgStatus,
+    medicineMonthlyMessage,
+    calendarType,
   } = useMedical();
 
-  const chipItems = useMemo(() => ['혈당', '인슐린', '복약'], []);
+  const renderReport = useMemo(() => {
+    const reportProps = {
+      혈당: {
+        component: BloodReport,
+        monthlyAvg: bloodMonthlyAvg,
+        monthlyAvgStatus: bloodMonthlyAvgStatus,
+        monthlyMessage: bloodMonthlyMessage,
+      },
+      인슐린: {
+        component: MedicineReport,
+        monthlyAvg: insulinMonthlyAvg,
+        monthlyAvgStatus: insulinMonthlyAvgStatus,
+        monthlyMessage: insulinMonthlyMessage,
+      },
+      복약: {
+        component: MedicineReport,
+        monthlyAvg: medicineMonthlyAvg,
+        monthlyAvgStatus: medicineMonthlyAvgStatus,
+        monthlyMessage: medicineMonthlyMessage,
+      },
+    };
 
-  const ReportComponent =
-    selectedChip === '혈당' ? (
-      <BloodReport
-        monthlyAvg={bloodMonthlyAvg}
-        monthlyAvgStatus={bloodMonthlyAvgStatus}
+    const Report = reportProps[selectedChip].component;
+    return (
+      <Report
+        monthlyAvg={reportProps[selectedChip].monthlyAvg}
+        monthlyAvgStatus={reportProps[selectedChip].monthlyAvgStatus}
+        monthlyMessage={reportProps[selectedChip].monthlyMessage}
       />
-    ) : (
-      <MedicineReport />
     );
+  }, [
+    selectedChip,
+    bloodMonthlyAvg,
+    bloodMonthlyAvgStatus,
+    bloodMonthlyMessage,
+    insulinMonthlyAvg,
+    insulinMonthlyAvgStatus,
+    insulinMonthlyMessage,
+    medicineMonthlyAvg,
+    medicineMonthlyAvgStatus,
+    medicineMonthlyMessage,
+  ]);
 
   return (
     <ScrollLayout paddingBottom={124}>
@@ -43,7 +86,7 @@ export default function Medical() {
         <MedicalTitle weight="bold">진료 노트</MedicalTitle>
         <MedicalBox>
           <MedicalChipBox>
-            {chipItems.map(item => (
+            {CHIP_ITEMS.map(item => (
               <SelectChips
                 key={item}
                 isSelected={selectedChip === item}
@@ -57,11 +100,13 @@ export default function Medical() {
             <MonthCalendar
               currentDate={currentDate}
               setCurrentDate={setCurrentDate}
-              type={selectedChip === '혈당' ? 'bloodSugar' : 'average'}
+              type={calendarType}
               bloodDailyStatuses={bloodDailyStatuses}
+              insulinDailyStatuses={insulinDailyStatuses}
+              medicineDailyStatuses={medicineDailyStatuses}
             />
           </MedicalCalendarBox>
-          {ReportComponent}
+          {renderReport}
         </MedicalBox>
       </MedicalContainer>
     </ScrollLayout>

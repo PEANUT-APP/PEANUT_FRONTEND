@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   MonthReportContainer,
   BloodReportContainer,
@@ -13,6 +13,7 @@ import {colors} from '../../../styles/colors';
 import {BloodSugarItem} from '../item/CalendarItem';
 import {BloodSugarImageItem} from '../item/ImageItem';
 import {BloodReportType} from './types';
+import {splitMessage} from '../hooks';
 
 const getKoreanStatus = (status: string | undefined) => {
   switch (status) {
@@ -32,8 +33,10 @@ const getKoreanStatus = (status: string | undefined) => {
 export default function BloodReport({
   monthlyAvg,
   monthlyAvgStatus,
+  monthlyMessage,
 }: BloodReportType) {
   const koreanStatus = getKoreanStatus(monthlyAvgStatus);
+  const messageParts = splitMessage(monthlyMessage || '');
 
   return (
     <BloodReportContainer>
@@ -57,11 +60,25 @@ export default function BloodReport({
       <BloodFigureContainer>
         <BloodSugarImageItem name={monthlyAvgStatus} />
         <ReportValueText color={colors.TextNormal}>
-          이번 달은{' '}
-          <ReportTitle color={colors.primaryNormal} weight="bold">
-            {koreanStatus}
-          </ReportTitle>
-          {'를 잘 유지하고 있어요.\n이대로만 유지해주세요!'}
+          {messageParts.map((part, index) => {
+            if (part.includes(koreanStatus)) {
+              return (
+                <Fragment key={index}>
+                  {part.split(koreanStatus).map((text, i) => (
+                    <Fragment key={i}>
+                      {text}
+                      {i === 0 && (
+                        <ReportTitle weight="bold" color={colors.primaryNormal}>
+                          {koreanStatus}
+                        </ReportTitle>
+                      )}
+                    </Fragment>
+                  ))}
+                </Fragment>
+              );
+            }
+            return <React.Fragment key={index}>{part}</React.Fragment>;
+          })}
         </ReportValueText>
       </BloodFigureContainer>
     </BloodReportContainer>

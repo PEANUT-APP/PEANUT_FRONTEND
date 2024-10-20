@@ -1,5 +1,11 @@
+import {mapStatus} from '../../screens/medical/hooks';
 import apiSlice from '../apiSlice';
-import {MedicineFormType, MedicineRecordReturnType} from './types';
+import {
+  MedicineFormType,
+  MedicineRecordReturnType,
+  MedicineReportReturnType,
+  TransformedMedicineReportReturnType,
+} from './types';
 
 export const medicineApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -22,6 +28,26 @@ export const medicineApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getMedicineInfoReportList: builder.query<
+      TransformedMedicineReportReturnType,
+      {month: number; year: number}
+    >({
+      query: ({month, year}) => ({
+        url: `/medicine/get/report?month=${month}&year=${year}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: MedicineReportReturnType) => {
+        const transformedDailyStatuses = response.dailyStatuses.map(status => ({
+          ...status,
+          recordStatus: mapStatus(status.recordStatus),
+        }));
+
+        return {
+          ...response,
+          dailyStatuses: transformedDailyStatuses,
+        };
+      },
+    }),
   }),
 });
 
@@ -29,6 +55,7 @@ export const {
   useSaveMedicineInfoMutation,
   useGetMedicineInfoListQuery,
   useLazyGetMedicineInfoListQuery,
+  useGetMedicineInfoReportListQuery,
 } = medicineApi;
 
 export default medicineApi;

@@ -164,7 +164,7 @@ export function usePatientMain() {
 
   const medicineTime = useMemo(() => {
     if (
-      additionalInfo?.medicineTime === '투여 기록 없음' ||
+      additionalInfo?.medicineTime === '복용 기록 없음' ||
       !additionalInfo?.medicineTime
     ) {
       return '';

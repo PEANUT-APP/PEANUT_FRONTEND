@@ -11,3 +11,23 @@ export interface MedicineRecordReturnType {
   intakeTime: string[];
   medicineName: string;
 }
+
+interface DailyStatus {
+  recordStatus: string;
+  recordDate: string;
+}
+
+export interface TransformedMedicineDailyStatus {
+  recordStatus: 'great' | 'normal' | 'bad' | string;
+  recordDate: string;
+}
+
+export interface MedicineReportReturnType {
+  dailyStatuses: DailyStatus[];
+  monthlyStatusMessage: string;
+}
+
+export interface TransformedMedicineReportReturnType {
+  dailyStatuses: TransformedMedicineDailyStatus[];
+  monthlyStatusMessage: string;
+}
