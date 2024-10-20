@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {Body1, Title} from '../../components/text/Text';
+import {colors} from '../../styles/colors';
 
 export const SignContainer = styled.View<{isComplete?: boolean}>`
   flex: 1;
@@ -15,6 +16,16 @@ export const SignBox = styled.View`
 export const SignTitleBox = styled.View`
   width: 350px;
   gap: 24px;
+`;
+
+export const SignTitlePair = styled.View`
+  gap: 8px;
+`;
+
+export const SignSubtitle = styled(Body1)`
+  line-height: 21.344px;
+  letter-spacing: -0.4px;
+  color: ${colors.TextNeutral};
 `;
 
 export const ConnectTitleBox = styled.View`
@@ -33,8 +44,13 @@ export const ConnectTitleText = styled(Body1)`
 
 export const SignFormBox = styled.View`
   gap: 16px;
+  align-items: center;
 `;
 
 export const SignButtonBox = styled.View`
   gap: 8px;
+`;
+
+export const SignCompleteIcon = styled.View`
+  margin-top: 72px;
 `;

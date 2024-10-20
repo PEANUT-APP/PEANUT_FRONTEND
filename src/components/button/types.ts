@@ -8,6 +8,7 @@ export interface ButtonType {
   children: ReactNode;
   isLoading?: boolean;
   type?: string;
+  icon?: (props: {size: 'xl' | 'l' | 'm' | 's'}) => JSX.Element;
 }
 
 export interface PrimaryButtonType extends ButtonType {
@@ -49,5 +50,10 @@ export interface PlusButtonType {
 
 export interface CheckButtonType {
   isChecked: boolean;
+  onPress: () => void;
+}
+
+export interface NotifyButtonType {
+  isPushed: boolean;
   onPress: () => void;
 }

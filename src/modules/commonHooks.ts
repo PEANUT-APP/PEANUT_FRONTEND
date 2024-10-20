@@ -14,14 +14,19 @@ export function useBackHandler() {
 export function useKebab() {
   const [showWriter, setShowWriter] = useState(false);
 
-  const handleClickKebab = () => {
+  const handleClickKebab = useCallback(() => {
     setShowWriter(prev => !prev);
-  };
+  }, []);
 
   return {showWriter, handleClickKebab};
 }
 
-export function formatDateTime(dateString: string | null) {
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return `${date.getMonth() + 1}월 ${date.getDate()}일`;
+}
+
+export function formatDateTime(dateString: string | undefined) {
   if (!dateString) {
     return '';
   }

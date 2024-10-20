@@ -32,10 +32,10 @@ export const InputBox = styled.View<InputStyleType>`
   justify-content: space-between;
   border-bottom-width: 1px;
   border-bottom-color: ${determineBorderColor};
-  background-color: ${({editable, drop, isError, isFocused}) =>
+  background-color: ${({editable, drop, date, isError, isFocused}) =>
     isError && !isFocused
       ? colors.SolidSecondaryActive
-      : editable || drop
+      : editable || drop || date
       ? 'transparent'
       : colors.SolidDisabled};
 `;
@@ -49,8 +49,8 @@ export const InputText = styled.TextInput<InputStyleType>`
   font-weight: 500;
   line-height: 21.344px;
   letter-spacing: -0.4px;
-  color: ${({editable, drop}) =>
-    editable || drop ? colors.TextNormal : colors.TextDisabled};
+  color: ${({editable, drop, date}) =>
+    editable || drop || date ? colors.TextNormal : colors.TextDisabled};
 `;
 
 export const InputLabel = styled(Caption1)`

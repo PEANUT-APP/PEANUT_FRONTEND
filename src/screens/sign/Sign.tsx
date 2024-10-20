@@ -9,33 +9,42 @@ import {
   SignButtonBox,
   SignContainer,
   SignFormBox,
+  SignSubtitle,
   SignTitleBox,
+  SignTitlePair,
   SignTitleText,
 } from './styles';
 import {useSign} from './hooks';
 
 export default function Sign({
   title,
+  subTitle,
   children,
   button,
   verification,
   setVerification,
   step,
   setStep,
+  isComplete,
 }: SignType) {
   const {handleBack} = useSign(verification, setVerification, step, setStep);
 
   return (
     <GlobalView>
-      <SignContainer>
+      <SignContainer isComplete={isComplete}>
         <SignBox>
           <SignTitleBox>
-            <TouchableOpacity activeOpacity={1} onPress={handleBack}>
-              <DesignIcon type="back" size="l" color={colors.TextNeutral} />
-            </TouchableOpacity>
-            <SignTitleText color={colors.TextNormal} weight="bold">
-              {title}
-            </SignTitleText>
+            {!isComplete && (
+              <TouchableOpacity activeOpacity={1} onPress={handleBack}>
+                <DesignIcon type="back" size="l" color={colors.TextNeutral} />
+              </TouchableOpacity>
+            )}
+            <SignTitlePair>
+              <SignTitleText color={colors.TextNormal} weight="bold">
+                {title}
+              </SignTitleText>
+              {isComplete && <SignSubtitle>{subTitle}</SignSubtitle>}
+            </SignTitlePair>
           </SignTitleBox>
           <SignFormBox>{children}</SignFormBox>
         </SignBox>

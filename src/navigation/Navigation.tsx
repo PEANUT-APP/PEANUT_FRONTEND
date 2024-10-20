@@ -28,6 +28,13 @@ import Community from '../screens/community/Community';
 import Write from '../screens/community/Write';
 import Detail from '../screens/community/Detail';
 import CommunitySearch from '../screens/search/CommunitySearh';
+import Medical from '../screens/medical/Medical';
+import Notify from '../screens/home/notify/Notify';
+import MedicineDocument from '../screens/record/MedicineDocument';
+import InsulinDocument from '../screens/record/InsulinDocument';
+import GuardianConnect from '../screens/sign/guardian/Connect';
+import GuardianComplete from '../screens/sign/guardian/Complete';
+import SignUpComplete from '../screens/sign/Complete';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,11 +57,15 @@ export default function Navigation() {
         name="AdditionalInformation"
         component={AdditionalInformation}
       />
+      <Stack.Screen name="SignUpComplete" component={SignUpComplete} />
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Notify" component={Notify} />
       <Stack.Screen name="My" component={My} />
       <Stack.Screen name="Medicine" component={MedicineRecord} />
       <Stack.Screen name="Insulin" component={InsulinRecord} />
       <Stack.Screen name="BloodSugar" component={BloodSugarRecord} />
+      <Stack.Screen name="MedicineDocument" component={MedicineDocument} />
+      <Stack.Screen name="InsulinDocument" component={InsulinDocument} />
       <Stack.Screen name="MealSearch" component={MealSearch} />
       <Stack.Screen name="MealRecording" component={MealRecording} />
       <Stack.Screen name="MealRecord" component={MealRecord} />
@@ -72,6 +83,9 @@ export default function Navigation() {
       <Stack.Screen name="CommunitySearch" component={CommunitySearch} />
       <Stack.Screen name="Write" component={Write} />
       <Stack.Screen name="Detail" component={Detail} />
+      <Stack.Screen name="Medical" component={Medical} />
+      <Stack.Screen name="GuardianConnect" component={GuardianConnect} />
+      <Stack.Screen name="GuardianComplete" component={GuardianComplete} />
     </Stack.Navigator>
   );
 }

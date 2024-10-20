@@ -29,3 +29,12 @@ export const ReportCardBox = styled.View`
   flex-direction: row;
   gap: 10px;
 `;
+
+export const HomeLoadingScreen = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background: rgba(34, 34, 34, 0.1);
+  z-index: 100;
+`;

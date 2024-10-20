@@ -2,9 +2,9 @@ export interface GraphType {
   graphData:
     | {
         value: number | null;
-        hideDataPoint?: boolean;
-        customDataPoint?: () => Element;
-      }[]
-    | undefined;
+        time: number | null;
+        minute: number | null;
+        key?: string;
+      }[];
   size?: 's' | 'm';
 }

@@ -38,7 +38,13 @@ export const CardGrayBox = styled.View`
   width: 56px;
   height: 56px;
   background-color: ${colors.SolidTertiaryActive};
-  margin: 16px 0 12px;
+  margin: 16px 0 8px;
+`;
+
+export const CardImage = styled.View`
+  width: 60px;
+  height: 60px;
+  margin: 16px 0 8px;
 `;
 
 export const CardMedicineName = styled(Body2)`

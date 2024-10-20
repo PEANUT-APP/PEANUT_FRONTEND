@@ -10,6 +10,7 @@ import {
   useDetailsCommunityQuery,
   useGetAllCommunityQuery,
   useLikeMutation,
+  useUpdateCommunityMutation,
 } from '../../services/community/communityApi';
 import {ParamList} from '../../navigation/types';
 import {useEffect, useMemo, useState} from 'react';
@@ -25,8 +26,6 @@ export function useCommunity() {
     refetch,
   } = useGetAllCommunityQuery();
 
-  console.log(allCommunityData);
-
   useEffect(() => {
     const communityRefetch = navigation.addListener('focus', () => {
       refetch();
@@ -40,7 +39,7 @@ export function useCommunity() {
   };
 
   const handleGoWrite = () => {
-    navigation.navigate('Write');
+    navigation.navigate('Write', {});
   };
 
   return {
@@ -54,31 +53,76 @@ export function useCommunity() {
 export function useWrite() {
   const navigation = useNavigation<StackNavigationProp<ParamList>>();
 
+  const route =
+    useRoute<
+      RouteProp<
+        {params: {id: number; editTitle: string; editContent: string}},
+        'params'
+      >
+    >();
+  const {id, editTitle, editContent} = route.params;
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [createCommunity] = useCreateCommunityMutation();
+  const [updateCommunity] = useUpdateCommunityMutation();
 
-  const handleCreate = async () => {
+  useEffect(() => {
+    if (editTitle && editContent) {
+      setIsButtonDisabled(title === editTitle && content === editContent);
+    } else {
+      setIsButtonDisabled(!title || !content);
+    }
+  }, [content, editContent, editTitle, title]);
+
+  useEffect(() => {
+    if (editTitle && editContent) {
+      setTitle(editTitle);
+      setContent(editContent);
+    }
+  }, [editContent, editTitle]);
+
+  const handleRegister = async () => {
+    if (!title || !content) {
+      return;
+    }
+
     try {
-      const response = await createCommunity({
-        title: title,
-        content: content,
-      }).unwrap();
-      console.log(response);
+      if (editTitle && editContent && id) {
+        await updateCommunity({
+          id,
+          title,
+          content,
+        }).unwrap();
+        navigation.push('Detail', {id});
+      } else {
+        await createCommunity({
+          title: title,
+          content: content,
+        }).unwrap();
+        navigation.push('Community');
+      }
       setTitle('');
       setContent('');
-      navigation.push('Community');
     } catch (error) {
       console.error(error);
       Alert.alert('글 등록에 실패했습니다.');
     }
   };
 
-  return {title, setTitle, content, setContent, handleCreate};
+  return {
+    title,
+    setTitle,
+    content,
+    setContent,
+    handleRegister,
+    isButtonDisabled,
+  };
 }
 
-export function useDetail() {
+export function useDetail(liked?: boolean) {
   const route = useRoute<RouteProp<{params: {id: number}}, 'params'>>();
   const {id} = route.params;
 
@@ -86,11 +130,12 @@ export function useDetail() {
     data: detailData,
     isSuccess: isDetailSuccess,
     refetch: detailRefetch,
-  } = useDetailsCommunityQuery({id: id});
+  } = useDetailsCommunityQuery({id});
+
   const [like] = useLikeMutation();
   const [createComment] = useCreateCommentMutation();
 
-  const [liked, setLiked] = useState(false);
+  const [isLike, setIsLike] = useState(liked);
   const [selectedFilter, setSelectedFilter] = useState('좋아요순');
   const [comment, setComment] = useState('');
 
@@ -98,9 +143,9 @@ export function useDetail() {
     try {
       await like({
         communityId: id,
-        liked: !liked,
+        liked: !isLike,
       }).unwrap();
-      setLiked(!liked);
+      setIsLike(!isLike);
       detailRefetch();
     } catch (error) {
       console.error(error);
@@ -109,6 +154,10 @@ export function useDetail() {
   };
 
   const handleComment = async () => {
+    if (!comment) {
+      return;
+    }
+
     try {
       await createComment({
         comment,
@@ -137,7 +186,7 @@ export function useDetail() {
     selectedFilter,
     setSelectedFilter,
     sortedComments,
-    liked,
+    isLike,
     handleLike,
     comment,
     setComment,

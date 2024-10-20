@@ -21,7 +21,7 @@ import {TouchableOpacity, View} from 'react-native';
 import {CommunityListReturnType} from '../../../services/community/types';
 import Writer from '../../edit/Writer';
 import {useCommunityListItem} from './hooks';
-import {useKebab} from '../../../modules/commonHooks';
+import {formatDateTime, useKebab} from '../../../modules/commonHooks';
 
 export default function CommunityListItem({
   id,
@@ -31,6 +31,8 @@ export default function CommunityListItem({
   name,
   like,
   imageUrl,
+  comment,
+  create_at,
 }: CommunityListReturnType) {
   const {showWriter, handleClickKebab} = useKebab();
   const {handleClickItem} = useCommunityListItem(id);
@@ -48,9 +50,18 @@ export default function CommunityListItem({
           <TouchableOpacity activeOpacity={1} onPress={handleClickKebab}>
             <DesignIcon type="kebab" size="l" color={colors.TextDisabled} />
           </TouchableOpacity>
-          {showWriter && <Writer userId={userId || null} />}
+          {showWriter && (
+            <Writer
+              userId={userId || null}
+              id={id}
+              title={title}
+              content={content}
+            />
+          )}
         </CommunityListItemTitleBox>
-        <CommunityListItemDate>2024.09.04 오후 11:30</CommunityListItemDate>
+        <CommunityListItemDate>
+          {formatDateTime(create_at)}
+        </CommunityListItemDate>
         <CommunityListItemContent ellipsizeMode="tail" numberOfLines={1}>
           {content}
         </CommunityListItemContent>
@@ -71,7 +82,7 @@ export default function CommunityListItem({
           </CommunityListItemInfoPair>
           <CommunityListItemCommentPair>
             <DesignIcon type="comment" size="s" color={colors.LineNomal} />
-            <CommunityListItemText>0</CommunityListItemText>
+            <CommunityListItemText>{comment}</CommunityListItemText>
           </CommunityListItemCommentPair>
         </CommunityListItemInfoBox>
       </CommunityListItemBottomBox>

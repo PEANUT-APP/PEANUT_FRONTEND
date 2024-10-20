@@ -11,6 +11,7 @@ import {
   MyUserInfoName,
   MyUserInfoText,
   MyUserList,
+  MyUserNoneProfile,
   MyUserProfile,
 } from './styles';
 import {View} from 'react-native';
@@ -23,26 +24,42 @@ import {useMy} from './hooks';
 
 export default function My() {
   const {handleLogout} = useAuth();
-  const {handleGoEdit, handleGoNotice, handleGoAccount} = useMy();
+  const {
+    handleGoConnectGuardian,
+    handleGoEdit,
+    handleGoNotice,
+    handleGoAccount,
+    userInfo,
+    isUserInfoSuccess,
+    patientInfo,
+    isPatientSuccess,
+    isGuardianConnected,
+  } = useMy();
 
   return (
     <Layout>
       <MyContainer>
         <MyBox>
           <MyTop>
-            <MyUserInfoBox>
-              <MyUserProfile
-                source={require('../../assets/images/mainProfile.png')}
-              />
-              <View>
-                <MyUserInfoName weight="bold">나는 땅콩님</MyUserInfoName>
-                <MyUserInfo>
-                  <MyUserInfoText>160cm</MyUserInfoText>
-                  <MyUserInfoText>·</MyUserInfoText>
-                  <MyUserInfoText>50kg</MyUserInfoText>
-                </MyUserInfo>
-              </View>
-            </MyUserInfoBox>
+            {isUserInfoSuccess && (
+              <MyUserInfoBox>
+                {userInfo?.profileUrl ? (
+                  <MyUserProfile source={{uri: userInfo?.profileUrl}} />
+                ) : (
+                  <MyUserNoneProfile />
+                )}
+                <View>
+                  <MyUserInfoName weight="bold">
+                    {userInfo?.username}
+                  </MyUserInfoName>
+                  <MyUserInfo>
+                    <MyUserInfoText>{userInfo?.height}cm</MyUserInfoText>
+                    <MyUserInfoText>·</MyUserInfoText>
+                    <MyUserInfoText>{userInfo?.weight}kg</MyUserInfoText>
+                  </MyUserInfo>
+                </View>
+              </MyUserInfoBox>
+            )}
             <OutlineButton size="s" onPress={handleGoEdit}>
               정보 수정하기
             </OutlineButton>
@@ -59,9 +76,16 @@ export default function My() {
                 댓글
               </MyCard>
             </MyUserInfoCommunity>
-            <PatientCard />
+            {isPatientSuccess && (
+              <PatientCard
+                data={patientInfo || null}
+                isGuardianConnected={isGuardianConnected}
+              />
+            )}
             <MyUserList>
-              <MyListItem onPress={() => {}}>보호자 연결하기</MyListItem>
+              <MyListItem onPress={handleGoConnectGuardian}>
+                보호자 연결하기
+              </MyListItem>
               <MyListItem onPress={handleGoAccount}>계정 관리하기</MyListItem>
               <MyListItem onPress={handleGoNotice}>알림 설정</MyListItem>
               <MyListItem onPress={handleLogout}>로그아웃</MyListItem>

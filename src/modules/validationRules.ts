@@ -1,18 +1,18 @@
-import {BIRTH_VALIDATION_PATTERN, EMAIL_VALIDATION_PATTERN} from './constants';
+import {EMAIL_VALIDATION_PATTERN} from './constants';
 
 export const useValidationRules = (
   verificationCodeFromServer?: string | undefined,
 ) => {
   return {
     email: {
-      required: '값이 필요해요!',
+      required: '이메일이 필요해요!',
       pattern: {
         value: EMAIL_VALIDATION_PATTERN,
         message: '유효한 이메일 형식이 아니에요!',
       },
     },
     confirmationCode: {
-      required: '값이 필요해요!',
+      required: '인증번호가 필요해요!',
       validate: (value: string) => {
         if (value === verificationCodeFromServer) {
           return true;
@@ -21,33 +21,29 @@ export const useValidationRules = (
       },
     },
     phoneNumber: {
-      required: '값이 필요해요!',
+      required: '전화번호가 필요해요!',
       validate: (value: string) => {
         const numberValue = parseFloat(value);
         if (!value || isNaN(numberValue) || numberValue <= 0) {
-          return '숫자로만 작성해주세요!';
+          return '전화번호는 숫자로만 작성해주세요!';
         }
         return true;
       },
     },
     gender: {
-      required: '값이 필요해요!',
+      required: '성별이 필요해요!',
     },
     birth: {
-      required: '값이 필요해요!',
-      pattern: {
-        value: BIRTH_VALIDATION_PATTERN,
-        message: '생년월일은 YYYY.MM.DD 형식으로 작성해주세요!',
-      },
+      required: '생일이 필요해요!',
     },
     name: {
-      required: '값이 필요해요!',
+      required: '이름이 필요해요!',
     },
     password: {
-      required: '값이 필요해요!',
+      required: '비밀번호가 필요해요!',
     },
     weight: {
-      required: '값이 필요해요!',
+      required: '몸무게 필요해요!',
       validate: (value: string) => {
         const numberValue = parseFloat(value);
         if (!value || isNaN(numberValue) || numberValue <= 0) {
@@ -57,7 +53,7 @@ export const useValidationRules = (
       },
     },
     height: {
-      required: '값이 필요해요!',
+      required: '키가 필요해요!',
       validate: (value: string) => {
         const numberValue = parseFloat(value);
         if (!value || isNaN(numberValue) || numberValue <= 0) {
@@ -67,7 +63,7 @@ export const useValidationRules = (
       },
     },
     nickname: {
-      required: '값이 필요해요!',
+      required: '닉네임이 필요해요!',
       /*validate: async (value: string) => {
         // 서버와 소통하는 비동기 로직 추가
         // const isUnique = await checkNicknameUnique(value);
@@ -79,13 +75,13 @@ export const useValidationRules = (
       },*/
     },
     medicineName: {
-      required: '값이 필요해요!',
+      required: '약 이름이 필요해요!',
     },
     productName: {
-      required: '값이 필요해요!',
+      required: '인슐린 이름이 필요해요!',
     },
     dosage: {
-      required: '값이 필요해요!',
+      required: '투여량이 필요해요!',
       validate: (value: string) => {
         const numberValue = parseFloat(value);
         if (!value || isNaN(numberValue) || numberValue <= 0) {
@@ -95,7 +91,7 @@ export const useValidationRules = (
       },
     },
     bloodSugar: {
-      required: '값이 필요해요!',
+      required: '혈당값이 필요해요!',
       validate: (value: string) => {
         const numberValue = parseFloat(value);
         if (!value || isNaN(numberValue) || numberValue <= 0) {
@@ -107,7 +103,13 @@ export const useValidationRules = (
     measurementCondition: {
       required: '값이 필요해요!',
     },
+    bloodSugarTime: {
+      required: '기록 시간이 필요해요!',
+    },
     memo: {},
     foodTime: {},
+    guardianCode: {
+      required: '인증번호가 필요해요!',
+    },
   };
 };

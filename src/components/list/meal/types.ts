@@ -8,6 +8,7 @@ export interface MealListType {
 export interface MealListItemType {
   name: string;
   giIndex: number;
+  servingCount: number;
   onDelete: () => void;
 }
 
