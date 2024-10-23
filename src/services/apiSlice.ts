@@ -13,6 +13,7 @@ import {Alert} from 'react-native';
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
   credentials: 'include',
+  mode: 'no-cors',
   prepareHeaders: (headers, {getState}) => {
     const token = (getState() as RootState).token.accessToken;
     if (token) {
