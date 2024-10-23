@@ -46,7 +46,7 @@ export const CalendarWeekItem = styled(Body2)<{isToday: boolean}>`
   border-radius: 100px;
   line-height: 18.676px;
   letter-spacing: -0.35px;
-  padding-top: ${({isToday}) => isToday && '5px'};
+  padding-top: ${({isToday}) => isToday && '7px'};
   margin: ${({isToday}) => (isToday ? '0 -6px' : '0')};
 `;
 
@@ -123,8 +123,8 @@ export const MonthCalendarDayCircle = styled.View`
   border-radius: 30px;
   background-color: ${colors.primaryNormal};
   position: absolute;
-  bottom: 16px;
-  left: -4.7px;
+  bottom: 13px;
+  left: -5.1px;
   z-index: 0;
 `;
 
