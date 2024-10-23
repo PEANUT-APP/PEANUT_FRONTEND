@@ -65,7 +65,7 @@ export default function CommunityCard({
           <DesignIcon
             type={isLike ? 'likeFill' : 'like'}
             size="l"
-            color={like ? colors.primaryNormal : colors.LineNomal}
+            color={isLike ? colors.primaryNormal : colors.LineNomal}
           />
         </TouchableOpacity>
         <CommunityCardLike>좋아요 {like}</CommunityCardLike>

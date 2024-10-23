@@ -21,14 +21,14 @@ export const mainPageApi = apiSlice.injectEndpoints({
       {date: string}
     >({
       query: ({date}) => ({
-        url: `/main-api/get-add-info?date=${date}`,
+        url: `/main-api/patient/get-add-info?date=${date}`,
         method: 'GET',
       }),
       providesTags: ['AdditionalInfo'],
     }),
     saveMedicineInsulinStatus: builder.mutation({
       query: ({date, insulinStatus, medicineStatus}: SaveStatusFormType) => ({
-        url: '/main-api/get-add-info/save/status',
+        url: '/main-api/patient/get-add-info/save/status',
         method: 'PUT',
         params: {date, insulinStatus, medicineStatus},
       }),
@@ -36,7 +36,7 @@ export const mainPageApi = apiSlice.injectEndpoints({
     }),
     getFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
       query: ({date}) => ({
-        url: `/main-api/get-all-food?date=${date}`,
+        url: `/main-api/patient/get-all-food?date=${date}`,
         method: 'GET',
       }),
     }),
@@ -45,13 +45,13 @@ export const mainPageApi = apiSlice.injectEndpoints({
       {date: string; eatTime: string}
     >({
       query: ({date, eatTime}) => ({
-        url: `/main-api/get-time-food?date=${date}&eatTime=${eatTime}`,
+        url: `/main-api/patient/get-time-food?date=${date}&eatTime=${eatTime}`,
         method: 'GET',
       }),
     }),
     getPatientUserInfoMainPage: builder.query<UserInfoReturnType, void>({
       query: () => ({
-        url: '/main-api/patient/get-user',
+        url: '/main-api/guardian/get-patient',
         method: 'GET',
       }),
     }),
@@ -60,13 +60,13 @@ export const mainPageApi = apiSlice.injectEndpoints({
       {date: string}
     >({
       query: ({date}) => ({
-        url: `/main-api/patient/get-add-info?date=${date}`,
+        url: `/main-api/guardian/get-add-info?date=${date}`,
         method: 'GET',
       }),
     }),
     getPatientFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
       query: ({date}) => ({
-        url: `/main-api/patient/get-all-food?date=${date}`,
+        url: `/main-api/guardian/get-all-food?date=${date}`,
         method: 'GET',
       }),
     }),
@@ -75,7 +75,7 @@ export const mainPageApi = apiSlice.injectEndpoints({
       {date: string; eatTime: string}
     >({
       query: ({date, eatTime}) => ({
-        url: `/main-api/patient/get-time-food?date=${date}&eatTime=${eatTime}`,
+        url: `/main-api/guardian/get-time-food?date=${date}&eatTime=${eatTime}`,
         method: 'GET',
       }),
     }),

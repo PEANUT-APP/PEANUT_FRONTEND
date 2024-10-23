@@ -16,7 +16,10 @@ export const useMessage = () => {
 
     // Foreground 메시지 리스너 설정
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('알림 도착!', JSON.stringify(remoteMessage));
+      const title = remoteMessage.notification?.title || '제목 없음'; // 기본 제목 설정
+      const body = remoteMessage.notification?.body || '내용 없음'; // 기본 내용 설정
+
+      Alert.alert(title, body);
     });
 
     return unsubscribe;

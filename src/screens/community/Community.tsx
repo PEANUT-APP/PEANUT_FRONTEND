@@ -49,8 +49,8 @@ export default function Community() {
                 like={item.like}
                 imageUrl={item.imageUrl}
                 userId={item.userId}
-                comment={0}
-                create_at=""
+                commentCount={item.commentCount}
+                createTime={item.createTime}
               />
             )}
             ItemSeparatorComponent={CommunityContent}

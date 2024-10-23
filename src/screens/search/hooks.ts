@@ -12,6 +12,7 @@ import {AddMealType} from './types';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useLazyFindCommunityBySearchQuery} from '../../services/community/communityApi';
 
 export function useSearch() {
   const navigation = useNavigation<StackNavigationProp<ParamList>>();
@@ -167,9 +168,22 @@ export function useSearch() {
 export function useCommunitySearch() {
   const [searchCommunity, setSearchCommunity] = useState('');
 
-  const handleSearch = useCallback(() => {
-    console.log(searchCommunity);
-  }, [searchCommunity]);
+  const [findCommunityBySearch, {data: communityData}] =
+    useLazyFindCommunityBySearchQuery();
 
-  return {setSearchCommunity, handleSearch};
+  const handleSearch = async () => {
+    if (searchCommunity) {
+      try {
+        await findCommunityBySearch({
+          search: searchCommunity.trim(),
+        }).unwrap();
+        console.log(communityData);
+      } catch (error) {
+        console.error('Error:', error);
+        Alert.alert('커뮤니티 글 검색에 실패했습니다!');
+      }
+    }
+  };
+
+  return {setSearchCommunity, handleSearch, communityData};
 }
