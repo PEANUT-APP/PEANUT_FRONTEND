@@ -177,7 +177,6 @@ export function useCommunitySearch() {
         await findCommunityBySearch({
           search: searchCommunity.trim(),
         }).unwrap();
-        console.log(communityData);
       } catch (error) {
         console.error('Error:', error);
         Alert.alert('커뮤니티 글 검색에 실패했습니다!');

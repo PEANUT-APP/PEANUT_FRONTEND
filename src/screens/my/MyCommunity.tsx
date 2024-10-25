@@ -33,8 +33,8 @@ export default function MyCommunity() {
             content={item.content}
             name={item.userName}
             like={item.like}
-            comment={item.comment}
-            create_at={item.create_At}
+            commentCount={item.comment}
+            createTime={item.create_At}
             imageUrl=""
             id={0}
           />
