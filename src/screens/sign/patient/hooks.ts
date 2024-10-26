@@ -5,7 +5,7 @@ import {
   //useLazyGetPatientQuery,
   useSendInviteCodeMutation,
 } from '../../../services/user/userApi';
-import {Alert} from 'react-native';
+import {Alert, BackHandler} from 'react-native';
 import {
   NavigationProp,
   RouteProp,
@@ -124,6 +124,21 @@ export function useConfirm() {
 
 export function useComplete() {
   const navigation = useNavigation<StackNavigationProp<NavigationList>>();
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      // 두 단계 뒤로 가기
+      navigation.pop(3);
+      return true; // 기본 동작 방지
+    };
+
+    // BackHandler에 이벤트 추가
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // 컴포넌트 언마운트 시 이벤트 제거
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  }, [navigation]);
 
   const handleGoMy = () => {
     navigation.push('My');

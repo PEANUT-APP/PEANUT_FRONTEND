@@ -20,7 +20,7 @@ import {
   useSaveNormalMealInfoImageMutation,
   useSaveNormalMealInfoMutation,
 } from '../../services/food/foodApi';
-import {Alert} from 'react-native';
+import {Alert, BackHandler} from 'react-native';
 import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
@@ -414,7 +414,7 @@ export function useRecord() {
 }
 
 export function useFeedback() {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
+  const navigation = useNavigation<StackNavigationProp<ParamList>>();
 
   const today = useSelector((state: RootState) => state.today.today);
   const time = useSelector((state: RootState) => state.today.time) as
@@ -448,6 +448,25 @@ export function useFeedback() {
     feedbackBloodSugarRefetch();
     feedbackFoodByTimeRefetch();
   }, [selectedChip, feedbackBloodSugarRefetch, feedbackFoodByTimeRefetch]);
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      // 두 단계 뒤로 가기
+      navigation.pop(2);
+      return true; // 기본 동작 방지
+    };
+
+    // BackHandler에 이벤트 추가
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // 컴포넌트 언마운트 시 이벤트 제거
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  }, [navigation]);
+
+  const handleBack = useCallback(() => {
+    navigation.pop(2);
+  }, [navigation]);
 
   const handleSelectChip = (chip: string) => {
     setSelectedChip(chip);
@@ -526,5 +545,6 @@ export function useFeedback() {
     feedbackBloodSugarData,
     isFeedbackBloodSugarSuccess,
     handleComplete,
+    handleBack,
   };
 }

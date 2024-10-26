@@ -2,7 +2,6 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
 import DesignIcon from '../../components/icon/DesignIcon';
-import {useBackHandler} from '../../modules/commonHooks';
 import {colors} from '../../styles/colors';
 import {
   FeedbackBox,
@@ -25,7 +24,6 @@ import Graph from '../../components/graph/Graph';
 import PrimaryButton from '../../components/button/PrimaryButton';
 
 export default function MealFeedback() {
-  const {handleBack} = useBackHandler();
   const {
     formattedToday,
     selectedChip,
@@ -36,6 +34,7 @@ export default function MealFeedback() {
     feedbackBloodSugarData,
     isFeedbackBloodSugarSuccess,
     handleComplete,
+    handleBack,
   } = useFeedback();
 
   return (
