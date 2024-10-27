@@ -39,11 +39,16 @@ export default function ProtectorHome() {
     isPatientAdditionalInfoSuccess,
     isPatientInfoLoading,
     isPatientAdditionalInfoLoading,
+    refreshing,
+    onRefresh,
   } = useProtectorMain();
 
   return (
     <>
-      <ScrollLayout paddingBottom={101}>
+      <ScrollLayout
+        paddingBottom={101}
+        refreshing={refreshing}
+        onRefresh={onRefresh}>
         <HomeBox>
           <HomeTop
             source={require('../../assets/images/gradientBackgroundDark.png')}>
@@ -89,7 +94,9 @@ export default function ProtectorHome() {
           </HomeContent>
         </HomeBox>
       </ScrollLayout>
-      {(isPatientAdditionalInfoLoading || isPatientInfoLoading) && (
+      {(isPatientAdditionalInfoLoading ||
+        isPatientInfoLoading ||
+        refreshing) && (
         <>
           <BlurView
             // eslint-disable-next-line react-native/no-inline-styles

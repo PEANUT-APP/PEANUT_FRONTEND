@@ -35,6 +35,8 @@ export default function Medical() {
     medicineMonthlyAvgStatus,
     medicineMonthlyMessage,
     calendarType,
+    refreshing,
+    onRefresh,
   } = useMedical();
 
   const renderReport = useMemo(() => {
@@ -81,7 +83,10 @@ export default function Medical() {
   ]);
 
   return (
-    <ScrollLayout paddingBottom={124}>
+    <ScrollLayout
+      paddingBottom={124}
+      refreshing={refreshing}
+      onRefresh={onRefresh}>
       <MedicalContainer>
         <MedicalTitle weight="bold">진료 노트</MedicalTitle>
         <MedicalBox>

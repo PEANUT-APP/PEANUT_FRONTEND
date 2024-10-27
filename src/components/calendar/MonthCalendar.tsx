@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import dayjs from 'dayjs';
 import {
   MonthCalendarBox,
@@ -71,6 +71,11 @@ export default function MonthCalendar({
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(new Date());
 
+  useEffect(() => {
+    setSelectedDate(currentDate.date());
+    setDate(new Date());
+  }, [currentDate]);
+
   const calendarDays = useMemo(
     () => generateCalendarDays(currentDate),
     [currentDate],
@@ -89,24 +94,14 @@ export default function MonthCalendar({
   const handleConfirm = useCallback(
     (selectDate: Date) => {
       const selectedDayjs = dayjs(selectDate);
-      const isSameMonth = selectedDayjs.isSame(currentDate, 'month');
-      const isSameYear = selectedDayjs.isSame(currentDate, 'year');
-
-      let newDate;
-
-      if (!isSameYear || !isSameMonth) {
-        newDate = selectedDayjs.startOf('month'); // 1일로 설정
-      } else {
-        newDate = selectedDayjs; // 현재 연도 및 월인 경우 선택한 날짜 그대로 사용
-      }
 
       setDate(selectDate);
-      setCurrentDate(newDate); // 선택된 날짜로 currentDate 설정
-      setSelectedDate(newDate.date()); // 새로운 currentDate의 날짜로 선택된 날짜 설정
+      setCurrentDate(selectedDayjs); // 선택된 날짜로 currentDate 설정
+      setSelectedDate(selectedDayjs.date()); // 새로운 currentDate의 날짜로 선택된 날짜 설정
 
       setDatePickerVisibility(false); // DatePicker 닫기
     },
-    [currentDate, setCurrentDate],
+    [setCurrentDate],
   );
 
   const getStatusForDate = useCallback(

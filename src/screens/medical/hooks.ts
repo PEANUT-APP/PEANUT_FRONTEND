@@ -55,27 +55,51 @@ export function useMedical() {
   const [selectedChip, setSelectedChip] = useState<'혈당' | '인슐린' | '복약'>(
     '혈당',
   );
+  const [refreshing, setRefreshing] = useState(false);
 
   // 년, 월 추출
   const year = currentDate.year();
   const month = currentDate.month() + 1;
 
   // API 데이터 가져오기
-  const {data: bloodSugarData} = useGetMonthlyBloodSugarStatusQuery(
-    {
+  const {data: bloodSugarData, refetch: bloodSugarRefetch} =
+    useGetMonthlyBloodSugarStatusQuery(
+      {
+        year,
+        month,
+      },
+      {refetchOnMountOrArgChange: true},
+    );
+  const {data: insulinData, refetch: insulinRefetch} =
+    useGetInsulinInfoReportListQuery({
       year,
       month,
-    },
-    {refetchOnMountOrArgChange: true},
-  );
-  const {data: insulinData} = useGetInsulinInfoReportListQuery({
-    year,
-    month,
-  });
-  const {data: medicineData} = useGetMedicineInfoReportListQuery({
-    year,
-    month,
-  });
+    });
+  const {data: medicineData, refetch: medicineRefetch} =
+    useGetMedicineInfoReportListQuery({
+      year,
+      month,
+    });
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    const newDate = dayjs().add(9, 'hour');
+    setCurrentDate(newDate);
+
+    try {
+      if (selectedChip === '혈당') {
+        bloodSugarRefetch();
+      } else if (selectedChip === '인슐린') {
+        insulinRefetch();
+      } else if (selectedChip === '복약') {
+        medicineRefetch();
+      }
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [bloodSugarRefetch, insulinRefetch, medicineRefetch, selectedChip]);
 
   // 인슐린 및 복약 상태 계산
   const insulinMonthlyAvg = extractedDay(
@@ -126,7 +150,7 @@ export function useMedical() {
     medicineMonthlyAvgStatus: monthlyAvgStatus(medicineMonthlyAvg),
     medicineMonthlyMessage: medicineData?.monthlyStatusMessage,
     calendarType,
+    refreshing,
+    onRefresh,
   };
 }
-
-export function useBloodSugar() {}

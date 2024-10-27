@@ -113,22 +113,27 @@ export function usePatientMain() {
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
   const [bloodSugarList, setBloodSugarList] = useState<GraphType[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    try {
+      dispatch(resetToday());
+      userInfoRefetch();
+      additionalRefetch();
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [additionalRefetch, dispatch, userInfoRefetch]);
 
   useEffect(() => {
-    dispatch(resetToday());
-    dispatch(setUserState('Patient'));
     dispatch(setUserId(userInfo?.userId));
-    userInfoRefetch();
-    additionalRefetch();
-  }, [
-    additionalRefetch,
-    dispatch,
-    userInfo?.userId,
-    userInfoRefetch,
-    userState,
-  ]);
-
-  console.log(additionalInfo);
+    dispatch(setUserState('Patient'));
+    onRefresh();
+  }, [dispatch, onRefresh, userInfo?.userId, userState]);
 
   useEffect(() => {
     if (additionalInfo?.bloodSugarList) {
@@ -250,6 +255,8 @@ export function usePatientMain() {
     isAdditionalInfoSuccess,
     isUserInfoLoading,
     isAdditionalInfoLoading,
+    refreshing,
+    onRefresh,
   };
 }
 
@@ -273,18 +280,29 @@ export function useProtectorMain() {
     date: dayjs(today).format('YYYY-MM-DD'),
   });
 
-  console.log(patientAdditionalInfo);
-
   const [isPushedMedicine, setIsPushedMedicine] = useState(false);
   const [isPushedInsulin, setIsPushedInsulin] = useState(false);
   const [bloodSugarList, setBloodSugarList] = useState<GraphType[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    try {
+      dispatch(resetToday());
+      patientInfoRefetch();
+      patientAdditionalRefetch();
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [dispatch, patientAdditionalRefetch, patientInfoRefetch]);
 
   useEffect(() => {
-    dispatch(resetToday());
     dispatch(setUserState('Protector'));
-    patientInfoRefetch();
-    patientAdditionalRefetch();
-  }, [patientAdditionalRefetch, dispatch, userState, patientInfoRefetch]);
+    onRefresh();
+  }, [dispatch, onRefresh, userState]);
 
   useEffect(() => {
     if (patientAdditionalInfo?.bloodSugarList) {
@@ -339,5 +357,7 @@ export function useProtectorMain() {
     isPatientAdditionalInfoSuccess,
     isPatientInfoLoading,
     isPatientAdditionalInfoLoading,
+    refreshing,
+    onRefresh,
   };
 }

@@ -14,7 +14,7 @@ import {
   useUpdateCommunityMutation,
 } from '../../services/community/communityApi';
 import {ParamList} from '../../navigation/types';
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Alert, BackHandler} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -28,6 +28,8 @@ export function useCommunity() {
     isSuccess: isAllCommunitySuccess,
     refetch,
   } = useGetAllCommunityQuery();
+
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!initialPreviousScreen.current && isFocused) {
@@ -68,6 +70,18 @@ export function useCommunity() {
     };
   }, [isFocused, navigation]);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    try {
+      refetch();
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refetch]);
+
   const handleGoSearch = () => {
     navigation.navigate('CommunitySearch');
   };
@@ -81,6 +95,8 @@ export function useCommunity() {
     isAllCommunitySuccess,
     handleGoSearch,
     handleGoWrite,
+    refreshing,
+    onRefresh,
   };
 }
 

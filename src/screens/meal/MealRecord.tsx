@@ -20,10 +20,11 @@ import {useMeal, useRecord} from './hooks';
 export default function MealRecord() {
   const {handleBack} = useBackHandler();
   const {isFoodByDateSuccess} = useMeal();
-  const {foodByDate, foodData, handleAddMore} = useRecord();
+  const {foodByDate, foodData, handleAddMore, refreshing, onRefresh} =
+    useRecord();
 
   return (
-    <Layout>
+    <Layout refreshing={refreshing} onRefresh={onRefresh}>
       <RecordContainer>
         <RecordingTitleBox>
           <TouchableOpacity activeOpacity={1} onPress={handleBack}>

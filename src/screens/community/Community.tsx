@@ -20,6 +20,8 @@ export default function Community() {
     isAllCommunitySuccess,
     handleGoSearch,
     handleGoWrite,
+    refreshing,
+    onRefresh,
   } = useCommunity();
 
   return (
@@ -56,6 +58,8 @@ export default function Community() {
             ItemSeparatorComponent={CommunityContent}
             contentContainerStyle={{paddingBottom: 137}}
             showsVerticalScrollIndicator={false}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
           />
         )}
       </CommunityContainer>

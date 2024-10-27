@@ -25,7 +25,7 @@ import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {AddMealType} from '../search/types';
-import {setTime} from '../../slices/todaySlice';
+import {resetToday, setTime} from '../../slices/todaySlice';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {formatDate} from '../../modules/commonHooks';
 import moment from 'moment';
@@ -34,12 +34,16 @@ export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
 
   // 날짜에 따른 식사 기록 조회
-  const {data: foodByDate, isSuccess: isFoodByDateSuccess} =
-    useGetFoodCheckByDateQuery({date: dayjs(today).format('YYYY-MM-DD')});
+  const {
+    data: foodByDate,
+    isSuccess: isFoodByDateSuccess,
+    refetch: foodByDateRefetch,
+  } = useGetFoodCheckByDateQuery({date: dayjs(today).format('YYYY-MM-DD')});
 
   return {
     foodByDate,
     isFoodByDateSuccess,
+    foodByDateRefetch,
   };
 }
 
@@ -374,7 +378,7 @@ export function useRecord() {
 
   const dispatch = useDispatch();
 
-  const {foodByDate} = useMeal();
+  const {foodByDate, foodByDateRefetch} = useMeal();
 
   const foodData = {
     아침: {
@@ -403,6 +407,21 @@ export function useRecord() {
     },
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    try {
+      dispatch(resetToday());
+      foodByDateRefetch();
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [dispatch, foodByDateRefetch]);
+
   const handleAddMore = () => {
     dispatch(setTime('간식'));
     navigation.navigate('MealRecording', {
@@ -410,7 +429,7 @@ export function useRecord() {
     });
   };
 
-  return {foodByDate, foodData, handleAddMore};
+  return {foodByDate, foodData, handleAddMore, refreshing, onRefresh};
 }
 
 export function useFeedback() {

@@ -43,21 +43,45 @@ export const useCard = () => {
 export const useMy = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
-  const {data: userInfo, isSuccess: isUserInfoSuccess} =
-    useGetUserInfoMyPageQuery();
-  const {data: patientInfo, isSuccess: isPatientSuccess} =
-    useGetPatientInfoQuery();
-  const {data: connectingInfo, isSuccess: isConnectingSuccess} =
-    useGetConnectingInfoQuery();
+  const {
+    data: userInfo,
+    isSuccess: isUserInfoSuccess,
+    refetch: userInfoRefetch,
+  } = useGetUserInfoMyPageQuery();
+  const {
+    data: patientInfo,
+    isSuccess: isPatientSuccess,
+    refetch: patientInfoRetch,
+  } = useGetPatientInfoQuery();
+  const {
+    data: connectingInfo,
+    isSuccess: isConnectingSuccess,
+    refetch: connectingInfoRetch,
+  } = useGetConnectingInfoQuery();
 
   const [isGuardianConnected, setIsGuardianConnected] =
     useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (isConnectingSuccess && connectingInfo.length !== 0) {
       setIsGuardianConnected(connectingInfo[0].status === '대기중');
     }
   }, [connectingInfo, isConnectingSuccess, isGuardianConnected]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    try {
+      userInfoRefetch();
+      patientInfoRetch();
+      connectingInfoRetch();
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [connectingInfoRetch, patientInfoRetch, userInfoRefetch]);
 
   const handleGoConnectGuardian = useCallback(() => {
     navigation.navigate('GuardianConnect', {
@@ -87,6 +111,8 @@ export const useMy = () => {
     patientInfo,
     isPatientSuccess,
     isGuardianConnected,
+    refreshing,
+    onRefresh,
   };
 };
 

@@ -38,11 +38,16 @@ export default function PatientHome() {
     toggleMedicine,
     toggleInsulin,
     isAdditionalInfoSuccess,
+    refreshing,
+    onRefresh,
   } = usePatientMain();
 
   return (
     <>
-      <ScrollLayout paddingBottom={101}>
+      <ScrollLayout
+        paddingBottom={101}
+        refreshing={refreshing}
+        onRefresh={onRefresh}>
         <HomeBox>
           <HomeTop
             source={require('../../assets/images/gradientBackgroundDark.png')}>

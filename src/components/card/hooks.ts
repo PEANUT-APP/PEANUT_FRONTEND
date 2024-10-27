@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {FoodReturnType} from '../../services/mainPage/types';
 import {
   useGetFoodAllDetailQuery,
@@ -6,7 +6,11 @@ import {
   useGetPatientFoodAllDetailQuery,
   useGetPatientFoodDetailByEatTimeQuery,
 } from '../../services/mainPage/mainPageApi';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
@@ -103,9 +107,12 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     userState,
   ]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData, today, selectedTime, time]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchData, today, selectedTime, time]),
+  );
 
   // 시간대 변경 핸들러
   const handleTimeChange = (changedTime: string) => {
