@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">PEANUT_FRONTEND</string>
+    <string name="app_name">PEANUT</string>
     <string name="kakao_app_key">@null</string>
 </resources>
