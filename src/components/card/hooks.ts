@@ -19,6 +19,7 @@ import {setTime} from '../../slices/todaySlice';
 import {useGetFeedbackFoodDetailByEatTimeQuery} from '../../services/food/foodApi';
 
 export const useMealCard = (size: 's' | 'm', time?: string) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const today = useSelector((state: RootState) => state.today.today);
@@ -118,6 +119,11 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
   const handleTimeChange = (changedTime: string) => {
     if (size === 'm') {
       setSelectedTime(changedTime);
+      if (changedTime === '전체') {
+        dispatch(setTime('아침'));
+      } else {
+        dispatch(setTime(changedTime));
+      }
     }
   };
 

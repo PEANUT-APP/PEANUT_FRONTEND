@@ -78,12 +78,14 @@ export default function Dropdown({
   }, [name, setFocus]);
 
   const handleSelect = async (value: string) => {
+    if (size === 's') {
+      dispatch(setTime(value));
+    }
+
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
     setDropColor('LineDisabled');
-
-    dispatch(setTime(value));
 
     setValue(name, value);
     await trigger(name);

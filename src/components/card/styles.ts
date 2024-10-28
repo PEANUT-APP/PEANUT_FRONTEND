@@ -15,6 +15,8 @@ export const MealCardContainer = styled(TouchableOpacity)`
 export const MealCardBox = styled.View`
   gap: 12px;
   padding: 0 9px;
+  position: relative;
+  z-index: 100;
 `;
 
 export const MealCardTitle = styled(Body1)`

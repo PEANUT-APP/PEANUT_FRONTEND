@@ -79,6 +79,7 @@ export const useSign = (
 export const useSignIn = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const dispatch = useDispatch();
+  const fcmToken = useSelector((state: RootState) => state.token.fcmToken);
 
   const {setIsInitialRender} = useAuth();
 
@@ -114,7 +115,7 @@ export const useSignIn = () => {
 
   const handleSignInFormSubmit = async (data: SignInFormType) => {
     try {
-      const response = await signIn(data).unwrap();
+      const response = await signIn({...data, fcmToken}).unwrap();
       dispatch(login(response.token));
       navigation.navigate('Home');
       reset();

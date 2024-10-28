@@ -17,28 +17,20 @@ export const useAuth = () => {
 
   // 주기적으로 토큰 상태를 감시하는 함수
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    const checkAuth = () => {
       if (!isInitialRender && !accessToken && !isLoggingOut) {
         Alert.alert('다시 로그인해주세요');
         dispatch(logout());
-        navigation.dispatch(StackActions.replace('OnBoarding')); // OnBoarding 화면으로 이동
+        navigation.dispatch(StackActions.replace('OnBoarding'));
       }
-    }, 5000); // 5초마다 확인 (필요에 따라 조정 가능)
+    };
+
+    // 초기 렌더 후 체크
+    checkAuth();
+
+    const intervalId = setInterval(checkAuth, 5000); // 5초마다 체크
 
     return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 정리
-  }, [accessToken, dispatch, isInitialRender, isLoggingOut, navigation]);
-
-  useEffect(() => {
-    if (!isInitialRender) {
-      if (!accessToken && !isLoggingOut) {
-        Alert.alert('다시 로그인해주세요');
-        setIsInitialRender(true);
-        dispatch(logout());
-        navigation.dispatch(
-          StackActions.replace('OnBoarding'), // 화면 스택을 교체해서 OnBoarding으로 이동
-        );
-      }
-    }
   }, [accessToken, dispatch, isInitialRender, isLoggingOut, navigation]);
 
   const handleLogout = () => {

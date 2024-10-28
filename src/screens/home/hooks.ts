@@ -13,7 +13,7 @@ import {ParamList} from '../../navigation/types';
 import dayjs from 'dayjs';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
-import {resetToday} from '../../slices/todaySlice';
+import {resetTime, resetToday} from '../../slices/todaySlice';
 import {setUserId, setUserState} from '../../slices/userSlice';
 import {useGetPatientInfoQuery} from '../../services/user/userApi';
 import {GraphType} from './types';
@@ -52,8 +52,6 @@ function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | []) {
       graphData[hour - 6].key = bloodSugarKey;
     }
   });
-
-  console.log(graphData);
 
   return graphData;
 }
@@ -120,13 +118,21 @@ export function usePatientMain() {
 
     try {
       dispatch(resetToday());
+      dispatch(resetTime());
       userInfoRefetch();
       additionalRefetch();
+      if (additionalInfo?.bloodSugarList) {
+        setBloodSugarList(mapBloodSugarToGraph(additionalInfo.bloodSugarList));
+      }
+
+      setIsCheckedInsulin(additionalInfo?.insulinState || false);
+      setIsCheckedMedicine(additionalInfo?.medicationState || false);
     } catch (error) {
       console.error('데이터 새로 고치는 중 오류 발생', error);
     } finally {
       setRefreshing(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [additionalRefetch, dispatch, userInfoRefetch]);
 
   useEffect(() => {
@@ -193,14 +199,13 @@ export function usePatientMain() {
     const newMedicineState = !isCheckedMedicine;
 
     try {
-      const response = await saveMedicineInsulinStatus({
+      await saveMedicineInsulinStatus({
         date: dayjs(today).format('YYYY-MM-DD'),
         insulinStatus: isCheckedInsulin,
         medicineStatus: newMedicineState,
       }).unwrap();
       setIsCheckedMedicine(newMedicineState);
       additionalRefetch();
-      console.log(response);
     } catch (error) {
       console.error(error);
       Alert.alert('복약 상태 저장에 실패했습니다!');
@@ -217,17 +222,16 @@ export function usePatientMain() {
     const newInsulinState = !isCheckedInsulin;
 
     try {
-      const response = await saveMedicineInsulinStatus({
+      await saveMedicineInsulinStatus({
         date: dayjs(today).format('YYYY-MM-DD'),
         insulinStatus: newInsulinState,
         medicineStatus: isCheckedMedicine,
       }).unwrap();
       setIsCheckedInsulin(newInsulinState);
       additionalRefetch();
-      console.log(response);
     } catch (error) {
       console.error(error);
-      Alert.alert('복약 상태 저장에 실패했습니다!');
+      Alert.alert('인슐린 상태 저장에 실패했습니다!');
     }
   }, [
     additionalRefetch,
@@ -290,13 +294,30 @@ export function useProtectorMain() {
 
     try {
       dispatch(resetToday());
+      dispatch(resetTime());
       patientInfoRefetch();
       patientAdditionalRefetch();
+      if (patientAdditionalInfo?.bloodSugarList) {
+        setBloodSugarList(
+          mapBloodSugarToGraph(patientAdditionalInfo.bloodSugarList),
+        );
+      }
+      if (patientAdditionalInfo?.medicineName === '복용 기록 없음') {
+        setIsPushedMedicine(true);
+      } else {
+        setIsPushedInsulin(patientAdditionalInfo?.insulinAlam || false);
+      }
+      if (patientAdditionalInfo?.insulinName === '투여 기록 없음') {
+        setIsPushedInsulin(true);
+      } else {
+        setIsPushedMedicine(patientAdditionalInfo?.medicationAlam || false);
+      }
     } catch (error) {
       console.error('데이터 새로 고치는 중 오류 발생', error);
     } finally {
       setRefreshing(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, patientAdditionalRefetch, patientInfoRefetch]);
 
   useEffect(() => {

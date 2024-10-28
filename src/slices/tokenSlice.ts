@@ -3,10 +3,12 @@ import {resetUserId} from './userSlice';
 
 interface TokenState {
   accessToken: string | null;
+  fcmToken: string | null;
 }
 
 const initialState: TokenState = {
   accessToken: null,
+  fcmToken: null,
 };
 
 const tokenSlice = createSlice({
@@ -20,8 +22,11 @@ const tokenSlice = createSlice({
       state.accessToken = null;
       resetUserId();
     },
+    setFcmToken: (state, action: PayloadAction<string>) => {
+      state.fcmToken = action.payload;
+    },
   },
 });
 
-export const {login, logout} = tokenSlice.actions;
+export const {login, logout, setFcmToken} = tokenSlice.actions;
 export default tokenSlice.reducer;
