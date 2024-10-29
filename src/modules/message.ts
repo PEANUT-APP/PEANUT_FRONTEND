@@ -2,6 +2,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {setFcmToken} from '../slices/tokenSlice';
+import notifee, {AndroidImportance} from '@notifee/react-native';
 
 export const useMessage = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,6 @@ export const useMessage = () => {
     messaging()
       .getToken()
       .then(token => {
-        console.log('FCM Token:', token);
         dispatch(setFcmToken(token));
       });
 
@@ -29,21 +29,49 @@ export const useMessage = () => {
       setToastTitle(title);
       setToastMessage(body);
 
+      console.log(title, body);
+
       setTimeout(() => setToastMessage(''), 3000);
     });
+
+    /*messaging().setBackgroundMessageHandler(async remoteMessage => {
+      let iconName = 'guardianicon';
+      const title = remoteMessage.notification?.title || '제목 없음';
+      const body = remoteMessage.notification?.body || '내용 없음';
+
+      if (title && title.includes('보호자')) {
+        iconName = 'guardianicon';
+      } else if (title && title.includes('식사')) {
+        iconName = 'mealicon';
+      } else if (title && title.includes('복약')) {
+        iconName = 'medicineicon';
+      } else if (title && title.includes('혈당')) {
+        iconName = 'bloodicon';
+      } else if (title && title.includes('인슐린')) {
+        iconName = 'insulinicon';
+      }
+
+      const channelId = await notifee.createChannel({
+        id: 'peanut_channel',
+        name: 'Peanut Notifications',
+        importance: AndroidImportance.HIGH,
+      });
+
+      await notifee.displayNotification({
+        title,
+        body,
+        android: {
+          channelId,
+          smallIcon: iconName,
+        },
+      });
+    });*/
 
     return unsubscribe;
   }, [dispatch]);
 
   const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
+    await messaging().requestPermission();
   };
 
   return {toastTitle, toastMessage};

@@ -5,6 +5,7 @@ import {
   HomeBox,
   HomeContent,
   HomeIcons,
+  HomeLoadingScreen,
   HomeTop,
   ReportCardBox,
 } from './styles';
@@ -18,6 +19,7 @@ import ReportCard from './reportCard/ReportCard';
 import {useMain, usePatientMain} from './hooks';
 import MealCard from '../../components/card/MealCard';
 import ScrollLayout from '../layout/ScrollLayout';
+import {BlurView} from '@react-native-community/blur';
 
 const profileImage = require('../../assets/images/default_character.png');
 
@@ -35,9 +37,11 @@ export default function PatientHome() {
     insulinTime,
     isCheckedMedicine,
     isCheckedInsulin,
-    toggleMedicine,
-    toggleInsulin,
+    checkMedicine,
+    checkInsulin,
     isAdditionalInfoSuccess,
+    isUserInfoLoading,
+    isAdditionalInfoLoading,
     refreshing,
     onRefresh,
   } = usePatientMain();
@@ -83,14 +87,14 @@ export default function PatientHome() {
                   <ReportCard
                     navigate="MedicineDocument"
                     isChecked={isCheckedMedicine}
-                    onPress={toggleMedicine}
+                    onPress={checkMedicine}
                     name={medicineName}
                     time={medicineTime}
                   />
                   <ReportCard
                     navigate="InsulinDocument"
                     isChecked={isCheckedInsulin}
-                    onPress={toggleInsulin}
+                    onPress={checkInsulin}
                     name={insulinName}
                     time={insulinTime}
                   />
@@ -101,6 +105,22 @@ export default function PatientHome() {
           </HomeContent>
         </HomeBox>
       </ScrollLayout>
+      {(isAdditionalInfoLoading || isUserInfoLoading || refreshing) && (
+        <>
+          <BlurView
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              zIndex: 100,
+            }}
+            blurAmount={1}
+            blurType="extraDark"
+          />
+          <HomeLoadingScreen />
+        </>
+      )}
     </>
   );
 }

@@ -4,6 +4,7 @@ import {
   useGetPatientAdditionalInfoMainPageQuery,
   useGetPatientUserInfoMainPageQuery,
   useGetUserInfoMainPageQuery,
+  useSaveGuardianMedicineInsulinStatusMutation,
   useSaveMedicineInsulinStatusMutation,
 } from '../../services/mainPage/mainPageApi';
 import {BloodSugarItem} from '../../services/mainPage/types';
@@ -106,7 +107,8 @@ export function usePatientMain() {
     date: dayjs(today).format('YYYY-MM-DD'),
   });
 
-  const [saveMedicineInsulinStatus] = useSaveMedicineInsulinStatusMutation();
+  const [saveGuardianMedicineInsulinStatus] =
+    useSaveGuardianMedicineInsulinStatusMutation();
 
   const [isCheckedMedicine, setIsCheckedMedicine] = useState(false);
   const [isCheckedInsulin, setIsCheckedInsulin] = useState(false);
@@ -195,49 +197,49 @@ export function usePatientMain() {
     }
   }, [additionalInfo?.insulinTime]);
 
-  const toggleMedicine = useCallback(async () => {
-    const newMedicineState = !isCheckedMedicine;
-
-    try {
-      await saveMedicineInsulinStatus({
-        date: dayjs(today).format('YYYY-MM-DD'),
-        insulinStatus: isCheckedInsulin,
-        medicineStatus: newMedicineState,
-      }).unwrap();
-      setIsCheckedMedicine(newMedicineState);
-      additionalRefetch();
-    } catch (error) {
-      console.error(error);
-      Alert.alert('복약 상태 저장에 실패했습니다!');
+  const checkMedicine = useCallback(async () => {
+    if (!isCheckedMedicine) {
+      try {
+        await saveGuardianMedicineInsulinStatus({
+          date: dayjs(today).format('YYYY-MM-DD'),
+          insulinStatus: isCheckedInsulin,
+          medicineStatus: true,
+        }).unwrap();
+        setIsCheckedMedicine(true);
+        additionalRefetch();
+      } catch (error) {
+        console.error(error);
+        Alert.alert('복약 상태 저장에 실패했습니다!');
+      }
     }
   }, [
     additionalRefetch,
     isCheckedInsulin,
     isCheckedMedicine,
-    saveMedicineInsulinStatus,
+    saveGuardianMedicineInsulinStatus,
     today,
   ]);
 
-  const toggleInsulin = useCallback(async () => {
-    const newInsulinState = !isCheckedInsulin;
-
-    try {
-      await saveMedicineInsulinStatus({
-        date: dayjs(today).format('YYYY-MM-DD'),
-        insulinStatus: newInsulinState,
-        medicineStatus: isCheckedMedicine,
-      }).unwrap();
-      setIsCheckedInsulin(newInsulinState);
-      additionalRefetch();
-    } catch (error) {
-      console.error(error);
-      Alert.alert('인슐린 상태 저장에 실패했습니다!');
+  const checkInsulin = useCallback(async () => {
+    if (!isCheckedInsulin) {
+      try {
+        await saveGuardianMedicineInsulinStatus({
+          date: dayjs(today).format('YYYY-MM-DD'),
+          insulinStatus: true,
+          medicineStatus: isCheckedMedicine,
+        }).unwrap();
+        setIsCheckedInsulin(true);
+        additionalRefetch();
+      } catch (error) {
+        console.error(error);
+        Alert.alert('인슐린 상태 저장에 실패했습니다!');
+      }
     }
   }, [
     additionalRefetch,
     isCheckedInsulin,
     isCheckedMedicine,
-    saveMedicineInsulinStatus,
+    saveGuardianMedicineInsulinStatus,
     today,
   ]);
 
@@ -254,8 +256,8 @@ export function usePatientMain() {
     insulinTime,
     isCheckedMedicine,
     isCheckedInsulin,
-    toggleMedicine,
-    toggleInsulin,
+    checkMedicine,
+    checkInsulin,
     isAdditionalInfoSuccess,
     isUserInfoLoading,
     isAdditionalInfoLoading,
@@ -284,6 +286,8 @@ export function useProtectorMain() {
     date: dayjs(today).format('YYYY-MM-DD'),
   });
 
+  const [saveMedicineInsulinStatus] = useSaveMedicineInsulinStatusMutation();
+
   const [isPushedMedicine, setIsPushedMedicine] = useState(false);
   const [isPushedInsulin, setIsPushedInsulin] = useState(false);
   const [bloodSugarList, setBloodSugarList] = useState<GraphType[]>([]);
@@ -305,12 +309,12 @@ export function useProtectorMain() {
       if (patientAdditionalInfo?.medicineName === '복용 기록 없음') {
         setIsPushedMedicine(true);
       } else {
-        setIsPushedInsulin(patientAdditionalInfo?.insulinAlam || false);
+        setIsPushedInsulin(patientAdditionalInfo?.insulinState || false);
       }
       if (patientAdditionalInfo?.insulinName === '투여 기록 없음') {
         setIsPushedInsulin(true);
       } else {
-        setIsPushedMedicine(patientAdditionalInfo?.medicationAlam || false);
+        setIsPushedMedicine(patientAdditionalInfo?.medicationState || false);
       }
     } catch (error) {
       console.error('데이터 새로 고치는 중 오류 발생', error);
@@ -331,15 +335,15 @@ export function useProtectorMain() {
         mapBloodSugarToGraph(patientAdditionalInfo.bloodSugarList),
       );
     }
-    if (patientAdditionalInfo?.medicineName === '복용 기록 없음') {
+    if (patientAdditionalInfo?.medicineTime === '복용 기록 없음') {
       setIsPushedMedicine(true);
     } else {
-      setIsPushedInsulin(patientAdditionalInfo?.insulinAlam || false);
+      setIsPushedInsulin(patientAdditionalInfo?.insulinState || false);
     }
-    if (patientAdditionalInfo?.insulinName === '투여 기록 없음') {
+    if (patientAdditionalInfo?.insulinTime === '투여 기록 없음') {
       setIsPushedInsulin(true);
     } else {
-      setIsPushedMedicine(patientAdditionalInfo?.medicationAlam || false);
+      setIsPushedMedicine(patientAdditionalInfo?.medicationState || false);
     }
   }, [patientAdditionalInfo]);
 
@@ -357,11 +361,58 @@ export function useProtectorMain() {
   const insulinName = useMemo(() => {
     return patientAdditionalInfo?.insulinName === '투여 기록 없음'
       ? '인슐린의 정보가 없어요'
-      : patientAdditionalInfo?.insulinName;
-  }, [patientAdditionalInfo?.insulinName]);
+      : `${patientAdditionalInfo?.insulinName} ${patientAdditionalInfo?.insulinDosage}`;
+  }, [
+    patientAdditionalInfo?.insulinDosage,
+    patientAdditionalInfo?.insulinName,
+  ]);
 
-  const pushMedicine = useCallback(() => setIsPushedMedicine(true), []);
-  const pushInsulin = useCallback(() => setIsPushedInsulin(true), []);
+  const pushMedicine = useCallback(async () => {
+    if (!isPushedMedicine) {
+      try {
+        const response = await saveMedicineInsulinStatus({
+          date: dayjs(today).format('YYYY-MM-DD'),
+          insulinStatus: isPushedInsulin,
+          medicineStatus: true,
+        }).unwrap();
+        console.log(response);
+        setIsPushedMedicine(true);
+        patientAdditionalRefetch();
+      } catch (error) {
+        console.error(error);
+        Alert.alert('복약 상태 저장에 실패했습니다!');
+      }
+    }
+  }, [
+    isPushedInsulin,
+    isPushedMedicine,
+    patientAdditionalRefetch,
+    saveMedicineInsulinStatus,
+    today,
+  ]);
+
+  const pushInsulin = useCallback(async () => {
+    if (!isPushedInsulin) {
+      try {
+        await saveMedicineInsulinStatus({
+          date: dayjs(today).format('YYYY-MM-DD'),
+          insulinStatus: true,
+          medicineStatus: isPushedMedicine,
+        }).unwrap();
+        setIsPushedInsulin(true);
+        patientAdditionalRefetch();
+      } catch (error) {
+        console.error(error);
+        Alert.alert('인슐린 상태 저장에 실패했습니다!');
+      }
+    }
+  }, [
+    isPushedInsulin,
+    isPushedMedicine,
+    patientAdditionalRefetch,
+    saveMedicineInsulinStatus,
+    today,
+  ]);
 
   return {
     fastingBloodSugar,

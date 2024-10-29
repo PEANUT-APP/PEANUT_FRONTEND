@@ -26,7 +26,7 @@ export const mainPageApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['AdditionalInfo'],
     }),
-    saveMedicineInsulinStatus: builder.mutation({
+    saveGuardianMedicineInsulinStatus: builder.mutation({
       query: ({date, insulinStatus, medicineStatus}: SaveStatusFormType) => ({
         url: '/main-api/patient/get-add-info/save/status',
         method: 'PUT',
@@ -79,6 +79,13 @@ export const mainPageApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    saveMedicineInsulinStatus: builder.mutation({
+      query: ({date, insulinStatus, medicineStatus}: SaveStatusFormType) => ({
+        url: '/main-api/guardian/get-add-info/save/status',
+        method: 'PUT',
+        params: {date, insulinStatus, medicineStatus},
+      }),
+    }),
   }),
 });
 
@@ -87,11 +94,12 @@ export const {
   useGetAdditionalInfoMainPageQuery,
   useGetFoodAllDetailQuery,
   useGetFoodDetailByEatTimeQuery,
-  useSaveMedicineInsulinStatusMutation,
+  useSaveGuardianMedicineInsulinStatusMutation,
   useGetPatientUserInfoMainPageQuery,
   useGetPatientAdditionalInfoMainPageQuery,
   useGetPatientFoodAllDetailQuery,
   useGetPatientFoodDetailByEatTimeQuery,
+  useSaveMedicineInsulinStatusMutation,
 } = mainPageApi;
 
 export default mainPageApi;
