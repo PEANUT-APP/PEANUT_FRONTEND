@@ -361,7 +361,7 @@ export function useProtectorMain() {
   const insulinName = useMemo(() => {
     return patientAdditionalInfo?.insulinName === '투여 기록 없음'
       ? '인슐린의 정보가 없어요'
-      : `${patientAdditionalInfo?.insulinName} ${patientAdditionalInfo?.insulinDosage}`;
+      : `${patientAdditionalInfo?.insulinName} ${patientAdditionalInfo?.insulinDosage} U/mL`;
   }, [
     patientAdditionalInfo?.insulinDosage,
     patientAdditionalInfo?.insulinName,

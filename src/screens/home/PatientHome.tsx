@@ -105,7 +105,7 @@ export default function PatientHome() {
           </HomeContent>
         </HomeBox>
       </ScrollLayout>
-      {(isAdditionalInfoLoading || isUserInfoLoading || refreshing) && (
+      {(isAdditionalInfoLoading || isUserInfoLoading) && !refreshing && (
         <>
           <BlurView
             // eslint-disable-next-line react-native/no-inline-styles

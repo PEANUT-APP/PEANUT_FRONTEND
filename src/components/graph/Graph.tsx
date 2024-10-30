@@ -154,34 +154,30 @@ export default function Graph({graphData, size}: GraphType) {
                   const isSelected = index === selectedPoint;
 
                   return (
-                    <G key={index}>
-                      {isSelected ? (
-                        <Circle
-                          cx={x}
-                          cy={y}
-                          r={4}
-                          fill={colors.white}
-                          stroke={colors.primaryNormal}
-                          strokeWidth={2}
-                          onPress={() => handleCircleClick(index)}
-                        />
-                      ) : (
-                        <Circle
-                          cx={x}
-                          cy={y}
-                          r={3}
-                          fill={colors.primaryNormal}
-                          onPress={() => handleCircleClick(index)}
-                        />
-                      )}
+                    <G key={index} pointerEvents="box-none">
+                      {/*<Rect
+                        x={x - 20}
+                        y={y - 20}
+                        width={40}
+                        height={40}
+                        fill={colors.primaryNormal}
+                        fillOpacity={0.2} // 터치 영역 투명도 조정
+                        onPress={() => handleCircleClick(index)}
+                      />*/}
+
+                      {/* 원래 표시용 Circle */}
+                      <Circle
+                        cx={x}
+                        cy={y}
+                        r={isSelected ? 4 : 3}
+                        fill={isSelected ? colors.white : colors.primaryNormal}
+                        stroke={isSelected ? colors.primaryNormal : 'none'}
+                        strokeWidth={isSelected ? 2 : 0}
+                        onPress={() => handleCircleClick(index)}
+                      />
+
                       {isSelected && (
-                        <GraphMainToolTip
-                          style={[
-                            {
-                              top: y - 61,
-                              left: x - 45,
-                            },
-                          ]}>
+                        <GraphMainToolTip style={[{top: y - 61, left: x - 45}]}>
                           <GraphMainToolTipValue>
                             <GraphMainToolTipValueText weight="bold">
                               {graphData[selectedPoint].key}

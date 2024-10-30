@@ -2,7 +2,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {setFcmToken} from '../slices/tokenSlice';
-import notifee, {AndroidImportance} from '@notifee/react-native';
+//import notifee, {AndroidImportance} from '@notifee/react-native';
 
 export const useMessage = () => {
   const dispatch = useDispatch();
@@ -31,11 +31,26 @@ export const useMessage = () => {
 
       console.log(title, body);
 
-      setTimeout(() => setToastMessage(''), 3000);
+      setTimeout(() => {
+        setToastTitle('');
+        setToastMessage('');
+      }, 5000);
     });
 
+    // 에러 메시지 무시
+    const originalConsoleError = console.error;
+    console.error = (...args) => {
+      if (
+        typeof args[0] === 'string' &&
+        args[0].includes('No background message handler has been set')
+      ) {
+        return;
+      }
+      originalConsoleError(...args);
+    };
+
     /*messaging().setBackgroundMessageHandler(async remoteMessage => {
-      let iconName = 'guardianicon';
+      let iconName = '';
       const title = remoteMessage.notification?.title || '제목 없음';
       const body = remoteMessage.notification?.body || '내용 없음';
 
@@ -67,7 +82,10 @@ export const useMessage = () => {
       });
     });*/
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      console.error = originalConsoleError; // 콘솔 오버라이드 원상 복구
+    };
   }, [dispatch]);
 
   const requestUserPermission = async () => {

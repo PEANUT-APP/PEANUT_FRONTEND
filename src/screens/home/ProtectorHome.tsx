@@ -94,24 +94,23 @@ export default function ProtectorHome() {
           </HomeContent>
         </HomeBox>
       </ScrollLayout>
-      {(isPatientAdditionalInfoLoading ||
-        isPatientInfoLoading ||
-        refreshing) && (
-        <>
-          <BlurView
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              zIndex: 100,
-            }}
-            blurAmount={1}
-            blurType="extraDark"
-          />
-          <HomeLoadingScreen />
-        </>
-      )}
+      {(isPatientAdditionalInfoLoading || isPatientInfoLoading) &&
+        !refreshing && (
+          <>
+            <BlurView
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                zIndex: 100,
+              }}
+              blurAmount={1}
+              blurType="extraDark"
+            />
+            <HomeLoadingScreen />
+          </>
+        )}
     </>
   );
 }

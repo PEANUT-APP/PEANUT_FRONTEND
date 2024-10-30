@@ -10,6 +10,7 @@ import Insulin from '../../assets/images/InsulinNotify.svg';
 const getNotifyImage = (title: string) => {
   switch (title) {
     case '보호자 알림':
+    case '환자 알림':
       return <Guardian />;
     case '식사 알림':
       return <Meal />;

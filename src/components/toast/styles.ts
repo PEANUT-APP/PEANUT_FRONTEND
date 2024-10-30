@@ -21,6 +21,6 @@ export const ToastContainer = styled.View`
 export const ToastBody = styled(Body2)`
   line-height: 18.676px;
   letter-spacing: -0.35px;
-  width: 100%;
   color: ${colors.white};
+  overflow: hidden;
 `;

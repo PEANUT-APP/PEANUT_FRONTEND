@@ -22,7 +22,7 @@ export default function Main() {
           barStyle="dark-content"
         />
         <Navigation />
-        {toastMessage && toastTitle ? (
+        {toastMessage || toastTitle ? (
           <Toast title={toastTitle} body={toastMessage} />
         ) : null}
       </FormProvider>
