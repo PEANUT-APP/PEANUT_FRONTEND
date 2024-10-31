@@ -4,6 +4,7 @@ export interface LayoutType {
   children: ReactNode;
   refreshing?: boolean;
   onRefresh?: () => void;
+  type?: string;
 }
 
 export interface ScrollLayoutType {

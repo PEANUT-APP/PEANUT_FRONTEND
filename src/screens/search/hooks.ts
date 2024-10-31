@@ -2,9 +2,9 @@ import {useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Alert} from 'react-native';
 import {FormData} from '../../components/input/types';
-import {
+import foodApi, {
   useAddCustomFoodMutation,
-  useLazyGetFoodDetailInfoQuery,
+  useGetFoodDetailInfoQuery,
   useLazyGetFoodNutritionByNameQuery,
 } from '../../services/food/foodApi';
 import {FoodDetailReturnType} from '../../services/food/types';
@@ -42,7 +42,8 @@ export function useSearch() {
   const [triggerSearch, {data: foodByName, isSuccess: isFoodByNameSuccess}] =
     useLazyGetFoodNutritionByNameQuery();
   const [addCustomFood] = useAddCustomFoodMutation();
-  const [getFoodDetailInfo] = useLazyGetFoodDetailInfoQuery();
+  const {data: foodDetailInfo, refetch: foodDetailInfoRefetch} =
+    useGetFoodDetailInfoQuery();
 
   // 검색어가 변경될 때 검색 결과 초기화
   useEffect(() => {
@@ -119,12 +120,13 @@ export function useSearch() {
 
           // 잠시 대기 후 getFoodDetailInfo 호출
           setTimeout(async () => {
-            const foodDetailResponse = await getFoodDetailInfo().unwrap();
-            console.log('음식 추가 후 상태: ', foodDetailResponse);
+            await foodDetailInfoRefetch();
+            foodApi.util.invalidateTags(['AI']);
+            console.log('음식 추가 후 상태: ', foodDetailInfo);
 
             // navigation으로 이동
             navigation.navigate('MealRecording', {
-              mealNames: foodDetailResponse,
+              mealNames: foodDetailInfo,
             });
           }, 1000); // 1초 대기
         } catch (error) {

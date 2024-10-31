@@ -25,7 +25,7 @@ export default function Community() {
   } = useCommunity();
 
   return (
-    <Layout>
+    <Layout type="community">
       <CommunityContainer>
         <CommunityTop>
           <CommunityTitle weight="bold">커뮤니티</CommunityTitle>

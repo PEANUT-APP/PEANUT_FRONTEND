@@ -20,7 +20,7 @@ import {
 import PlusButton from '../button/PlusButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {Circle, G, Line} from 'react-native-svg';
+import {Circle, G, Line, Rect} from 'react-native-svg';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import moment from 'moment';
@@ -33,13 +33,18 @@ export default function Graph({graphData, size}: GraphType) {
   const userState = useSelector((state: RootState) => state.user.userState);
 
   const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{
+    top: number;
+    left: number;
+  }>({top: 0, left: 0});
 
   const onAddBloodSugar = useCallback(() => {
     navigation.navigate('BloodSugar');
   }, [navigation]);
 
   const handleCircleClick = useCallback(
-    (index: number) => {
+    (index: number, x: number, y: number) => {
+      setTooltipPosition({top: y - 61, left: x - 45});
       setSelectedPoint(prev => (prev === index ? null : index));
     },
     [setSelectedPoint],
@@ -154,17 +159,7 @@ export default function Graph({graphData, size}: GraphType) {
                   const isSelected = index === selectedPoint;
 
                   return (
-                    <G key={index} pointerEvents="box-none">
-                      {/*<Rect
-                        x={x - 20}
-                        y={y - 20}
-                        width={40}
-                        height={40}
-                        fill={colors.primaryNormal}
-                        fillOpacity={0.2} // 터치 영역 투명도 조정
-                        onPress={() => handleCircleClick(index)}
-                      />*/}
-
+                    <G key={index}>
                       {/* 원래 표시용 Circle */}
                       <Circle
                         cx={x}
@@ -173,11 +168,26 @@ export default function Graph({graphData, size}: GraphType) {
                         fill={isSelected ? colors.white : colors.primaryNormal}
                         stroke={isSelected ? colors.primaryNormal : 'none'}
                         strokeWidth={isSelected ? 2 : 0}
-                        onPress={() => handleCircleClick(index)}
+                        onPress={() => handleCircleClick(index, x, y)}
+                      />
+                      <Rect
+                        x={x - 20}
+                        y={y - 20}
+                        width={40}
+                        height={40}
+                        fill={colors.primaryNormal}
+                        fillOpacity={0} // 터치 영역 투명도 조정
+                        onPress={() => handleCircleClick(index, x, y)}
                       />
 
                       {isSelected && (
-                        <GraphMainToolTip style={[{top: y - 61, left: x - 45}]}>
+                        <GraphMainToolTip
+                          // eslint-disable-next-line react-native/no-inline-styles
+                          style={{
+                            position: 'absolute',
+                            top: tooltipPosition.top,
+                            left: tooltipPosition.left,
+                          }}>
                           <GraphMainToolTipValue>
                             <GraphMainToolTipValueText weight="bold">
                               {graphData[selectedPoint].key}

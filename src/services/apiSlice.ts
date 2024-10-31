@@ -5,18 +5,10 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import {API_URL_DEVICE, API_URL_EMULATOR} from '@env';
 import {RootState} from '../store/store';
 import {logout} from '../slices/tokenSlice';
-import {Alert, NativeModules, Platform} from 'react-native';
-
-const isEmulator = () => {
-  if (Platform.OS === 'android') {
-    return NativeModules.DevSettings && NativeModules.DevSettings.isEmulator;
-  }
-  return false;
-};
-const finalBaseUrl = isEmulator() ? API_URL_EMULATOR : API_URL_DEVICE;
+import {Alert} from 'react-native';
+import {finalBaseUrl} from '../config/apiConfig';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: finalBaseUrl,

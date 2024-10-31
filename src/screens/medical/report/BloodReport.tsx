@@ -79,6 +79,11 @@ export default function BloodReport({
             }
             return <React.Fragment key={index}>{part}</React.Fragment>;
           })}
+          {koreanStatus === '정상 수치'
+            ? '이대로만 유지해주세요!'
+            : koreanStatus === '위험 수치'
+            ? '관리하지 않으면 건강이 더 나빠져요.'
+            : '혈당 수치에 더 신경 써주세요!'}
         </ReportValueText>
       </BloodFigureContainer>
     </BloodReportContainer>

@@ -11,10 +11,10 @@ import {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useGetGuardianInfoQuery} from '../../../services/user/userApi';
 import {GuardianRelationFormType} from '../../../services/user/types';
-import {API_URL} from '@env';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
 import {BackHandler} from 'react-native';
+import {finalBaseUrl} from '../../../config/apiConfig';
 
 export function useConnect() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -66,7 +66,7 @@ export function useConnect() {
   const handleSendCode = async (data: GuardianRelationFormType) => {
     try {
       const response = await fetch(
-        `${API_URL}user/connect/patient-guardian?confirmationCode=${data.guardianCode}`,
+        `${finalBaseUrl}user/connect/patient-guardian?confirmationCode=${data.guardianCode}`,
         {
           method: 'POST',
           headers: {

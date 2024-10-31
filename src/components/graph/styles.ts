@@ -90,7 +90,7 @@ export const GraphFeedbackAfterToolTip = styled.View`
 `;
 
 export const YAxisLabels = styled.View`
-  gap: 13px;
+  gap: 17px;
   position: absolute;
   right: 27px;
 `;

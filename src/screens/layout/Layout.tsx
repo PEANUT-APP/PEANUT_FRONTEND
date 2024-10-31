@@ -6,20 +6,29 @@ import NavigationBar from '../../components/navigation/NavigationBar';
 import {LayoutType} from './types';
 import {RefreshControl} from 'react-native';
 
-export default function Layout({children, refreshing, onRefresh}: LayoutType) {
+export default function Layout({
+  children,
+  refreshing,
+  onRefresh,
+  type,
+}: LayoutType) {
   return (
     <GlobalView>
       <ContainerView>
-        <ScrollView
-          contentContainerStyle={{flex: 1}}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing || false}
-              onRefresh={onRefresh}
-            />
-          }>
-          {children}
-        </ScrollView>
+        {type === 'community' ? (
+          children
+        ) : (
+          <ScrollView
+            contentContainerStyle={{flex: 1}}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing || false}
+                onRefresh={onRefresh}
+              />
+            }>
+            {children}
+          </ScrollView>
+        )}
       </ContainerView>
       <NavigationBar />
     </GlobalView>

@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
-import {
+import foodApi, {
   useCreateAIMealInfoMutation,
   useGetFeedbackFoodDetailByEatTimeQuery,
   useGetFoodCheckByDateQuery,
@@ -99,10 +99,11 @@ export function useRecording() {
   // AI 인식
   const [getPredictInfo] = useGetPredictInfoMutation();
   // AI 영양 성분 조회
-  const {data: foodDetailInfo} = useGetFoodDetailInfoQuery(undefined, {
-    skip: !isUpload || !isAIProcessing, // 조건에 따라 호출을 생략
-    refetchOnMountOrArgChange: true,
-  });
+  const {data: foodDetailInfo, refetch: foodDetailInfoRefetch} =
+    useGetFoodDetailInfoQuery(undefined, {
+      skip: !isUpload || !isAIProcessing, // 조건에 따라 호출을 생략
+      refetchOnMountOrArgChange: true,
+    });
   // AI 식사 등록
   const [createAIMealInfo] = useCreateAIMealInfoMutation();
   // 식사 삭제
@@ -182,14 +183,22 @@ export function useRecording() {
 
   // AI 영양 성분 조회
   useEffect(() => {
-    if (isAIProcessing) {
-      if (mealNames) {
-        setMealListData(mealNames);
-      } else {
-        setMealListData(foodDetailInfo);
+    const updateMealListData = async () => {
+      if (isAIProcessing) {
+        if (mealNames) {
+          // mealNames가 있으면 그 데이터로 설정
+          setMealListData(mealNames);
+        } else {
+          // 데이터 리패치하고, 캐시 무효화 후 데이터 설정
+          await foodDetailInfoRefetch();
+          foodApi.util.invalidateTags(['AI']);
+          setMealListData(foodDetailInfo);
+        }
       }
-    }
-  }, [foodDetailInfo, isAIProcessing, mealNames]);
+    };
+
+    updateMealListData();
+  }, [foodDetailInfo, foodDetailInfoRefetch, isAIProcessing, mealNames]);
 
   // 직접 추가하기 버튼 (이미지 업로드)
   const handleDirectAdd = async () => {
@@ -277,7 +286,6 @@ export function useRecording() {
     const data = {
       mealTime: mealTime,
     };
-    console.log(mealTime);
     try {
       const response = await createAIMealInfo(data).unwrap();
       navigation.navigate('MealFeedback');
