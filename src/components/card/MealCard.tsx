@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import {colors} from '../../styles/colors';
 import {TouchableWithoutFeedback} from 'react-native';
 import MealGraph from './graph/MealGraph';
-import {MealCardType} from './types';
+import {MealCardHandles, MealCardType} from './types';
 import {
   MealCardBox,
   MealCardContainer,
@@ -69,53 +69,57 @@ function MealGraphs({
   );
 }
 
-export default function MealCard({size, time}: MealCardType) {
-  const {
-    selectedTime,
-    isAllFoodInfoSuccess,
-    isFoodByTimeSuccess,
-    isPatientAllFoodInfoSuccess,
-    isPatientFoodByTimeSuccess,
-    isFeedbackFoodByTimeSuccess,
-    handleTimeChange,
-    handleGoToRecord,
-    carbohydrate,
-    fat,
-    protein,
-    total,
-    prevTotal,
-  } = useMealCard(size, time);
+const MealCard = forwardRef<MealCardHandles, MealCardType>(
+  ({size, time}, ref) => {
+    const {
+      selectedTime,
+      isAllFoodInfoSuccess,
+      isFoodByTimeSuccess,
+      isPatientAllFoodInfoSuccess,
+      isPatientFoodByTimeSuccess,
+      isFeedbackFoodByTimeSuccess,
+      handleTimeChange,
+      handleGoToRecord,
+      carbohydrate,
+      fat,
+      protein,
+      total,
+      prevTotal,
+    } = useMealCard(size, ref, time);
 
-  return (
-    <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>
-      {size === 'm' && (
-        <MealCardTitle weight="bold" color={colors.TextNormal}>
-          식사 기록
-        </MealCardTitle>
-      )}
-      <MealCardBox>
+    return (
+      <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>
         {size === 'm' && (
-          <MealCardNavMenu
-            selectedTime={selectedTime}
-            handleTimeChange={handleTimeChange}
-          />
+          <MealCardTitle weight="bold" color={colors.TextNormal}>
+            식사 기록
+          </MealCardTitle>
         )}
-        {(isAllFoodInfoSuccess ||
-          isFoodByTimeSuccess ||
-          isPatientAllFoodInfoSuccess ||
-          isPatientFoodByTimeSuccess ||
-          isFeedbackFoodByTimeSuccess) && (
-          <MealCardContent>
-            <MealGraphs
-              carbohydrate={carbohydrate}
-              fat={fat}
-              protein={protein}
-              total={total}
-              prevTotal={prevTotal}
+        <MealCardBox>
+          {size === 'm' && (
+            <MealCardNavMenu
+              selectedTime={selectedTime}
+              handleTimeChange={handleTimeChange}
             />
-          </MealCardContent>
-        )}
-      </MealCardBox>
-    </MealCardContainer>
-  );
-}
+          )}
+          {(isAllFoodInfoSuccess ||
+            isFoodByTimeSuccess ||
+            isPatientAllFoodInfoSuccess ||
+            isPatientFoodByTimeSuccess ||
+            isFeedbackFoodByTimeSuccess) && (
+            <MealCardContent>
+              <MealGraphs
+                carbohydrate={carbohydrate}
+                fat={fat}
+                protein={protein}
+                total={total}
+                prevTotal={prevTotal}
+              />
+            </MealCardContent>
+          )}
+        </MealCardBox>
+      </MealCardContainer>
+    );
+  },
+);
+
+export default MealCard;

@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useImperativeHandle, useState} from 'react';
 import {FoodReturnType} from '../../services/mainPage/types';
 import {
   useGetFoodAllDetailQuery,
@@ -17,8 +17,13 @@ import {RootState} from '../../store/store';
 import dayjs from 'dayjs';
 import {setTime} from '../../slices/todaySlice';
 import {useGetFeedbackFoodDetailByEatTimeQuery} from '../../services/food/foodApi';
+import {MealCardHandles} from './types';
 
-export const useMealCard = (size: 's' | 'm', time?: string) => {
+export const useMealCard = (
+  size: 's' | 'm',
+  ref: React.ForwardedRef<MealCardHandles>,
+  time?: string,
+) => {
   const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
@@ -107,6 +112,16 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     size,
     userState,
   ]);
+
+  const refreshMealCard = useCallback(() => {
+    setSelectedTime('전체');
+    dispatch(setTime('아침'));
+    fetchData();
+  }, [dispatch, fetchData]);
+
+  useImperativeHandle(ref, () => ({
+    refresh: refreshMealCard,
+  }));
 
   useFocusEffect(
     useCallback(() => {

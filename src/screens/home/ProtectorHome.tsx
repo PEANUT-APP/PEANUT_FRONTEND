@@ -41,6 +41,7 @@ export default function ProtectorHome() {
     isPatientAdditionalInfoLoading,
     refreshing,
     onRefresh,
+    mealCardRef,
   } = useProtectorMain();
 
   return (
@@ -90,7 +91,7 @@ export default function ProtectorHome() {
                 </ReportCardBox>
               </>
             )}
-            <MealCard size="m" />
+            <MealCard size="m" ref={mealCardRef} />
           </HomeContent>
         </HomeBox>
       </ScrollLayout>

@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   useGetAdditionalInfoMainPageQuery,
   useGetPatientAdditionalInfoMainPageQuery,
@@ -19,6 +19,7 @@ import {setUserId, setUserState} from '../../slices/userSlice';
 import {useGetPatientInfoQuery} from '../../services/user/userApi';
 import {GraphType} from './types';
 import {Alert} from 'react-native';
+import {MealCardHandles} from '../../components/card/types';
 
 // 시간을 기준으로 데이터 포인트를 매핑하는 함수
 function mapBloodSugarToGraph(bloodSugarList: BloodSugarItem[] | []) {
@@ -91,6 +92,8 @@ export function usePatientMain() {
   const userState = useSelector((state: RootState) => state.user.userState);
   const today = useSelector((state: RootState) => state.today.today);
 
+  const mealCardRef = useRef<MealCardHandles>(null);
+
   const {
     data: userInfo,
     isSuccess: isUserInfoSuccess,
@@ -117,6 +120,10 @@ export function usePatientMain() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+
+    if (mealCardRef.current) {
+      mealCardRef.current.refresh(); // MealCard의 refresh 함수를 직접 호출하여 새로고침
+    }
 
     try {
       dispatch(resetToday());
@@ -263,6 +270,7 @@ export function usePatientMain() {
     isAdditionalInfoLoading,
     refreshing,
     onRefresh,
+    mealCardRef,
   };
 }
 
@@ -270,6 +278,8 @@ export function useProtectorMain() {
   const userState = useSelector((state: RootState) => state.user.userState);
   const dispatch = useDispatch();
   const today = useSelector((state: RootState) => state.today.today);
+
+  const mealCardRef = useRef<MealCardHandles>(null);
 
   const {
     data: patientInfo,
@@ -295,6 +305,10 @@ export function useProtectorMain() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+
+    if (mealCardRef.current) {
+      mealCardRef.current.refresh(); // MealCard의 refresh 함수를 직접 호출하여 새로고침
+    }
 
     try {
       dispatch(resetToday());
@@ -431,5 +445,6 @@ export function useProtectorMain() {
     isPatientAdditionalInfoLoading,
     refreshing,
     onRefresh,
+    mealCardRef,
   };
 }

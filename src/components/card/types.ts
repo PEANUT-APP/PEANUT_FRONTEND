@@ -3,6 +3,10 @@ export interface MealCardType {
   time?: string;
 }
 
+export interface MealCardHandles {
+  refresh: () => void;
+}
+
 export interface DayMealCardType {
   time: string;
   foodData: DayMealDataType;

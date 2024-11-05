@@ -44,6 +44,7 @@ export default function PatientHome() {
     isAdditionalInfoLoading,
     refreshing,
     onRefresh,
+    mealCardRef,
   } = usePatientMain();
 
   return (
@@ -101,7 +102,7 @@ export default function PatientHome() {
                 </ReportCardBox>
               </>
             )}
-            <MealCard size="m" />
+            <MealCard size="m" ref={mealCardRef} />
           </HomeContent>
         </HomeBox>
       </ScrollLayout>
