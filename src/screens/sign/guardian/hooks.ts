@@ -14,7 +14,7 @@ import {GuardianRelationFormType} from '../../../services/user/types';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
 import {BackHandler} from 'react-native';
-import {finalBaseUrl} from '../../../config/apiConfig';
+import {API_URL} from '@env';
 
 export function useConnect() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -66,7 +66,7 @@ export function useConnect() {
   const handleSendCode = async (data: GuardianRelationFormType) => {
     try {
       const response = await fetch(
-        `${finalBaseUrl}user/connect/patient-guardian?confirmationCode=${data.guardianCode}`,
+        `${API_URL}user/connect/patient-guardian?confirmationCode=${data.guardianCode}`,
         {
           method: 'POST',
           headers: {

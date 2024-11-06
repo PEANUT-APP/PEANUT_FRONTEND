@@ -8,10 +8,10 @@ import {
 import {RootState} from '../store/store';
 import {logout} from '../slices/tokenSlice';
 import {Alert} from 'react-native';
-import {finalBaseUrl} from '../config/apiConfig';
+import {API_URL} from '@env';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: finalBaseUrl,
+  baseUrl: API_URL,
   credentials: 'include',
   mode: 'no-cors',
   prepareHeaders: (headers, {getState}) => {

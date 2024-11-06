@@ -17,7 +17,7 @@ import {GetPatientReturnType} from '../../../services/user/types';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
-import {finalBaseUrl} from '../../../config/apiConfig';
+import {API_URL} from '@env';
 
 export function useConnect() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -52,7 +52,7 @@ export function useConnect() {
   const handleSendEmail = async ({email}: {email: string}) => {
     try {
       const response = await fetch(
-        `${finalBaseUrl}user/connect/get-patient?email=${email}`,
+        `${API_URL}user/connect/get-patient?email=${email}`,
         {
           method: 'GET',
           headers: {
