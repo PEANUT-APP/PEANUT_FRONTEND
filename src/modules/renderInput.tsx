@@ -9,6 +9,7 @@ import {
   UseFormTrigger,
 } from 'react-hook-form';
 import {FormData} from '../components/input/types';
+import {ReturnKeyTypeOptions} from 'react-native';
 
 interface RenderInputProps {
   name: keyof FormData;
@@ -29,6 +30,7 @@ interface RenderInputProps {
   isNicknameValid?: boolean;
   verificationCode?: string;
   autoFocus?: boolean;
+  returnKeyType?: ReturnKeyTypeOptions;
 }
 
 export default function RenderInput({
@@ -50,13 +52,19 @@ export default function RenderInput({
   isNicknameValid,
   verificationCode,
   autoFocus,
+  returnKeyType,
 }: RenderInputProps) {
   const validationRules = useValidationRules(verificationCode);
   const keyboardType =
     name === 'phoneNumber'
       ? 'phone-pad'
-      : name === 'height' || name === 'weight' || name === 'dosage'
+      : name === 'height' ||
+        name === 'weight' ||
+        name === 'dosage' ||
+        name === 'bloodSugar'
       ? 'numeric'
+      : name === 'email'
+      ? 'email-address'
       : 'default';
 
   return (
@@ -68,7 +76,7 @@ export default function RenderInput({
       errors={errors}
       editable={true}
       touchedFields={touchedFields}
-      returnKeyType="next"
+      returnKeyType={returnKeyType}
       trigger={trigger}
       secureTextEntry={secureTextEntry}
       message={message}

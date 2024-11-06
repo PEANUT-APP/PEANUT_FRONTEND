@@ -55,6 +55,7 @@ export default function SignUp() {
           isVerificationCodeValid,
           verificationCode,
           autoFocus: true,
+          returnKeyType: 'next',
         })}
       {RenderInput({
         name: 'email',
@@ -63,6 +64,7 @@ export default function SignUp() {
         errors,
         touchedFields,
         trigger,
+        returnKeyType: 'send',
       })}
     </Sign>
   );

@@ -54,6 +54,7 @@ export default function GuardianConnect() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'send',
           })}
         </>
       ) : (

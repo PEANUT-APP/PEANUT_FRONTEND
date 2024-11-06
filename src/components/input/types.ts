@@ -30,6 +30,7 @@ export interface FormData {
   bloodSugarTime: string;
   foodTime: string;
   guardianCode: string;
+  fcmToken: string;
 }
 
 export interface InputType {

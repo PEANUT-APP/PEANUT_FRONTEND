@@ -111,5 +111,6 @@ export const useValidationRules = (
     guardianCode: {
       required: '인증번호가 필요해요!',
     },
+    fcmToken: {},
   };
 };

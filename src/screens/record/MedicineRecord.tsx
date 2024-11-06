@@ -59,6 +59,7 @@ export default function MedicineRecord() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           <DayListItem intakeDays={intakeDays} setIntakeDays={setIntakeDays} />
           <MultiSelectList

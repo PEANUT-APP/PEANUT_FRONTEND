@@ -55,6 +55,7 @@ export default function BasicInformation() {
           errors,
           touchedFields,
           trigger,
+          returnKeyType: 'next',
         })}
       {step >= 3 && (
         <Dropdown
@@ -90,6 +91,7 @@ export default function BasicInformation() {
           errors,
           touchedFields,
           trigger,
+          returnKeyType: 'next',
         })}
       {step >= 0 &&
         RenderInput({
@@ -100,6 +102,7 @@ export default function BasicInformation() {
           touchedFields,
           trigger,
           secureTextEntry: true,
+          returnKeyType: 'next',
         })}
     </Sign>
   );

@@ -50,6 +50,7 @@ export default function MyAccount() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           <Dropdown
             control={control}
@@ -80,6 +81,7 @@ export default function MyAccount() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           {RenderInput({
             name: 'password',
@@ -89,6 +91,7 @@ export default function MyAccount() {
             touchedFields,
             trigger,
             secureTextEntry: true,
+            returnKeyType: 'done',
           })}
           <MyAccountButton>
             <PrimaryTextButton size="m">계정 탈퇴하기</PrimaryTextButton>
