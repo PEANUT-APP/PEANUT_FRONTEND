@@ -20,11 +20,12 @@ import {
 import PlusButton from '../button/PlusButton';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
-import {Circle, G, Line, Rect} from 'react-native-svg';
+import {Circle, G, Line} from 'react-native-svg';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import moment from 'moment';
 import 'moment/locale/ko';
+import {Pressable, View} from 'react-native';
 
 moment.locale('ko');
 
@@ -170,15 +171,6 @@ export default function Graph({graphData, size}: GraphType) {
                         strokeWidth={isSelected ? 2 : 0}
                         onPress={() => handleCircleClick(index, x, y)}
                       />
-                      <Rect
-                        x={x - 20}
-                        y={y - 20}
-                        width={40}
-                        height={40}
-                        fill={colors.primaryNormal}
-                        fillOpacity={0} // 터치 영역 투명도 조정
-                        onPress={() => handleCircleClick(index, x, y)}
-                      />
 
                       {isSelected && (
                         <GraphMainToolTip
@@ -271,6 +263,45 @@ export default function Graph({graphData, size}: GraphType) {
             })
           )}
         </GraphChart>
+        {size === 'm' && (
+          <View
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              position: 'absolute',
+              top: 6,
+              left: 25,
+              width: '100%',
+              height: '100%',
+            }}>
+            {graphData.map((point, index) => {
+              if (point.value !== null) {
+                const x =
+                  padding + (index * chartWidth) / (graphData.length - 1);
+                const y =
+                  chartHeight -
+                  (Math.min(point.value, 200) * chartHeight) / 200;
+
+                return (
+                  <Pressable
+                    key={index}
+                    onPress={() => handleCircleClick(index, x, y)}
+                    hitSlop={10}
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{
+                      position: 'absolute',
+                      top: y - 10,
+                      left: x - 10,
+                      width: 20,
+                      height: 20,
+                    }}>
+                    <View />
+                  </Pressable>
+                );
+              }
+              return null;
+            })}
+          </View>
+        )}
         <YAxisLabels>
           {['200', '150', '100', '50', '0'].map((label, index) => (
             <AxisLabel key={index}>{label}</AxisLabel>

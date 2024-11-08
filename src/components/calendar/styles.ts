@@ -105,7 +105,7 @@ export const MonthCalendarDayContainer = styled.View`
   align-items: center;
 `;
 
-export const MonthCalendarDay = styled.TouchableOpacity`
+export const MonthCalendarDay = styled.Pressable`
   width: 20px;
   gap: 8px;
   align-items: center;

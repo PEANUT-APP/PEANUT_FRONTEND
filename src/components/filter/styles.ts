@@ -34,7 +34,7 @@ export const FilterOptionBox = styled.View`
 `;
 
 export const FilterOption = styled.TouchableOpacity<{isSelected: boolean}>`
-  width: 96px;
+  width: 94px;
   height: 32px;
   padding: 0 12px;
   justify-content: center;
@@ -42,7 +42,7 @@ export const FilterOption = styled.TouchableOpacity<{isSelected: boolean}>`
   flex-direction: row;
   flex: 1;
   background-color: ${({isSelected}) =>
-    isSelected ? colors.SolidSecondaryActive : colors.white};
+    isSelected ? colors.SolidSecondaryActive : 'transparent'};
 `;
 
 export const FilterOptionTop = styled(FilterOption)`

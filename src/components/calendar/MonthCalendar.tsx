@@ -135,8 +135,8 @@ export default function MonthCalendar({
           <MonthCalendarDayContainer key={idx}>
             {item.day ? (
               <MonthCalendarDay
-                activeOpacity={1}
-                onPress={() => handleSelectDate(item.day)}>
+                onPress={() => handleSelectDate(item.day)}
+                hitSlop={10}>
                 {item.day === selectedDate && <MonthCalendarDayCircle />}
                 <MonthCalendarDayText selected={item.day === selectedDate}>
                   {item.day}

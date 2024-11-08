@@ -93,33 +93,33 @@ export default function Dropdown({
 
   return (
     <DropdownContainer>
-      <Input
-        placeholder={placeholder}
-        name={name}
-        control={control}
-        rules={validationRules[name]}
-        errors={errors}
-        editable={false}
-        touchedFields={touchedFields}
-        returnKeyType="next"
-        trigger={trigger}
-        secureTextEntry={false}
-        value={selectedValue}
-        icon={
-          <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
+      <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
+        <Input
+          placeholder={placeholder}
+          name={name}
+          control={control}
+          rules={validationRules[name]}
+          errors={errors}
+          editable={false}
+          touchedFields={touchedFields}
+          returnKeyType="next"
+          trigger={trigger}
+          secureTextEntry={false}
+          value={selectedValue}
+          icon={
             <DesignIcon
               type={dropType}
               size={size === 's' ? 'm' : 'l'}
               color={colors[dropColor]}
             />
-          </TouchableOpacity>
-        }
-        drop={true}
-        isDropdownVisible={isDropdownVisible}
-        setIsDropdownVisible={setIsDropdownVisible}
-        pointerEvents="none"
-        size={size}
-      />
+          }
+          drop={true}
+          isDropdownVisible={isDropdownVisible}
+          setIsDropdownVisible={setIsDropdownVisible}
+          pointerEvents="none"
+          size={size}
+        />
+      </TouchableOpacity>
       {isDropdownVisible && (
         <DropdownList size={size} isSearch={isSearch}>
           {options.map((option: string) => (

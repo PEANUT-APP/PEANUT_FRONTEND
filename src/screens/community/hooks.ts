@@ -15,7 +15,7 @@ import {
 } from '../../services/community/communityApi';
 import {ParamList} from '../../navigation/types';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Alert, BackHandler} from 'react-native';
+import {Alert, BackHandler, Keyboard} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export function useCommunity() {
@@ -214,6 +214,7 @@ export function useDetail(liked?: boolean) {
         id,
       }).unwrap();
       setComment('');
+      Keyboard.dismiss();
       detailRefetch();
     } catch (error) {
       console.error(error);

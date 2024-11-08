@@ -6,10 +6,13 @@ export default function useNotify() {
 
   const formattedData =
     isSuccess && data
-      ? data.map(notification => ({
-          ...notification,
-          create_At: formatDate(notification.create_At), // create_At 포맷팅
-        }))
+      ? data
+          .map(notification => ({
+            ...notification,
+            create_At: formatDate(notification.create_At), // create_At 포맷팅
+          }))
+          .slice()
+          .reverse()
       : [];
 
   return {data: formattedData, isSuccess};

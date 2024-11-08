@@ -29,8 +29,6 @@ export const useMessage = () => {
       setToastTitle(title);
       setToastMessage(body);
 
-      console.log(title, body);
-
       setTimeout(() => {
         setToastTitle('');
         setToastMessage('');
