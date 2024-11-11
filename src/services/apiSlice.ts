@@ -31,7 +31,7 @@ const baseQueryWithReAuth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOption);
 
   if (result.error && result.error.status === 401) {
-    Alert.alert('로그인 후 다시 시도해주세요!');
+    Alert.alert('로그아웃 되었습니다!');
     api.dispatch(logout());
   }
 

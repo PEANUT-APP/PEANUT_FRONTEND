@@ -59,7 +59,7 @@ export default function SignIn() {
           touchedFields,
           trigger,
           secureTextEntry: true,
-          returnKeyType: 'send',
+          returnKeyType: 'join',
         })}
       {step >= 0 &&
         RenderInput({

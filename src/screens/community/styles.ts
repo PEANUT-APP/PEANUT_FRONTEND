@@ -71,6 +71,7 @@ export const WriterTitleInput = styled.TextInput`
   line-height: 26.68px;
   letter-spacing: -0.5px;
   padding: 0 12px;
+  color: #000000;
 `;
 
 export const WriterContentInput = styled.TextInput`
@@ -83,6 +84,7 @@ export const WriterContentInput = styled.TextInput`
   line-height: 18.676px;
   letter-spacing: -0.35px;
   padding: 20px 12px;
+  color: #000000;
 `;
 
 export const WriterPlaceholder = styled(Body2)`

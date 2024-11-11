@@ -5,7 +5,7 @@ import DesignIcon from '../icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import Input from '../input/Input';
 import {useValidationRules} from '../../modules/validationRules';
-import {TouchableOpacity} from 'react-native';
+import {Keyboard, TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTime} from '../../slices/todaySlice';
@@ -67,7 +67,29 @@ export default function Dropdown({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 키보드 상태 감지
+  useEffect(() => {
+    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setIsDropdownVisible?.(false);
+      setDropType?.('dropClose');
+      setDropColor?.('LineDisabled');
+    });
+
+    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setIsDropdownVisible?.(false);
+      setDropType?.('dropClose');
+      setDropColor?.('LineDisabled');
+    });
+
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, [setDropColor, setDropType, setIsDropdownVisible]);
+
   const toggleDropdown = useCallback(() => {
+    Keyboard.dismiss();
+
     setIsDropdownVisible(prevState => {
       const newState = !prevState;
       setDropType(newState ? 'dropOpen' : 'dropClose');

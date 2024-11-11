@@ -153,7 +153,6 @@ export const useMyEdit = () => {
   useEffect(() => {
     const hasChanges =
       profileImage !== userInfo?.profileUrl ||
-      profileImage !== '' ||
       nicknameWatch !== userInfo?.username ||
       heightWatch !== userInfo?.height ||
       weightWatch !== userInfo?.weight;
