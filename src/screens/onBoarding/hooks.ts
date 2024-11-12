@@ -14,7 +14,7 @@ export const useOnBoarding = () => {
     try {
       const result = await loginWithKakaoAccount();
       if (result) {
-        console.log(result.accessToken);
+        console.log(result);
       }
     } catch (error) {
       console.error(error);

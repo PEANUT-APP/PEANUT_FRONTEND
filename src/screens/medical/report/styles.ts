@@ -37,10 +37,9 @@ export const BloodReportValueBox = styled.View`
 `;
 
 export const BloodReportValue = styled.Text`
-  font-family: 'Pretendard';
   font-size: 32px;
   font-weight: 700;
-  line-height: 30.688px;
+  line-height: 42.688px;
   letter-spacing: -0.8px;
   color: ${colors.primaryNormal};
 `;
