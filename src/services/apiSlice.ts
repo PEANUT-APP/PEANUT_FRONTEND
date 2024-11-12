@@ -5,10 +5,10 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import {API_URL} from '@env';
 import {RootState} from '../store/store';
 import {logout} from '../slices/tokenSlice';
 import {Alert} from 'react-native';
+import {API_URL} from '@env';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
@@ -31,7 +31,7 @@ const baseQueryWithReAuth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOption);
 
   if (result.error && result.error.status === 401) {
-    Alert.alert('로그인 후 다시 시도해주세요!');
+    Alert.alert('로그아웃 되었습니다!');
     api.dispatch(logout());
   }
 
@@ -42,7 +42,15 @@ const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}),
-  tagTypes: ['AdditionalInfo', 'Meal', 'AI', 'User', 'Community', 'Connect'],
+  tagTypes: [
+    'AdditionalInfo',
+    'Meal',
+    'AI',
+    'User',
+    'Community',
+    'Connect',
+    'Alarm',
+  ],
 });
 
 export default apiSlice;

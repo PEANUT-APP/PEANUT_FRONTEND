@@ -42,6 +42,7 @@ export const useValidationRules = (
     password: {
       required: '비밀번호가 필요해요!',
     },
+    passwordCheck: {},
     weight: {
       required: '몸무게 필요해요!',
       validate: (value: string) => {
@@ -111,5 +112,6 @@ export const useValidationRules = (
     guardianCode: {
       required: '인증번호가 필요해요!',
     },
+    fcmToken: {},
   };
 };

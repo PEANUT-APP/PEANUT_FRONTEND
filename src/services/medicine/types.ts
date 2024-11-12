@@ -10,6 +10,7 @@ export interface MedicineRecordReturnType {
   intakeDays: string[];
   intakeTime: string[];
   medicineName: string;
+  activeStatus: string;
 }
 
 interface DailyStatus {
@@ -30,4 +31,9 @@ export interface MedicineReportReturnType {
 export interface TransformedMedicineReportReturnType {
   dailyStatuses: TransformedMedicineDailyStatus[];
   monthlyStatusMessage: string;
+}
+
+export interface MedicineRecordFormType {
+  activeStatus: boolean;
+  medicineId: number;
 }

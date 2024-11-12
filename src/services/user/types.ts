@@ -60,11 +60,36 @@ export interface MyCommunityReturnType {
   create_At: string;
   like: number;
   title: string;
+  userId: number;
   userName: string;
+  communityId: number;
+  imageUrl: string;
+}
+
+export interface AlarmReturnType {
+  guardianAlam: boolean;
+  insulinAlam: boolean;
+  medicationAlam: boolean;
+  userId: number;
 }
 
 export interface AlarmFormType {
   guardianAlam: boolean;
   insulinAlam: boolean;
   medicationAlam: boolean;
+}
+
+export interface UpdateUserReturnType {
+  birthday: string;
+  gender: string;
+  phoneNumber: string;
+  userName: string;
+}
+
+export interface UpdateUserFormType {
+  birthday: string;
+  gender: string;
+  password: string;
+  phoneNumber: string;
+  userName: string;
 }

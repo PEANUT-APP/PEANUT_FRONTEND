@@ -39,12 +39,14 @@ export const GraphChart = styled(LineChart)`
 `;
 
 export const GraphMainToolTip = styled.View`
-  width: 90px;
   height: 52px;
+  padding: 0 10px;
   border-radius: 4px;
   background-color: ${colors.primaryNormal};
   align-items: center;
   justify-content: center;
+  z-index: 100;
+  position: absolute;
 `;
 
 export const GraphMainToolTipValue = styled.View`
@@ -88,7 +90,7 @@ export const GraphFeedbackAfterToolTip = styled.View`
 `;
 
 export const YAxisLabels = styled.View`
-  gap: 13px;
+  gap: 17px;
   position: absolute;
   right: 27px;
 `;

@@ -19,7 +19,6 @@ import My from '../screens/my/My';
 import Connect from '../screens/sign/patient/Connect';
 import Confirm from '../screens/sign/patient/Confirm';
 import Complete from '../screens/sign/patient/Complete';
-import {useAuth} from '../modules/useAuth';
 import MyEdit from '../screens/my/MyEdit';
 import MyNotice from '../screens/my/MyNotice';
 import MyAccount from '../screens/my/MyAccount';
@@ -42,8 +41,6 @@ export default function Navigation() {
   const accessToken = useSelector(
     (state: RootState) => state.token.accessToken,
   );
-
-  useAuth();
 
   return (
     <Stack.Navigator

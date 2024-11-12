@@ -16,14 +16,12 @@ import {colors} from '../../styles/colors';
 import {useCommunitySearch} from './hooks';
 import Search from '../../components/search/Search';
 import CommunityListItem from '../../components/list/community/CommunityListItem';
-import {CommunityListReturnType} from '../../services/community/types';
 import SearchIcon from '../../assets/images/CommunitySearchIcon.svg';
-
-const communityList: CommunityListReturnType[] = [];
 
 export default function CommunitySearch() {
   const {handleBack} = useBackHandler();
-  const {setSearchCommunity, handleSearch} = useCommunitySearch();
+  const {setSearchCommunity, handleSearch, communityData} =
+    useCommunitySearch();
 
   return (
     <SearchContainer>
@@ -39,12 +37,12 @@ export default function CommunitySearch() {
             placeholder="글 제목 또는 내용을 입력하세요"
           />
         </SearchTop>
-        {communityList.length !== 0 ? (
+        {communityData?.length !== 0 && communityData ? (
           <SearchContentScroll
             contentContainerStyle={{paddingBottom: 16}}
             showsVerticalScrollIndicator={false}>
             <SearchContent>
-              {communityList?.map(item => (
+              {communityData?.map(item => (
                 <CommunityListItem
                   key={item.id}
                   id={item.id}
@@ -54,8 +52,8 @@ export default function CommunitySearch() {
                   like={item.like}
                   imageUrl={item.imageUrl}
                   userId={item.userId}
-                  comment={item.comment}
-                  create_at={item.create_at}
+                  commentCount={item.commentCount}
+                  createTime={item.createTime}
                 />
               ))}
             </SearchContent>

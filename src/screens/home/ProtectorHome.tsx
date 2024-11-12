@@ -39,11 +39,17 @@ export default function ProtectorHome() {
     isPatientAdditionalInfoSuccess,
     isPatientInfoLoading,
     isPatientAdditionalInfoLoading,
+    refreshing,
+    onRefresh,
+    mealCardRef,
   } = useProtectorMain();
 
   return (
     <>
-      <ScrollLayout paddingBottom={101}>
+      <ScrollLayout
+        paddingBottom={101}
+        refreshing={refreshing}
+        onRefresh={onRefresh}>
         <HomeBox>
           <HomeTop
             source={require('../../assets/images/gradientBackgroundDark.png')}>
@@ -85,26 +91,27 @@ export default function ProtectorHome() {
                 </ReportCardBox>
               </>
             )}
-            <MealCard size="m" />
+            <MealCard size="m" ref={mealCardRef} />
           </HomeContent>
         </HomeBox>
       </ScrollLayout>
-      {(isPatientAdditionalInfoLoading || isPatientInfoLoading) && (
-        <>
-          <BlurView
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              zIndex: 100,
-            }}
-            blurAmount={1}
-            blurType="extraDark"
-          />
-          <HomeLoadingScreen />
-        </>
-      )}
+      {(isPatientAdditionalInfoLoading || isPatientInfoLoading) &&
+        !refreshing && (
+          <>
+            <BlurView
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                zIndex: 100,
+              }}
+              blurAmount={1}
+              blurType="extraDark"
+            />
+            <HomeLoadingScreen />
+          </>
+        )}
     </>
   );
 }

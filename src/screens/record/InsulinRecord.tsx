@@ -54,6 +54,7 @@ export default function InsulinRecord() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           {RenderInput({
             name: 'dosage',
@@ -62,6 +63,7 @@ export default function InsulinRecord() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           <MultiSelectList
             selectedItems={intakeTime}

@@ -2,6 +2,7 @@ import {mapStatus} from '../../screens/medical/hooks';
 import apiSlice from '../apiSlice';
 import {
   InsulinFormType,
+  InsulinRecordFormType,
   InsulinRecordReturnType,
   InsulinReportReturnType,
   TransformedInsulinReportReturnType,
@@ -48,6 +49,36 @@ export const insulinApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    getGuardianInsulinInfoReportList: builder.query<
+      TransformedInsulinReportReturnType,
+      {month: number; year: number}
+    >({
+      query: ({month, year}) => ({
+        url: `/insulin/get/guardian-report?month=${month}&year=${year}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: InsulinReportReturnType) => {
+        const transformedDailyStatuses = response.dailyStatuses.map(status => ({
+          ...status,
+          recordStatus: mapStatus(status.recordStatus),
+        }));
+
+        return {
+          ...response,
+          dailyStatuses: transformedDailyStatuses,
+        };
+      },
+    }),
+    stopInsulin: builder.mutation({
+      query: ({activeStatus, insulinId}: InsulinRecordFormType) => ({
+        url: '/insulin/update-status/record',
+        method: 'PUT',
+        params: {
+          activeStatus,
+          insulinId,
+        },
+      }),
+    }),
   }),
 });
 
@@ -55,6 +86,8 @@ export const {
   useSaveInsulinIfoMutation,
   useLazyGetInsulinInfoListQuery,
   useGetInsulinInfoReportListQuery,
+  useGetGuardianInsulinInfoReportListQuery,
+  useStopInsulinMutation,
 } = insulinApi;
 
 export default insulinApi;

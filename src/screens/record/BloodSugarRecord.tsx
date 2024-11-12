@@ -48,6 +48,7 @@ export default function BloodSugarRecord() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           <TimeInput
             control={control}
@@ -78,6 +79,7 @@ export default function BloodSugarRecord() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
         </RecordFormBox>
       </RecordBox>

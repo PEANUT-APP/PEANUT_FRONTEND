@@ -11,9 +11,10 @@ import {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useGetGuardianInfoQuery} from '../../../services/user/userApi';
 import {GuardianRelationFormType} from '../../../services/user/types';
-import {API_URL} from '@env';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
+import {BackHandler} from 'react-native';
+import {API_URL} from '@env';
 
 export function useConnect() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
@@ -108,6 +109,21 @@ export function useComplete() {
   const navigation = useNavigation<StackNavigationProp<NavigationList>>();
   const route = useRoute<RouteProp<{params: {name: string}}, 'params'>>();
   const {name} = route.params;
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      // 두 단계 뒤로 가기
+      navigation.pop(2);
+      return true; // 기본 동작 방지
+    };
+
+    // BackHandler에 이벤트 추가
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // 컴포넌트 언마운트 시 이벤트 제거
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  }, [navigation]);
 
   const handleGoMy = () => {
     navigation.push('My');

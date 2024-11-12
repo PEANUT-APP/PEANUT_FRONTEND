@@ -59,6 +59,7 @@ export default function SignIn() {
           touchedFields,
           trigger,
           secureTextEntry: true,
+          returnKeyType: 'join',
         })}
       {step >= 0 &&
         RenderInput({
@@ -68,6 +69,7 @@ export default function SignIn() {
           errors,
           touchedFields,
           trigger,
+          returnKeyType: 'next',
         })}
     </Sign>
   );

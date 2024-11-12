@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-native-date-picker';
 import Input from './Input';
 import {TouchableOpacity} from 'react-native';
@@ -14,12 +14,23 @@ export default function DateInput({
   trigger,
   setValue,
   setFocus,
+  value,
 }: DateInputType) {
   const [date, setDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | undefined>(
     undefined,
   );
+
+  useEffect(() => {
+    if (value) {
+      const formattedValue = value.replace(/\./g, '-');
+      const parsedDate = new Date(formattedValue);
+      setDate(parsedDate);
+      setValue(name, value || '');
+      setSelectedDate(value);
+    }
+  }, [name, setValue, value]);
 
   const handleOpenDate = () => {
     setDatePickerVisibility(true);

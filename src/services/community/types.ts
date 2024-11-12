@@ -1,4 +1,5 @@
 export interface CommunityListReturnType {
+  commentCount: number;
   content: string;
   gender?: string;
   id: number;
@@ -7,8 +8,7 @@ export interface CommunityListReturnType {
   name: string;
   title: string;
   userId?: number;
-  comment: number;
-  create_at: string;
+  createTime: string;
 }
 
 export interface CommunityCreateFormType {

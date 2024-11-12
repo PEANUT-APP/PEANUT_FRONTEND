@@ -16,8 +16,7 @@ import {useInsulin} from './hooks';
 
 export default function InsulinDocument() {
   const {handleBack} = useBackHandler();
-  const {insulinState, toggleInsulinState, handleGoAdd, insulinData} =
-    useInsulin();
+  const {toggleInsulinState, handleGoAdd, insulinData} = useInsulin();
 
   return (
     <DocumentContainer>
@@ -37,7 +36,7 @@ export default function InsulinDocument() {
               name={item.productName}
               description={item.dosage}
               time={item.administrationTime}
-              isOngoing={insulinState[item.productName]}
+              isOngoing={item.isOngoing}
               onToggle={() => toggleInsulinState(item.productName)}
               type="insulin"
             />

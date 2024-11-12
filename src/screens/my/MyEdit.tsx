@@ -57,6 +57,7 @@ export default function MyEdit() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           {RenderInput({
             name: 'height',
@@ -65,6 +66,7 @@ export default function MyEdit() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
           {RenderInput({
             name: 'weight',
@@ -73,6 +75,7 @@ export default function MyEdit() {
             errors,
             touchedFields,
             trigger,
+            returnKeyType: 'done',
           })}
         </MyEditInputBox>
         <PrimaryButton size="l" onPress={onSubmit} disabled={isButtonDisabled}>

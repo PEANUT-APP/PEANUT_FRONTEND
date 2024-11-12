@@ -16,8 +16,7 @@ import {useMedicine} from './hooks';
 
 export default function MedicineDocument() {
   const {handleBack} = useBackHandler();
-  const {medicineState, toggleMedicineState, handleGoAdd, transformedData} =
-    useMedicine();
+  const {toggleMedicineState, handleGoAdd, medicineData} = useMedicine();
 
   return (
     <DocumentContainer>
@@ -31,13 +30,13 @@ export default function MedicineDocument() {
           </RecordTitle>
         </RecordTitleBox>
         <FlatList
-          data={transformedData}
+          data={medicineData}
           renderItem={({item}) => (
             <RecordCard
               name={item.medicineName}
               description={item.intakeTime}
               time={item.intakeDays}
-              isOngoing={medicineState[item.medicineName]}
+              isOngoing={item.isOngoing}
               onToggle={() => toggleMedicineState(item.medicineName)}
               type="medicine"
             />

@@ -5,7 +5,7 @@ import DesignIcon from '../icon/DesignIcon';
 import {colors} from '../../styles/colors';
 import Input from '../input/Input';
 import {useValidationRules} from '../../modules/validationRules';
-import {TouchableOpacity} from 'react-native';
+import {Keyboard, TouchableOpacity} from 'react-native';
 import DropdownField from './DropdownField';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTime} from '../../slices/todaySlice';
@@ -45,6 +45,7 @@ export default function Dropdown({
   options,
   size,
   isSearch,
+  value,
 }: DropdownType) {
   const dispatch = useDispatch();
 
@@ -67,7 +68,35 @@ export default function Dropdown({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (size === 'm' && value) {
+      setSelectedValue(value);
+    }
+  }, [size, value]);
+
+  // 키보드 상태 감지
+  useEffect(() => {
+    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setIsDropdownVisible?.(false);
+      setDropType?.('dropClose');
+      setDropColor?.('LineDisabled');
+    });
+
+    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setIsDropdownVisible?.(false);
+      setDropType?.('dropClose');
+      setDropColor?.('LineDisabled');
+    });
+
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, [setDropColor, setDropType, setIsDropdownVisible]);
+
   const toggleDropdown = useCallback(() => {
+    Keyboard.dismiss();
+
     setIsDropdownVisible(prevState => {
       const newState = !prevState;
       setDropType(newState ? 'dropOpen' : 'dropClose');
@@ -78,12 +107,14 @@ export default function Dropdown({
   }, [name, setFocus]);
 
   const handleSelect = async (value: string) => {
+    if (size === 's') {
+      dispatch(setTime(value));
+    }
+
     setSelectedValue(value);
     setIsDropdownVisible(false);
     setDropType('dropClose');
     setDropColor('LineDisabled');
-
-    dispatch(setTime(value));
 
     setValue(name, value);
     await trigger(name);
@@ -91,33 +122,33 @@ export default function Dropdown({
 
   return (
     <DropdownContainer>
-      <Input
-        placeholder={placeholder}
-        name={name}
-        control={control}
-        rules={validationRules[name]}
-        errors={errors}
-        editable={false}
-        touchedFields={touchedFields}
-        returnKeyType="next"
-        trigger={trigger}
-        secureTextEntry={false}
-        value={selectedValue}
-        icon={
-          <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
+      <TouchableOpacity onPress={toggleDropdown} activeOpacity={1}>
+        <Input
+          placeholder={placeholder}
+          name={name}
+          control={control}
+          rules={validationRules[name]}
+          errors={errors}
+          editable={false}
+          touchedFields={touchedFields}
+          returnKeyType="next"
+          trigger={trigger}
+          secureTextEntry={false}
+          value={selectedValue}
+          icon={
             <DesignIcon
               type={dropType}
               size={size === 's' ? 'm' : 'l'}
               color={colors[dropColor]}
             />
-          </TouchableOpacity>
-        }
-        drop={true}
-        isDropdownVisible={isDropdownVisible}
-        setIsDropdownVisible={setIsDropdownVisible}
-        pointerEvents="none"
-        size={size}
-      />
+          }
+          drop={true}
+          isDropdownVisible={isDropdownVisible}
+          setIsDropdownVisible={setIsDropdownVisible}
+          pointerEvents="none"
+          size={size}
+        />
+      </TouchableOpacity>
       {isDropdownVisible && (
         <DropdownList size={size} isSearch={isSearch}>
           {options.map((option: string) => (

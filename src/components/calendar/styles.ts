@@ -78,10 +78,11 @@ export const MonthCalendarBox = styled.View`
 `;
 
 export const MonthCalendarWeekDays = styled.View`
+  width: 282px;
+  padding: 0 5px;
   flex-direction: row;
-  gap: 31px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const MonthCalendarWeekDay = styled(Body2)`
@@ -104,7 +105,7 @@ export const MonthCalendarDayContainer = styled.View`
   align-items: center;
 `;
 
-export const MonthCalendarDay = styled.TouchableOpacity`
+export const MonthCalendarDay = styled.Pressable`
   width: 20px;
   gap: 8px;
   align-items: center;

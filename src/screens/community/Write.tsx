@@ -55,6 +55,7 @@ export default function Write() {
           style={{textAlignVertical: 'top'}}
           value={content}
           onChangeText={setContent}
+          returnKeyType="done"
         />
         {!content && (
           <WriterPlaceholder>

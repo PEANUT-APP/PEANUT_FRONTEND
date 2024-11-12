@@ -9,7 +9,7 @@ import {
 } from './styles';
 import DesignIcon from '../icon/DesignIcon';
 import dayjs, {Dayjs} from 'dayjs';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {setToday} from '../../slices/todaySlice';
@@ -51,27 +51,28 @@ export default function WeeklyCalendar() {
     <CalendarContainer>
       <CalendarMonth weight="bold">{currentDay.format('M')}</CalendarMonth>
       <CalendarWeekBox>
-        <TouchableWithoutFeedback onPress={goToPreviousWeek}>
+        <Pressable onPress={goToPreviousWeek} hitSlop={10}>
           <View>
             <DesignIcon type="back" size="s" />
           </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
         <CalendarWeek>
           {weekDays.map((day, index) => (
-            <TouchableWithoutFeedback
+            <Pressable
               key={index}
-              onPress={() => handleDateClick(day)}>
+              onPress={() => handleDateClick(day)}
+              hitSlop={10}>
               <CalendarWeekItem isToday={day.isSame(today, 'day')}>
                 {day.format('D')}
               </CalendarWeekItem>
-            </TouchableWithoutFeedback>
+            </Pressable>
           ))}
         </CalendarWeek>
-        <TouchableWithoutFeedback onPress={goToNextWeek}>
+        <Pressable onPress={goToNextWeek} hitSlop={10}>
           <CalendarNext>
             <DesignIcon type="back" size="s" />
           </CalendarNext>
-        </TouchableWithoutFeedback>
+        </Pressable>
       </CalendarWeekBox>
     </CalendarContainer>
   );

@@ -25,6 +25,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import moment from 'moment';
 import 'moment/locale/ko';
+import {Pressable, View} from 'react-native';
 
 moment.locale('ko');
 
@@ -33,13 +34,18 @@ export default function Graph({graphData, size}: GraphType) {
   const userState = useSelector((state: RootState) => state.user.userState);
 
   const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{
+    top: number;
+    left: number;
+  }>({top: 0, left: 0});
 
   const onAddBloodSugar = useCallback(() => {
     navigation.navigate('BloodSugar');
   }, [navigation]);
 
   const handleCircleClick = useCallback(
-    (index: number) => {
+    (index: number, x: number, y: number) => {
+      setTooltipPosition({top: y - 61, left: x - 45});
       setSelectedPoint(prev => (prev === index ? null : index));
     },
     [setSelectedPoint],
@@ -155,33 +161,25 @@ export default function Graph({graphData, size}: GraphType) {
 
                   return (
                     <G key={index}>
-                      {isSelected ? (
-                        <Circle
-                          cx={x}
-                          cy={y}
-                          r={4}
-                          fill={colors.white}
-                          stroke={colors.primaryNormal}
-                          strokeWidth={2}
-                          onPress={() => handleCircleClick(index)}
-                        />
-                      ) : (
-                        <Circle
-                          cx={x}
-                          cy={y}
-                          r={3}
-                          fill={colors.primaryNormal}
-                          onPress={() => handleCircleClick(index)}
-                        />
-                      )}
+                      {/* 원래 표시용 Circle */}
+                      <Circle
+                        cx={x}
+                        cy={y}
+                        r={isSelected ? 4 : 3}
+                        fill={isSelected ? colors.white : colors.primaryNormal}
+                        stroke={isSelected ? colors.primaryNormal : 'none'}
+                        strokeWidth={isSelected ? 2 : 0}
+                        onPress={() => handleCircleClick(index, x, y)}
+                      />
+
                       {isSelected && (
                         <GraphMainToolTip
-                          style={[
-                            {
-                              top: y - 61,
-                              left: x - 45,
-                            },
-                          ]}>
+                          // eslint-disable-next-line react-native/no-inline-styles
+                          style={{
+                            position: 'absolute',
+                            top: tooltipPosition.top,
+                            left: tooltipPosition.left,
+                          }}>
                           <GraphMainToolTipValue>
                             <GraphMainToolTipValueText weight="bold">
                               {graphData[selectedPoint].key}
@@ -265,6 +263,45 @@ export default function Graph({graphData, size}: GraphType) {
             })
           )}
         </GraphChart>
+        {size === 'm' && (
+          <View
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              position: 'absolute',
+              top: 6,
+              left: 25,
+              width: '100%',
+              height: '100%',
+            }}>
+            {graphData.map((point, index) => {
+              if (point.value !== null) {
+                const x =
+                  padding + (index * chartWidth) / (graphData.length - 1);
+                const y =
+                  chartHeight -
+                  (Math.min(point.value, 200) * chartHeight) / 200;
+
+                return (
+                  <Pressable
+                    key={index}
+                    onPress={() => handleCircleClick(index, x, y)}
+                    hitSlop={10}
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{
+                      position: 'absolute',
+                      top: y - 10,
+                      left: x - 10,
+                      width: 20,
+                      height: 20,
+                    }}>
+                    <View />
+                  </Pressable>
+                );
+              }
+              return null;
+            })}
+          </View>
+        )}
         <YAxisLabels>
           {['200', '150', '100', '50', '0'].map((label, index) => (
             <AxisLabel key={index}>{label}</AxisLabel>

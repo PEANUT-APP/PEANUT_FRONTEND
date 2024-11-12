@@ -26,6 +26,7 @@ export default function Connect() {
         touchedFields,
         trigger,
         icon: <ErrorIcon size="l" />,
+        returnKeyType: 'send',
       })}
     </Patient>
   );

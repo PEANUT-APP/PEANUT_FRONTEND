@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import dayjs from 'dayjs';
 import {
   MonthCalendarBox,
@@ -24,6 +24,11 @@ import {
   BloodSugarItem,
 } from '../../screens/medical/item/CalendarItem';
 import DatePicker from 'react-native-date-picker';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 // 상수 선언
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -59,6 +64,13 @@ const splitIntoWeeks = (days: DayItem[]) =>
     days.slice(i * 7, i * 7 + 7),
   );
 
+const getKSTDate = (date = new Date()) => {
+  return new Date(date.getTime());
+};
+
+// 한국 시간(KST)으로 설정하는 함수
+const getKSTDayjs = (date = dayjs()) => dayjs(date).tz('Asia/Seoul');
+
 export default function MonthCalendar({
   currentDate,
   setCurrentDate,
@@ -69,7 +81,12 @@ export default function MonthCalendar({
 }: MonthCalendarType) {
   const [selectedDate, setSelectedDate] = useState(currentDate.date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(getKSTDate(currentDate.toDate()));
+
+  useEffect(() => {
+    setSelectedDate(getKSTDayjs(currentDate).date());
+    setDate(getKSTDate(currentDate.toDate()));
+  }, [currentDate]);
 
   const calendarDays = useMemo(
     () => generateCalendarDays(currentDate),
@@ -89,24 +106,13 @@ export default function MonthCalendar({
   const handleConfirm = useCallback(
     (selectDate: Date) => {
       const selectedDayjs = dayjs(selectDate);
-      const isSameMonth = selectedDayjs.isSame(currentDate, 'month');
-      const isSameYear = selectedDayjs.isSame(currentDate, 'year');
-
-      let newDate;
-
-      if (!isSameYear || !isSameMonth) {
-        newDate = selectedDayjs.startOf('month'); // 1일로 설정
-      } else {
-        newDate = selectedDayjs; // 현재 연도 및 월인 경우 선택한 날짜 그대로 사용
-      }
 
       setDate(selectDate);
-      setCurrentDate(newDate); // 선택된 날짜로 currentDate 설정
-      setSelectedDate(newDate.date()); // 새로운 currentDate의 날짜로 선택된 날짜 설정
-
+      setCurrentDate(selectedDayjs); // 선택된 날짜로 currentDate 설정
+      setSelectedDate(selectedDayjs.date()); // 새로운 currentDate의 날짜로 선택된 날짜 설정
       setDatePickerVisibility(false); // DatePicker 닫기
     },
-    [currentDate, setCurrentDate],
+    [setCurrentDate],
   );
 
   const getStatusForDate = useCallback(
@@ -140,8 +146,8 @@ export default function MonthCalendar({
           <MonthCalendarDayContainer key={idx}>
             {item.day ? (
               <MonthCalendarDay
-                activeOpacity={1}
-                onPress={() => handleSelectDate(item.day)}>
+                onPress={() => handleSelectDate(item.day)}
+                hitSlop={10}>
                 {item.day === selectedDate && <MonthCalendarDayCircle />}
                 <MonthCalendarDayText selected={item.day === selectedDate}>
                   {item.day}
@@ -183,7 +189,7 @@ export default function MonthCalendar({
       <DatePicker
         modal
         open={isDatePickerVisible}
-        date={date}
+        date={getKSTDate(date)}
         mode="date"
         onConfirm={handleConfirm}
         onCancel={() => setDatePickerVisibility(false)} // DatePicker 닫기

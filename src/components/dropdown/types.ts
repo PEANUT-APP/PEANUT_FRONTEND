@@ -28,4 +28,5 @@ export interface DropdownType {
   size: 'm' | 's';
   options: string[];
   isSearch?: boolean;
+  value?: string;
 }

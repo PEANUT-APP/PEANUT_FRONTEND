@@ -34,10 +34,12 @@ export default function My() {
     patientInfo,
     isPatientSuccess,
     isGuardianConnected,
+    refreshing,
+    onRefresh,
   } = useMy();
 
   return (
-    <Layout>
+    <Layout refreshing={refreshing} onRefresh={onRefresh}>
       <MyContainer>
         <MyBox>
           <MyTop>

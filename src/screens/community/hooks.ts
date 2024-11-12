@@ -1,6 +1,7 @@
 import {
   NavigationProp,
   RouteProp,
+  useIsFocused,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
@@ -13,12 +14,14 @@ import {
   useUpdateCommunityMutation,
 } from '../../services/community/communityApi';
 import {ParamList} from '../../navigation/types';
-import {useEffect, useMemo, useState} from 'react';
-import {Alert} from 'react-native';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Alert, BackHandler, Keyboard} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export function useCommunity() {
   const navigation = useNavigation<NavigationProp<ParamList>>();
+  const isFocused = useIsFocused();
+  const initialPreviousScreen = useRef<string | null>(null);
 
   const {
     data: allCommunityData,
@@ -26,13 +29,58 @@ export function useCommunity() {
     refetch,
   } = useGetAllCommunityQuery();
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
+    if (!initialPreviousScreen.current && isFocused) {
+      initialPreviousScreen.current =
+        navigation.getState().routes.at(-2)?.name || null;
+    }
+
     const communityRefetch = navigation.addListener('focus', () => {
       refetch();
     });
 
     return communityRefetch;
-  }, [navigation, refetch]);
+  }, [isFocused, navigation, refetch]);
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (isFocused) {
+        if (
+          initialPreviousScreen.current === 'CommunitySearch' ||
+          initialPreviousScreen.current === 'Detail'
+        ) {
+          navigation.navigate('Home');
+        } else if (initialPreviousScreen.current) {
+          // 그 외의 경우 저장된 페이지로 이동
+          navigation.navigate(initialPreviousScreen.current);
+        }
+        return true; // 기본 뒤로 가기 동작 방지
+      }
+      return false; // 기본 동작 수행
+    };
+
+    // BackHandler에 커스텀 핸들러 추가
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    return () => {
+      // 컴포넌트 언마운트 시 BackHandler 이벤트 제거
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    };
+  }, [isFocused, navigation]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    try {
+      refetch();
+    } catch (error) {
+      console.error('데이터 새로 고치는 중 오류 발생', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refetch]);
 
   const handleGoSearch = () => {
     navigation.navigate('CommunitySearch');
@@ -47,6 +95,8 @@ export function useCommunity() {
     isAllCommunitySuccess,
     handleGoSearch,
     handleGoWrite,
+    refreshing,
+    onRefresh,
   };
 }
 
@@ -96,13 +146,13 @@ export function useWrite() {
           title,
           content,
         }).unwrap();
-        navigation.push('Detail', {id});
+        navigation.pop(1);
       } else {
         await createCommunity({
           title: title,
           content: content,
         }).unwrap();
-        navigation.push('Community');
+        navigation.pop(1);
       }
       setTitle('');
       setContent('');
@@ -164,6 +214,7 @@ export function useDetail(liked?: boolean) {
         id,
       }).unwrap();
       setComment('');
+      Keyboard.dismiss();
       detailRefetch();
     } catch (error) {
       console.error(error);
