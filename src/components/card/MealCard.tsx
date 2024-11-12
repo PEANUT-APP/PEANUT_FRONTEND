@@ -1,6 +1,6 @@
 import React, {forwardRef} from 'react';
 import {colors} from '../../styles/colors';
-import {TouchableWithoutFeedback} from 'react-native';
+import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import MealGraph from './graph/MealGraph';
 import {MealCardHandles, MealCardType} from './types';
 import {
@@ -88,11 +88,13 @@ const MealCard = forwardRef<MealCardHandles, MealCardType>(
     } = useMealCard(size, ref, time);
 
     return (
-      <MealCardContainer onPress={handleGoToRecord} activeOpacity={1}>
+      <MealCardContainer size={size}>
         {size === 'm' && (
-          <MealCardTitle weight="bold" color={colors.TextNormal}>
-            식사 기록
-          </MealCardTitle>
+          <TouchableOpacity onPress={handleGoToRecord} activeOpacity={1}>
+            <MealCardTitle weight="bold" color={colors.TextNormal}>
+              식사 기록
+            </MealCardTitle>
+          </TouchableOpacity>
         )}
         <MealCardBox>
           {size === 'm' && (

@@ -101,7 +101,6 @@ export function useSearch() {
 
       closeModal();
       setServingCount('1');
-      console.log(addedMeals);
     }
   };
 

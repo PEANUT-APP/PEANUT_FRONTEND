@@ -10,6 +10,7 @@ export interface InsulinRecordReturnType {
   administrationTime: string[];
   dosage: string;
   productName: string;
+  activeStatus: string;
 }
 
 interface DailyStatus {
@@ -30,4 +31,9 @@ export interface InsulinReportReturnType {
 export interface TransformedInsulinReportReturnType {
   dailyStatuses: TransformedInsulinDailyStatus[];
   monthlyStatusMessage: string;
+}
+
+export interface InsulinRecordFormType {
+  activeStatus: boolean;
+  insulinId: number;
 }

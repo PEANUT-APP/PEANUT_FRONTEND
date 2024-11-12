@@ -45,6 +45,7 @@ export default function Dropdown({
   options,
   size,
   isSearch,
+  value,
 }: DropdownType) {
   const dispatch = useDispatch();
 
@@ -66,6 +67,12 @@ export default function Dropdown({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (size === 'm' && value) {
+      setSelectedValue(value);
+    }
+  }, [size, value]);
 
   // 키보드 상태 감지
   useEffect(() => {

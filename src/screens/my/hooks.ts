@@ -17,12 +17,15 @@ import {Alert} from 'react-native';
 import {
   useGetConnectingInfoQuery,
   useGetPatientInfoQuery,
+  useGetUpdateUserInfoQuery,
+  useGetUserAlamInfoQuery,
   useGetUserInfoMyPageQuery,
   useLazyGetCommentAllCommunityByUserQuery,
   useLazyGetCreateCommunityByUserQuery,
   useLazyGetLikeCommunityByUserQuery,
+  useSaveUserAlamInfoMutation,
+  useUpdateUserAddInfoMutation,
   useUpdateUserInfoMutation,
-  useUserAlamInfoMutation,
 } from '../../services/user/userApi';
 import {handleFormError} from '../../modules/formHandler';
 import {MyCommunityReturnType} from '../../services/user/types';
@@ -136,7 +139,7 @@ export const useMyEdit = () => {
   const {data: userInfo, refetch: userInfoRefetch} =
     useGetUserInfoMyPageQuery();
 
-  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const [updateUserAddInfo] = useUpdateUserAddInfoMutation();
 
   const [profileImage, setProfileImage] = useState<string | undefined>('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -200,7 +203,7 @@ export const useMyEdit = () => {
       });
     }
     try {
-      await updateUserInfo({
+      await updateUserAddInfo({
         formData,
         nickname,
         height,
@@ -225,15 +228,24 @@ export const useMyEdit = () => {
 };
 
 export const useMyNotice = () => {
-  const [userAlamInfo] = useUserAlamInfoMutation();
+  const {data: alarmInfo} = useGetUserAlamInfoQuery();
+  const [saveUserAlamInfo] = useSaveUserAlamInfoMutation();
 
   const [isPatientToggleOn, setIsPatientToggleOn] = useState(false);
   const [isMedicineToggleOn, setIsMedicineToggleOn] = useState(false);
   const [isInsulinToggleOn, setIsInsulinToggleOn] = useState(false);
 
+  useEffect(() => {
+    if (alarmInfo) {
+      setIsPatientToggleOn(alarmInfo.guardianAlam);
+      setIsMedicineToggleOn(alarmInfo.medicationAlam);
+      setIsInsulinToggleOn(alarmInfo.insulinAlam);
+    }
+  }, [alarmInfo]);
+
   const handleEditNotice = async (type: string, newToggleState: boolean) => {
     try {
-      await userAlamInfo({
+      await saveUserAlamInfo({
         guardianAlam: type === 'patient' ? newToggleState : isPatientToggleOn,
         insulinAlam: type === 'insulin' ? newToggleState : isInsulinToggleOn,
         medicationAlam:
@@ -264,33 +276,70 @@ export const useMyAccount = () => {
     setValue,
     watch,
     handleSubmit,
+    getValues,
     formState: {errors, touchedFields},
   } = useForm<InputFormData>({
     mode: 'onBlur',
   });
 
+  const {data: userInfo, refetch: userInfoRefetch} =
+    useGetUpdateUserInfoQuery();
+
+  const [updateUserInfo] = useUpdateUserInfoMutation();
+
   const phoneNumberWatch = watch('phoneNumber');
   const genderWatch = watch('gender');
   const birthWatch = watch('birth');
   const nameWatch = watch('name');
-  const passwordWatch = watch('password');
+  const passwordWatch = watch('passwordCheck');
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    setIsButtonDisabled(
-      !(
-        phoneNumberWatch ||
-        genderWatch ||
-        birthWatch ||
-        nameWatch ||
-        passwordWatch
-      ),
-    );
-  }, [birthWatch, genderWatch, nameWatch, passwordWatch, phoneNumberWatch]);
+    if (userInfo) {
+      setValue('phoneNumber', userInfo.phoneNumber || '');
+      setValue('gender', userInfo.gender || '');
+      setValue('birth', userInfo.birthday || '');
+      setValue('name', userInfo.userName || '');
+    }
+  }, [setValue, userInfo]);
 
-  const handleUpdate = (data: InputFormData) => {
-    console.log(data);
+  useEffect(() => {
+    const hasChanges =
+      phoneNumberWatch !== userInfo?.phoneNumber ||
+      genderWatch !== userInfo?.gender ||
+      birthWatch !== userInfo?.birthday ||
+      nameWatch !== userInfo?.userName ||
+      passwordWatch;
+
+    setIsButtonDisabled(!hasChanges);
+  }, [
+    birthWatch,
+    genderWatch,
+    nameWatch,
+    phoneNumberWatch,
+    passwordWatch,
+    userInfo?.phoneNumber,
+    userInfo?.gender,
+    userInfo?.birthday,
+    userInfo?.userName,
+  ]);
+
+  const handleUpdate = async () => {
+    const {birth, gender, passwordCheck, phoneNumber, name} = getValues();
+
+    try {
+      await updateUserInfo({
+        birthday: birth,
+        gender,
+        password: passwordCheck,
+        phoneNumber,
+        userName: name,
+      }).unwrap();
+      userInfoRefetch();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return {
@@ -303,6 +352,8 @@ export const useMyAccount = () => {
     isButtonDisabled,
     handleSubmit,
     handleUpdate,
+    birth: userInfo?.birthday,
+    gender: userInfo?.gender,
   };
 };
 

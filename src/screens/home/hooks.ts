@@ -175,7 +175,7 @@ export function usePatientMain() {
     return additionalInfo?.insulinName === '투여 기록 없음' ||
       additionalInfo?.insulinTime === '투여 기록 없음'
       ? '인슐린을 등록해주세요'
-      : `${additionalInfo?.insulinName} ${additionalInfo?.insulinDosage} U/mL`;
+      : `${additionalInfo?.insulinName} ${additionalInfo?.insulinDosage}`;
   }, [
     additionalInfo?.insulinDosage,
     additionalInfo?.insulinName,
@@ -296,6 +296,8 @@ export function useProtectorMain() {
     date: dayjs(today).format('YYYY-MM-DD'),
   });
 
+  console.log(patientAdditionalInfo);
+
   const [saveMedicineInsulinStatus] = useSaveMedicineInsulinStatusMutation();
 
   const [isPushedMedicine, setIsPushedMedicine] = useState(false);
@@ -320,12 +322,12 @@ export function useProtectorMain() {
           mapBloodSugarToGraph(patientAdditionalInfo.bloodSugarList),
         );
       }
-      if (patientAdditionalInfo?.medicineName === '복용 기록 없음') {
+      if (patientAdditionalInfo?.medicineName === '약 정보 없음') {
         setIsPushedMedicine(true);
       } else {
         setIsPushedInsulin(patientAdditionalInfo?.insulinState || false);
       }
-      if (patientAdditionalInfo?.insulinName === '투여 기록 없음') {
+      if (patientAdditionalInfo?.insulinName === '인슐린 정보 없음') {
         setIsPushedInsulin(true);
       } else {
         setIsPushedMedicine(patientAdditionalInfo?.medicationState || false);
@@ -367,14 +369,14 @@ export function useProtectorMain() {
     parseInt(patientInfo?.currentBloodSugarLevel || '0', 10) || 0;
 
   const medicineName = useMemo(() => {
-    return patientAdditionalInfo?.medicineName === '복용 기록 없음'
-      ? '약의 정보가 없어요'
+    return patientAdditionalInfo?.medicineName === '약 정보 없음'
+      ? '약 정보가 없어요'
       : patientAdditionalInfo?.medicineName;
   }, [patientAdditionalInfo?.medicineName]);
 
   const insulinName = useMemo(() => {
-    return patientAdditionalInfo?.insulinName === '투여 기록 없음'
-      ? '인슐린의 정보가 없어요'
+    return patientAdditionalInfo?.insulinName === '인슐린 정보 없음'
+      ? '인슐린 정보가 없어요'
       : `${patientAdditionalInfo?.insulinName} ${patientAdditionalInfo?.insulinDosage} U/mL`;
   }, [
     patientAdditionalInfo?.insulinDosage,

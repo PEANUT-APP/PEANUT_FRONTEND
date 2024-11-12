@@ -35,6 +35,7 @@ export default function MealFeedback() {
     isFeedbackBloodSugarSuccess,
     handleComplete,
     handleBack,
+    handleMealUpdate,
   } = useFeedback();
 
   return (
@@ -78,7 +79,7 @@ export default function MealFeedback() {
             </FeedbackTextBox>
           </MealContent>
           <FeedbackButtonPair>
-            <SecondaryButton size="l" onPress={handleBack}>
+            <SecondaryButton size="l" onPress={handleMealUpdate}>
               수정하기
             </SecondaryButton>
             <PrimaryButton size="l" onPress={handleComplete}>

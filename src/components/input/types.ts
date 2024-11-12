@@ -17,6 +17,7 @@ export interface FormData {
   birth: string;
   name: string;
   password: string;
+  passwordCheck: string;
   weight: string;
   height: string;
   nickname: string;
@@ -105,4 +106,5 @@ export interface DateInputType {
   trigger: UseFormTrigger<FormData>;
   setValue: UseFormSetValue<FormData>;
   setFocus: UseFormSetFocus<FormData>;
+  value?: string;
 }

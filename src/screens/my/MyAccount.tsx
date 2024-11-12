@@ -31,6 +31,8 @@ export default function MyAccount() {
     isButtonDisabled,
     handleSubmit,
     handleUpdate,
+    birth,
+    gender,
   } = useMyAccount();
 
   return (
@@ -63,6 +65,7 @@ export default function MyAccount() {
             placeholder="성별"
             options={['남성', '여성']}
             size="m"
+            value={gender}
           />
           <DateInput
             control={control}
@@ -73,6 +76,7 @@ export default function MyAccount() {
             setFocus={setFocus}
             name="birth"
             placeholder="생일"
+            value={birth}
           />
           {RenderInput({
             name: 'name',
@@ -84,7 +88,7 @@ export default function MyAccount() {
             returnKeyType: 'done',
           })}
           {RenderInput({
-            name: 'password',
+            name: 'passwordCheck',
             placeholder: '비밀번호',
             control,
             errors,

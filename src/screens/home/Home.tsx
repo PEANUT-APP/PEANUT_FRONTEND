@@ -13,10 +13,9 @@ export default function Home() {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(setUserState('Patient'));
-
     const handleBackPress = () => {
       if (isFocused) {
+        dispatch(setUserState('Patient'));
         BackHandler.exitApp();
         return true;
       }

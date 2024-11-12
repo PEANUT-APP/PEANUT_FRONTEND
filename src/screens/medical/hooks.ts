@@ -1,10 +1,21 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useCallback, useMemo, useState} from 'react';
 import {ParamList} from '../../navigation/types';
-import {useGetMonthlyBloodSugarStatusQuery} from '../../services/bloodSugar/bloodSugarApi';
+import {
+  useGetGuardianMonthlyBloodSugarStatusQuery,
+  useGetMonthlyBloodSugarStatusQuery,
+} from '../../services/bloodSugar/bloodSugarApi';
 import dayjs from 'dayjs';
-import {useGetInsulinInfoReportListQuery} from '../../services/insulin/InsulinApi';
-import {useGetMedicineInfoReportListQuery} from '../../services/medicine/medicineApi';
+import {
+  useGetGuardianInsulinInfoReportListQuery,
+  useGetInsulinInfoReportListQuery,
+} from '../../services/insulin/InsulinApi';
+import {
+  useGetGuardianMedicineInfoListQuery,
+  useGetMedicineInfoReportListQuery,
+} from '../../services/medicine/medicineApi';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 
 export const mapStatus = (status: string) => {
   switch (status) {
@@ -48,6 +59,8 @@ const monthlyAvgStatus = (days: number | null) => {
 };
 
 export function useMedical() {
+  const userState = useSelector((state: RootState) => state.user.userState);
+
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const [currentDate, setCurrentDate] = useState(dayjs().add(9, 'hour'));
@@ -62,24 +75,45 @@ export function useMedical() {
   const month = currentDate.month() + 1;
 
   // API 데이터 가져오기
-  const {data: bloodSugarData, refetch: bloodSugarRefetch} =
-    useGetMonthlyBloodSugarStatusQuery(
-      {
-        year,
-        month,
-      },
-      {refetchOnMountOrArgChange: true},
-    );
-  const {data: insulinData, refetch: insulinRefetch} =
+  const {data: patientBloodSugarData, refetch: patientBloodSugarRefetch} =
+    useGetMonthlyBloodSugarStatusQuery({
+      year,
+      month,
+    });
+  const {data: guardianBloodSugarData, refetch: guardianBloodSugarRefetch} =
+    useGetGuardianMonthlyBloodSugarStatusQuery({year, month});
+
+  const {data: patientInsulinData, refetch: patientInsulinRefetch} =
     useGetInsulinInfoReportListQuery({
       year,
       month,
     });
-  const {data: medicineData, refetch: medicineRefetch} =
+  const {data: guardianInsulinData, refetch: guardianInsulinRefetch} =
+    useGetGuardianInsulinInfoReportListQuery({year, month});
+
+  const {data: patientMedicineData, refetch: patientMedicineRefetch} =
     useGetMedicineInfoReportListQuery({
       year,
       month,
     });
+  const {data: guardianMedicineData, refetch: guardianMedicineRefetch} =
+    useGetGuardianMedicineInfoListQuery({year, month});
+
+  const bloodSugarData =
+    userState === 'Patient' ? patientBloodSugarData : guardianBloodSugarData;
+  const insulinData =
+    userState === 'Patient' ? patientInsulinData : guardianInsulinData;
+  const medicineData =
+    userState === 'Patient' ? patientMedicineData : guardianMedicineData;
+
+  const bloodSugarRefetch =
+    userState === 'Patient'
+      ? patientBloodSugarRefetch
+      : guardianBloodSugarRefetch;
+  const insulinRefetch =
+    userState === 'Patient' ? patientInsulinRefetch : guardianInsulinRefetch;
+  const medicineRefetch =
+    userState === 'Patient' ? patientMedicineRefetch : guardianMedicineRefetch;
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

@@ -1,6 +1,7 @@
 import {
   NavigationProp,
   RouteProp,
+  useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
@@ -8,11 +9,10 @@ import dayjs from 'dayjs';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {FormData as MealData} from '../../components/input/types';
-import foodApi, {
+import {
   useCreateAIMealInfoMutation,
   useGetFeedbackFoodDetailByEatTimeQuery,
   useGetFoodCheckByDateQuery,
-  useGetFoodDetailInfoQuery,
   useGetFoodFeedBackBloodSugarInfoQuery,
   useGetPredictInfoMutation,
   useLazyGetFoodNutritionByNameQuery,
@@ -29,6 +29,7 @@ import {resetToday, setTime} from '../../slices/todaySlice';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {formatDate} from '../../modules/commonHooks';
 import moment from 'moment';
+import {API_URL} from '@env';
 
 export function useMeal() {
   const today = useSelector((state: RootState) => state.today.today);
@@ -82,6 +83,8 @@ export function useRecording() {
     mode: 'onBlur',
   });
 
+  const token = useSelector((state: RootState) => state.token.accessToken);
+
   const [isUpload, setIsUpload] = useState(false); // 버튼 상태 관리
   const [imageSource, setImageSource] = useState<string | null>(photoUri); // 이미지 상태 관리
   const [mealListData, setMealListData] = useState<AddMealType[] | undefined>(
@@ -99,11 +102,11 @@ export function useRecording() {
   // AI 인식
   const [getPredictInfo] = useGetPredictInfoMutation();
   // AI 영양 성분 조회
-  const {data: foodDetailInfo, refetch: foodDetailInfoRefetch} =
+  /*const {data: foodDetailInfo, refetch: foodDetailInfoRefetch} =
     useGetFoodDetailInfoQuery(undefined, {
       skip: !isUpload || !isAIProcessing, // 조건에 따라 호출을 생략
       refetchOnMountOrArgChange: true,
-    });
+    });*/
   // AI 식사 등록
   const [createAIMealInfo] = useCreateAIMealInfoMutation();
   // 식사 삭제
@@ -182,23 +185,81 @@ export function useRecording() {
   };
 
   // AI 영양 성분 조회
-  useEffect(() => {
+  /*useEffect(() => {
     const updateMealListData = async () => {
       if (isAIProcessing) {
         if (mealNames) {
           // mealNames가 있으면 그 데이터로 설정
-          setMealListData(mealNames);
+          await foodDetailInfoRefetch();
+          foodApi.util.invalidateTags(['AI']);
+          setMealListData(foodDetailInfo);
+          console.log(foodDetailInfo);
+          console.log('음식 추가 후 돌아와서: ', mealNames);
+          console.log('음식 추가 후 돌아와서2: ', foodDetailInfo);
         } else {
           // 데이터 리패치하고, 캐시 무효화 후 데이터 설정
           await foodDetailInfoRefetch();
           foodApi.util.invalidateTags(['AI']);
+          console.log(foodDetailInfo);
           setMealListData(foodDetailInfo);
+        }
+        try {
+          const response = await fetch(`${API_URL}food/ai/details`, {
+            method: 'GET',
+            headers: {
+              'X-AUTH-TOKEN': token || '',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch food details');
+          }
+
+          const data = await response.json(); // 응답을 JSON 형식으로 파싱
+          setMealListData(data); // 받은 데이터를 상태에 설정
+          console.log(data);
+          console.log('음식 추가 후 돌아와서: ', mealNames);
+          console.log('음식 추가 후 돌아와서2: ', data);
+        } catch (error) {
+          console.error('Error fetching food details:', error);
         }
       }
     };
 
     updateMealListData();
-  }, [foodDetailInfo, foodDetailInfoRefetch, isAIProcessing, mealNames]);
+  }, [foodDetailInfo, foodDetailInfoRefetch, isAIProcessing, mealNames, token]);*/
+
+  useFocusEffect(
+    useCallback(() => {
+      const updateMealListData = async () => {
+        if (isAIProcessing) {
+          try {
+            const response = await fetch(`${API_URL}food/ai/details`, {
+              method: 'GET',
+              headers: {
+                'X-AUTH-TOKEN': token || '',
+                'Cache-Control': 'no-store',
+                Pragma: 'no-cache',
+                Expires: '0',
+              },
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to fetch food details');
+            }
+
+            const data = await response.json(); // 응답을 JSON 형식으로 파싱
+            setMealListData(data); // 받은 데이터를 상태에 설정
+            console.log(data);
+          } catch (error) {
+            console.error('Error fetching food details:', error);
+          }
+        }
+      };
+
+      updateMealListData(); // 화면 포커스를 받을 때마다 데이터 업데이트
+    }, [isAIProcessing, token]), // 의존성 배열에 필요한 값만 추가
+  );
 
   // 직접 추가하기 버튼 (이미지 업로드)
   const handleDirectAdd = async () => {
@@ -278,7 +339,11 @@ export function useRecording() {
 
   // 음식 추가하기 버튼
   const handleAddMeal = useCallback(() => {
-    searchNavigation.push('MealSearch', {isAIProcessing});
+    if (isAIProcessing) {
+      Alert.alert('아직 준비중입니다!');
+    } else {
+      searchNavigation.push('MealSearch', {isAIProcessing});
+    }
   }, [isAIProcessing, searchNavigation]);
 
   // AI 식사 등록
@@ -314,7 +379,6 @@ export function useRecording() {
           servingCount: servingData || [],
         }).unwrap();
 
-        console.log(servingData);
         navigation.navigate('MealFeedback');
       } catch (error) {
         console.error('Image upload failed:', error);
@@ -471,6 +535,8 @@ export function useFeedback() {
     eatTime: selectedChip,
   });
 
+  console.log(feedbackBloodSugarData, feedbackFoodData);
+
   useEffect(() => {
     feedbackBloodSugarRefetch();
     feedbackFoodByTimeRefetch();
@@ -562,6 +628,10 @@ export function useFeedback() {
     return data;
   }, [feedbackBloodSugarData]);
 
+  const handleMealUpdate = () => {
+    Alert.alert('아직 준비중입니다!');
+  };
+
   return {
     formattedToday,
     selectedChip,
@@ -573,5 +643,6 @@ export function useFeedback() {
     isFeedbackBloodSugarSuccess,
     handleComplete,
     handleBack,
+    handleMealUpdate,
   };
 }
