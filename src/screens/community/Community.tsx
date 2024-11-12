@@ -20,10 +20,12 @@ export default function Community() {
     isAllCommunitySuccess,
     handleGoSearch,
     handleGoWrite,
+    refreshing,
+    onRefresh,
   } = useCommunity();
 
   return (
-    <Layout>
+    <Layout type="community">
       <CommunityContainer>
         <CommunityTop>
           <CommunityTitle weight="bold">커뮤니티</CommunityTitle>
@@ -49,13 +51,15 @@ export default function Community() {
                 like={item.like}
                 imageUrl={item.imageUrl}
                 userId={item.userId}
-                comment={0}
-                create_at=""
+                commentCount={item.commentCount}
+                createTime={item.createTime}
               />
             )}
             ItemSeparatorComponent={CommunityContent}
             contentContainerStyle={{paddingBottom: 137}}
             showsVerticalScrollIndicator={false}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
           />
         )}
       </CommunityContainer>

@@ -21,7 +21,9 @@ export default function MealListItem({
     <MealListItemContainer>
       <View>
         <MealListItemName>{name}</MealListItemName>
-        <MealListItemDescription>{servingCount}인분</MealListItemDescription>
+        {servingCount && (
+          <MealListItemDescription>{servingCount}인분</MealListItemDescription>
+        )}
       </View>
       <MealListItemFunc>
         <MealListItemGI>GI {giIndex}</MealListItemGI>

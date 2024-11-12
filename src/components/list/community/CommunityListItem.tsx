@@ -31,8 +31,8 @@ export default function CommunityListItem({
   name,
   like,
   imageUrl,
-  comment,
-  create_at,
+  commentCount,
+  createTime,
 }: CommunityListReturnType) {
   const {showWriter, handleClickKebab} = useKebab();
   const {handleClickItem} = useCommunityListItem(id);
@@ -60,7 +60,7 @@ export default function CommunityListItem({
           )}
         </CommunityListItemTitleBox>
         <CommunityListItemDate>
-          {formatDateTime(create_at)}
+          {formatDateTime(createTime)}
         </CommunityListItemDate>
         <CommunityListItemContent ellipsizeMode="tail" numberOfLines={1}>
           {content}
@@ -82,7 +82,7 @@ export default function CommunityListItem({
           </CommunityListItemInfoPair>
           <CommunityListItemCommentPair>
             <DesignIcon type="comment" size="s" color={colors.LineNomal} />
-            <CommunityListItemText>{comment}</CommunityListItemText>
+            <CommunityListItemText>{commentCount}</CommunityListItemText>
           </CommunityListItemCommentPair>
         </CommunityListItemInfoBox>
       </CommunityListItemBottomBox>

@@ -9,6 +9,9 @@ import {
   GetConnectingInfoReturnType,
   GetGuardianReturnType,
   GuardianRelationFormType,
+  AlarmReturnType,
+  UpdateUserFormType,
+  UpdateUserReturnType,
 } from './types';
 
 export const userApi = apiSlice.injectEndpoints({
@@ -65,9 +68,9 @@ export const userApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Connect'],
     }),
-    updateUserInfo: builder.mutation({
+    updateUserAddInfo: builder.mutation({
       query: ({formData, nickname, weight, height}: UpdateFormType) => ({
-        url: '/user/update',
+        url: '/user/update/add-info',
         method: 'PUT',
         body: formData,
         params: {
@@ -99,9 +102,16 @@ export const userApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Community'],
     }),
-    userAlamInfo: builder.mutation({
+    getUserAlamInfo: builder.query<AlarmReturnType, void>({
+      query: () => ({
+        url: '/user/alam-info/get',
+        method: 'GET',
+      }),
+      providesTags: ['Alarm'],
+    }),
+    saveUserAlamInfo: builder.mutation({
       query: ({guardianAlam, insulinAlam, medicationAlam}: AlarmFormType) => ({
-        url: '/user/alam-info',
+        url: '/user/alam-info/save',
         method: 'PUT',
         params: {
           guardianAlam,
@@ -109,6 +119,34 @@ export const userApi = apiSlice.injectEndpoints({
           medicationAlam,
         },
       }),
+      invalidatesTags: ['Alarm'],
+    }),
+    getUpdateUserInfo: builder.query<UpdateUserReturnType, void>({
+      query: () => ({
+        url: '/user/get/user-info',
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
+    updateUserInfo: builder.mutation({
+      query: ({
+        birthday,
+        gender,
+        password,
+        phoneNumber,
+        userName,
+      }: UpdateUserFormType) => ({
+        url: '/user/update/user-info',
+        method: 'PUT',
+        params: {
+          birthday,
+          gender,
+          password,
+          phoneNumber,
+          userName,
+        },
+      }),
+      invalidatesTags: ['User'],
     }),
   }),
 });
@@ -122,14 +160,17 @@ export const {
   useGetConnectingInfoQuery,
   useSendInviteCodeMutation,
   useConfirmGuardianRelationMutation,
-  useUpdateUserInfoMutation,
+  useUpdateUserAddInfoMutation,
   useGetCreateCommunityByUserQuery,
   useLazyGetCreateCommunityByUserQuery,
   useGetLikeCommunityByUserQuery,
   useLazyGetLikeCommunityByUserQuery,
   useGetCommentAllCommunityByUserQuery,
   useLazyGetCommentAllCommunityByUserQuery,
-  useUserAlamInfoMutation,
+  useGetUserAlamInfoQuery,
+  useSaveUserAlamInfoMutation,
+  useGetUpdateUserInfoQuery,
+  useUpdateUserInfoMutation,
 } = userApi;
 
 export default userApi;

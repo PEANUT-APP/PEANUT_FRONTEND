@@ -44,6 +44,7 @@ export const signApi = apiSlice.injectEndpoints({
         params: {
           email: data.email,
           password: data.password,
+          fcmToken: data.fcmToken,
         },
       }),
     }),

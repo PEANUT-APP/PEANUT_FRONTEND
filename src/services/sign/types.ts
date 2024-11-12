@@ -43,4 +43,5 @@ export interface SignUpFormType {
 export interface SignInFormType {
   email: string;
   password: string;
+  fcmToken: string | null;
 }

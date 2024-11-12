@@ -26,17 +26,18 @@ export default function MyCommunity() {
       </MyMoreTop>
       <FlatList
         data={communityData}
-        keyExtractor={index => index.toString()}
+        keyExtractor={item => item.communityId.toString()}
         renderItem={({item}) => (
           <CommunityListItem
             title={item.title}
             content={item.content}
             name={item.userName}
             like={item.like}
-            comment={item.comment}
-            create_at={item.create_At}
-            imageUrl=""
-            id={0}
+            commentCount={item.comment}
+            createTime={item.create_At}
+            imageUrl={item.imageUrl}
+            id={item.communityId}
+            userId={item.userId}
           />
         )}
         ItemSeparatorComponent={MyCommunityContent}

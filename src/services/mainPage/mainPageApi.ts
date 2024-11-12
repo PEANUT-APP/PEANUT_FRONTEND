@@ -21,14 +21,14 @@ export const mainPageApi = apiSlice.injectEndpoints({
       {date: string}
     >({
       query: ({date}) => ({
-        url: `/main-api/get-add-info?date=${date}`,
+        url: `/main-api/patient/get-add-info?date=${date}`,
         method: 'GET',
       }),
       providesTags: ['AdditionalInfo'],
     }),
-    saveMedicineInsulinStatus: builder.mutation({
+    saveGuardianMedicineInsulinStatus: builder.mutation({
       query: ({date, insulinStatus, medicineStatus}: SaveStatusFormType) => ({
-        url: '/main-api/get-add-info/save/status',
+        url: '/main-api/patient/get-add-info/save/status',
         method: 'PUT',
         params: {date, insulinStatus, medicineStatus},
       }),
@@ -36,41 +36,12 @@ export const mainPageApi = apiSlice.injectEndpoints({
     }),
     getFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
       query: ({date}) => ({
-        url: `/main-api/get-all-food?date=${date}`,
-        method: 'GET',
-      }),
-    }),
-    getFoodDetailByEatTime: builder.query<
-      FoodReturnType,
-      {date: string; eatTime: string}
-    >({
-      query: ({date, eatTime}) => ({
-        url: `/main-api/get-time-food?date=${date}&eatTime=${eatTime}`,
-        method: 'GET',
-      }),
-    }),
-    getPatientUserInfoMainPage: builder.query<UserInfoReturnType, void>({
-      query: () => ({
-        url: '/main-api/patient/get-user',
-        method: 'GET',
-      }),
-    }),
-    getPatientAdditionalInfoMainPage: builder.query<
-      PatientAdditionalInfoReturnType,
-      {date: string}
-    >({
-      query: ({date}) => ({
-        url: `/main-api/patient/get-add-info?date=${date}`,
-        method: 'GET',
-      }),
-    }),
-    getPatientFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
-      query: ({date}) => ({
         url: `/main-api/patient/get-all-food?date=${date}`,
         method: 'GET',
       }),
+      providesTags: ['AdditionalInfo'],
     }),
-    getPatientFoodDetailByEatTime: builder.query<
+    getFoodDetailByEatTime: builder.query<
       FoodReturnType,
       {date: string; eatTime: string}
     >({
@@ -78,6 +49,49 @@ export const mainPageApi = apiSlice.injectEndpoints({
         url: `/main-api/patient/get-time-food?date=${date}&eatTime=${eatTime}`,
         method: 'GET',
       }),
+      providesTags: ['AdditionalInfo'],
+    }),
+    getPatientUserInfoMainPage: builder.query<UserInfoReturnType, void>({
+      query: () => ({
+        url: '/main-api/guardian/get-patient',
+        method: 'GET',
+      }),
+      providesTags: ['AdditionalInfo'],
+    }),
+    getPatientAdditionalInfoMainPage: builder.query<
+      PatientAdditionalInfoReturnType,
+      {date: string}
+    >({
+      query: ({date}) => ({
+        url: `/main-api/guardian/get-add-info?date=${date}`,
+        method: 'GET',
+      }),
+      providesTags: ['AdditionalInfo'],
+    }),
+    getPatientFoodAllDetail: builder.query<FoodReturnType, {date: string}>({
+      query: ({date}) => ({
+        url: `/main-api/guardian/get-all-food?date=${date}`,
+        method: 'GET',
+      }),
+      providesTags: ['AdditionalInfo'],
+    }),
+    getPatientFoodDetailByEatTime: builder.query<
+      FoodReturnType,
+      {date: string; eatTime: string}
+    >({
+      query: ({date, eatTime}) => ({
+        url: `/main-api/guardian/get-time-food?date=${date}&eatTime=${eatTime}`,
+        method: 'GET',
+      }),
+      providesTags: ['AdditionalInfo'],
+    }),
+    saveMedicineInsulinStatus: builder.mutation({
+      query: ({date, insulinStatus, medicineStatus}: SaveStatusFormType) => ({
+        url: '/main-api/guardian/get-add-info/save/status',
+        method: 'PUT',
+        params: {date, insulinStatus, medicineStatus},
+      }),
+      invalidatesTags: ['AdditionalInfo'],
     }),
   }),
 });
@@ -87,11 +101,12 @@ export const {
   useGetAdditionalInfoMainPageQuery,
   useGetFoodAllDetailQuery,
   useGetFoodDetailByEatTimeQuery,
-  useSaveMedicineInsulinStatusMutation,
+  useSaveGuardianMedicineInsulinStatusMutation,
   useGetPatientUserInfoMainPageQuery,
   useGetPatientAdditionalInfoMainPageQuery,
   useGetPatientFoodAllDetailQuery,
   useGetPatientFoodDetailByEatTimeQuery,
+  useSaveMedicineInsulinStatusMutation,
 } = mainPageApi;
 
 export default mainPageApi;

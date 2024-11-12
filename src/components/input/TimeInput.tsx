@@ -29,7 +29,7 @@ export default function TimeInput({
 
   useEffect(() => {
     const currentTime = new Date();
-    const localTime = new Date(currentTime.getTime() + 9 * 60 * 60 * 1000);
+    const localTime = new Date(currentTime.getTime());
     setTime(localTime);
     const formattedTime = formatTime(localTime);
 

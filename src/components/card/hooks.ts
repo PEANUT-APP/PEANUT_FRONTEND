@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useImperativeHandle, useState} from 'react';
 import {FoodReturnType} from '../../services/mainPage/types';
 import {
   useGetFoodAllDetailQuery,
@@ -6,15 +6,25 @@ import {
   useGetPatientFoodAllDetailQuery,
   useGetPatientFoodDetailByEatTimeQuery,
 } from '../../services/mainPage/mainPageApi';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {ParamList} from '../../navigation/types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import dayjs from 'dayjs';
 import {setTime} from '../../slices/todaySlice';
 import {useGetFeedbackFoodDetailByEatTimeQuery} from '../../services/food/foodApi';
+import {MealCardHandles} from './types';
 
-export const useMealCard = (size: 's' | 'm', time?: string) => {
+export const useMealCard = (
+  size: 's' | 'm',
+  ref: React.ForwardedRef<MealCardHandles>,
+  time?: string,
+) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<ParamList>>();
 
   const today = useSelector((state: RootState) => state.today.today);
@@ -103,14 +113,32 @@ export const useMealCard = (size: 's' | 'm', time?: string) => {
     userState,
   ]);
 
-  useEffect(() => {
+  const refreshMealCard = useCallback(() => {
+    setSelectedTime('전체');
+    dispatch(setTime('아침'));
     fetchData();
-  }, [fetchData, today, selectedTime, time]);
+  }, [dispatch, fetchData]);
+
+  useImperativeHandle(ref, () => ({
+    refresh: refreshMealCard,
+  }));
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchData, today, selectedTime, time]),
+  );
 
   // 시간대 변경 핸들러
   const handleTimeChange = (changedTime: string) => {
     if (size === 'm') {
       setSelectedTime(changedTime);
+      if (changedTime === '전체') {
+        dispatch(setTime('아침'));
+      } else {
+        dispatch(setTime(changedTime));
+      }
     }
   };
 

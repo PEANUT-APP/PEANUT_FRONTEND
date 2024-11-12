@@ -1,11 +1,10 @@
 import styled from 'styled-components/native';
 import {colors} from '../../styles/colors';
 import {Body1, Body2, Caption1} from '../text/Text';
-import {TouchableOpacity} from 'react-native';
 
-export const MealCardContainer = styled(TouchableOpacity)`
+export const MealCardContainer = styled.View<{size: 'm' | 's'}>`
   width: 350px;
-  padding: 20px 20px;
+  padding: ${({size}) => (size === 's' ? '20px' : '0 20px 20px 20px')};
   background-color: ${colors.white};
   border-radius: 8px;
   justify-content: center;
@@ -20,6 +19,7 @@ export const MealCardBox = styled.View`
 export const MealCardTitle = styled(Body1)`
   line-height: 21.344px;
   letter-spacing: -0.4px;
+  padding: 20px 0 0;
 `;
 
 export const MealCardNav = styled.View`

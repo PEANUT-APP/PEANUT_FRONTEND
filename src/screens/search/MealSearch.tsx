@@ -161,6 +161,8 @@ export default function MealSearch() {
                   <SearchModalInput
                     value={servingCount}
                     onChangeText={setServingCount}
+                    keyboardType="numeric"
+                    returnKeyType="done"
                   />
                   <SearchModalTopText color={colors.TextNeutral}>
                     인분

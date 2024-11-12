@@ -5,15 +5,18 @@ import {useCallback, useEffect, useState} from 'react';
 import {
   useLazyGetMedicineInfoListQuery,
   useSaveMedicineInfoMutation,
+  useStopMedicineMutation,
 } from '../../services/medicine/medicineApi';
 import {Alert} from 'react-native';
 import {ParamList} from '../../navigation/types';
 import {
   useLazyGetInsulinInfoListQuery,
   useSaveInsulinIfoMutation,
+  useStopInsulinMutation,
 } from '../../services/insulin/InsulinApi';
 import {handleFormError} from '../../modules/formHandler';
 import {useSaveBloodSugarMutation} from '../../services/bloodSugar/bloodSugarApi';
+import {InsulinRecordWithOngoing, MedicineRecordWithOngoing} from './types';
 
 function useCommonForm(
   validateFields: (keyof FormData)[],
@@ -89,14 +92,15 @@ export function useMedicine() {
   } = useCommonForm(['medicineName'], trigger);
 
   const [saveMedicineInfo] = useSaveMedicineInfoMutation();
+  const [stopMedicine] = useStopMedicineMutation();
 
   const [fetchMedicineData, {data: medicineData}] =
     useLazyGetMedicineInfoListQuery();
 
   const [intakeDays, setIntakeDays] = useState<string[]>([]);
-  const [medicineState, setMedicineState] = useState<Record<string, boolean>>(
-    {},
-  );
+  const [medicineState, setMedicineState] = useState<
+    MedicineRecordWithOngoing[]
+  >([]);
 
   useEffect(() => {
     fetchMedicineData();
@@ -105,13 +109,12 @@ export function useMedicine() {
 
   useEffect(() => {
     if (medicineData) {
-      const initialMedicineState: Record<string, boolean> = {};
-
-      medicineData.map(item => {
-        initialMedicineState[item.medicineName] = true; // true: 복약 중, false: 복약 중단
-      });
-
-      setMedicineState(initialMedicineState);
+      const transformedData = medicineData.map(item => ({
+        ...item,
+        intakeTime: item.intakeTime.join(', '),
+        isOngoing: item.activeStatus === '복약 중',
+      }));
+      setMedicineState(transformedData);
     }
   }, [medicineData]);
 
@@ -137,22 +140,50 @@ export function useMedicine() {
   const handleSubmit = handleFormSubmit(handleMedicineSubmit, handleFormError);
 
   // 복약 상태 토글 함수
-  const toggleMedicineState = useCallback((name: string) => {
-    setMedicineState(prevState => ({
-      ...prevState,
-      [name]: !prevState[name],
-    }));
-  }, []);
+  const toggleMedicineState = useCallback(
+    async (medicineName: string) => {
+      const medicineToUpdate = medicineState.find(
+        item => item.medicineName === medicineName,
+      );
+
+      if (!medicineToUpdate) {
+        return;
+      }
+
+      const newActiveStatus =
+        medicineToUpdate.activeStatus === '복약 중'
+          ? '복약 중단 상태'
+          : '복약 중';
+
+      try {
+        await stopMedicine({
+          activeStatus: medicineToUpdate.activeStatus !== '복약 중',
+          medicineId: medicineToUpdate.id,
+        }).unwrap();
+
+        setMedicineState(prevState =>
+          prevState.map(item =>
+            item.medicineName === medicineName
+              ? {
+                  ...item,
+                  activeStatus: newActiveStatus,
+                  isOngoing: newActiveStatus === '복약 중',
+                }
+              : item,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+        Alert.alert('복약 상태 변경에 실패했습니다.');
+      }
+    },
+    [medicineState, stopMedicine],
+  );
 
   // 복약 추가하기
   const handleGoAdd = useCallback(() => {
     navigation.navigate('Medicine');
   }, [navigation]);
-
-  const transformedData = medicineData?.map(item => ({
-    ...item,
-    intakeTime: item.intakeTime.join(', '),
-  }));
 
   return {
     control,
@@ -170,10 +201,9 @@ export function useMedicine() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
-    medicineState,
     toggleMedicineState,
     handleGoAdd,
-    transformedData,
+    medicineData: medicineState,
   };
 }
 
@@ -202,11 +232,14 @@ export function useInsulin() {
   } = useCommonForm(['productName', 'dosage'], trigger);
 
   const [saveInsulinIfo] = useSaveInsulinIfoMutation();
+  const [stopInsulin] = useStopInsulinMutation();
 
   const [fetchInsulinData, {data: insulinData}] =
     useLazyGetInsulinInfoListQuery();
 
-  const [insulinState, setInsulinState] = useState<Record<string, boolean>>({});
+  const [insulinState, setInsulinState] = useState<InsulinRecordWithOngoing[]>(
+    [],
+  );
 
   useEffect(() => {
     fetchInsulinData();
@@ -215,12 +248,12 @@ export function useInsulin() {
 
   useEffect(() => {
     if (insulinData) {
-      const initialInsulinState = insulinData.reduce((acc, item) => {
-        acc[item.productName] = true;
-        return acc;
-      }, {} as Record<string, boolean>);
-
-      setInsulinState(initialInsulinState);
+      const transformedData = insulinData.map(item => ({
+        ...item,
+        dosage: `${item.dosage}(U/mL)`, // Dosage 표시 추가
+        isOngoing: item.activeStatus === '투약 중',
+      }));
+      setInsulinState(transformedData);
     }
   }, [insulinData]);
 
@@ -244,22 +277,50 @@ export function useInsulin() {
   const handleSubmit = handleFormSubmit(handleInsulinSubmit, handleFormError);
 
   // 인슐린 상태 토글 함수
-  const toggleInsulinState = useCallback((name: string) => {
-    setInsulinState(prevState => ({
-      ...prevState,
-      [name]: !prevState[name],
-    }));
-  }, []);
+  const toggleInsulinState = useCallback(
+    async (productName: string) => {
+      const insulinToUpdate = insulinState.find(
+        item => item.productName === productName,
+      );
+
+      if (!insulinToUpdate) {
+        return;
+      }
+
+      const newActiveStatus =
+        insulinToUpdate.activeStatus === '투약 중'
+          ? '투약 중단 상태'
+          : '투약 중';
+
+      try {
+        await stopInsulin({
+          activeStatus: insulinToUpdate.activeStatus !== '투약 중',
+          insulinId: insulinToUpdate.id,
+        }).unwrap();
+
+        setInsulinState(prevState =>
+          prevState.map(item =>
+            item.productName === productName
+              ? {
+                  ...item,
+                  activeStatus: newActiveStatus,
+                  isOngoing: newActiveStatus === '투약 중',
+                }
+              : item,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+        Alert.alert('상태 변경에 실패했습니다.');
+      }
+    },
+    [insulinState, stopInsulin],
+  );
 
   // 인슐린 추가하기
   const handleGoAdd = useCallback(() => {
     navigation.navigate('Insulin');
   }, [navigation]);
-
-  const transformedInsulinData = insulinData?.map(item => ({
-    ...item,
-    dosage: `${item.dosage}(U/mL)`, // Append (U/mL) to the dosage
-  }));
 
   return {
     control,
@@ -275,10 +336,9 @@ export function useInsulin() {
     handleInputChange,
     handleSubmit,
     isButtonDisabled,
-    insulinState,
     toggleInsulinState,
     handleGoAdd,
-    insulinData: transformedInsulinData,
+    insulinData: insulinState,
   };
 }
 

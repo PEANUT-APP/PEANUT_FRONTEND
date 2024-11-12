@@ -56,10 +56,34 @@ export const bloodSugarApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    getGuardianMonthlyBloodSugarStatus: builder.query<
+      TransformedBloodSugarReportType,
+      {month: number; year: number}
+    >({
+      query: ({month, year}) => ({
+        url: `/blood-sugar/guardian-monthly-report?month=${month}&year=${year}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: BloodSugarReportType) => {
+        const transformedDailyStatuses = response.dailyStatuses.map(status => ({
+          ...status,
+          bloodSugarStatus: mapBloodSugarStatus(status.bloodSugarStatus), // 변환
+        }));
+
+        return {
+          ...response,
+          dailyStatuses: transformedDailyStatuses,
+          monthlyAvgStatus: mapBloodSugarStatus(response.monthlyAvgStatus), // 변환
+        };
+      },
+    }),
   }),
 });
 
-export const {useSaveBloodSugarMutation, useGetMonthlyBloodSugarStatusQuery} =
-  bloodSugarApi;
+export const {
+  useSaveBloodSugarMutation,
+  useGetMonthlyBloodSugarStatusQuery,
+  useGetGuardianMonthlyBloodSugarStatusQuery,
+} = bloodSugarApi;
 
 export default bloodSugarApi;

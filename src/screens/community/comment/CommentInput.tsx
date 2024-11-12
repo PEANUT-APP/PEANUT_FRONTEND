@@ -17,6 +17,7 @@ export default function CommentInput({
           placeholderTextColor={colors.TextDisabled}
           value={value}
           onChangeText={onChangeText}
+          returnKeyType="send"
         />
         <OutlineButton size="s" onPress={handleComment}>
           등록

@@ -1,15 +1,24 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {RefreshControl, ScrollView} from 'react-native';
 import GlobalView from '../../styles/GlobalStyle';
 import {ContainerView} from './styles';
 import NavigationBar from '../../components/navigation/NavigationBar';
-import {LayoutType} from './types';
+import {ScrollLayoutType} from './types';
 
-export default function ScrollLayout({children, paddingBottom}: LayoutType) {
+export default function ScrollLayout({
+  children,
+  paddingBottom,
+  refreshing,
+  onRefresh,
+}: ScrollLayoutType) {
   return (
     <GlobalView>
       <ContainerView>
-        <ScrollView contentContainerStyle={{paddingBottom}}>
+        <ScrollView
+          contentContainerStyle={{paddingBottom}}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {children}
         </ScrollView>
       </ContainerView>

@@ -53,6 +53,7 @@ export default function AdditionalInformation() {
           errors,
           touchedFields,
           trigger,
+          returnKeyType: 'send',
         })}
       {step >= 1 &&
         RenderInput({
@@ -62,6 +63,7 @@ export default function AdditionalInformation() {
           errors,
           touchedFields,
           trigger,
+          returnKeyType: 'next',
         })}
       {step >= 0 &&
         RenderInput({
@@ -74,6 +76,7 @@ export default function AdditionalInformation() {
           message: '중복되지 않는 닉네임입니다',
           icon: <FitIcon size="l" />,
           isNicknameValid,
+          returnKeyType: 'next',
         })}
     </Sign>
   );

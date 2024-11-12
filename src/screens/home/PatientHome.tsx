@@ -35,14 +35,20 @@ export default function PatientHome() {
     insulinTime,
     isCheckedMedicine,
     isCheckedInsulin,
-    toggleMedicine,
-    toggleInsulin,
+    checkMedicine,
+    checkInsulin,
     isAdditionalInfoSuccess,
+    refreshing,
+    onRefresh,
+    mealCardRef,
   } = usePatientMain();
 
   return (
     <>
-      <ScrollLayout paddingBottom={101}>
+      <ScrollLayout
+        paddingBottom={101}
+        refreshing={refreshing}
+        onRefresh={onRefresh}>
         <HomeBox>
           <HomeTop
             source={require('../../assets/images/gradientBackgroundDark.png')}>
@@ -78,21 +84,21 @@ export default function PatientHome() {
                   <ReportCard
                     navigate="MedicineDocument"
                     isChecked={isCheckedMedicine}
-                    onPress={toggleMedicine}
+                    onPress={checkMedicine}
                     name={medicineName}
                     time={medicineTime}
                   />
                   <ReportCard
                     navigate="InsulinDocument"
                     isChecked={isCheckedInsulin}
-                    onPress={toggleInsulin}
+                    onPress={checkInsulin}
                     name={insulinName}
                     time={insulinTime}
                   />
                 </ReportCardBox>
               </>
             )}
-            <MealCard size="m" />
+            <MealCard size="m" ref={mealCardRef} />
           </HomeContent>
         </HomeBox>
       </ScrollLayout>

@@ -83,6 +83,15 @@ export const communityApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Community'],
     }),
+    findCommunityBySearch: builder.query<
+      CommunityListReturnType[],
+      {search: string}
+    >({
+      query: ({search}) => ({
+        url: `/community/detail/{search}?search=${search}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -94,6 +103,7 @@ export const {
   useCreateCommentMutation,
   useDeleteCommunityMutation,
   useUpdateCommunityMutation,
+  useLazyFindCommunityBySearchQuery,
 } = communityApi;
 
 export default communityApi;

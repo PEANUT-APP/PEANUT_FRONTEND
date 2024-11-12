@@ -1,16 +1,17 @@
 import apiSlice from '../apiSlice';
+import {NotificationType} from './types';
 
 export const notificationApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    remindPatient: builder.mutation({
+    getNotificationList: builder.query<NotificationType[], void>({
       query: () => ({
-        url: '/notification/api/caregiver/remind',
-        method: 'POST',
+        url: '/notification/get-all',
+        method: 'GET',
       }),
     }),
   }),
 });
 
-export const {useRemindPatientMutation} = notificationApi;
+export const {useGetNotificationListQuery} = notificationApi;
 
 export default notificationApi;

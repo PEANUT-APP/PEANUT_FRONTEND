@@ -24,7 +24,6 @@ import {resetForm, updateForm} from '../../slices/formSlice';
 import {RootState} from '../../store/store';
 import {login} from '../../slices/tokenSlice';
 import {handleFormError} from '../../modules/formHandler';
-import {useAuth} from '../../modules/useAuth';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export const handleNextStep = async ({
@@ -79,8 +78,7 @@ export const useSign = (
 export const useSignIn = () => {
   const navigation = useNavigation<NavigationProp<ParamList>>();
   const dispatch = useDispatch();
-
-  const {setIsInitialRender} = useAuth();
+  const fcmToken = useSelector((state: RootState) => state.token.fcmToken);
 
   const [signIn] = useSignInMutation();
 
@@ -114,12 +112,11 @@ export const useSignIn = () => {
 
   const handleSignInFormSubmit = async (data: SignInFormType) => {
     try {
-      const response = await signIn(data).unwrap();
+      const response = await signIn({...data, fcmToken}).unwrap();
       dispatch(login(response.token));
       navigation.navigate('Home');
       reset();
       setStep(0);
-      setIsInitialRender(false);
     } catch (error) {
       console.log(error);
       Alert.alert('로그인에 실패했습니다!');
